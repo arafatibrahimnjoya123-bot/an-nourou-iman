@@ -1,12 +1,10 @@
 <!DOCTYPE html>
 <html lang="fr"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Admin - An Nourou Iman</title><link rel="stylesheet" href="style.css">
 <style>
-/* MENU HORIZONTAL QUI SCROLLE - COMME GESTION */
 .menu-scroll{display:flex;gap:8px;overflow-x:auto;white-space:nowrap;padding:10px 4px 12px 4px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
 .menu-scroll::-webkit-scrollbar{display:none}
 .admin-tab{flex:0 0 auto;background:#F1F8E9;border:1px solid #C8E6C9;color:#1B5E20;padding:10px 16px;border-radius:20px;font-weight:700;font-size:14px;cursor:pointer}
 .admin-tab.active{background:#0F3D2E!important;color:white!important;border-color:#0F3D2E}
-/* TABLEAU REDUIT - MEME STYLE QUE GESTION */
 .table-blanc{width:100%;border-collapse:collapse;background:white;font-size:13px}
 .table-blanc th{background:#A5D6A7;color:#1B5E20;padding:8px 6px;text-align:left;font-size:12px}
 .table-blanc td{border-bottom:1px solid #E8F5E9;padding:8px 6px;vertical-align:top}
@@ -26,8 +24,6 @@
 <div style="background:white;padding:16px;border-radius:16px;margin:14px" id="loginCard"><h2>🔐 Connexion Directeur</h2><input type="email" id="email" placeholder="Email Directeur"><input type="password" id="password" placeholder="Mot de passe"><button onclick="seConnecter()" style="width:100%;background:#0F3D2E;color:white;border:none;padding:14px;border-radius:12px;font-weight:800">Se connecter</button><p id="msg" style="color:red"></p></div>
 <div style="background:white;padding:16px;border-radius:16px;margin:14px;display:none" id="adminPanel">
 <div style="background:#E8F5E9;padding:12px;border-radius:12px">👋 Assalamou Aleykoum, Directeur<br><b id="adminEmail"></b></div>
-
-<!-- MENU HORIZONTAL QUI SCROLLE -->
 <div class="menu-scroll">
 <button onclick="showTabAdmin('tabDashboard',this)" class="admin-tab active">🏠 Tableau de Bord</button>
 <button onclick="showTabAdmin('tabEcoles',this)" class="admin-tab">🏫 Écoles</button>
@@ -36,11 +32,10 @@
 <button onclick="showTabAdmin('tabPaiements',this)" class="admin-tab">💰 Paiements</button>
 <button onclick="showTabAdmin('tabBulletins',this)" class="admin-tab">📋 Bulletins</button>
 <button onclick="showTabAdmin('tabDivers',this)" class="admin-tab">📢 Divers</button>
+<button onclick="showTabAdmin('tabUtilisateurs',this)" class="admin-tab">👑 Utilisateurs</button>
 </div>
-
 <div id="tabDashboard">
 <h3>🏠 Tableau de Bord - Directeur Général</h3>
-<p style="font-size:13px;color:#666">Tu restes ici. Toutes les infos des écoles et groupes arrivent ici.</p>
 <div id="alertesDG" style="margin:10px 0"></div>
 <div id="statsDG" style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0"></div>
 <div id="parEcoleDG"></div>
@@ -50,7 +45,6 @@
 <h3>🏆 Meilleurs élèves</h3><div id="meilleursDG"></div>
 <button onclick="chargerDashboardDG()" style="width:100%;background:#0F3D2E;color:white;border:none;padding:12px;border-radius:12px;font-weight:800;margin-top:10px">🔄 Actualiser</button>
 </div>
-
 <div id="tabEcoles" style="display:none">
 <h3>🏫 Créer une école</h3>
 <label class="label">🏫 Nom *</label><input id="ecNom" placeholder="Ex: École An Nourou Iman">
@@ -58,6 +52,7 @@
 <label class="label">👤 Responsable</label><input id="ecResponsable" placeholder="Ex: Oustaz Ibrahim">
 <label class="label">📱 WhatsApp</label><input id="ecWhatsapp" placeholder="697919116">
 <label class="label">👤 Email du Sous-Directeur</label><input id="ecSousDirecteur" placeholder="Ex: ibrahim@ecole.com">
+<label class="label">📱 Numéro du Sous-Directeur</label><input id="ecSousDirecteurTel" placeholder="Ex: 697919116">
 <label class="label">💰 Frais inscription</label><input id="ecFraisIns" type="number" placeholder="5000">
 <label class="label">💰 Frais mensuel</label><input id="ecFraisMens" type="number" placeholder="3000">
 <label class="label">🕐 Horaires</label><input id="ecHoraires" placeholder="Lun - Ven : 14h - 18h">
@@ -78,6 +73,7 @@
 <label class="label">👨‍🏫 Nom de l'enseignant *</label><input id="grEnseignant" placeholder="Ex: Oustaz Ibrahim">
 <label class="label">📱 WhatsApp enseignant</label><input id="grEnseignantTel" placeholder="Ex: 697919116">
 <label class="label">👤 Email du Sous-Directeur / Enseignant</label><input id="grSousDirecteur" placeholder="Ex: moussa@groupe.com">
+<label class="label">📱 Numéro du Sous-Directeur / Enseignant</label><input id="grSousDirecteurTel" placeholder="Ex: 697919116">
 <label class="label">💰 Frais mensuel</label><input id="grFrais" type="number" placeholder="Ex: 3000">
 <label class="label">👥 Nombre max d'élèves</label><input id="grMax" type="number" placeholder="Ex: 8">
 <label class="label">📝 Description</label><input id="grDesc" placeholder="Ex: Groupe pour enfants de Douala...">
@@ -92,14 +88,12 @@
 <input id="rechercheIns" placeholder="Chercher Aïcha, Douala..." oninput="chargerInscriptions()" style="margin-top:10px">
 <div id="listeInscriptions"></div>
 </div>
-
 <div id="tabPaiements" style="display:none">
 <h3>⏳ Paiements en attente - À VALIDER</h3>
-<div style="background:#FFF9C4;padding:10px;border-radius:10px;text-align:center;margin-bottom:10px"><small>👉 C'est ici que tu valides ce que la secrétaire a envoyé.<br>Si c'est vide, clique sur Actualiser.</small></div>
 <div id="listePaiements"></div>
 <button onclick="chargerPaiements()" style="width:100%;background:#FF7A3D;color:white;border:none;padding:12px;border-radius:12px;font-weight:800;margin:10px 0">🔄 Actualiser les paiements en attente</button>
 <hr>
-<h3>💰 Tous les paiements - Comme Gestion</h3>
+<h3>💰 Tous les paiements</h3>
 <div id="resumePaiementsAdmin" style="background:#E8F5E9;padding:12px;border-radius:12px;text-align:center;font-weight:800;margin-bottom:10px">Chargement...</div>
 <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px">
 <button class="btn-filtre actif" onclick="filtrerPaiementsAdmin('tous',this)">Tous</button>
@@ -112,21 +106,32 @@
 <h3>📜 Historique des paiements</h3>
 <div id="historiquePaiementsAdmin"></div>
 </div>
-
-<div id="tabBulletins" style="display:none">
-<h3>📋 Tous les bulletins</h3>
-<div id="listeBulletinsAdmin"></div>
-</div>
+<div id="tabBulletins" style="display:none"><h3>📋 Tous les bulletins</h3><div id="listeBulletinsAdmin"></div></div>
 <div id="tabDivers" style="display:none">
 <h3>📢 Divers - Annonces pour l'Accueil</h3>
-<p style="font-size:13px;color:#666">Ce que tu écris ici, tout le monde le voit sur l'Accueil. C'est toi seul qui publies.</p>
-<label class="label">📢 Titre *</label><input id="divTitre" placeholder="Ex: Pas cours demain - Fête de l'école">
-<label class="label">📝 Message *</label><input id="divMessage" placeholder="Ex: Demain à 10h, fête à l'école, venez tous...">
+<label class="label">📢 Titre *</label><input id="divTitre" placeholder="Ex: Pas cours demain">
+<label class="label">📝 Message *</label><input id="divMessage" placeholder="Ex: Demain à 10h, fête à l'école...">
 <label class="label">🏷️ Type</label><select id="divType" class="select-cat"><option value="Annonce">📢 Annonce</option><option value="Note">📝 Note / Info</option><option value="Evenement">🎉 Événement</option><option value="Resultat">🏆 Résultat</option></select>
-<label class="label">🏫 Pour quelle école / groupe ? (vide = pour tout le monde)</label><input id="divEcole" placeholder="Ex: École Yaoundé - ou laisse vide pour tout le monde">
+<label class="label">🏫 Pour quelle école / groupe ? (vide = pour tout le monde)</label><input id="divEcole" placeholder="Ex: École Yaoundé - ou laisse vide">
 <button onclick="publierDivers()" style="width:100%;background:#0F3D2E;color:white;border:none;padding:14px;border-radius:12px;font-weight:800;margin-top:10px">📢 Publier sur l'Accueil</button>
 <p id="msgDivers" style="text-align:center;font-weight:700;color:green"></p>
 <h3>📢 Divers déjà publiés</h3><div id="listeDiversAdmin"></div>
+</div>
+<div id="tabUtilisateurs" style="display:none">
+<h3>👑 Créer Secrétaire / Directeur</h3>
+<p style="font-size:13px;color:#666;text-align:center">C'est ICI que tu crées la Secrétaire. Son Email + Mot de passe créés ici suffisent pour entrer dans gestion.html.<br>Tu n'as plus besoin d'aller dans Firebase.</p>
+<div style="background:#FFF9C4;padding:10px;border-radius:10px;font-size:13px;margin-bottom:10px">⚠️ <b>Sécurité gestion.html = Email + Numéro + Mot de passe.</b><br>Le numéro que tu mets ici, c'est celui qu'elle va taper dans gestion.html.</div>
+<label class="label">📧 Email de la personne *</label><input id="nouvelUtilisateurEmail" type="email" placeholder="Ex: faousia@secretaire.com">
+<label class="label">📱 Numéro de la personne * - C'est ce numéro qui ouvre gestion.html</label><input id="nouvelUtilisateurTel" placeholder="Ex: 697919116">
+<label class="label">🔑 Mot de passe * - 6 chiffres minimum, ex: 123456</label><input id="nouvelUtilisateurPassword" placeholder="Ex: 123456">
+<label class="label">👤 Nom complet</label><input id="nouvelUtilisateurNom" placeholder="Ex: Faousia">
+<label class="label">🎭 Rôle *</label><select id="nouvelUtilisateurRole" class="select-cat"><option value="secretaire">📝 Secrétaire - Gère gestion.html</option><option value="directeur">👑 Directeur - Gère gestion.html</option></select>
+<label class="label">🏫 École (laisse vide pour Secrétaire / Directeur)</label><select id="nouvelUtilisateurEcole" class="select-cat"><option value="">— Laisse vide —</option></select>
+<button onclick="creerUtilisateurDirection()" style="width:100%;background:#0F3D2E;color:white;border:none;padding:14px;border-radius:12px;font-weight:800;margin-top:10px">✅ Créer la personne</button>
+<p id="msgUtilisateur" style="text-align:center;font-weight:700;color:green"></p>
+<hr>
+<h3>📋 Personnes créées</h3><div id="listeUtilisateursDirection"></div>
+<button onclick="chargerEcolesPourUtilisateur()" style="width:100%;background:#E8F5E9;border:none;padding:12px;border-radius:12px;font-weight:800;margin-top:10px">🔄 Actualiser la liste</button>
 </div>
 <button onclick="seDeconnecter()" style="width:100%;background:#333;color:white;border:none;padding:12px;border-radius:12px;margin-top:12px">Déconnexion</button>
 </div>
@@ -137,19 +142,60 @@
 <script src="admin.js"></script>
 <script src="paiement.js"></script>
 <script>
-// Quand le Directeur clique sur l'onglet Paiements, on recharge la liste
-let _oldShowTab = window.showTabAdmin;
 window.showTabAdmin = function(id, btn){
-  if(_oldShowTab) _oldShowTab(id, btn);
-  else {
-    document.querySelectorAll('[id^="tab"]').forEach(d=>d.style.display='none');
-    document.getElementById(id).style.display='block';
-    document.querySelectorAll('.admin-tab').forEach(b=>b.classList.remove('active'));
-    if(btn) btn.classList.add('active');
-  }
-  if(id === 'tabPaiements'){
-    setTimeout(()=>{ if(typeof chargerPaiements === 'function') chargerPaiements(); }, 100);
-  }
+  let tous = ['tabDashboard','tabEcoles','tabGroupes','tabInscriptions','tabPaiements','tabBulletins','tabDivers','tabUtilisateurs'];
+  tous.forEach(t=>{ let el=document.getElementById(t); if(el) el.style.display='none'; });
+  let cible=document.getElementById(id); if(cible) cible.style.display='block';
+  document.querySelectorAll('.admin-tab').forEach(b=>b.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  if(id === 'tabPaiements'){ setTimeout(()=>{ if(typeof chargerPaiements === 'function') chargerPaiements(); }, 100); }
+  if(id === 'tabUtilisateurs'){ setTimeout(()=>{ if(typeof chargerEcolesPourUtilisateur === 'function') chargerEcolesPourUtilisateur(); }, 100); }
+}
+async function chargerEcolesPourUtilisateur(){
+  let sel=document.getElementById('nouvelUtilisateurEcole');
+  let box=document.getElementById('listeUtilisateursDirection');
+  if(box) box.innerHTML="<p class='centre'>⏳ Chargement...</p>";
+  if(!sel) return;
+  try{ let snap=await db.collection("ecoles").get(); sel.innerHTML=`<option value="">— Laisse vide —</option>`; snap.forEach(doc=>{ let d=doc.data(); sel.innerHTML+=`<option value="${doc.id}||${d.nom||""}">${d.nom||doc.id}</option>`; }); }catch(e){ if(box) box.innerHTML="❌ "+e.message; }
+  chargerListeUtilisateursDirection();
+}
+async function chargerListeUtilisateursDirection(){
+  let box=document.getElementById('listeUtilisateursDirection'); if(!box) return;
+  try{ let snap=await db.collection("utilisateurs").limit(50).get(); let h=""; snap.forEach(doc=>{ let d=doc.data(); h+=`<p style="font-size:13px">• <b>${d.email||""}</b> - 📱 ${d.tel||d.telephone||"❌ PAS DE NUMÉRO"} - ${d.role||""} - ${d.nom||""} <span class="lien-action" onclick="supprimerUtilisateurDirection('${doc.id}')">🗑️ Supprimer</span></p>`; }); box.innerHTML=h||"<p class='muted centre'>Aucune personne créée.</p>"; }catch(e){ box.innerHTML="❌ "+e.message; }
+}
+function nettoyerTelAdmin(t){ return String(t||"").replace(/[^0-9]/g,"").replace(/^237/,""); }
+async function creerUtilisateurDirection(){
+  let email=document.getElementById('nouvelUtilisateurEmail').value.toLowerCase().trim();
+  let tel=nettoyerTelAdmin(document.getElementById('nouvelUtilisateurTel').value);
+  let password=document.getElementById('nouvelUtilisateurPassword').value.trim();
+  let nom=document.getElementById('nouvelUtilisateurNom').value.trim();
+  let role=document.getElementById('nouvelUtilisateurRole').value;
+  let ecoleVal=document.getElementById('nouvelUtilisateurEcole').value;
+  let msg=document.getElementById('msgUtilisateur');
+  if(!email){ msg.style.color="red"; msg.textContent="❌ Mets l'Email"; return; }
+  if(!password || password.length < 6){ msg.style.color="red"; msg.textContent="❌ Mets un Mot de passe de 6 chiffres minimum, ex: 123456"; return; }
+  if(!tel){ msg.style.color="red"; msg.textContent="❌ Mets le NUMÉRO - Sinon elle ne pourra pas entrer dans gestion.html"; return; }
+  let ecoleId="", ecoleNom=""; if(ecoleVal){ let p=ecoleVal.split("||"); ecoleId=p[0]; ecoleNom=p[1]||""; }
+  try{
+    let secondary = firebase.apps.find(a=>a.name==="secondary") || firebase.initializeApp(firebase.app().options, "secondary");
+    try{ await secondary.auth().createUserWithEmailAndPassword(email, password); }
+    catch(e){ if(e.code !== "auth/email-already-in-use") throw e; }
+    await secondary.auth().signOut();
+    await db.collection("utilisateurs").doc(email).set({ email:email, tel:tel, telephone:tel, nom:nom, role:role, ecoleId:ecoleId, ecoleNom:ecoleNom, date:new Date().toLocaleDateString('fr-FR'), createdAt:new Date() });
+    if(role==="directeur" || role==="secretaire"){
+      let snap=await db.collection("ecoles").get();
+      for(let doc of snap.docs){ let upd={}; if(role==="directeur"){ upd.directeurEmail=email; upd.directeurTel=tel; } if(role==="secretaire"){ upd.secretaireEmail=email; upd.secretaireTel=tel; } await db.collection("ecoles").doc(doc.id).update(upd); }
+    }
+    msg.style.color="green"; msg.textContent="✅ "+email+" - 📱 "+tel+" créée. Elle peut se connecter dans gestion.html avec cet Email + ce Mot de passe";
+    document.getElementById('nouvelUtilisateurEmail').value=""; document.getElementById('nouvelUtilisateurTel').value=""; document.getElementById('nouvelUtilisateurPassword').value=""; document.getElementById('nouvelUtilisateurNom').value="";
+    chargerListeUtilisateursDirection();
+  }catch(e){ msg.style.color="red"; msg.textContent="❌ "+e.message; }
+}
+async function supprimerUtilisateurDirection(id){
+  if(!confirm("Supprimer cette personne ?")) return;
+  let docU = await db.collection("utilisateurs").doc(id).get();
+  await db.collection("utilisateurs").doc(id).delete();
+  chargerListeUtilisateursDirection();
 }
 </script>
 </body></html>

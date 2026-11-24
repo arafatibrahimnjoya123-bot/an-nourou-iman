@@ -95,7 +95,7 @@ body{margin:0;font-family:Inter,system-ui,Arial,sans-serif;background:#F7FAF5;co
 <a href="sousdirecteur.html" class="orange">👨‍🏫 Sous-Directeur<small>Élèves, notes, présence</small></a>
 <a href="gestion.html" class="vert">⚙️ Gestion<small>Élèves • Paiements • Bulletins</small></a>
 <a href="admin-accueil.html" class="blanc">✏️ Modifier l'accueil<small>Réservé Directeur - Mot de passe</small></a>
-<button onclick="allerA('secPaiement')">💰 Paiement / Frais<small>Payer, voir les paiements</small></button>
+<button onclick="allerA('secPaiement')">💰 Paiement / Frais<small>Payer</small></button>
 <button onclick="allerA('secContact')">📞 Contact<small>WhatsApp Directeur</small></button>
 <a href="resultats.html">🔍 Résultats<small>Voir les bulletins</small></a>
 </div>
@@ -120,6 +120,10 @@ body{margin:0;font-family:Inter,system-ui,Arial,sans-serif;background:#F7FAF5;co
 <button onclick="allerA('secEcoles')" class="btn-dark">🏫 Voir nos écoles →</button>
 <button onclick="allerA('secInscription')" class="btn-gold">📝 S'inscrire</button>
 <button onclick="allerA('secGroupes')" class="btn-dark">👥 Groupes →</button>
+</div>
+<div id="boxNews" style="display:none; background:#FFF9C4; border:1px solid #FFE082; border-left:6px solid #FF7A3D; border-radius:14px; padding:14px; margin:12px auto; max-width:600px; text-align:left;">
+<h3 style="margin:0 0 8px 0; color:#0F2A14;">📢 NEWS / ANNONCES</h3>
+<div id="listeNewsAccueil"></div>
 </div>
 <div class="mini-row">
 <div class="mini-card"><span>🏫</span><b>Écoles Fixes</b><small>Efoulan • Ekounou • Foumbane</small></div>
@@ -173,7 +177,10 @@ body{margin:0;font-family:Inter,system-ui,Arial,sans-serif;background:#F7FAF5;co
 <div id="secPaiement" class="section-page" style="display:none;padding:12px 0">
 <section class="form-card">
 <h2 style="text-align:center">💰 Paiement / Frais</h2>
-<label class="label">👶 Nom enfant *</label><input id="payEnfant" placeholder="Ex: Aïcha Bello">
+<!-- ✅ ON CHOISIT L'ÉLÈVE : plus de champ à taper -->
+<label class="label">👶 Nom enfant *</label>
+<select id="payEnfant" class="select-cat"><option value="">⏳ Chargement des élèves inscrits...</option></select>
+<small style="color:#666">Choisis seulement un élève déjà inscrit. Si ton enfant n'est pas dans la liste, inscris-toi d'abord.</small>
 <label class="label">👤 Nom parent</label><input id="payParent" placeholder="Ex: Moussa Bello">
 <label class="label">📱 WhatsApp parent</label><input id="payTel" placeholder="Ex: 697919116">
 <label class="label">💰 Montant FCFA *</label><input id="payMontant" type="number" placeholder="Ex: 5000">
@@ -181,8 +188,7 @@ body{margin:0;font-family:Inter,system-ui,Arial,sans-serif;background:#F7FAF5;co
 <label class="label">💳 Mode</label><select id="payMode" class="select-cat"><option>Orange Money</option><option>MTN MoMo</option><option>Espèces</option></select>
 <button onclick="enregistrerPaiementSafe()" class="btn-publier">💰 Enregistrer Paiement</button>
 <p id="msgPaiement" style="text-align:center;font-weight:bold"></p>
-<button onclick="chargerPaiementsSafe()" class="btn-publier" style="background:#FF7A3D">🔄 Voir les paiements</button>
-<div id="listePaiements" style="margin-top:10px"></div>
+<!-- ✅ PLUS DE LISTE DE PAIEMENT ICI : pas de bouton Voir les paiements, pas de listePaiements, pas de Valider / Refuser -->
 </section>
 </div>
 <div id="secContact" class="section-page" style="display:none;padding:12px 0;text-align:center"><div class="contact-card"><h2>📞 Contact</h2><p><b>Groupe An Nourou Iman</b><br>Yaoundé • Douala • Cameroun</p><p>📱 WhatsApp Directeur : <b>697 91 91 16</b></p><a href="https://wa.me/237697919116" target="_blank" class="btn-whatsapp">💬 WhatsApp Direct</a></div></div>
@@ -204,7 +210,6 @@ body{margin:0;font-family:Inter,system-ui,Arial,sans-serif;background:#F7FAF5;co
 <script src="inscription.js"></script>
 <script src="paiement.js"></script>
 <script>
-// ===== NAVIGATION SIMPLE - SANS BOUCLE, ÇA NE PEUT PLUS PLANTER =====
 function ouvrirDrawer(){ var d=document.getElementById('drawer'); if(d) d.classList.add('open'); var b=document.getElementById('drawerBg'); if(b) b.classList.add('show'); }
 function fermerDrawer(){ var d=document.getElementById('drawer'); if(d) d.classList.remove('open'); var b=document.getElementById('drawerBg'); if(b) b.classList.remove('show'); }
 function allerA(sectionId){
@@ -217,28 +222,30 @@ function allerA(sectionId){
   if(cible){ cible.style.display='block'; }
   var map={secAccueil:0,secEcoles:1,secGroupes:2,secInscription:3,secParcours:4};
   if(map[sectionId]!==undefined && btns[map[sectionId]]){ btns[map[sectionId]].classList.add('active'); }
+  if(sectionId==='secPaiement'){ chargerElevesPaiementAccueil(); }
   window.scrollTo(0,0);
 }
-// Compatibilité : les anciens fichiers qui appellent showSection vont utiliser allerA, SANS boucle
 function showSection(id){ allerA(id); }
-// ===== FONCTIONS SAFE - SI UN FICHIER .js MANQUE, ÇA NE PLANTE PLUS =====
 function changerLangueSafe(l){ try{ if(typeof changerLangue==='function') changerLangue(l); }catch(e){} }
 function afficherEcolesSafe(){ try{ if(typeof afficherEcoles==='function') afficherEcoles(); }catch(e){ var el=document.getElementById('listeEcoles'); if(el) el.innerHTML='⚠️ ecoles.js manquant ou erreur Firebase. Vérifie firebase.js'; } }
 function afficherGroupesSafe(){ try{ if(typeof afficherGroupes==='function') afficherGroupes(); }catch(e){} }
 function changerTypeInsSafe(){
   try{ if(typeof changerTypeIns==='function'){ changerTypeIns(); return; } }catch(e){}
-  // Fallback simple si inscription.js plante
   var isGroupe=document.querySelector('input[name="typeIns"]:checked');
   var blocE=document.getElementById('blocEcole'), blocG=document.getElementById('blocGroupe');
   if(isGroupe && isGroupe.value==='Groupe'){ if(blocE) blocE.style.display='none'; if(blocG) blocG.style.display='block'; }
   else { if(blocE) blocE.style.display='block'; if(blocG) blocG.style.display='none'; }
 }
 function envoyerInscriptionSafe(){ try{ if(typeof envoyerInscription==='function'){ envoyerInscription(); return; } }catch(e){} alert('⚠️ inscription.js manquant. Vérifie que le fichier est dans GitHub.'); }
-function enregistrerPaiementSafe(){ try{ if(typeof enregistrerPaiement==='function'){ enregistrerPaiement(); return; } }catch(e){} alert('⚠️ paiement.js manquant.'); }
-function chargerPaiementsSafe(){ try{ if(typeof chargerPaiements==='function'){ chargerPaiements(); return; } }catch(e){} }
+function enregistrerPaiementSafe(){
+  var sel=document.getElementById('payEnfant');
+  if(sel && !sel.value){ var m=document.getElementById('msgPaiement'); if(m){ m.style.color="red"; m.textContent="❌ Choisis ton enfant dans la liste. Si il n'y est pas, inscris-toi d'abord."; } return; }
+  try{ if(typeof enregistrerPaiement==='function'){ enregistrerPaiement(); return; } }catch(e){} alert('⚠️ paiement.js manquant.');
+}
+// ✅ PLUS DE LISTE DE PAIEMENT : on bloque l'ancienne fonction de paiement.js pour qu'elle n'affiche rien à l'accueil
+function chargerPaiementsSafe(){ return; }
 function fermerModalSafe(){ var m=document.getElementById('modalEcole'); if(m) m.style.display='none'; try{ if(typeof fermerModal==='function') fermerModal(); }catch(e){} }
 function fermerModalGroupeSafe(){ var m=document.getElementById('modalGroupe'); if(m) m.style.display='none'; try{ if(typeof fermerModalGroupe==='function') fermerModalGroupe(); }catch(e){} }
-// Config accueil - ne plante plus si db manque
 async function appliquerConfigAccueil(){
   try{
     if(typeof db==='undefined' || !db) return;
@@ -252,6 +259,53 @@ async function appliquerConfigAccueil(){
   }catch(e){ console.log('config accueil:', e.message); }
 }
 appliquerConfigAccueil();
+// ===== ON CHOISIT L'ÉLÈVE - Liste des élèves déjà inscrits =====
+async function chargerElevesPaiementAccueil(){
+  let sel=document.getElementById('payEnfant');
+  if(!sel) return;
+  try{
+    if(typeof db==='undefined' || !db) return;
+    let snap=await db.collection("inscriptions").limit(200).get();
+    let eleves=[];
+    snap.forEach(doc=>{ let d=doc.data(); let nom=d.enfant||d.nomEnfant||""; if(nom) eleves.push({nom:nom, parent:d.parent||"", ecole:d.ecole||d.groupe||""}); });
+    eleves.sort((a,b)=>a.nom.localeCompare(b.nom));
+    if(!eleves.length){ sel.innerHTML=`<option value="">— Aucun élève inscrit pour le moment —</option>`; return; }
+    let cur=sel.value;
+    sel.innerHTML=`<option value="">— Choisis ton enfant (inscrit) —</option>`;
+    eleves.forEach(e=>{
+      sel.innerHTML+=`<option value="${e.nom}">${e.nom} - ${e.ecole}</option>`;
+    });
+    if(cur) sel.value=cur;
+    sel.onchange=function(){
+      let choisi=eleves.find(x=>x.nom===sel.value);
+      if(choisi){ let p=document.getElementById('payParent'); if(p && !p.value) p.value=choisi.parent; }
+    };
+  }catch(e){ sel.innerHTML=`<option value="">— Erreur chargement —</option>`; }
+}
+chargerElevesPaiementAccueil();
+// ===== NEWS / ANNONCES - ACCUEIL =====
+async function chargerNewsAccueil(){
+  let box=document.getElementById('boxNews');
+  let liste=document.getElementById('listeNewsAccueil');
+  if(!box||!liste) return;
+  try{
+    if(typeof db==='undefined' || !db){ box.style.display="none"; return; }
+    let snap=await db.collection("divers").orderBy("createdAt","desc").limit(20).get();
+    let maintenant=new Date();
+    let html="";
+    snap.forEach(doc=>{
+      let d=doc.data();
+      if(d.expireLe){
+        let exp=new Date(d.expireLe);
+        if(maintenant > exp) return;
+      }
+      html+=`<p style="margin:6px 0; line-height:1.5; border-bottom:1px solid #FFE082; padding-bottom:6px;"><b>${d.titre||""}</b><br>${d.texte||""}<br><small style="color:#666">📅 ${d.date||""} - ${d.ecole||""}</small></p>`;
+    });
+    if(!html){ box.style.display="none"; }
+    else { liste.innerHTML=html; box.style.display="block"; }
+  }catch(e){ box.style.display="none"; }
+}
+chargerNewsAccueil();
 </script>
 </body>
 </html>

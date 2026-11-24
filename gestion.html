@@ -73,7 +73,7 @@ input,select{width:100%;padding:10px;border:1px solid #C8E6C9;border-radius:10px
 </style>
 </head>
 <body>
-<div class="topbar no-print"><b>INSTITUT NOUROUL IYMANE - GESTION</b><span id="topEcole">...</span><a href="index.html">Site</a></div>
+<div class="topbar no-print"><b>INSTITUT NOUROUL IYMANE - SECRÉTAIRE</b><span id="topEcole">...</span><a href="index.html">Site</a></div>
 <nav class="menu-horizontal no-print">
 <button onclick="showTabGestion('tabDashboard',this)" class="gestion-tab actif">📊 Tableau de bord</button>
 <button onclick="showTabGestion('tabEleves',this)" class="gestion-tab">👨‍🎓 Élèves</button>
@@ -85,7 +85,7 @@ input,select{width:100%;padding:10px;border:1px solid #C8E6C9;border-radius:10px
 <button onclick="showTabGestion('tabParametres',this)" class="gestion-tab">⚙️ Paramètres</button>
 </nav>
 <div class="page">
-<div class="carte" id="loginCard"><h2>Connexion Sous-Directeur</h2><input type="email" id="email" placeholder="Email"><input type="password" id="password" placeholder="Mot de passe"><button onclick="seConnecterGestion()" class="btn-noir" style="margin-top:12px">Se connecter</button><p id="msg" style="color:red;text-align:center"></p></div>
+<div class="carte" id="loginCard"><h2>Connexion Secrétaire</h2><p class="centre muted">Seule la Secrétaire créée par le Directeur dans admin.html peut entrer ici.<br>Le Sous-Directeur ne passe pas par ici.</p><label>📧 Email *</label><input type="email" id="email" placeholder="Ex: faousia@secretaire.com"><label>📱 Numéro * - Le même numéro que le Directeur a mis pour toi dans admin.html</label><input id="gestionTel" placeholder="Ex: 697919116"><label>🔑 Mot de passe *</label><input type="password" id="password" placeholder="Mot de passe créé par le Directeur"><button onclick="seConnecterGestion()" class="btn-noir" style="margin-top:12px">Se connecter</button><p id="msg" style="color:red;text-align:center"></p></div>
 <div id="gestionPanel" style="display:none">
 <div class="carte centre"><small>Assalamou Aleykoum - <b id="gestionEmail"></b> - <button onclick="seDeconnecterGestion()" style="background:white;border:1px solid #ccc;padding:4px 10px;border-radius:20px">Déconnexion</button></small></div>
 <div id="tabDashboard">
@@ -121,7 +121,7 @@ input,select{width:100%;padding:10px;border:1px solid #C8E6C9;border-radius:10px
 <div id="tabParametres" style="display:none">
 <div class="carte"><h3>Paramètres de l'école</h3><label>Frais total par élève (FCFA)</label><div style="display:flex;gap:8px"><input type="number" id="inputFraisTotal" placeholder="Ex : 10000"><button onclick="definirFraisTotal()" class="btn-or" style="width:auto">Définir</button></div><p class="centre" style="margin-top:10px">Actuel : <b id="affichageFraisTotal">Non défini</b></p></div>
 <div class="carte"><h3>📚 Matières du Bulletin - CHOISIS LES MATIÈRES</h3><p class="centre muted">Coche seulement les matières que tu veux. Ex : tu coches 5 matières, le bulletin va afficher seulement ces 5, et la moyenne sera calculée seulement sur ces 5. Absent = 0.</p><p class="centre"><b>Exemple :</b> Si tu coches Coran, Hadith, Fiqh, Arabe, Sirah - Moyenne = (Coran + Hadith + Fiqh + Arabe + Sirah) / 5</p><div id="listeChoixMatieres"></div><div class="btn-ligne no-print"><button class="btn-pdf" onclick="toutCocherMatieres()">Tout cocher</button><button class="btn-pdf" onclick="toutDecocherMatieres()">Tout décocher</button></div><button onclick="sauvegarderMatieresActives()" class="btn-noir" style="margin-top:12px">💾 Enregistrer les matières choisies + Type de composition</button><p id="msgMatieres" class="centre" style="color:green;font-weight:700"></p><p class="centre muted" style="margin-top:8px">Actuellement actives : <b id="affichageMatieresParametres">...</b><br>Composition : <b id="affichageTypeCompositionParam">Oral + Écrit</b></p></div>
-<div class="carte"><h3>📢 Divers - Publier à l'accueil</h3><p class="centre muted">Ce que tu écris ici va s'afficher sur la page d'accueil du site.</p><label>Titre</label><input id="diversTitre" placeholder="Ex : Réunion parents samedi"><label>Message</label><input id="diversTexte" placeholder="Ex : Réunion samedi à 9h à l'école..."><button onclick="publierDivers()" class="btn-noir" style="margin-top:10px">Publier ce Divers</button><button onclick="chargerDivers()" class="btn-pdf" style="margin-top:8px;width:100%">Voir mes Divers publiés</button><div id="listeDivers" style="margin-top:10px"></div></div>
+<div class="carte"><h3>📢 Divers - Publier à l'accueil</h3><p class="centre muted">Ce que tu écris ici va s'afficher sur la page d'accueil du site. Si tu ne publies rien, rien ne s'affiche à l'accueil. L'annonce disparaît toute seule après la durée choisie.</p><label>Titre</label><input id="diversTitre" placeholder="Ex : Réunion parents samedi"><label>Message</label><input id="diversTexte" placeholder="Ex : Réunion samedi à 9h à l'école..."><label>⏰ L'annonce va rester combien de temps à l'accueil ?</label><select id="diversDuree"><option value="1">1 jour</option><option value="3">3 jours</option><option value="7" selected>7 jours</option><option value="14">14 jours</option><option value="30">30 jours</option></select><button onclick="publierDivers()" class="btn-noir" style="margin-top:10px">Publier ce Divers</button><button onclick="chargerDivers()" class="btn-pdf" style="margin-top:8px;width:100%">Voir mes Divers publiés</button><div id="listeDivers" style="margin-top:10px"></div></div>
 <div class="carte" style="background:#FFEBEE;border:2px solid #EF5350"><h3>⚠️ DANGER - REMETTRE TOUT À ZÉRO</h3><p class="centre">Ça efface Présence + Paiements + Bulletins d'un coup.<br><small>Il faudra écrire EFFACER pour valider.</small></p><div class="centre"><button class="btn-danger" style="background:#D32F2F;color:white;border:none;padding:12px 18px" onclick="effacerToutHistorique()">🗑️ TOUT EFFACER - REMETTRE À ZÉRO</button></div></div>
 <div class="carte"><h3>Informations</h3><p class="centre">École : <b id="titreEcolePaiements"></b><br><span id="titreEcoleEnseignants"></span></p><p class="centre muted" id="titreEcoleArabe"></p></div>
 </div>
@@ -136,5 +136,37 @@ input,select{width:100%;padding:10px;border:1px solid #C8E6C9;border-radius:10px
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="firebase.js"></script>
 <script src="gestion.js"></script>
+<script>
+function nettoyerTelGestion(t){ return String(t||"").replace(/[^0-9]/g,"").replace(/^237/,""); }
+async function seConnecterGestion(){
+  let email=document.getElementById('email').value.toLowerCase().trim();
+  let telSaisi=nettoyerTelGestion(document.getElementById('gestionTel') ? document.getElementById('gestionTel').value : "");
+  let password=document.getElementById('password').value.trim();
+  let msg=document.getElementById('msg');
+  if(!email||!password){ msg.style.color="red"; msg.textContent="❌ Mets Email et Mot de passe"; return; }
+  if(!telSaisi){ msg.style.color="red"; msg.textContent="❌ Mets ton Numéro - Celui que le Directeur a mis pour toi dans admin.html"; return; }
+  try{
+    await auth.signInWithEmailAndPassword(email,password);
+    let docU=await db.collection("utilisateurs").doc(email).get();
+    if(!docU.exists){ msg.style.color="red"; msg.textContent="❌ Email introuvable. Le Directeur doit d'abord te créer dans admin.html > Utilisateurs"; await auth.signOut(); return; }
+    let u=docU.data();
+    if(u.role === "sous-directeur" || u.role === "Sous-Directeur"){
+      msg.style.color="red"; msg.textContent="❌ Désolé, cette page est seulement pour la Secrétaire. Le Sous-Directeur ne passe pas par ici.";
+      await auth.signOut(); return;
+    }
+    if(u.role !== "secretaire" && u.role !== "directeur" && u.role !== "Secretaire" && u.role !== "Directeur"){
+      msg.style.color="red"; msg.textContent="❌ Tu n'as pas le droit d'entrer ici. Seule la Secrétaire."; await auth.signOut(); return;
+    }
+    let telEnregistre=nettoyerTelGestion(u.tel||u.telephone||"");
+    if(telEnregistre && telSaisi !== telEnregistre){
+      msg.style.color="red"; msg.textContent="❌ Numéro incorrect. Demande au Directeur le numéro qu'il a mis pour toi dans admin.html";
+      await auth.signOut(); return;
+    }
+    if(typeof chargerMonEcoleGestion === 'function'){ await chargerMonEcoleGestion(email); }
+    else { document.getElementById('loginCard').style.display='none'; document.getElementById('gestionPanel').style.display='block'; }
+    let ge=document.getElementById('gestionEmail'); if(ge) ge.textContent=email+" - "+(u.nom||"Secrétaire");
+  }catch(e){ msg.style.color="red"; msg.textContent="❌ "+e.message; }
+}
+</script>
 </body>
 </html>
