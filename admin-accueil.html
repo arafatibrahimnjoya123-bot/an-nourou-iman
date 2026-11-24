@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Modifier l'Accueil - Verrouillé</title>
+<style>
+body{margin:0;font-family:Inter,Arial,sans-serif;background:#0F2A14;padding:14px}
+.wrap{max-width:700px;margin:0 auto}
+.carte{background:#fff;border-radius:18px;padding:16px;margin-bottom:14px}
+h2{text-align:center;color:#1B5E20;margin:6px 0}
+label{display:block;font-weight:700;font-size:13px;margin-top:12px;color:#1B5E20}
+input,textarea{width:100%;padding:12px;border:1px solid #C8E6C9;border-radius:12px;margin-top:5px;box-sizing:border-box}
+textarea{min-height:70px}
+.btn{width:100%;background:#1B5E20;color:#fff;border:none;padding:14px;border-radius:12px;font-weight:800;cursor:pointer;margin-top:14px;font-size:15px}
+.btn-vert{background:#66BB6A}
+.centre{text-align:center}
+#ecranVerrou{max-width:400px;margin:60px auto;background:#fff;border-radius:20px;padding:24px;text-align:center}
+#contenuAccueil{display:none !important}
+#contenuAccueil.deverrouille{display:block !important}
+.erreur{color:red;font-weight:800;display:none;margin-top:10px}
+.badge-lock{display:inline-block;background:#FFEBEE;color:#C62828;padding:6px 12px;border-radius:999px;font-size:12px;font-weight:800}
+</style>
+</head>
+<body>
+<div id="ecranVerrou">
+<div style="font-size:50px">🔒</div>
+<span class="badge-lock">🔒 VERROUILLÉ - ACCÈS INTERDIT</span>
+<h2>Zone Réservée Directeur</h2>
+<p style="color:#666;font-size:13px;">Seul <b>Cheick Ibrahim Arafat</b> peut modifier l'accueil.<br>Tout le monde est bloqué ici sans le mot de passe.</p>
+<label style="text-align:left">🔑 Mot de passe Directeur *</label>
+<input id="inputCode" type="password" placeholder="Entre ton mot de passe" autocomplete="off" onkeydown="if(event.key==='Enter') verifierCode()">
+<button onclick="verifierCode()" class="btn">🔓 Déverrouiller</button>
+<p id="msgErreur" class="erreur">❌ Mot de passe faux. Accès refusé.</p>
+<p id="msgTentative" style="font-size:12px;color:#999"></p>
+<p style="margin-top:14px"><a href="index.html" style="color:#1B5E20;font-weight:700;">← Retour à l'accueil</a></p>
+</div>
+<div id="contenuAccueil">
+<div class="wrap">
+<div class="carte centre"><h2>✅ Déverrouillé - Bienvenue Directeur</h2><p style="color:#666;font-size:13px;">Cheick Ibrahim Arafat<br><a href="index.html">← Retour à l'accueil</a> • <a href="#" onclick="verrouiller();return false;">🔒 Re-verrouiller</a></p></div>
+<div class="carte">
+<h3>1. Le Grand Titre</h3>
+<label>Titre principal</label><input id="cfgTitre" placeholder="Ex : An Nourou Iman">
+<label>Sous-titre arabe</label><input id="cfgSousTitreAr" placeholder="Ex : مجموعة النور الإيمان">
+<label>Texte d'accueil</label><textarea id="cfgTexte" placeholder="Ex : Assalamou Aleykoum..."></textarea>
+<label>Photo d'accueil - lien image</label><input id="cfgPhoto" placeholder="Colle le lien de ta photo ici">
+</div>
+<div class="carte">
+<h3>2. Signature</h3>
+<label>WhatsApp Directeur</label><input id="cfgWhats" placeholder="Ex : 697919116">
+<label>Nom du Fondateur</label><input id="cfgNom" placeholder="Ex : Cheick Ibrahim Arafat">
+<label>Fonction</label><input id="cfgFonction" placeholder="Ex : Fondateur & Directeur">
+</div>
+<button onclick="sauverAccueil()" class="btn">💾 ENREGISTRER - Changer l'accueil</button>
+<button onclick="window.location.href='index.html'" class="btn btn-vert">👀 Voir l'accueil</button>
+<p id="msgAccueil" class="centre" style="font-weight:800;color:green;"></p>
+</div>
+</div>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="firebase.js"></script>
+<script>
+// 👇 TON MOT DE PASSE DIRECTEUR - FORT 👇
+const MOT_DE_PASSE_DIRECTEUR = "pierrecardin12";
+// 👆 TON MOT DE PASSE DIRECTEUR - FORT 👆
+let tentatives = 0;
+function verifierCode(){
+  let code = document.getElementById('inputCode').value.trim();
+  if(code === MOT_DE_PASSE_DIRECTEUR){
+    document.getElementById('ecranVerrou').style.display='none';
+    let contenu = document.getElementById('contenuAccueil');
+    contenu.classList.add('deverrouille');
+    chargerConfigAccueil();
+  }else{
+    tentatives++;
+    document.getElementById('msgErreur').style.display='block';
+    document.getElementById('msgTentative').textContent = "Tentative " + tentatives + " / 3 - Accès refusé";
+    document.getElementById('inputCode').value='';
+    document.getElementById('inputCode').focus();
+    if(tentatives>=3){
+      alert("⛔ Trop de tentatives. Tu es bloqué 10 secondes.");
+      document.querySelector('#ecranVerrou .btn').disabled = true;
+      setTimeout(()=>{ document.querySelector('#ecranVerrou .btn').disabled=false; tentatives=0; document.getElementById('msgTentative').textContent=''; }, 10000);
+    }
+  }
+}
+function verrouiller(){
+  document.getElementById('contenuAccueil').classList.remove('deverrouille');
+  document.getElementById('ecranVerrou').style.display='block';
+  document.getElementById('inputCode').value='';
+  window.scrollTo(0,0);
+}
+async function chargerConfigAccueil(){
+  try{
+    let doc = await db.collection("configAccueil").doc("accueil").get();
+    if(!doc.exists) return;
+    let d = doc.data();
+    let set = (id,v)=>{ let e=document.getElementById(id); if(e && v) e.value=v; };
+    set('cfgTitre',d.titre); set('cfgSousTitreAr',d.sousTitreAr); set('cfgTexte',d.texte); set('cfgPhoto',d.photo);
+    set('cfgWhats',d.whats); set('cfgNom',d.nom); set('cfgFonction',d.fonction);
+  }catch(e){ console.log(e); }
+}
+async function sauverAccueil(){
+  let v = id => document.getElementById(id).value.trim();
+  let data = {titre:v('cfgTitre'), sousTitreAr:v('cfgSousTitreAr'), texte:v('cfgTexte'), photo:v('cfgPhoto'), whats:v('cfgWhats'), nom:v('cfgNom'), fonction:v('cfgFonction'), date:new Date().toISOString()};
+  try{ await db.collection("configAccueil").doc("accueil").set(data); document.getElementById('msgAccueil').textContent = "✅ Enregistré ! Va voir l'accueil, ça a changé."; alert("✅ Accueil modifié !"); }catch(e){ alert("Erreur : "+e.message); }
+}
+document.getElementById('contenuAccueil').classList.remove('deverrouille');
+document.getElementById('ecranVerrou').style.display='block';
+</script>
+</body>
+</html>
