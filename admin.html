@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="fr"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Admin - An Nourou Iman</title><link rel="stylesheet" href="style.css">
+<style>
+/* MENU HORIZONTAL QUI SCROLLE - COMME GESTION */
+.menu-scroll{display:flex;gap:8px;overflow-x:auto;white-space:nowrap;padding:10px 4px 12px 4px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.menu-scroll::-webkit-scrollbar{display:none}
+.admin-tab{flex:0 0 auto;background:#F1F8E9;border:1px solid #C8E6C9;color:#1B5E20;padding:10px 16px;border-radius:20px;font-weight:700;font-size:14px;cursor:pointer}
+.admin-tab.active{background:#0F3D2E!important;color:white!important;border-color:#0F3D2E}
+/* TABLEAU REDUIT - MEME STYLE QUE GESTION */
+.table-blanc{width:100%;border-collapse:collapse;background:white;font-size:13px}
+.table-blanc th{background:#A5D6A7;color:#1B5E20;padding:8px 6px;text-align:left;font-size:12px}
+.table-blanc td{border-bottom:1px solid #E8F5E9;padding:8px 6px;vertical-align:top}
+.badge{display:inline-block;padding:3px 8px;border-radius:20px;font-size:11px;font-weight:800}
+.badge-paye{background:#C8E6C9;color:#1B5E20}
+.badge-avance{background:#FFF9C4;color:#F57F17}
+.badge-nonpaye{background:#FFCDD2;color:#B71C1C}
+.badge-attente{background:#FFE0B2;color:#E65100}
+.badge-accepte{background:#C8E6C9;color:#1B5E20}
+.lien-action{color:#2E7D32;font-weight:700;cursor:pointer;text-decoration:underline;font-size:12px}
+.btn-filtre{background:#F1F8E9;border:1px solid #C8E6C9;padding:8px 12px;border-radius:20px;font-weight:700;font-size:13px;cursor:pointer}
+.btn-filtre.actif{background:#0F3D2E;color:white}
+</style>
+</head>
+<body>
+<div style="background:#0F3D2E;color:white;padding:14px;display:flex;justify-content:space-between;align-items:center"><b>☪️ AN NOUROU IMAN - ADMIN</b><a href="index.html" style="background:#C9A227;color:#0F3D2E;padding:8px 12px;border-radius:20px;text-decoration:none;font-weight:800">← Voir le site</a></div>
+<div style="background:white;padding:16px;border-radius:16px;margin:14px" id="loginCard"><h2>🔐 Connexion Directeur</h2><input type="email" id="email" placeholder="Email Directeur"><input type="password" id="password" placeholder="Mot de passe"><button onclick="seConnecter()" style="width:100%;background:#0F3D2E;color:white;border:none;padding:14px;border-radius:12px;font-weight:800">Se connecter</button><p id="msg" style="color:red"></p></div>
+<div style="background:white;padding:16px;border-radius:16px;margin:14px;display:none" id="adminPanel">
+<div style="background:#E8F5E9;padding:12px;border-radius:12px">👋 Assalamou Aleykoum, Directeur<br><b id="adminEmail"></b></div>
+
+<!-- MENU HORIZONTAL QUI SCROLLE -->
+<div class="menu-scroll">
+<button onclick="showTabAdmin('tabDashboard',this)" class="admin-tab active">🏠 Tableau de Bord</button>
+<button onclick="showTabAdmin('tabEcoles',this)" class="admin-tab">🏫 Écoles</button>
+<button onclick="showTabAdmin('tabGroupes',this)" class="admin-tab">👥 Groupes</button>
+<button onclick="showTabAdmin('tabInscriptions',this)" class="admin-tab">📝 Inscriptions</button>
+<button onclick="showTabAdmin('tabPaiements',this)" class="admin-tab">💰 Paiements</button>
+<button onclick="showTabAdmin('tabBulletins',this)" class="admin-tab">📋 Bulletins</button>
+<button onclick="showTabAdmin('tabDivers',this)" class="admin-tab">📢 Divers</button>
+</div>
+
+<div id="tabDashboard">
+<h3>🏠 Tableau de Bord - Directeur Général</h3>
+<p style="font-size:13px;color:#666">Tu restes ici. Toutes les infos des écoles et groupes arrivent ici.</p>
+<div id="alertesDG" style="margin:10px 0"></div>
+<div id="statsDG" style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0"></div>
+<div id="parEcoleDG"></div>
+<div id="parGroupeDG"></div>
+<h3>🆕 Dernières inscriptions en attente</h3><div id="attenteDG"></div>
+<h3>💰 Derniers paiements</h3><div id="derniersPaiementsDG"></div>
+<h3>🏆 Meilleurs élèves</h3><div id="meilleursDG"></div>
+<button onclick="chargerDashboardDG()" style="width:100%;background:#0F3D2E;color:white;border:none;padding:12px;border-radius:12px;font-weight:800;margin-top:10px">🔄 Actualiser</button>
+</div>
+
+<div id="tabEcoles" style="display:none">
+<h3>🏫 Créer une école</h3>
+<label class="label">🏫 Nom *</label><input id="ecNom" placeholder="Ex: École An Nourou Iman">
+<label class="label">📍 Quartier *</label><input id="ecQuartier" placeholder="Ex: Efoulan">
+<label class="label">👤 Responsable</label><input id="ecResponsable" placeholder="Ex: Oustaz Ibrahim">
+<label class="label">📱 WhatsApp</label><input id="ecWhatsapp" placeholder="697919116">
+<label class="label">👤 Email du Sous-Directeur</label><input id="ecSousDirecteur" placeholder="Ex: ibrahim@ecole.com">
+<label class="label">💰 Frais inscription</label><input id="ecFraisIns" type="number" placeholder="5000">
+<label class="label">💰 Frais mensuel</label><input id="ecFraisMens" type="number" placeholder="3000">
+<label class="label">🕐 Horaires</label><input id="ecHoraires" placeholder="Lun - Ven : 14h - 18h">
+<label class="label">📝 Description</label><input id="ecDesc" placeholder="École coranique...">
+<label class="label">📷 Photo</label><input type="file" id="ecPhoto" accept="image/*"><input id="ecPhotoUrl" placeholder="Ou lien https://..."><img id="previewEcole" style="display:none;width:100%;height:150px;object-fit:cover;border-radius:12px;margin-top:8px">
+<input type="hidden" id="ecEditId" value="">
+<button onclick="sauvegarderEcole()" style="width:100%;background:#0F3D2E;color:white;border:none;padding:14px;border-radius:12px;font-weight:800;margin-top:10px">➕ Créer / Modifier l'école</button>
+<p id="msgEcole" style="text-align:center;font-weight:700;color:green"></p>
+<h3>🏫 Mes écoles</h3><div id="listeEcolesAdmin"></div>
+</div>
+<div id="tabGroupes" style="display:none">
+<h3>👥 Créer un Groupe d'Études</h3>
+<label class="label">👥 Nom du groupe *</label><input id="grNom" placeholder="Ex: Groupe Douala - Samedi">
+<label class="label">📍 Ville *</label><input id="grVille" placeholder="Ex: Douala">
+<label class="label">📍 Quartier</label><input id="grQuartier" placeholder="Ex: Deïdo">
+<label class="label">📚 Niveau *</label><select id="grNiveau" class="select-cat"><option value="Niveau 1">Niveau 1 - Fondation</option><option value="Niveau 2">Niveau 2 - Lecture</option><option value="Niveau 3">Niveau 3 - Approfondissement</option><option value="Niveau 4">Niveau 4 - Maîtrise</option><option value="Niveau 5">Niveau 5 - Excellence</option></select>
+<label class="label">🕐 Disponibilité *</label><select id="grDispo" class="select-cat"><option value="Samedi 14h - 17h">Samedi 14h - 17h</option><option value="Dimanche 9h - 12h">Dimanche 9h - 12h</option><option value="Samedi + Dimanche">Samedi + Dimanche</option><option value="Mercredi 15h">Mercredi 15h</option><option value="Soir">Soir</option></select>
+<label class="label">👨‍🏫 Nom de l'enseignant *</label><input id="grEnseignant" placeholder="Ex: Oustaz Ibrahim">
+<label class="label">📱 WhatsApp enseignant</label><input id="grEnseignantTel" placeholder="Ex: 697919116">
+<label class="label">👤 Email du Sous-Directeur / Enseignant</label><input id="grSousDirecteur" placeholder="Ex: moussa@groupe.com">
+<label class="label">💰 Frais mensuel</label><input id="grFrais" type="number" placeholder="Ex: 3000">
+<label class="label">👥 Nombre max d'élèves</label><input id="grMax" type="number" placeholder="Ex: 8">
+<label class="label">📝 Description</label><input id="grDesc" placeholder="Ex: Groupe pour enfants de Douala...">
+<input type="hidden" id="grEditId" value="">
+<button onclick="sauvegarderGroupe()" style="width:100%;background:#0F3D2E;color:white;border:none;padding:14px;border-radius:12px;font-weight:800;margin-top:10px">➕ Créer / Modifier le groupe</button>
+<p id="msgGroupe" style="text-align:center;font-weight:700;color:green"></p>
+<h3>👥 Mes groupes</h3><div id="listeGroupesAdmin"></div>
+</div>
+<div id="tabInscriptions" style="display:none">
+<h3>📝 Inscriptions reçues</h3>
+<div style="display:flex;gap:6px;flex-wrap:wrap"><button onclick="filtrerIns('Toutes')" style="background:#0F3D2E;color:white;border:none;padding:8px 12px;border-radius:20px">Toutes</button><button onclick="filtrerIns('Ecole')" style="background:#E8F5E9;border:none;padding:8px 12px;border-radius:20px">🏫 Écoles</button><button onclick="filtrerIns('Groupe')" style="background:#E8F5E9;border:none;padding:8px 12px;border-radius:20px">👥 Groupes</button></div>
+<input id="rechercheIns" placeholder="Chercher Aïcha, Douala..." oninput="chargerInscriptions()" style="margin-top:10px">
+<div id="listeInscriptions"></div>
+</div>
+
+<div id="tabPaiements" style="display:none">
+<h3>⏳ Paiements en attente - À VALIDER</h3>
+<div style="background:#FFF9C4;padding:10px;border-radius:10px;text-align:center;margin-bottom:10px"><small>👉 C'est ici que tu valides ce que la secrétaire a envoyé.<br>Si c'est vide, clique sur Actualiser.</small></div>
+<div id="listePaiements"></div>
+<button onclick="chargerPaiements()" style="width:100%;background:#FF7A3D;color:white;border:none;padding:12px;border-radius:12px;font-weight:800;margin:10px 0">🔄 Actualiser les paiements en attente</button>
+<hr>
+<h3>💰 Tous les paiements - Comme Gestion</h3>
+<div id="resumePaiementsAdmin" style="background:#E8F5E9;padding:12px;border-radius:12px;text-align:center;font-weight:800;margin-bottom:10px">Chargement...</div>
+<div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px">
+<button class="btn-filtre actif" onclick="filtrerPaiementsAdmin('tous',this)">Tous</button>
+<button class="btn-filtre" onclick="filtrerPaiementsAdmin('paye',this)">✓ Payés</button>
+<button class="btn-filtre" onclick="filtrerPaiementsAdmin('avance',this)">◐ Avances</button>
+<button class="btn-filtre" onclick="filtrerPaiementsAdmin('nonpaye',this)">✗ Non payés</button>
+</div>
+<input id="recherchePaiementAdmin" placeholder="Chercher un élève, une école..." oninput="chargerPaiementsAdmin()" style="margin-bottom:10px">
+<div id="listePaiementsAdmin"></div>
+<h3>📜 Historique des paiements</h3>
+<div id="historiquePaiementsAdmin"></div>
+</div>
+
+<div id="tabBulletins" style="display:none">
+<h3>📋 Tous les bulletins</h3>
+<div id="listeBulletinsAdmin"></div>
+</div>
+<div id="tabDivers" style="display:none">
+<h3>📢 Divers - Annonces pour l'Accueil</h3>
+<p style="font-size:13px;color:#666">Ce que tu écris ici, tout le monde le voit sur l'Accueil. C'est toi seul qui publies.</p>
+<label class="label">📢 Titre *</label><input id="divTitre" placeholder="Ex: Pas cours demain - Fête de l'école">
+<label class="label">📝 Message *</label><input id="divMessage" placeholder="Ex: Demain à 10h, fête à l'école, venez tous...">
+<label class="label">🏷️ Type</label><select id="divType" class="select-cat"><option value="Annonce">📢 Annonce</option><option value="Note">📝 Note / Info</option><option value="Evenement">🎉 Événement</option><option value="Resultat">🏆 Résultat</option></select>
+<label class="label">🏫 Pour quelle école / groupe ? (vide = pour tout le monde)</label><input id="divEcole" placeholder="Ex: École Yaoundé - ou laisse vide pour tout le monde">
+<button onclick="publierDivers()" style="width:100%;background:#0F3D2E;color:white;border:none;padding:14px;border-radius:12px;font-weight:800;margin-top:10px">📢 Publier sur l'Accueil</button>
+<p id="msgDivers" style="text-align:center;font-weight:700;color:green"></p>
+<h3>📢 Divers déjà publiés</h3><div id="listeDiversAdmin"></div>
+</div>
+<button onclick="seDeconnecter()" style="width:100%;background:#333;color:white;border:none;padding:12px;border-radius:12px;margin-top:12px">Déconnexion</button>
+</div>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="firebase.js"></script>
+<script src="admin.js"></script>
+<script src="paiement.js"></script>
+<script>
+// Quand le Directeur clique sur l'onglet Paiements, on recharge la liste
+let _oldShowTab = window.showTabAdmin;
+window.showTabAdmin = function(id, btn){
+  if(_oldShowTab) _oldShowTab(id, btn);
+  else {
+    document.querySelectorAll('[id^="tab"]').forEach(d=>d.style.display='none');
+    document.getElementById(id).style.display='block';
+    document.querySelectorAll('.admin-tab').forEach(b=>b.classList.remove('active'));
+    if(btn) btn.classList.add('active');
+  }
+  if(id === 'tabPaiements'){
+    setTimeout(()=>{ if(typeof chargerPaiements === 'function') chargerPaiements(); }, 100);
+  }
+}
+</script>
+</body></html>

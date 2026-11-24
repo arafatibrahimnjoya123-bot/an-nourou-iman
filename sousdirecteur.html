@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sous-Directeur - An Nourou Iman</title>
+<link rel="stylesheet" href="style.css">
+<style>
+.card{background:white;padding:14px;border-radius:14px;margin:10px 0}
+.stat{display:flex;gap:8px;flex-wrap:wrap}
+.stat div{flex:1;min-width:100px;background:#E8F5E9;padding:12px;border-radius:12px;text-align:center}
+.stat b{font-size:20px;display:block}
+.btn{border:none;padding:11px 14px;border-radius:12px;font-weight:800;cursor:pointer}
+.btnVert{background:#0F3D2E;color:white}.btnOrange{background:#FF7A3D;color:white}.btnGris{background:#E8F5E9}.btnBleu{background:#1976D2;color:white}.btnNoir{background:#333;color:white}.btnRouge{background:#C62828;color:white}
+input,select{width:100%;padding:12px;border:1px solid #ddd;border-radius:10px;margin:6px 0;box-sizing:border-box}
+table{width:100%;border-collapse:collapse;margin-top:10px;font-size:13px;background:white}
+th{background:#0F3D2E;color:white;padding:10px;text-align:left}
+td{padding:10px;border-bottom:1px solid #eee;vertical-align:top}
+tr:nth-child(even){background:#F9F9F9}
+.badge{padding:4px 8px;border-radius:20px;font-size:12px;font-weight:700;display:inline-block}
+.badgeVert{background:#E8F5E9;color:#0F3D2E}.badgeRouge{background:#FFEBEE;color:#C62828}.badgeJaune{background:#FFF9C4;color:#8D6E00}
+.btnPetit{padding:7px 10px;border-radius:20px;border:none;font-weight:700;font-size:12px;cursor:pointer;text-decoration:none;display:inline-block;margin:2px}
+.btnWA{background:#25D366;color:white}.btnRecu{background:#FF7A3D;color:white}
+.tableWrap{overflow-x:auto}
+.barreOutils{display:flex;gap:6px;flex-wrap:wrap;margin:10px 0}
+.barreOutils .btn{flex:1;min-width:110px;padding:10px;font-size:13px}
+.menuScroll{display:flex;gap:8px;overflow-x:auto;overflow-y:hidden;padding:10px 2px 12px 2px;scroll-behavior:smooth;-webkit-overflow-scrolling:touch;scrollbar-width:none;white-space:nowrap}
+.menuScroll::-webkit-scrollbar{display:none}
+.menuScroll .btn{flex:0 0 auto;white-space:nowrap;padding:11px 16px;font-size:14px;border-radius:25px}
+.menuScroll .btn.active{background:#0F3D2E !important;color:white !important}
+.flecheMenu{display:flex;justify-content:space-between;font-size:12px;color:#888;margin:-4px 0 2px 0}
+.popup{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.75);display:none;justify-content:center;align-items:flex-start;z-index:9999;padding:12px;overflow-y:auto}
+.popupBox{background:white;width:100%;max-width:420px;border-radius:16px;padding:16px;position:relative;margin-top:20px}
+.popupBoxLarge{max-width:650px}
+.btnFermer{position:absolute;top:8px;right:10px;background:#C62828;color:white;border:none;width:34px;height:34px;border-radius:50%;font-size:16px;font-weight:800;cursor:pointer;z-index:10}
+@media print{ body *{visibility:hidden} .popupAImprimer, .popupAImprimer *{visibility:visible} .popupAImprimer{position:absolute !important;top:0;left:0;right:0;bottom:auto;background:white !important;display:block !important;padding:0 !important} .noPrint{display:none !important} }
+</style>
+</head>
+<body>
+
+<div id="popupRecu" class="popup"><div class="popupBox">
+<button type="button" class="btnFermer" onclick="fermerRecu()">X</button>
+<h2 style="margin:5px 0;text-align:center">☪️ AN NOUROU IMAN</h2><h3 style="margin:5px 0;text-align:center">🧾 REÇU</h3><hr>
+<div id="contenuRecu" style="line-height:1.9"></div><hr>
+<p style="font-size:13px;text-align:center">Merci ! Qu'Allah vous récompense.</p>
+<div class="noPrint" style="display:flex;gap:8px"><button type="button" class="btn btnVert" style="flex:1" onclick="imprimerPopup('popupRecu')">🖨️ Imprimer / PDF</button><button type="button" class="btn btnRouge" style="flex:1" onclick="fermerRecu()">❌ Fermer</button></div>
+</div></div>
+
+<div id="popupPDF" class="popup"><div class="popupBox popupBoxLarge">
+<button type="button" class="btnFermer" onclick="fermerPDF()">X</button>
+<h2 id="titrePDF" style="text-align:center;color:#0F3D2E">☪️ AN NOUROU IMAN</h2>
+<p id="sousTitrePDF" style="text-align:center;font-size:13px"></p>
+<div id="contenuPDF" class="tableWrap"></div>
+<p style="text-align:center;font-size:12px;margin-top:12px">Merci ! Qu'Allah vous récompense.</p>
+<div class="noPrint" style="display:flex;gap:8px;margin-top:10px"><button type="button" class="btn btnVert" style="flex:1" onclick="imprimerPopup('popupPDF')">⬇️ Télécharger en PDF</button><button type="button" class="btn btnRouge" style="flex:1" onclick="fermerPDF()">❌ Fermer</button></div>
+<p class="noPrint" style="text-align:center;font-size:12px;color:#666">👉 Choisis <b>"Enregistrer en PDF"</b></p>
+</div></div>
+
+<div style="background:#0F3D2E;color:white;padding:14px;display:flex;justify-content:space-between;align-items:center"><b>☪️ AN NOUROU IMAN - SOUS-DIRECTEUR</b><a href="index.html" style="background:#C9A227;color:#0F3D2E;padding:8px 12px;border-radius:20px;text-decoration:none;font-weight:800">← Accueil</a></div>
+
+<div class="card" id="loginCard">
+<h2>🔐 Connexion Sous-Directeur</h2>
+<label>📧 Ton Email</label><input id="sdEmail" placeholder="ibrahim@ecole.com">
+<label>📱 Ton WhatsApp</label><input id="sdTel" placeholder="697919116">
+<button type="button" class="btn btnVert" style="width:100%" onclick="seConnecterSD()">Se connecter</button>
+<p id="msgSD" style="text-align:center;font-weight:700;color:red"></p>
+</div>
+
+<div class="card" id="sdPanel" style="display:none">
+<div style="background:#E8F5E9;padding:12px;border-radius:12px">👋 Salam, <b id="sdNom"></b><br><small id="sdInfo"></small><br><small id="matieresInfo" style="color:#0F3D2E;font-weight:700"></small></div>
+<div class="stat" style="margin-top:12px">
+<div>👶 Élèves<b id="stEleves">0</b></div>
+<div>💰 Encaissé<b id="stEncaisse">0</b></div>
+<div>⏳ En attente<b id="stAttente">0</b></div>
+<div>🔴 Retard<b id="stRetard" style="color:red">0</b></div>
+</div>
+
+<div class="flecheMenu"><span>◀ Glisse pour voir plus</span><span>Glisse ▶</span></div>
+<div class="menuScroll" id="menuScroll">
+<button type="button" class="btn btnVert active" onclick="showTabSD('tabEcole',this)">🏫 Mon École</button>
+<button type="button" class="btn btnGris" onclick="showTabSD('tabEleves',this)">👶 Élèves</button>
+<button type="button" class="btn btnGris" onclick="showTabSD('tabPresence',this)">✅ Présence</button>
+<button type="button" class="btn btnGris" onclick="showTabSD('tabNotes',this)">📝 Notes</button>
+<button type="button" class="btn btnGris" onclick="showTabSD('tabMoyennes',this)">📊 Moyennes</button>
+<button type="button" class="btn btnGris" onclick="showTabSD('tabEmploi',this)">📅 Emploi du temps</button>
+<button type="button" class="btn btnGris" onclick="showTabSD('tabRetard',this)">⏰ Qui n'a pas payé ?</button>
+<button type="button" class="btn btnGris" onclick="showTabSD('tabPaiements',this)">💰 Paiements</button>
+<button type="button" class="btn btnGris" onclick="showTabSD('tabAjout',this)">➕ Nouvelle Inscription</button>
+</div>
+
+<div id="tabEcole">
+<h3>🏫 Mon École / Groupe</h3>
+<div class="barreOutils"><button type="button" class="btn btnBleu" onclick="telechargerPDF('tableEcole','MON ECOLE')">⬇️ Télécharger en PDF</button><button type="button" class="btn btnNoir" onclick="cacherAfficher('wrapEcole',this)">👁️ Cacher la liste</button></div>
+<div class="tableWrap" id="wrapEcole"><table id="tableEcole"><thead><tr><th>Type</th><th>Nom</th><th>Quartier / Ville</th><th>Responsable</th></tr></thead><tbody id="tbodyEcole"></tbody></table></div>
+<h4>📚 Matières fixées par le Directeur</h4>
+<div class="tableWrap"><table id="tableMatieresDirecteur"><thead><tr><th>Matière</th><th>Coefficient</th><th>Niveau / École</th></tr></thead><tbody id="tbodyMatieresDirecteur"></tbody></table></div>
+</div>
+
+<div id="tabEleves" style="display:none">
+<h3>👶 Mes Élèves</h3>
+<input id="rechercheEleve" placeholder="🔍 Tape le nom..." oninput="filtrerEleves()">
+<div class="barreOutils"><button type="button" class="btn btnVert" onclick="chargerInscriptionsSD()">🔄 Actualiser</button><button type="button" class="btn btnBleu" onclick="telechargerPDF('tableEleves','LISTE ELEVES')">⬇️ Télécharger en PDF</button><button type="button" class="btn btnNoir" onclick="cacherAfficher('wrapEleves',this)">👁️ Cacher la liste</button></div>
+<div class="tableWrap" id="wrapEleves"><table id="tableEleves"><thead><tr><th>Enfant</th><th>Parent / WhatsApp</th><th>Niveau / École</th><th>Statut</th><th>Actions</th></tr></thead><tbody id="tbodyEleves"></tbody></table></div>
+</div>
+
+<div id="tabPresence" style="display:none">
+<h3>✅ Appel du jour - <span id="datePresence"></span></h3>
+<div class="barreOutils"><button type="button" class="btn btnBleu" onclick="telechargerPDF('tablePresence','PRESENCE')">⬇️ Télécharger en PDF</button><button type="button" class="btn btnNoir" onclick="cacherAfficher('wrapPresence',this)">👁️ Cacher la liste</button></div>
+<div class="tableWrap" id="wrapPresence"><table id="tablePresence"><thead><tr><th>✔️</th><th>Enfant</th><th>Parent</th><th>École</th></tr></thead><tbody id="tbodyPresence"></tbody></table></div>
+<button type="button" class="btn btnVert" style="width:100%;margin-top:10px" onclick="enregistrerPresence()">💾 Enregistrer Présence</button>
+<p id="msgPresence"></p>
+<h4>📋 Historique Présences</h4>
+<div class="barreOutils"><button type="button" class="btn btnBleu" onclick="telechargerPDF('tableHistPresence','HISTORIQUE PRESENCE')">⬇️ Télécharger en PDF</button><button type="button" class="btn btnNoir" onclick="cacherAfficher('wrapHistPresence',this)">👁️ Cacher la liste</button></div>
+<div class="tableWrap" id="wrapHistPresence"><table id="tableHistPresence"><thead><tr><th>Date</th><th>Présents</th><th>Absents</th><th>Noms Absents</th></tr></thead><tbody id="tbodyHistPresence"></tbody></table></div>
+</div>
+
+<div id="tabNotes" style="display:none">
+<h3>📝 Entrer les Notes</h3>
+<div style="background:#FFF9C4;padding:10px;border-radius:10px;text-align:center"><small>⚠️ <b>Matières fixées par le Directeur.</b> Tu ne peux pas en créer une nouvelle.</small></div>
+<div style="background:#E8F5E9;padding:12px;border-radius:12px;margin-top:8px">
+<label>👶 Choisir l'élève</label><select id="noteEleve"></select>
+<label>📚 Matière <b>(du Directeur)</b></label><select id="noteMatiere"></select>
+<p id="coefInfo" style="font-size:13px;color:#0F3D2E;font-weight:700"></p>
+<label>📝 Type d'évaluation</label><select id="noteType"><option>Devoir</option><option>Composition</option><option>Examen</option><option>Interrogation</option></select>
+<label>⭐ Note / 20</label><input id="noteValeur" type="number" min="0" max="20" step="0.5" placeholder="Ex: 15">
+<label>📅 Trimestre</label><select id="noteTrimestre"><option>Trimestre 1</option><option>Trimestre 2</option><option>Trimestre 3</option></select>
+<button type="button" class="btn btnVert" style="width:100%" onclick="ajouterNote()">💾 Enregistrer la Note</button>
+<p id="msgNote"></p>
+</div>
+<div class="barreOutils"><button type="button" class="btn btnOrange" onclick="chargerNotes()">🔄 Actualiser</button><button type="button" class="btn btnBleu" onclick="telechargerPDF('tableNotes','LISTE DES NOTES')">⬇️ Télécharger en PDF</button><button type="button" class="btn btnNoir" onclick="cacherAfficher('wrapNotes',this)">👁️ Cacher la liste</button></div>
+<div class="tableWrap" id="wrapNotes"><table id="tableNotes"><thead><tr><th>Élève</th><th>Matière / Coef / Type</th><th>Note</th><th>Trimestre</th><th>Action</th></tr></thead><tbody id="tbodyNotes"></tbody></table></div>
+</div>
+
+<div id="tabMoyennes" style="display:none">
+<h3>📊 Moyennes des Élèves</h3>
+<div style="background:#FFF9C4;padding:10px;border-radius:10px;text-align:center"><small>✅ <b>Tu as la permission d'imprimer</b> les moyennes. Calcul avec les <b>coefficients du Directeur</b>.</small></div>
+<label>📅 Filtrer par Trimestre</label><select id="filtreTrimestreMoy" onchange="chargerNotes()"><option value="">Tous les trimestres</option><option>Trimestre 1</option><option>Trimestre 2</option><option>Trimestre 3</option></select>
+<div class="barreOutils"><button type="button" class="btn btnOrange" onclick="chargerNotes()">🔄 Calculer Moyennes</button><button type="button" class="btn btnBleu" onclick="telechargerPDF('tableMoyennes','MOYENNES ELEVES')">🖨️ Imprimer / PDF Moyennes</button><button type="button" class="btn btnNoir" onclick="cacherAfficher('wrapMoyennes',this)">👁️ Cacher la liste</button></div>
+<div class="tableWrap" id="wrapMoyennes"><table id="tableMoyennes"><thead><tr><th>Élève</th><th>École</th><th>Nb Notes</th><th>Moyenne Pondérée /20</th><th>Appréciation</th></tr></thead><tbody id="tbodyMoyennes"></tbody></table></div>
+<div class="tableWrap" style="margin-top:10px"><table id="tableDetailMoy"><thead><tr><th>Élève</th><th>Matière</th><th>Coef</th><th>Moyenne Matière</th></tr></thead><tbody id="tbodyDetailMoy"></tbody></table></div>
+</div>
+
+<div id="tabEmploi" style="display:none">
+<h3>📅 Emploi du Temps - Mon École</h3>
+<div style="background:#E8F5E9;padding:12px;border-radius:12px">
+<label>📅 Jour</label><select id="emploiJour"><option>Lundi</option><option>Mardi</option><option>Mercredi</option><option>Jeudi</option><option>Vendredi</option><option>Samedi</option><option>Dimanche</option></select>
+<label>🕐 Heure</label><input id="emploiHeure" placeholder="Ex: 08:00 - 09:00">
+<label>📚 Matière / Activité <b>(du Directeur)</b></label><select id="emploiMatiere"></select>
+<label>👨‍🏫 Enseignant</label><input id="emploiProf" placeholder="Ex: Oustaz Ibrahim">
+<label>📚 Niveau / Classe</label><select id="emploiNiveau"><option>Maternelle</option><option>Primaire</option><option>Collège</option><option>Coran</option><option>Arabe</option><option>Tous</option></select>
+<button type="button" class="btn btnVert" style="width:100%" onclick="ajouterEmploi()">💾 Ajouter au Planning</button>
+<p id="msgEmploi"></p>
+</div>
+<div class="barreOutils"><button type="button" class="btn btnOrange" onclick="chargerEmploi()">🔄 Actualiser</button><button type="button" class="btn btnBleu" onclick="telechargerPDF('tableEmploi','EMPLOI DU TEMPS')">🖨️ Imprimer / PDF Emploi</button><button type="button" class="btn btnNoir" onclick="cacherAfficher('wrapEmploi',this)">👁️ Cacher la liste</button></div>
+<div class="tableWrap" id="wrapEmploi"><table id="tableEmploi"><thead><tr><th>Jour</th><th>Heure</th><th>Matière</th><th>Enseignant</th><th>Niveau</th><th>Action</th></tr></thead><tbody id="tbodyEmploi"></tbody></table></div>
+</div>
+
+<div id="tabRetard" style="display:none">
+<h3>⏰ Élèves qui n'ont pas payé</h3>
+<div class="barreOutils"><button type="button" class="btn btnOrange" onclick="chargerRetard()">🔍 Voir les retards</button><button type="button" class="btn btnBleu" onclick="telechargerPDF('tableRetard','RETARD PAIEMENT')">⬇️ Télécharger en PDF</button><button type="button" class="btn btnNoir" onclick="cacherAfficher('wrapRetard',this)">👁️ Cacher la liste</button></div>
+<div class="tableWrap" id="wrapRetard"><table id="tableRetard"><thead><tr><th>Enfant</th><th>Parent / WhatsApp</th><th>École</th><th>Action</th></tr></thead><tbody id="tbodyRetard"></tbody></table></div>
+</div>
+
+<div id="tabPaiements" style="display:none">
+<h3>💰 Paiements</h3>
+<div style="background:#FFF9C4;padding:10px;border-radius:10px;text-align:center"><small>👀 Tu peux voir. <b>Seul le Directeur valide.</b></small></div>
+<div class="barreOutils"><button type="button" class="btn btnOrange" onclick="chargerPaiementsSD()">🔄 Actualiser</button><button type="button" class="btn btnBleu" onclick="telechargerPDF('tablePaiements','PAIEMENTS')">⬇️ Télécharger en PDF</button><button type="button" class="btn btnNoir" onclick="cacherAfficher('wrapPaiements',this)">👁️ Cacher la liste</button></div>
+<div class="tableWrap" id="wrapPaiements"><table id="tablePaiements"><thead><tr><th>Enfant</th><th>Montant</th><th>Motif / Mode</th><th>Parent</th><th>Statut</th></tr></thead><tbody id="tbodyPaiements"></tbody></table></div>
+</div>
+
+<div id="tabAjout" style="display:none">
+<h3>➕ Nouvelle Inscription</h3>
+<label>👶 Nom de l'enfant *</label><input id="nEnfant" placeholder="Ex: Amina Ibrahim">
+<label>👤 Nom du Parent *</label><input id="nParent" placeholder="Ex: Ibrahim">
+<label>📱 WhatsApp Parent *</label><input id="nTel" placeholder="697919116">
+<label>📚 Niveau</label><select id="nNiveau"><option>Maternelle</option><option>Primaire</option><option>Collège</option><option>Coran</option><option>Arabe</option></select>
+<label>🏫 École / Groupe</label><select id="nEcole"></select>
+<label>💰 Montant payé (si déjà payé)</label><input id="nMontant" type="number" placeholder="0">
+<button type="button" class="btn btnVert" style="width:100%" onclick="ajouterInscriptionSD()">💾 Inscrire l'élève</button>
+<p id="msgAjout"></p>
+</div>
+
+<button type="button" class="btn" style="width:100%;background:#333;color:white;margin-top:12px" onclick="seDeconnecterSD()">Déconnexion</button>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="firebase.js"></script>
+<script>
+let SD=null, TOUTES_INSCRIPTIONS=[], TOUS_PAIEMENTS=[], TOUTES_NOTES=[], TOUT_EMPLOI=[], MATIERES_DIRECTEUR=[];
+function nettoyerTel(t){ if(!t) return ""; return String(t).replace(/[\s\-\+]/g,"").replace(/^237/,""); }
+function nettoyerEmail(e){ return String(e||"").toLowerCase().trim(); }
+function normaliserSD(t){ return (t||"").toString().trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,""); }
+const NOM_MATIERE_SD = {coran:"Coran", hadith:"Hadith", aqida:"Aquida", fiqh:"Fiqh", adhab:"Adhab", arabe:"Langue Arabe", sira:"Sirah", sirah:"Sirah", tawhid:"Tawhid", memo:"Mémorisation"};
+function joliNomMatiere(idOuNom){
+  if(!idOuNom) return "";
+  let s = String(idOuNom).trim();
+  let cle = normaliserSD(s);
+  if(NOM_MATIERE_SD[cle]) return NOM_MATIERE_SD[cle];
+  return s.charAt(0).toUpperCase() + s.slice(1);
+}
+function cacherAfficher(idWrap, btn){
+  let el=document.getElementById(idWrap);
+  if(el.style.display==="none"){ el.style.display="block"; btn.textContent="👁️ Cacher la liste"; }
+  else { el.style.display="none"; btn.textContent="👁️ Afficher la liste"; }
+}
+function imprimerRecu(id){
+  let d=TOUTES_INSCRIPTIONS.find(x=>x.id===id); if(!d){ alert("Élève introuvable"); return; }
+  document.getElementById('contenuRecu').innerHTML=`<p><b>Enfant:</b> ${d.enfant||""}</p><p><b>Parent:</b> ${d.parent||""}</p><p><b>Tél:</b> ${d.tel||""}</p><p><b>École:</b> ${d.ecole||d.groupe||""}</p><p><b>Niveau:</b> ${d.niveau||""}</p><p><b>Date:</b> ${new Date().toLocaleDateString('fr-FR')}</p><p><b>Statut:</b> ${d.statut||"en attente"}</p>`;
+  let p=document.getElementById('popupRecu'); p.style.display="flex"; p.classList.remove("popupAImprimer");
+}
+function fermerRecu(){ document.getElementById('popupRecu').style.display="none"; document.getElementById('popupRecu').classList.remove("popupAImprimer"); }
+function telechargerPDF(idTable, titre){
+  let table=document.getElementById(idTable); if(!table){ alert("Aucun tableau"); return; }
+  document.getElementById('titrePDF').textContent="☪️ AN NOUROU IMAN - "+titre;
+  document.getElementById('sousTitrePDF').textContent="Sous-Directeur: "+(SD?SD.email:"")+" - Date: "+new Date().toLocaleDateString('fr-FR');
+  let clone=table.cloneNode(true);
+  let idxAction=-1; clone.querySelectorAll("thead th").forEach((th,i)=>{ if(th.textContent.includes("Actions")||th.textContent.includes("Action")) idxAction=i; });
+  if(idxAction>=0){ clone.querySelectorAll("tr").forEach(tr=>{ if(tr.cells[idxAction]) tr.deleteCell(idxAction); }); }
+  clone.querySelectorAll("a,button").forEach(b=>b.remove());
+  document.getElementById('contenuPDF').innerHTML=""; document.getElementById('contenuPDF').appendChild(clone);
+  let p=document.getElementById('popupPDF'); p.style.display="flex"; p.classList.remove("popupAImprimer");
+}
+function fermerPDF(){ document.getElementById('popupPDF').style.display="none"; document.getElementById('popupPDF').classList.remove("popupAImprimer"); }
+function imprimerPopup(idPopup){
+  document.getElementById('popupRecu').classList.remove("popupAImprimer");
+  document.getElementById('popupPDF').classList.remove("popupAImprimer");
+  document.getElementById(idPopup).classList.add("popupAImprimer");
+  setTimeout(()=>{ window.print(); }, 100);
+}
+document.getElementById('popupRecu').addEventListener('click', function(e){ if(e.target===this) fermerRecu(); });
+document.getElementById('popupPDF').addEventListener('click', function(e){ if(e.target===this) fermerPDF(); });
+window.addEventListener('afterprint', function(){ document.getElementById('popupRecu').classList.remove("popupAImprimer"); document.getElementById('popupPDF').classList.remove("popupAImprimer"); });
+function showTabSD(id,btn){
+  ['tabEcole','tabEleves','tabPresence','tabNotes','tabMoyennes','tabEmploi','tabRetard','tabPaiements','tabAjout'].forEach(x=>document.getElementById(x).style.display='none');
+  document.getElementById(id).style.display='block';
+  document.querySelectorAll('#menuScroll .btn').forEach(b=>{ b.classList.remove('active'); b.style.background='#E8F5E9'; b.style.color='black'; });
+  if(btn){ btn.classList.add('active'); btn.style.background='#0F3D2E'; btn.style.color='white'; btn.scrollIntoView({behavior:'smooth',inline:'center',block:'nearest'}); }
+  if(id==='tabEleves') chargerInscriptionsSD();
+  if(id==='tabPresence') chargerPourPresence();
+  if(id==='tabNotes' || id==='tabMoyennes') chargerNotes();
+  if(id==='tabEmploi') chargerEmploi();
+  if(id==='tabRetard') chargerRetard();
+  if(id==='tabPaiements') chargerPaiementsSD();
+}
+async function seConnecterSD(){
+  let email=nettoyerEmail(document.getElementById('sdEmail').value);
+  let tel=nettoyerTel(document.getElementById('sdTel').value);
+  let msg=document.getElementById('msgSD');
+  if(!email||!tel){ msg.textContent="❌ Mets Email et WhatsApp"; return; }
+  msg.style.color="#666"; msg.textContent="⏳ Vérification...";
+  try{
+    let ecoles=[]; let snapE=await db.collection("ecoles").get();
+    snapE.forEach(doc=>{ let d=doc.data(); let em=nettoyerEmail(d.sousDirecteurEmail||d.sousDirecteur||d.sous_directeur||d.emailSousDirecteur||d.ecSousDirecteur||d.email||""); if(em===email) ecoles.push({id:doc.id,...d}); });
+    let groupes=[]; let snapG=await db.collection("groupes").get();
+    snapG.forEach(doc=>{ let d=doc.data(); let em=nettoyerEmail(d.sousDirecteurEmail||d.sousDirecteur||d.sous_directeur||d.emailSousDirecteur||d.email||""); if(em===email) groupes.push({id:doc.id,...d}); });
+    if(!ecoles.length && !groupes.length){ msg.style.color="red"; msg.textContent="❌ Email introuvable dans Admin -> Ecoles"; return; }
+    SD={email,tel,ecoles,groupes}; localStorage.setItem("sd_session",JSON.stringify(SD)); afficherSD();
+  }catch(e){ msg.textContent="❌ "+e.message; }
+}
+function afficherSD(){
+  document.getElementById('loginCard').style.display='none'; document.getElementById('sdPanel').style.display='block';
+  document.getElementById('sdNom').textContent=SD.email;
+  let noms=[]; SD.ecoles.forEach(e=>noms.push("🏫 "+(e.nom||"École"))); SD.groupes.forEach(g=>noms.push("👥 "+(g.nom||"Groupe")));
+  document.getElementById('sdInfo').textContent=noms.join(" • ");
+  let htmlE=""; SD.ecoles.forEach(e=>{ htmlE+=`<tr><td>🏫 École</td><td><b>${e.nom||""}</b></td><td>${e.quartier||""}</td><td>${e.responsable||""}</td></tr>`; });
+  SD.groupes.forEach(g=>{ htmlE+=`<tr><td>👥 Groupe</td><td><b>${g.nom||""}</b></td><td>${g.ville||""} - ${g.quartier||""}</td><td>${g.enseignant||""}</td></tr>`; });
+  document.getElementById('tbodyEcole').innerHTML=htmlE||`<tr><td colspan="4">Pas d'école.</td></tr>`;
+  let sel=document.getElementById('nEcole'); sel.innerHTML=""; SD.ecoles.forEach(e=>sel.innerHTML+=`<option>${e.nom}</option>`); SD.groupes.forEach(g=>sel.innerHTML+=`<option>${g.nom}</option>`);
+  document.getElementById('datePresence').textContent=new Date().toLocaleDateString('fr-FR');
+  chargerMatieresDirecteur();
+  chargerInscriptionsSD();
+}
+function estAMoi(d){
+  let ecoleIns=(d.ecole||d.ecoleNom||"").toLowerCase(); let groupeIns=(d.groupe||d.groupeNom||"").toLowerCase();
+  let nomsE=SD.ecoles.map(e=>(e.nom||"").toLowerCase()); let nomsG=SD.groupes.map(g=>(g.nom||"").toLowerCase());
+  return nomsE.some(n=>n&&ecoleIns.includes(n)) || nomsG.some(n=>n&&groupeIns.includes(n));
+}
+async function chargerMatieresDirecteur(){
+  MATIERES_DIRECTEUR=[];
+  let mesNomsEcoles = [...SD.ecoles.map(e=>normaliserSD(e.nom||"")), ...SD.groupes.map(g=>normaliserSD(g.nom||""))].filter(Boolean);
+  let mesIdsEcoles = [...SD.ecoles.map(e=>e.id||""), ...SD.groupes.map(g=>g.id||"")].filter(Boolean);
+  function estMaMatiere(d){
+    let ecoleMat = normaliserSD(d.ecoleNom||d.ecole||d.groupe||"");
+    let idMat = d.ecoleId||d.ecoleID||"";
+    if(!ecoleMat && !idMat) return true;
+    if(idMat && mesIdsEcoles.includes(idMat)) return true;
+    if(ecoleMat && mesNomsEcoles.some(n=> n && (ecoleMat.includes(n) || n.includes(ecoleMat)))) return true;
+    return false;
+  }
+  function ajouterMatiere(nomBrut, coef, ecoleNom, niveau){
+    let nom = joliNomMatiere(nomBrut);
+    if(!nom) return;
+    if(MATIERES_DIRECTEUR.some(m=>normaliserSD(m.nom)===normaliserSD(nom))) return;
+    MATIERES_DIRECTEUR.push({nom, coef:Number(coef||1), niveau:niveau||"", ecole:ecoleNom||""});
+  }
+  try{
+    let snapPub = await db.collection("matieres_publiees").limit(100).get();
+    snapPub.forEach(doc=>{
+      let d = doc.data();
+      if(!estMaMatiere(d)) return;
+      if(Array.isArray(d.matieresDetail) && d.matieresDetail.length){
+        d.matieresDetail.forEach(m=>{
+          if(typeof m === "string") ajouterMatiere(m, 1, d.ecoleNom||"");
+          else if(m) ajouterMatiere(m.fr||m.nom||m.matiere||m.id, m.coef||m.coefficient||1, d.ecoleNom||"", m.niveau||"");
+        });
+      }
+      else if(Array.isArray(d.matieresNoms) && d.matieresNoms.length){
+        d.matieresNoms.forEach(n=>ajouterMatiere(n, 1, d.ecoleNom||""));
+      }
+      else if(Array.isArray(d.matieres) && d.matieres.length){
+        d.matieres.forEach(id=>ajouterMatiere(id, 1, d.ecoleNom||""));
+      }
+    });
+  }catch(e){ console.log("matieres_publiees:", e.message); }
+  try{
+    if(!MATIERES_DIRECTEUR.length){
+      let snapCfg = await db.collection("configMatieres").limit(100).get();
+      snapCfg.forEach(doc=>{
+        let d = doc.data();
+        let dd = {...d, ecoleId: d.ecoleId||doc.id};
+        if(!estMaMatiere(dd)) return;
+        if(Array.isArray(d.matieres)) d.matieres.forEach(id=>ajouterMatiere(id, 1, d.ecoleNom||""));
+      });
+    }
+  }catch(e){ console.log("configMatieres:", e.message); }
+  try{
+    if(!MATIERES_DIRECTEUR.length){
+      let snap=await db.collection("matieres").limit(100).get();
+      snap.forEach(doc=>{
+        let d=doc.data();
+        let nom=d.nom||d.matiere||d.libelle||"";
+        if(!nom) return;
+        let ecoleMat=(d.ecole||d.ecoleNom||d.groupe||"").toLowerCase();
+        let mesEcoles=[...SD.ecoles.map(e=>(e.nom||"").toLowerCase()), ...SD.groupes.map(g=>(g.nom||"").toLowerCase())];
+        let ok=!ecoleMat || mesEcoles.some(e=>e&&ecoleMat.includes(e)) || mesEcoles.some(e=>e&&(e.includes(ecoleMat)||ecoleMat==="tous"||ecoleMat==="toutes"));
+        if(ok) ajouterMatiere(nom, d.coef||d.coefficient||1, d.ecole||d.groupe||"", d.niveau||d.classe||"");
+      });
+    }
+  }catch(e){ console.log("matieres collection:", e.message); }
+  if(!MATIERES_DIRECTEUR.length){
+    [...SD.ecoles, ...SD.groupes].forEach(ec=>{
+      let liste=ec.matieres||ec.matiere||ec.subjects||[];
+      if(typeof liste==="string") liste=liste.split(",").map(s=>s.trim()).filter(Boolean);
+      if(Array.isArray(liste)) liste.forEach(m=>{
+        if(typeof m==="string") ajouterMatiere(m, 1, ec.nom||"", ec.niveau||"");
+        else if(m.nom||m.matiere) ajouterMatiere(m.nom||m.matiere, m.coef||m.coefficient||1, ec.nom||"", m.niveau||"");
+      });
+    });
+  }
+  let selNote=document.getElementById('noteMatiere');
+  let selEmploi=document.getElementById('emploiMatiere');
+  if(!MATIERES_DIRECTEUR.length){
+    selNote.innerHTML=`<option value="">⚠️ Le Directeur n'a pas encore fixé les matières</option>`;
+    selEmploi.innerHTML=`<option value="">⚠️ Le Directeur n'a pas encore fixé les matières</option>`;
+    document.getElementById('matieresInfo').textContent="⚠️ Le Directeur n'a pas encore fixé les matières. Va dans Gestion > Paramètres > Coche les matières > Enregistrer, puis reconnecte-toi ici.";
+    document.getElementById('tbodyMatieresDirecteur').innerHTML=`<tr><td colspan="3">⚠️ Aucune matière fixée par le Directeur pour le moment.</td></tr>`;
+    return;
+  }
+  selNote.innerHTML=""; selEmploi.innerHTML="";
+  MATIERES_DIRECTEUR.forEach(m=>{
+    selNote.innerHTML+=`<option value="${m.nom}" data-coef="${m.coef}">${m.nom} (Coef ${m.coef})</option>`;
+    selEmploi.innerHTML+=`<option value="${m.nom}">${m.nom}</option>`;
+  });
+  document.getElementById('matieresInfo').textContent="📚 Matières du Directeur : "+MATIERES_DIRECTEUR.map(m=>m.nom+" (Coef "+m.coef+")").join(" • ");
+  let htmlM=""; MATIERES_DIRECTEUR.forEach(m=>{ htmlM+=`<tr><td><b>${m.nom}</b></td><td><b>${m.coef}</b></td><td>${m.niveau||""} - ${m.ecole||""}</td></tr>`; });
+  document.getElementById('tbodyMatieresDirecteur').innerHTML=htmlM;
+  majCoefInfo();
+}
+function getCoefMatiere(nom){
+  let m=MATIERES_DIRECTEUR.find(x=>x.nom===nom);
+  return m?Number(m.coef||1):1;
+}
+function majCoefInfo(){
+  let sel=document.getElementById('noteMatiere');
+  if(!sel||!sel.value) return;
+  let coef=getCoefMatiere(sel.value);
+  document.getElementById('coefInfo').textContent=`ℹ️ Coefficient fixé par le Directeur pour ${sel.value} : ${coef}`;
+}
+document.addEventListener('change', function(e){ if(e.target && e.target.id==='noteMatiere') majCoefInfo(); });
+async function chargerInscriptionsSD(){
+  let box=document.getElementById('tbodyEleves');
+  try{
+    let snap=await db.collection("inscriptions").limit(200).get();
+    TOUTES_INSCRIPTIONS=[]; snap.forEach(doc=>{ let d={id:doc.id,...doc.data()}; if(estAMoi(d)) TOUTES_INSCRIPTIONS.push(d); });
+    let snapP=await db.collection("paiements").limit(200).get(); TOUS_PAIEMENTS=[]; snapP.forEach(doc=>TOUS_PAIEMENTS.push(doc.data()));
+    let encaisse=0, attente=0; TOUS_PAIEMENTS.forEach(p=>{ if(p.statut==="valide") encaisse+=Number(p.montant||0); else attente++; });
+    document.getElementById('stEleves').textContent=TOUTES_INSCRIPTIONS.length;
+    document.getElementById('stEncaisse').textContent=encaisse+" F";
+    document.getElementById('stAttente').textContent=attente;
+    afficherEleves(TOUTES_INSCRIPTIONS);
+    remplirSelectElevesNotes();
+    chargerRetard(false);
+  }catch(e){ box.innerHTML=`<tr><td colspan="5">❌ ${e.message}</td></tr>`; }
+}
+function remplirSelectElevesNotes(){
+  let sel=document.getElementById('noteEleve'); if(!sel) return;
+  sel.innerHTML=""; TOUTES_INSCRIPTIONS.forEach(d=>{ sel.innerHTML+=`<option value="${d.enfant||d.nomEnfant||""}">${d.enfant||d.nomEnfant||""} - ${d.niveau||""}</option>`; });
+}
+function afficherEleves(liste){
+  let box=document.getElementById('tbodyEleves');
+  if(!liste.length){ box.innerHTML=`<tr><td colspan="5">Aucun élève pour le moment.</td></tr>`; return; }
+  let html=""; liste.forEach(d=>{
+    let tel=nettoyerTel(d.tel||d.telephone||"");
+    let msgWA=encodeURIComponent(`Salam ${d.parent||""}, c'est le Sous-Directeur de ${d.ecole||d.groupe||""}. Concernant ${d.enfant||d.nomEnfant||""}, merci de passer pour le paiement. - An Nourou Iman`);
+    let statutBadge = (d.statut==="valide"||d.statut==="validé") ? `<span class="badge badgeVert">✅ Validé</span>` : `<span class="badge badgeJaune">⏳ ${d.statut||"en attente"}</span>`;
+    html+=`<tr><td><b>👶 ${d.enfant||d.nomEnfant||d.nom||""}</b></td><td>${d.parent||""}<br><small>${d.tel||""}</small></td><td>${d.niveau||""}<br><small>${d.ecole||d.groupe||""}</small></td><td>${statutBadge}</td><td><a class="btnPetit btnWA" href="https://wa.me/237${tel}?text=${msgWA}" target="_blank">📩 WhatsApp</a><button type="button" class="btnPetit btnRecu" onclick="imprimerRecu('${d.id}')">🧾 Reçu</button></td></tr>`;
+  });
+  box.innerHTML=html;
+}
+function filtrerEleves(){
+  let q=document.getElementById('rechercheEleve').value.toLowerCase();
+  let filtres=TOUTES_INSCRIPTIONS.filter(d=>JSON.stringify(d).toLowerCase().includes(q));
+  afficherEleves(filtres);
+}
+async function chargerPaiementsSD(){
+  let box=document.getElementById('tbodyPaiements');
+  try{
+    let snap=await db.collection("paiements").limit(100).get(); let html="";
+    snap.forEach(doc=>{ let d=doc.data(); let badge=d.statut==="valide"?`<span class="badge badgeVert">✅ VALIDÉ</span>`:d.statut==="refuse"?`<span class="badge badgeRouge">❌ REFUSÉ</span>`:`<span class="badge badgeJaune">⏳ EN ATTENTE</span>`; html+=`<tr><td><b>${d.enfant||""}</b></td><td><b>${d.montant||""} FCFA</b></td><td>${d.motif||""}<br><small>${d.mode||""}</small></td><td>${d.parent||""}</td><td>${badge}</td></tr>`; });
+    box.innerHTML=html||`<tr><td colspan="5">Aucun paiement.</td></tr>`;
+  }catch(e){ box.innerHTML=`<tr><td colspan="5">❌ ${e.message}</td></tr>`; }
+}
+async function chargerRetard(afficher=true){
+  let box=document.getElementById('tbodyRetard');
+  let nomsPayesValide=new Set(TOUS_PAIEMENTS.filter(p=>p.statut==="valide").map(p=>(p.enfant||"").toLowerCase()));
+  let retards=TOUTES_INSCRIPTIONS.filter(d=>!nomsPayesValide.has((d.enfant||d.nomEnfant||"").toLowerCase()));
+  document.getElementById('stRetard').textContent=retards.length;
+  if(!afficher) return;
+  if(!retards.length){ box.innerHTML=`<tr><td colspan="4">🎉 Personne en retard ! Tout le monde a payé.</td></tr>`; return; }
+  let html=""; retards.forEach(d=>{
+    let tel=nettoyerTel(d.tel||""); let msg=encodeURIComponent(`Salam ${d.parent||""}, le paiement de ${d.enfant||""} est en retard. Merci de passer à l'école. - An Nourou Iman`);
+    html+=`<tr><td><b>🔴 ${d.enfant||""}</b></td><td>${d.parent||""}<br><small>${d.tel||""}</small></td><td>${d.ecole||d.groupe||""}</td><td><a class="btnPetit btnWA" href="https://wa.me/237${tel}?text=${msg}" target="_blank">📩 Relancer</a></td></tr>`;
+  });
+  box.innerHTML=html;
+}
+async function chargerPourPresence(){
+  let box=document.getElementById('tbodyPresence');
+  if(!TOUTES_INSCRIPTIONS.length) await chargerInscriptionsSD();
+  let html=""; TOUTES_INSCRIPTIONS.forEach(d=>{
+    html+=`<tr><td><input type="checkbox" checked data-id="${d.id}" data-nom="${d.enfant||d.nomEnfant||""}" style="width:20px;height:20px"></td><td><b>${d.enfant||d.nomEnfant||""}</b></td><td>${d.parent||""}</td><td>${d.ecole||d.groupe||""}</td></tr>`;
+  });
+  box.innerHTML=html||`<tr><td colspan="4">Pas d'élèves.</td></tr>`;
+  try{
+    let snap=await db.collection("presences").limit(20).get();
+    let h=""; snap.forEach(doc=>{ let d=doc.data(); h+=`<tr><td>${d.date||""}</td><td><b>${d.presents}</b></td><td><b style="color:red">${d.absents}</b></td><td>${(d.absentsNoms||[]).join(", ")}</td></tr>`; });
+    if(h) document.getElementById('tbodyHistPresence').innerHTML=h;
+    else afficherHistLocal();
+  }catch(e){ afficherHistLocal(); }
+}
+function afficherHistLocal(){
+  let hist=JSON.parse(localStorage.getItem("presences_local")||"[]");
+  if(!hist.length){ document.getElementById('tbodyHistPresence').innerHTML=`<tr><td colspan="4">Aucune présence. Si erreur, va dans Firebase > Règles > presences > allow write: if true; > Publier.</td></tr>`; return; }
+  let h=""; hist.slice(-10).reverse().forEach(d=>{ h+=`<tr><td>${d.date}</td><td><b>${d.presents}</b></td><td><b style="color:red">${d.absents}</b></td><td>${(d.absentsNoms||[]).join(", ")} <small>(📱 local)</small></td></tr>`; });
+  document.getElementById('tbodyHistPresence').innerHTML=h;
+}
+async function enregistrerPresence(){
+  let checks=document.querySelectorAll('#tbodyPresence input[type=checkbox]');
+  let presents=0, absents=0, listeAbsents=[];
+  checks.forEach(c=>{ if(c.checked) presents++; else { absents++; listeAbsents.push(c.dataset.nom); } });
+  let data={ecole:SD.ecoles[0]?.nom||SD.groupes[0]?.nom||"", date:new Date().toLocaleDateString('fr-FR'), presents, absents, absentsNoms:listeAbsents, sousDirecteur:SD.email, createdAt:new Date()};
+  let hist=JSON.parse(localStorage.getItem("presences_local")||"[]"); hist.push(data); localStorage.setItem("presences_local", JSON.stringify(hist));
+  try{
+    await db.collection("presences").add(data);
+    document.getElementById('msgPresence').textContent=`✅ Enregistré : ${presents} présents, ${absents} absents.`;
+  }catch(e){
+    document.getElementById('msgPresence').textContent=`⚠️ Enregistré dans le téléphone seulement. Firebase dit: ${e.message} -> Change la règle presences en allow write: if true; puis Publier.`;
+  }
+  chargerPourPresence();
+}
+async function ajouterNote(){
+  let eleve=document.getElementById('noteEleve').value;
+  let matiere=document.getElementById('noteMatiere').value;
+  let type=document.getElementById('noteType').value;
+  let valeur=parseFloat(document.getElementById('noteValeur').value);
+  let trimestre=document.getElementById('noteTrimestre').value;
+  let msg=document.getElementById('msgNote');
+  if(!MATIERES_DIRECTEUR.length){ msg.style.color="red"; msg.textContent="❌ Le Directeur n'a pas encore fixé les matières. Tu ne peux pas entrer de note."; return; }
+  if(!eleve){ msg.style.color="red"; msg.textContent="❌ Choisis un élève"; return; }
+  if(!matiere){ msg.style.color="red"; msg.textContent="❌ Choisis une matière du Directeur"; return; }
+  if(isNaN(valeur)||valeur<0||valeur>20){ msg.style.color="red"; msg.textContent="❌ Mets une note entre 0 et 20"; return; }
+  let coef=getCoefMatiere(matiere);
+  let eleveInfo=TOUTES_INSCRIPTIONS.find(d=>(d.enfant||d.nomEnfant||"")===eleve);
+  let data={eleve, ecole:eleveInfo?eleveInfo.ecole||eleveInfo.groupe||SD.ecoles[0]?.nom:"", niveau:eleveInfo?eleveInfo.niveau:"", matiere, coef, type, note:valeur, trimestre, date:new Date().toLocaleDateString('fr-FR'), sousDirecteur:SD.email, createdAt:new Date()};
+  try{
+    await db.collection("notes").add(data);
+    msg.style.color="green"; msg.textContent=`✅ Note ${valeur}/20 (Coef ${coef}) ajoutée pour ${eleve} en ${matiere}`;
+    document.getElementById('noteValeur').value="";
+    chargerNotes();
+  }catch(e){ msg.style.color="red"; msg.textContent="❌ "+e.message+" -> Ajoute la règle notes dans Firebase"; }
+}
+async function chargerNotes(){
+  try{
+    let snap=await db.collection("notes").limit(200).get();
+    TOUTES_NOTES=[]; snap.forEach(doc=>TOUTES_NOTES.push({id:doc.id,...doc.data()}));
+    let nomsE=SD.ecoles.map(e=>(e.nom||"").toLowerCase()); let nomsG=SD.groupes.map(g=>(g.nom||"").toLowerCase());
+    TOUTES_NOTES=TOUTES_NOTES.filter(n=>{
+      let ec=(n.ecole||"").toLowerCase();
+      return nomsE.some(x=>x&&ec.includes(x)) || nomsG.some(x=>x&&ec.includes(x)) || !n.ecole;
+    });
+    let filtreTri=document.getElementById('filtreTrimestreMoy')?document.getElementById('filtreTrimestreMoy').value:"";
+    let notesFiltrees=filtreTri?TOUTES_NOTES.filter(n=>n.trimestre===filtreTri):TOUTES_NOTES;
+    let html=""; notesFiltrees.slice().reverse().forEach(n=>{
+      let coef=n.coef||getCoefMatiere(n.matiere);
+      let couleur=n.note>=10?"badgeVert":n.note>=7?"badgeJaune":"badgeRouge";
+      html+=`<tr><td><b>${n.eleve}</b><br><small>${n.ecole||""}</small></td><td>${n.matiere} <b>(Coef ${coef})</b><br><small>${n.type||""}</small></td><td><span class="badge ${couleur}">${n.note} / 20</span></td><td>${n.trimestre||""}</td><td><button type="button" class="btnPetit" style="background:#C62828;color:white" onclick="supprimerNote('${n.id}')">🗑️ Supprimer</button></td></tr>`;
+    });
+    document.getElementById('tbodyNotes').innerHTML=html||`<tr><td colspan="5">Aucune note pour le moment.</td></tr>`;
+    let parEleve={}; let detailParEleveMatiere={};
+    notesFiltrees.forEach(n=>{
+      let coef=Number(n.coef||getCoefMatiere(n.matiere)||1);
+      if(!parEleve[n.eleve]) parEleve[n.eleve]={sommePonderee:0,totalCoef:0,nb:0,ecole:n.ecole||""};
+      parEleve[n.eleve].sommePonderee+=Number(n.note||0)*coef; parEleve[n.eleve].totalCoef+=coef; parEleve[n.eleve].nb++;
+      let key=n.eleve+"||"+n.matiere;
+      if(!detailParEleveMatiere[key]) detailParEleveMatiere[key]={eleve:n.eleve,matiere:n.matiere,coef,total:0,nb:0};
+      detailParEleveMatiere[key].total+=Number(n.note||0); detailParEleveMatiere[key].nb++;
+    });
+    let htmlM=""; Object.keys(parEleve).sort().forEach(nom=>{
+      let d=parEleve[nom]; let moy=d.totalCoef>0?(d.sommePonderee/d.totalCoef).toFixed(2):"0.00";
+      let app=moy>=16?"🌟 Excellent":moy>=14?"👏 Très Bien":moy>=12?"🙂 Bien":moy>=10?"😐 Passable":"🔴 Insuffisant - A aider";
+      let couleur=moy>=10?"badgeVert":"badgeRouge";
+      htmlM+=`<tr><td><b>${nom}</b></td><td>${d.ecole}</td><td>${d.nb}</td><td><span class="badge ${couleur}">${moy} / 20</span></td><td>${app}</td></tr>`;
+    });
+    TOUTES_INSCRIPTIONS.forEach(ins=>{
+      let nom=ins.enfant||ins.nomEnfant||"";
+      if(!parEleve[nom]){
+        htmlM+=`<tr><td><b>${nom}</b></td><td>${ins.ecole||ins.groupe||""}</td><td>0</td><td><span class="badge badgeJaune">- / 20</span></td><td>⏳ Pas encore de note</td></tr>`;
+      }
+    });
+    document.getElementById('tbodyMoyennes').innerHTML=htmlM||`<tr><td colspan="5">Aucun élève.</td></tr>`;
+    let htmlD=""; Object.values(detailParEleveMatiere).forEach(d=>{
+      let moyM=(d.total/d.nb).toFixed(2);
+      htmlD+=`<tr><td><b>${d.eleve}</b></td><td>${d.matiere}</td><td>${d.coef}</td><td><b>${moyM} / 20</b></td></tr>`;
+    });
+    document.getElementById('tbodyDetailMoy').innerHTML=htmlD||`<tr><td colspan="4">Pas de détail pour le moment.</td></tr>`;
+  }catch(e){ document.getElementById('tbodyNotes').innerHTML=`<tr><td colspan="5">❌ ${e.message}</td></tr>`; }
+}
+async function supprimerNote(id){
+  if(!confirm("Supprimer cette note ?")) return;
+  try{ await db.collection("notes").doc(id).delete(); chargerNotes(); }catch(e){ alert("❌ "+e.message); }
+}
+async function ajouterEmploi(){
+  let jour=document.getElementById('emploiJour').value;
+  let heure=document.getElementById('emploiHeure').value.trim();
+  let matiere=document.getElementById('emploiMatiere').value;
+  let prof=document.getElementById('emploiProf').value.trim();
+  let niveau=document.getElementById('emploiNiveau').value;
+  let msg=document.getElementById('msgEmploi');
+  if(!MATIERES_DIRECTEUR.length){ msg.style.color="red"; msg.textContent="❌ Le Directeur n'a pas encore fixé les matières."; return; }
+  if(!heure||!matiere){ msg.style.color="red"; msg.textContent="❌ Mets l'heure et la matière du Directeur"; return; }
+  let data={jour, heure, matiere, prof, niveau, ecole:SD.ecoles[0]?.nom||SD.groupes[0]?.nom||"", sousDirecteur:SD.email, createdAt:new Date()};
+  try{
+    await db.collection("emploi_temps").add(data);
+    msg.style.color="green"; msg.textContent=`✅ Ajouté : ${jour} ${heure} - ${matiere}`;
+    document.getElementById('emploiHeure').value="";
+    chargerEmploi();
+  }catch(e){ msg.style.color="red"; msg.textContent="❌ "+e.message+" -> Ajoute la règle emploi_temps dans Firebase"; }
+}
+async function chargerEmploi(){
+  try{
+    let snap=await db.collection("emploi_temps").limit(100).get();
+    TOUT_EMPLOI=[]; snap.forEach(doc=>TOUT_EMPLOI.push({id:doc.id,...doc.data()}));
+    let ordre={Lundi:1,Mardi:2,Mercredi:3,Jeudi:4,Vendredi:5,Samedi:6,Dimanche:7};
+    TOUT_EMPLOI.sort((a,b)=>(ordre[a.jour]||99)-(ordre[b.jour]||99));
+    let html=""; TOUT_EMPLOI.forEach(e=>{
+      html+=`<tr><td><b>${e.jour}</b></td><td><b>${e.heure}</b></td><td>${e.matiere}</td><td>${e.prof||""}</td><td>${e.niveau||""}</td><td><button type="button" class="btnPetit" style="background:#C62828;color:white" onclick="supprimerEmploi('${e.id}')">🗑️ Supprimer</button></td></tr>`;
+    });
+    document.getElementById('tbodyEmploi').innerHTML=html||`<tr><td colspan="6">Aucun emploi du temps. Ajoute-le en haut.</td></tr>`;
+  }catch(e){ document.getElementById('tbodyEmploi').innerHTML=`<tr><td colspan="6">❌ ${e.message}</td></tr>`; }
+}
+async function supprimerEmploi(id){
+  if(!confirm("Supprimer ce cours ?")) return;
+  try{ await db.collection("emploi_temps").doc(id).delete(); chargerEmploi(); }catch(e){ alert("❌ "+e.message); }
+}
+async function ajouterInscriptionSD(){
+  let enfant=document.getElementById('nEnfant').value.trim(); let parent=document.getElementById('nParent').value.trim(); let tel=document.getElementById('nTel').value.trim();
+  let niveau=document.getElementById('nNiveau').value; let ecole=document.getElementById('nEcole').value; let montant=Number(document.getElementById('nMontant').value||0);
+  let msg=document.getElementById('msgAjout');
+  if(!enfant||!parent||!tel){ msg.style.color="red"; msg.textContent="❌ Mets Nom enfant, Parent et WhatsApp"; return; }
+  try{
+    await db.collection("inscriptions").add({enfant, parent, tel, niveau, ecole, groupe:ecole, statut:"en attente", date:new Date().toLocaleDateString('fr-FR'), createdAt:new Date(), creePar:"sous-directeur:"+SD.email});
+    if(montant>0){ await db.collection("paiements").add({enfant, parent, tel, montant, motif:"Inscription", mode:"Espèces", statut:"en_attente", ecole, date:new Date().toLocaleDateString('fr-FR'), createdAt:new Date()}); }
+    msg.style.color="green"; msg.textContent="✅ "+enfant+" inscrit !";
+    document.getElementById('nEnfant').value=""; document.getElementById('nTel').value=""; document.getElementById('nMontant').value="";
+    chargerInscriptionsSD();
+  }catch(e){ msg.textContent="❌ "+e.message; }
+}
+function seDeconnecterSD(){ localStorage.removeItem("sd_session"); location.reload(); }
+window.onload=()=>{ let s=localStorage.getItem("sd_session"); if(s){ SD=JSON.parse(s); afficherSD(); } }
+</script>
+</body>
+</html>

@@ -1,0 +1,53 @@
+*{box-sizing:border-box}
+:root{--vert:#0F3D2E;--vert2:#1A5C44;--or:#C9A227;--or2:#F2D06B;--creme:#FDF8EE;--orange:#FF7A3D;--gris:#6B7280}
+body{font-family:system-ui,-apple-system,Arial,sans-serif;margin:0;background:var(--creme);color:#1F2937;max-width:720px;margin:0 auto}
+input,select{width:100%;padding:13px;border:1.5px solid #E5E7EB;border-radius:14px;margin:6px 0;background:white;font-size:15px;outline:none}
+input:focus,select:focus{border-color:var(--or)}
+.label{font-weight:800;font-size:13px;margin-top:12px;display:block;color:var(--vert)}
+.btn-publier{width:100%;background:var(--vert);color:white;border:none;padding:15px;border-radius:14px;font-weight:800;cursor:pointer;margin-top:12px;font-size:15px;box-shadow:0 6px 16px rgba(15,61,46,.25)}
+.lang-bar{text-align:center;padding:10px;background:var(--vert);display:flex;gap:8px;justify-content:center}
+.lang-btn{background:rgba(255,255,255,.15);color:white;border:none;padding:9px 14px;border-radius:20px;font-weight:700;cursor:pointer}
+.lang-btn.active{background:var(--or);color:var(--vert)}
+.top-nav{position:sticky;top:0;z-index:100;background:var(--vert);padding:10px;display:flex;gap:6px;overflow-x:auto;white-space:nowrap;box-shadow:0 4px 12px rgba(0,0,0,.15)}
+.menu-btn{background:white;color:var(--vert);border:none;padding:11px 15px;border-radius:20px;font-weight:700;cursor:pointer;flex-shrink:0}
+.menu-btn.active{background:var(--or);color:var(--vert)}
+.header-ecole{background:linear-gradient(135deg,var(--vert),var(--vert2));color:white;padding:22px 16px;text-align:center;border-radius:0 0 24px 24px}
+.logo-ecole{font-size:22px;letter-spacing:.5px}
+.sous-logo{margin:6px 0;font-size:13px;opacity:.9}
+.btn-admin{background:var(--or);color:var(--vert);padding:9px 16px;border-radius:20px;text-decoration:none;font-weight:800;display:inline-block;margin-top:10px;box-shadow:0 4px 12px rgba(0,0,0,.2)}
+.hero-ecole{background:white;padding:22px 18px;border-radius:20px;margin:14px;text-align:center;border:2px solid #FDE68A;box-shadow:0 8px 24px rgba(0,0,0,.06)}
+.hero-badge{background:#FEF3C7;color:#92400E;display:inline-block;padding:7px 14px;border-radius:20px;font-weight:800;font-size:12px}
+.hero-img{width:96px;height:96px;border-radius:50%;object-fit:cover;border:4px solid var(--or);margin-top:12px}
+.hero-btns{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:12px}
+.btn-dark{background:var(--vert);color:white;border:none;padding:13px 18px;border-radius:25px;font-weight:800;cursor:pointer}
+.btn-gold{background:var(--or);color:var(--vert);border:none;padding:13px 18px;border-radius:25px;font-weight:800;cursor:pointer}
+.stats-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;text-align:center}
+.stat-card{background:white;padding:14px 8px;border-radius:16px;box-shadow:0 4px 14px rgba(0,0,0,.06);display:flex;flex-direction:column;gap:4px}
+.stat-card span{font-size:26px}
+.stat-card small{color:var(--gris);font-size:11px;line-height:1.3}
+.info-box{background:#FFF7ED;border:1.5px solid #FDBA74;padding:14px;border-radius:16px;margin-top:12px;text-align:left;line-height:1.5}
+.titre-section{text-align:center;color:var(--vert);font-size:22px}
+.sous-section{text-align:center;font-size:13px;color:var(--gris);margin-top:-8px}
+.filtres{display:flex;gap:8px}
+.filtres input{flex:1}
+.filtres select{width:160px}
+.form-card{background:white;border-radius:20px;padding:18px;box-shadow:0 8px 24px rgba(0,0,0,.06)}
+.choix-type{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:8px}
+.choix-box{background:var(--creme);border:2px solid #FDE68A;padding:12px;border-radius:16px;cursor:pointer;text-align:center;font-size:13px}
+.choix-box input{width:auto;margin:0}
+.select-cat{width:100%;padding:12px;border-radius:12px;border:1px solid #ddd;background:white}
+.parcours{padding:14px}
+.parcours-head{text-align:center}
+.parcours-kicker{color:var(--or);font-weight:900;letter-spacing:1px;font-size:12px}
+.niveau-pro{position:relative;background:white;border-radius:20px;padding:16px 16px 16px 70px;margin:14px 0;box-shadow:0 6px 18px rgba(0,0,0,.07);border:1px solid #F3E8C8;overflow:hidden}
+.niveau-pro:before{content:"";position:absolute;left:0;top:0;bottom:0;width:6px;background:var(--c,#1a3a2a)}
+.niveau-num{position:absolute;left:16px;top:16px;width:42px;height:42px;border-radius:50%;background:var(--c,#1a3a2a);color:white;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:18px}
+.niveau-age{position:absolute;right:12px;top:12px;background:var(--vert);color:white;padding:4px 10px;border-radius:20px;font-size:11px;font-weight:700}
+.contact-card{background:white;padding:22px;border-radius:20px;box-shadow:0 8px 24px rgba(0,0,0,.06)}
+.btn-whatsapp{display:inline-block;background:#25D366;color:white;padding:13px 20px;border-radius:25px;text-decoration:none;font-weight:800}
+.modal{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.7);z-index:999;overflow:auto;padding:14px}
+.modal-box{background:white;border-radius:20px;padding:18px;max-width:500px;margin:20px auto}
+.modal-close{float:right;background:#F3F4F6;border:none;padding:8px 12px;border-radius:10px}
+.footer{background:var(--vert);color:white;padding:20px;text-align:center;margin-top:20px;border-radius:20px 20px 0 0}
+.section-page{animation:fadeIn .3s}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}

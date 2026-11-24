@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Résultats - Institut Nouroul Iymane</title>
+<style>
+*{box-sizing:border-box}
+body{background:#F7FAF8;color:#222;font-family:Inter,Arial,sans-serif;margin:0}
+.topbar{background:#E8F5E9;color:#1B5E20;padding:14px 18px;display:flex;justify-content:space-between;align-items:center;border-bottom:3px solid #A5D6A7;position:sticky;top:0;z-index:20}
+.topbar b{letter-spacing:1px}
+.topbar a{color:#1B5E20;text-decoration:none;border:1px solid #1B5E20;padding:6px 12px;border-radius:20px;font-size:13px;background:white}
+.page{max-width:800px;margin:0 auto;padding:12px}
+.carte{background:white;border:1px solid #E0EDE1;border-radius:14px;padding:14px;margin-bottom:12px}
+.carte h2,.carte h3{text-align:center;color:#2E7D32;margin:0 0 10px 0;font-size:16px}
+.centre{text-align:center}
+.muted{color:#666;font-size:12px}
+label{display:block;font-weight:700;font-size:12px;margin-top:10px;color:#2E7D32}
+input,select{width:100%;padding:12px;border:1px solid #C8E6C9;border-radius:10px;background:white;margin-top:4px;font-size:14px}
+.btn-noir{background:#66BB6A;color:white;border:none;padding:13px;border-radius:10px;font-weight:800;width:100%;font-size:15px;cursor:pointer;margin-top:12px}
+.btn-or{background:#FFECB3;color:#5D4037;border:none;padding:10px 14px;border-radius:10px;font-weight:800;cursor:pointer}
+.kpi{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}
+.kpi div{background:#F1F8E9;border:1px solid #C8E6C9;border-radius:12px;padding:10px;text-align:center}
+.kpi b{font-size:18px;color:#2E7D32;display:block}
+.kpi small{color:#555;font-size:11px}
+.kpi .vert{background:#66BB6A;color:white}
+.kpi .vert b{color:white}
+.table-blanc{width:100%;border-collapse:collapse;font-size:12px;margin-top:8px}
+.table-blanc th{background:#A5D6A7;color:#1B5E20;padding:7px;text-align:left;border:1px solid #C8E6C9}
+.table-blanc td{border:1px solid #E8F5E9;padding:7px;background:white}
+.badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:800}
+.badge-paye{background:#66BB6A;color:white}
+.badge-avance{background:#FFF9C4;color:#5D4037;border:1px solid #FFE082}
+.badge-nonpaye{background:#FFCDD2;color:#7A1A1A;border:1px solid #EF9A9A}
+.badge-admis{background:#66BB6A;color:white}
+.badge-redouble{background:#FFCDD2;color:#7A1A1A}
+.bulletin-page{background:white;max-width:680px;margin:0 auto;border:1px solid #ccc;color:#111}
+.bulletin-page .b-head{background:#A5D6A7;color:#1B5E20;padding:10px;text-align:center;border-bottom:3px solid #FFE082}
+.bulletin-page .b-head h2{margin:0;font-size:17px}
+.bulletin-page .b-head p{margin:2px 0;font-size:11px}
+.bulletin-page .b-infos{display:flex;justify-content:space-between;padding:8px 12px;font-size:11px;text-align:center;background:#FFF9C4;border-bottom:1px solid #ccc}
+.bulletin-page .b-infos div{flex:1}
+.bulletin-page table{width:100%;border-collapse:collapse;font-size:12px}
+.bulletin-page th{background:#A5D6A7;color:#1B5E20;padding:6px 8px;text-align:left}
+.bulletin-page td{padding:5px 8px;border-bottom:1px solid #ddd}
+.bulletin-page .b-total{background:#A5D6A7;color:#1B5E20;padding:9px 12px;display:flex;justify-content:space-between;font-weight:800}
+.bulletin-page .b-total span:last-child{background:#FFE082;color:#1B5E20;padding:4px 12px;border-radius:20px;font-size:11px}
+@media(max-width:600px){.kpi{grid-template-columns:1fr 1fr}}
+@media print{body{background:white}.no-print{display:none!important}.carte{border:none}}
+</style>
+</head>
+<body>
+<div class="topbar no-print"><b>INSTITUT NOUROUL IYMANE</b><a href="index.html">Accueil</a></div>
+<div class="page">
+
+<!-- 1. RECHERCHE -->
+<div class="carte no-print" id="carteRecherche">
+<h2>🔍 Voir les résultats de mon enfant</h2>
+<p class="centre muted">Tape le nom de l'enfant + le téléphone du parent utilisé à l'inscription.<br>Tu verras SEULEMENT ton enfant.</p>
+<label>Nom de l'enfant *</label>
+<input id="resNom" placeholder="Ex : Ahmad Moussa">
+<label>Téléphone du parent *</label>
+<input id="resTel" placeholder="Ex : 690000000" inputmode="numeric">
+<label>Trimestre à voir</label>
+<select id="resTrimestre">
+<option value="Trimestre 1">Trimestre 1</option>
+<option value="Trimestre 2">Trimestre 2</option>
+<option value="Trimestre 3">Trimestre 3</option>
+<option value="Annuel">Toute l'année (Bilan Annuel)</option>
+</select>
+<button class="btn-noir" onclick="chercherResultat()">Voir les résultats</button>
+<p id="msgRes" class="centre" style="color:red;font-weight:700"></p>
+<p class="centre muted">Assalamou Aleykoum - Si ça ne marche pas, vérifie l'orthographe du nom et le téléphone.</p>
+</div>
+
+<!-- 2. RESULTATS -->
+<div id="zoneResultat" style="display:none">
+
+<div class="carte centre">
+<h2 id="resTitreEnfant">...</h2>
+<p class="muted"><span id="resEcole"></span> - <span id="resClasse"></span> - <span id="resParent"></span></p>
+<div class="kpi">
+<div><b id="resMoyenne">-</b><small>Moyenne</small></div>
+<div><b id="resRang">-</b><small>Rang</small></div>
+<div><b id="resMention">-</b><small>Mention</small></div>
+</div>
+<div style="margin-top:10px" class="no-print">
+<button class="btn-or" onclick="changerTrimestre('Trimestre 1')">T1</button>
+<button class="btn-or" onclick="changerTrimestre('Trimestre 2')">T2</button>
+<button class="btn-or" onclick="changerTrimestre('Trimestre 3')">T3</button>
+<button class="btn-or" onclick="changerTrimestre('Annuel')">Annuel</button>
+<button class="btn-or" onclick="nouvelleRecherche()">🔍 Autre enfant</button>
+</div>
+</div>
+
+<!-- BULLETIN -->
+<div class="carte">
+<h3>📝 Bulletin - <span id="resTitreTrimestre">Trimestre 1</span></h3>
+<p class="centre muted">Matières : <span id="resMatieres"></span> - Composition : <span id="resTypeComp"></span></p>
+<div id="resBulletin"></div>
+</div>
+
+<!-- PAIEMENT -->
+<div class="carte">
+<h3>💰 Paiement - Scolarité</h3>
+<div class="kpi">
+<div><b id="resTotalFrais">0</b><small>Total à payer</small></div>
+<div><b id="resTotalPaye">0</b><small>Déjà payé</small></div>
+<div class="vert"><b id="resReste">0</b><small>Reste à payer</small></div>
+</div>
+<p class="centre" style="margin-top:10px"><span id="resBadgePaiement"></span></p>
+<div id="resHistoriquePaiements"></div>
+</div>
+
+<!-- PRESENCE -->
+<div class="carte">
+<h3>✅ Présence</h3>
+<div class="kpi">
+<div><b id="resNbPresent">-</b><small>Jours présent</small></div>
+<div><b id="resNbAbsent">-</b><small>Jours absent</small></div>
+<div><b id="resTauxPresence">-</b><small>% Présence</small></div>
+</div>
+<p class="centre muted" id="resDernierAbsent"></p>
+<div id="resHistoriquePresence"></div>
+</div>
+
+<!-- ANNUEL -->
+<div class="carte">
+<h3>🏆 Bilan Annuel</h3>
+<p class="centre muted">Moyenne Annuelle = (T1 + T2 + T3) / 3 - ≥10 = ADMIS</p>
+<div id="resAnnuel"></div>
+</div>
+
+<div class="carte centre no-print">
+<button class="btn-noir" onclick="window.print()" style="width:auto;padding:12px 20px">🖨 Imprimer / Télécharger en PDF</button>
+<p class="muted">Merci - Institut Nouroul Iymane</p>
+</div>
+
+</div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="firebase.js"></script>
+<script>
+let eleveTrouve = null;
+let tousBulletinsEleve = [];
+let tousPaiementsEleve = [];
+let toutesPresencesEleve = [];
+let fraisTotal = 0;
+let typeCompositionGlobal = "oral_ecrit";
+let matieresActivesGlobal = [];
+
+function normaliser(t){ return (t||"").toString().trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,""); }
+function nettoyerTel(t){ return (t||"").toString().replace(/[^0-9]/g,""); }
+function libelleType(){ if(typeCompositionGlobal==="oral") return "Oral seulement"; if(typeCompositionGlobal==="ecrit") return "Écrit seulement"; return "Oral + Écrit"; }
+function mentionPour(m){ if(m>=16) return "Excellent"; if(m>=14) return "Très Bien"; if(m>=12) return "Bien"; if(m>=10) return "Passable"; return "Efforts à fournir"; }
+
+async function chercherResultat(){
+  let nom = document.getElementById('resNom').value.trim();
+  let tel = nettoyerTel(document.getElementById('resTel').value);
+  let trim = document.getElementById('resTrimestre').value;
+  let msg = document.getElementById('msgRes');
+  msg.textContent = "";
+  if(!nom) return msg.textContent = "Écris le nom de l'enfant.";
+  if(!tel || tel.length < 9) return msg.textContent = "Écris le téléphone du parent (9 chiffres).";
+  msg.textContent = "Recherche...";
+  try{
+    // 1. Trouver l'élève : Nom + Téléphone
+    let snap = await db.collection("inscriptions").get();
+    let trouve = null;
+    snap.forEach(d=>{
+      let c = d.data();
+      let nomOK = normaliser(c.enfant) === normaliser(nom) || normaliser(c.enfant).includes(normaliser(nom)) || normaliser(nom).includes(normaliser(c.enfant));
+      let telOK = nettoyerTel(c.tel) === tel || nettoyerTel(c.tel).endsWith(tel.slice(-9)) || tel.endsWith(nettoyerTel(c.tel).slice(-9));
+      if(nomOK && telOK) trouve = {id:d.id, ...c};
+    });
+    if(!trouve){ msg.textContent = "❌ Nom ou téléphone incorrect. Vérifie l'orthographe et le téléphone utilisé à l'inscription."; document.getElementById('zoneResultat').style.display='none'; return; }
+    eleveTrouve = trouve;
+
+    // 2. Config école : Frais + Matières + Type
+    let ecoleNom = trouve.ecoleNom || trouve.groupeNom || "";
+    try{
+      let snapF = await db.collection("configFrais").get();
+      snapF.forEach(d=>{ if(normaliser(d.data().ecoleNom)===normaliser(ecoleNom)) fraisTotal = Number(d.data().montant||0); });
+    }catch(e){}
+    try{
+      let snapM = await db.collection("configMatieres").get();
+      snapM.forEach(d=>{ if(normaliser(d.data().ecoleNom)===normaliser(ecoleNom)){ matieresActivesGlobal = d.data().matieres||[]; if(d.data().typeComposition) typeCompositionGlobal = d.data().typeComposition; }});
+    }catch(e){}
+
+    // 3. Bulletins de cet élève
+    tousBulletinsEleve = [];
+    try{
+      let snapB = await db.collection("bulletins").get();
+      snapB.forEach(d=>{ let b = d.data(); if(normaliser(b.eleve)===normaliser(trouve.enfant) || normaliser(b.enfantNom)===normaliser(trouve.enfant) || normaliser(b.nom)===normaliser(trouve.enfant)) tousBulletinsEleve.push(b); });
+    }catch(e){}
+    // Si bulletins stockés dans "bulletinsEleve" ou autre, on essaie aussi
+    if(!tousBulletinsEleve.length){
+      try{
+        let snapB2 = await db.collection("bulletinsEleve").get();
+        snapB2.forEach(d=>{ let b = d.data(); if(normaliser(b.eleve)===normaliser(trouve.enfant) || normaliser(b.enfantNom)===normaliser(trouve.enfant)) tousBulletinsEleve.push(b); });
+      }catch(e){}
+    }
+
+    // 4. Paiements de cet élève
+    tousPaiementsEleve = [];
+    try{
+      let snapP = await db.collection("paiements").get();
+      snapP.forEach(d=>{ let p = d.data(); if(normaliser(p.enfantNom)===normaliser(trouve.enfant)) tousPaiementsEleve.push(p); });
+    }catch(e){}
+
+    // 5. Présences de cet élève
+    toutesPresencesEleve = [];
+    try{
+      let snapPr = await db.collection("presences").get();
+      snapPr.forEach(d=>{ let p = d.data(); let liste = p.eleves || p.liste || p.presences || []; if(Array.isArray(liste)){ liste.forEach(x=>{ if(normaliser(x.nom)===normaliser(trouve.enfant) || normaliser(x.enfant)===normaliser(trouve.enfant)) toutesPresencesEleve.push({date:p.date||p.datePresence||"", statut:x.statut||x.present, ...x}); }); } else if(normaliser(p.enfantNom)===normaliser(trouve.enfant) || normaliser(p.nom)===normaliser(trouve.enfant)){ toutesPresencesEleve.push(p); } });
+    }catch(e){}
+    try{
+      if(!toutesPresencesEleve.length){
+        let snapPr2 = await db.collection("presence").get();
+        snapPr2.forEach(d=>{ let p = d.data(); if(normaliser(p.enfantNom)===normaliser(trouve.enfant) || normaliser(p.nom)===normaliser(trouve.enfant)) toutesPresencesEleve.push(p); });
+      }
+    }catch(e){}
+
+    msg.textContent = "";
+    document.getElementById('zoneResultat').style.display='block';
+    document.getElementById('carteRecherche').style.display='none';
+    afficherResultat(trim);
+    window.scrollTo({top:0, behavior:'smooth'});
+  }catch(err){ console.error(err); msg.textContent = "Erreur de connexion. Réessaie."; }
+}
+
+function afficherResultat(trim){
+  if(!eleveTrouve) return;
+  document.getElementById('resTitreEnfant').textContent = eleveTrouve.enfant;
+  document.getElementById('resEcole').textContent = eleveTrouve.ecoleNom || eleveTrouve.groupeNom || "";
+  document.getElementById('resClasse').textContent = eleveTrouve.niveau || eleveTrouve.classe || "";
+  document.getElementById('resParent').textContent = "Parent : " + (eleveTrouve.parent||"");
+  document.getElementById('resTitreTrimestre').textContent = trim === "Annuel" ? "Bilan Annuel" : trim;
+  document.getElementById('resMatieres').textContent = matieresActivesGlobal.length ? matieresActivesGlobal.join(", ") : "Toutes";
+  document.getElementById('resTypeComp').textContent = libelleType();
+
+  // --- BULLETIN TRIMESTRE ---
+  let b = tousBulletinsEleve.find(x => (x.trimestre||x.periode||"") === trim);
+  if(trim === "Annuel"){
+    afficherAnnuel();
+  } else {
+    if(!b){
+      document.getElementById('resBulletin').innerHTML = `<p class="centre">Pas encore de bulletin pour ${trim}.<br><small>Le Sous-Directeur n'a pas encore saisi.</small></p>`;
+      document.getElementById('resMoyenne').textContent = "-";
+      document.getElementById('resRang').textContent = "-";
+      document.getElementById('resMention').textContent = "-";
+    } else {
+      let notes = b.notes || b.matieres || b.details || {};
+      let lignes = "";
+      let somme = 0, nb = 0;
+      Object.keys(notes).forEach(k=>{
+        let v = notes[k];
+        let moy = typeof v === 'object' ? (v.moyenne ?? v.note ?? v.moy) : v;
+        if(moy===""||moy===null||moy===undefined) moy = 0;
+        moy = Number(moy);
+        somme += moy; nb++;
+        lignes += `<tr><td><b>${k}</b></td><td>${typeof v==='object' ? (v.oral ?? "-")+" / "+(v.ecrit ?? "-") : "-"}</td><td><b>${moy.toFixed(2)} / 20</b></td></tr>`;
+      });
+      // Si notes stockées en tableau
+      if(Array.isArray(notes)){ lignes=""; notes.forEach(n=>{ let moy = Number(n.moyenne ?? n.note ?? 0); somme+=moy; nb++; lignes+=`<tr><td><b>${n.matiere||n.nom}</b></td><td>${n.oral ?? "-"} / ${n.ecrit ?? "-"}</td><td><b>${moy.toFixed(2)} / 20</b></td></tr>`; }); }
+      let moyG = b.moyenne ?? b.moyenneGenerale ?? (nb ? somme/nb : 0);
+      moyG = Number(moyG);
+      document.getElementById('resMoyenne').textContent = moyG.toFixed(2) + " / 20";
+      document.getElementById('resRang').textContent = b.rang ? b.rang + "e" : "-";
+      document.getElementById('resMention').textContent = b.mention || mentionPour(moyG);
+      document.getElementById('resBulletin').innerHTML = `
+      <div class="bulletin-page">
+        <div class="b-head"><h2>INSTITUT NOUROUL IYMANE</h2><p>${eleveTrouve.ecoleNom||""} - ${trim} - Année 2026-2027</p></div>
+        <div class="b-infos"><div><b>${eleveTrouve.enfant}</b><br>Classe : ${eleveTrouve.niveau||""}</div><div><b>${trim}</b><br>${libelleType()}</div><div><b>Moyenne</b><br>${moyG.toFixed(2)} / 20</div></div>
+        <table><tr><th>Matière</th><th>Oral / Écrit</th><th>Moyenne</th></tr>${lignes || `<tr><td colspan="3" class="centre">Notes non détaillées - Moyenne : ${moyG.toFixed(2)}</td></tr>`}</table>
+        <div class="b-total"><span>Moyenne : ${moyG.toFixed(2)} / 20</span><span>${mentionPour(moyG)}</span></div>
+        <p class="centre" style="font-size:11px;padding:6px">Appréciation : ${b.appreciation || b.appreciationGenerale || mentionPour(moyG)}</p>
+      </div>`;
+    }
+  }
+
+  // --- PAIEMENT ---
+  let totalPaye = tousPaiementsEleve.reduce((s,p)=>s+Number(p.montant||0),0);
+  let reste = Math.max(0, fraisTotal - totalPaye);
+  document.getElementById('resTotalFrais').textContent = fraisTotal.toLocaleString('fr-FR') + " FCFA";
+  document.getElementById('resTotalPaye').textContent = totalPaye.toLocaleString('fr-FR') + " FCFA";
+  document.getElementById('resReste').textContent = reste.toLocaleString('fr-FR') + " FCFA";
+  let badge = reste===0 && fraisTotal>0 ? `<span class="badge badge-paye">✓ PAYÉ COMPLET</span>` : totalPaye===0 ? `<span class="badge badge-nonpaye">✗ NON PAYÉ</span>` : `<span class="badge badge-avance">◐ AVANCE - Reste ${reste} FCFA</span>`;
+  document.getElementById('resBadgePaiement').innerHTML = badge;
+  let hP = `<table class="table-blanc"><tr><th>Date</th><th>Montant</th><th>Motif</th></tr>`;
+  if(!tousPaiementsEleve.length) hP += `<tr><td colspan="3" class="centre">Aucun paiement enregistré.</td></tr>`;
+  tousPaiementsEleve.forEach(p=>{ hP += `<tr><td>${p.datePaiement || (p.date?new Date(p.date).toLocaleDateString('fr-FR'):"")}</td><td><b>${p.montant} FCFA</b></td><td>${p.motif||""}</td></tr>`; });
+  hP += `</table>`;
+  document.getElementById('resHistoriquePaiements').innerHTML = hP;
+
+  // --- PRESENCE ---
+  let nbP = toutesPresencesEleve.filter(p=>{ let s=(p.statut||p.present||"").toString().toLowerCase(); return s.includes("present") || s==="oui" || s==="1" || s===true || p.present===true; }).length;
+  let nbA = toutesPresencesEleve.length - nbP;
+  // Si statut stocké en "present: true/false"
+  if(toutesPresencesEleve.length && nbP===0 && nbA===toutesPresencesEleve.length){
+    // On recompte avec champ present boolean
+    nbP = toutesPresencesEleve.filter(p=>p.present===true || p.statut==="Présent").length;
+    nbA = toutesPresencesEleve.length - nbP;
+  }
+  let taux = toutesPresencesEleve.length ? Math.round(nbP/toutesPresencesEleve.length*100) : 0;
+  document.getElementById('resNbPresent').textContent = nbP;
+  document.getElementById('resNbAbsent').textContent = nbA;
+  document.getElementById('resTauxPresence').textContent = toutesPresencesEleve.length ? taux+"%" : "-";
+  let dernierAbs = [...toutesPresencesEleve].reverse().find(p=>{ let s=(p.statut||"").toString().toLowerCase(); return s.includes("absent") || p.present===false; });
+  document.getElementById('resDernierAbsent').textContent = dernierAbs ? "Dernier absent : " + (dernierAbs.date || dernierAbs.datePresence || "") : (toutesPresencesEleve.length ? "Aucune absence enregistrée." : "Présence pas encore saisie.");
+  let hPr = `<table class="table-blanc"><tr><th>Date</th><th>Statut</th></tr>`;
+  if(!toutesPresencesEleve.length) hPr += `<tr><td colspan="2" class="centre">Aucune présence enregistrée.</td></tr>`;
+  [...toutesPresencesEleve].slice(-10).reverse().forEach(p=>{ let s = p.statut || (p.present===true?"Présent":p.present===false?"Absent":"-"); hPr += `<tr><td>${p.date||p.datePresence||""}</td><td><b>${s}</b></td></tr>`; });
+  hPr += `</table>`;
+  document.getElementById('resHistoriquePresence').innerHTML = hPr;
+
+  // --- ANNUEL (toujours affiché en bas) ---
+  afficherAnnuel();
+}
+
+function afficherAnnuel(){
+  let t1 = tousBulletinsEleve.find(x=>(x.trimestre||x.periode)==="Trimestre 1");
+  let t2 = tousBulletinsEleve.find(x=>(x.trimestre||x.periode)==="Trimestre 2");
+  let t3 = tousBulletinsEleve.find(x=>(x.trimestre||x.periode)==="Trimestre 3");
+  let m1 = t1 ? Number(t1.moyenne ?? t1.moyenneGenerale ?? 0) : null;
+  let m2 = t2 ? Number(t2.moyenne ?? t2.moyenneGenerale ?? 0) : null;
+  let m3 = t3 ? Number(t3.moyenne ?? t3.moyenneGenerale ?? 0) : null;
+  let vals = [m1,m2,m3].filter(v=>v!==null);
+  let moyAn = vals.length ? vals.reduce((a,b)=>a+b,0)/vals.length : 0;
+  let dec = moyAn>=10 ? "ADMIS" : "REDOUBLE";
+  let badge = moyAn>=10 ? `<span class="badge badge-admis">ADMIS</span>` : `<span class="badge badge-redouble">REDOUBLE</span>`;
+  document.getElementById('resAnnuel').innerHTML = `
+    <table class="table-blanc"><tr><th>Trimestre 1</th><th>Trimestre 2</th><th>Trimestre 3</th><th>Moyenne Annuelle</th><th>Décision</th></tr>
+    <tr><td>${m1!==null?m1.toFixed(2):"-"}</td><td>${m2!==null?m2.toFixed(2):"-"}</td><td>${m3!==null?m3.toFixed(2):"-"}</td><td><b>${vals.length?moyAn.toFixed(2):"-"} / 20</b></td><td>${vals.length?badge:"-"}</td></tr></table>
+    <p class="centre" style="margin-top:8px">Moyenne Annuelle = (T1 + T2 + T3) / 3 - Mention : ${vals.length?mentionPour(moyAn):"-"}</p>`;
+  // Si on est sur l'onglet Annuel, on met aussi le KPI en haut
+  let trimSel = document.getElementById('resTrimestre').value;
+  if(trimSel==="Annuel" || document.getElementById('resTitreTrimestre').textContent==="Bilan Annuel"){
+    document.getElementById('resMoyenne').textContent = vals.length ? moyAn.toFixed(2)+" / 20" : "-";
+    document.getElementById('resMention').textContent = vals.length ? mentionPour(moyAn) : "-";
+    document.getElementById('resBulletin').innerHTML = `<p class="centre">Voir le Bilan Annuel en bas. T1 : ${m1!==null?m1.toFixed(2):"-"} - T2 : ${m2!==null?m2.toFixed(2):"-"} - T3 : ${m3!==null?m3.toFixed(2):"-"}</p>`;
+  }
+}
+
+function changerTrimestre(t){
+  document.getElementById('resTrimestre').value = t;
+  afficherResultat(t);
+}
+function nouvelleRecherche(){
+  document.getElementById('zoneResultat').style.display='none';
+  document.getElementById('carteRecherche').style.display='block';
+  document.getElementById('resNom').value = "";
+  document.getElementById('resTel').value = "";
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+</script>
+</body>
+</html>

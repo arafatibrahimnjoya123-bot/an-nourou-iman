@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gestion - Institut Nouroul Iymane</title>
+<link rel="stylesheet" href="style.css">
+<style>
+*{box-sizing:border-box}
+body{background:#F7FAF8;color:#222;font-family:Inter,Arial,sans-serif;margin:0}
+.topbar{background:#E8F5E9;color:#1B5E20;padding:14px 18px;display:flex;justify-content:space-between;align-items:center;border-bottom:3px solid #A5D6A7;position:sticky;top:0;z-index:20}
+.topbar b{letter-spacing:1px;color:#1B5E20}
+.topbar a{color:#1B5E20;text-decoration:none;border:1px solid #1B5E20;padding:6px 12px;border-radius:20px;font-size:13px;background:white}
+.menu-horizontal{background:white;border-bottom:2px solid #C8E6C9;position:sticky;top:52px;z-index:19;overflow-x:auto;white-space:nowrap;padding:10px 12px;display:flex;gap:8px}
+.menu-horizontal button{flex:0 0 auto;background:#F1F8E9;border:1px solid #C8E6C9;color:#2E7D32;padding:10px 14px;border-radius:20px;font-weight:700;cursor:pointer;font-size:13px}
+.menu-horizontal button.actif{background:#66BB6A;color:white;border-color:#66BB6A}
+.page{max-width:1000px;margin:0 auto;padding:12px}
+.carte{background:white;border:1px solid #E0EDE1;border-radius:14px;padding:12px;margin-bottom:12px}
+.carte h2,.carte h3{text-align:center;color:#2E7D32;margin:0 0 8px 0;font-size:16px}
+.centre{text-align:center}
+.muted{color:#666;font-size:12px}
+label{display:block;font-weight:700;font-size:12px;margin-top:10px;color:#2E7D32}
+input,select{width:100%;padding:10px;border:1px solid #C8E6C9;border-radius:10px;background:white;margin-top:4px;font-size:14px}
+.btn-noir{background:#66BB6A;color:white;border:none;padding:12px;border-radius:10px;font-weight:800;width:100%;font-size:15px;cursor:pointer}
+.btn-or{background:#FFECB3;color:#5D4037;border:none;padding:10px 14px;border-radius:10px;font-weight:800;cursor:pointer}
+.btn-toggle-liste{background:white;border:1px solid #66BB6A;color:#2E7D32;padding:8px 14px;border-radius:20px;font-weight:800;font-size:12px;cursor:pointer;margin:8px 0}
+.btn-danger{background:#FFCDD2;color:#7A1A1A;border:1px solid #EF9A9A;padding:8px 14px;border-radius:20px;font-weight:800;font-size:12px;cursor:pointer;margin:8px 0}
+.kpi{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}
+.kpi div{background:#F1F8E9;border:1px solid #C8E6C9;border-radius:12px;padding:9px;text-align:center}
+.kpi b{font-size:18px;color:#2E7D32;display:block}
+.kpi small{color:#555;font-size:11px}
+.kpi .vert{background:#66BB6A;color:white}
+.kpi .vert b{color:white}
+#listeElevesGestion,#listePaiementsGestion,#historiquePaiements,#listeEnseignants,#listeBulletins,#listeBulletinsAnnuels,#listePresence{overflow-x:auto}
+.table-blanc{width:100%;min-width:560px;border-collapse:collapse;font-size:11px;margin-top:8px}
+.table-blanc th{background:#A5D6A7;color:#1B5E20;padding:5px 6px;text-align:left;border:1px solid #C8E6C9;font-size:11px}
+.table-blanc td{border:1px solid #E8F5E9;padding:5px 6px;background:white;font-size:11px;line-height:1.3}
+.table-blanc tr:nth-child(even) td{background:#F1F8E9}
+.badge{display:inline-block;padding:2px 7px;border-radius:20px;font-size:10px;font-weight:800}
+.badge-paye{background:#66BB6A;color:white}
+.badge-avance{background:#FFF9C4;color:#5D4037;border:1px solid #FFE082}
+.badge-nonpaye{background:#FFCDD2;color:#7A1A1A;border:1px solid #EF9A9A}
+.badge-accepte{background:#66BB6A;color:white}
+.badge-attente{background:white;color:#2E7D32;border:1px dashed #66BB6A}
+.lien-action{color:#2E7D32;font-weight:800;text-decoration:underline;cursor:pointer;background:none;border:none;padding:0;font-size:11px}
+.btn-filtre{background:white;border:1px solid #66BB6A;color:#2E7D32;padding:6px 10px;border-radius:20px;font-weight:700;cursor:pointer;font-size:11px}
+.btn-filtre.actif{background:#66BB6A;color:white}
+.btn-pdf{background:white;border:1px solid #66BB6A;color:#2E7D32;padding:6px 10px;border-radius:20px;font-weight:700;font-size:11px;cursor:pointer}
+.btn-ligne{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin-top:8px}
+.note-input{width:56px;padding:6px;border:1px solid #C8E6C9;border-radius:8px;text-align:center;font-weight:700}
+.form-paiement{background:#F1F8E9;border:1px solid #C8E6C9;padding:12px;border-radius:12px}
+.info-solde{background:white;border:1px solid #66BB6A;padding:10px;border-radius:10px;margin-top:8px;font-size:13px}
+.matiere-check{display:flex;align-items:center;gap:8px;background:#F1F8E9;border:1px solid #C8E6C9;padding:9px 10px;border-radius:10px;margin:5px 0}
+.matiere-check input{width:20px;height:20px;margin:0}
+.bulletin-page{background:white;max-width:680px;margin:0 auto;border:1px solid #ccc;color:#111}
+.bulletin-page .b-head{background:#A5D6A7;color:#1B5E20;padding:10px;text-align:center;border-bottom:3px solid #FFE082}
+.bulletin-page .b-head h2{margin:0;font-size:17px}
+.bulletin-page .b-head p{margin:2px 0;font-size:11px}
+.bulletin-page .b-infos{display:flex;justify-content:space-between;padding:8px 12px;font-size:11px;text-align:center;background:#FFF9C4;border-bottom:1px solid #ccc}
+.bulletin-page .b-infos div{flex:1}
+.bulletin-page table{width:100%;border-collapse:collapse;font-size:12px}
+.bulletin-page th{background:#A5D6A7;color:#1B5E20;padding:6px 8px;text-align:left}
+.bulletin-page td{padding:5px 8px;border-bottom:1px solid #ddd}
+.bulletin-page .b-total{background:#A5D6A7;color:#1B5E20;padding:9px 12px;display:flex;justify-content:space-between;font-weight:800}
+.bulletin-page .b-total span:last-child{background:#FFE082;color:#1B5E20;padding:4px 12px;border-radius:20px;font-size:11px}
+.bulletin-page .b-app{padding:7px;text-align:center;font-size:11px}
+.bulletin-page .b-sign{display:flex;justify-content:space-between;padding:10px 20px 14px;font-size:11px;text-align:center}
+.btn-flottant{position:fixed;bottom:20px;right:20px;width:52px;height:52px;border-radius:50%;background:#66BB6A;color:white;border:2px solid #FFE082;font-size:24px;z-index:99}
+.menu-flottant{position:fixed;bottom:82px;right:20px;background:white;border:1px solid #ddd;border-radius:12px;padding:10px;width:250px;display:none;z-index:99}
+.menu-flottant button{width:100%;background:white;border:1px solid #eee;padding:12px;border-radius:8px;text-align:left;margin:4px 0;font-weight:700}
+@media(max-width:800px){.kpi{grid-template-columns:1fr 1fr}.table-blanc{min-width:520px}}
+@media print{body{background:white}.no-print{display:none!important}.carte{border:none}}
+</style>
+</head>
+<body>
+<div class="topbar no-print"><b>INSTITUT NOUROUL IYMANE - GESTION</b><span id="topEcole">...</span><a href="index.html">Site</a></div>
+<nav class="menu-horizontal no-print">
+<button onclick="showTabGestion('tabDashboard',this)" class="gestion-tab actif">📊 Tableau de bord</button>
+<button onclick="showTabGestion('tabEleves',this)" class="gestion-tab">👨‍🎓 Élèves</button>
+<button onclick="showTabGestion('tabPaiements',this)" class="gestion-tab">💰 Paiements</button>
+<button onclick="showTabGestion('tabEnseignants',this)" class="gestion-tab">👨‍🏫 Enseignants</button>
+<button onclick="showTabGestion('tabBulletins',this)" class="gestion-tab">📝 Bulletins</button>
+<button onclick="showTabGestion('tabPresence',this)" class="gestion-tab">✅ Présence</button>
+<button onclick="showTabGestion('tabAnnuel',this)" class="gestion-tab">🏆 Bilan Annuel</button>
+<button onclick="showTabGestion('tabParametres',this)" class="gestion-tab">⚙️ Paramètres</button>
+</nav>
+<div class="page">
+<div class="carte" id="loginCard"><h2>Connexion Sous-Directeur</h2><input type="email" id="email" placeholder="Email"><input type="password" id="password" placeholder="Mot de passe"><button onclick="seConnecterGestion()" class="btn-noir" style="margin-top:12px">Se connecter</button><p id="msg" style="color:red;text-align:center"></p></div>
+<div id="gestionPanel" style="display:none">
+<div class="carte centre"><small>Assalamou Aleykoum - <b id="gestionEmail"></b> - <button onclick="seDeconnecterGestion()" style="background:white;border:1px solid #ccc;padding:4px 10px;border-radius:20px">Déconnexion</button></small></div>
+<div id="tabDashboard">
+<div class="carte"><h2>Tableau de bord - <span id="monEcoleNom">...</span></h2><p class="centre muted">Aujourd'hui : <span id="dateJour"></span> - Matières actives : <b id="affichageMatieresActives">Toutes</b></p><p class="centre muted">Composition : <b id="affichageTypeComposition">Oral + Écrit</b></p><div class="kpi"><div><b id="statTotal">0</b><small>Élèves</small></div><div><b id="statAccepte">0</b><small>Acceptés DG</small></div><div><b id="statEnAttente">0</b><small>En attente DG</small></div><div><b id="statPaye">0</b><small>✓ Payé complet</small></div><div><b id="statNonPaye">0</b><small>Doivent encore</small></div><div class="vert"><b id="statMontant">0</b><small>FCFA encaissé</small></div></div><div class="btn-ligne"><button class="btn-or" onclick="showTabGestion('tabPaiements', document.querySelectorAll('.gestion-tab')[2])">+ Nouveau paiement</button><button class="btn-noir" style="width:auto;padding:11px 16px" onclick="showTabGestion('tabBulletins', document.querySelectorAll('.gestion-tab')[4])">+ Nouveau bulletin</button></div></div>
+<div class="carte"><h3>⚠️ À faire aujourd'hui</h3><div id="alertesJour"></div></div>
+<div class="carte"><h3>Derniers paiements</h3><div id="derniersPaiementsDashboard"></div></div>
+</div>
+<div id="tabEleves" style="display:none">
+<div class="carte"><h3>Liste des Élèves</h3><p class="centre muted"><span id="titreEcoleEleves"></span> - Frais : <span id="titreFraisEleves"></span> FCFA - <span id="titreDateEleves"></span></p><div class="centre" style="font-size:12px;background:#F1F8E9;border:1px solid #C8E6C9;padding:8px;border-radius:10px"><b>Légende :</b> <span class="badge badge-paye">✓ PAYÉ</span> <span class="badge badge-avance">◐ AVANCE</span> <span class="badge badge-nonpaye">✗ NON PAYÉ</span> <span class="badge badge-accepte">ACCEPTÉ DG</span> <span class="badge badge-attente">EN ATTENTE DG</span></div><div class="btn-ligne no-print"><button onclick="filtrerEleves('tous',this)" class="btn-filtre actif">Tous</button><button onclick="filtrerEleves('paye',this)" class="btn-filtre">✓ Payés</button><button onclick="filtrerEleves('avance',this)" class="btn-filtre">◐ Avance</button><button onclick="filtrerEleves('nonpaye',this)" class="btn-filtre">✗ Non payés</button><button onclick="filtrerEleves('attente',this)" class="btn-filtre">En attente DG</button><button onclick="filtrerEleves('accepte',this)" class="btn-filtre">Acceptés DG</button></div><div style="margin-top:10px" class="no-print"><input type="text" id="rechercheEleve" placeholder="🔍 Rechercher un élève..." oninput="filtrerEleves(filtreEleveActuel, document.querySelector('#tabEleves .btn-filtre.actif'))"></div><div class="centre no-print" style="margin:10px 0"><button class="btn-pdf" onclick="telechargerListeElevesPDF()">⬇ Télécharger cette liste en PDF</button> <button class="btn-pdf" onclick="telechargerEleves()">💬 Envoyer sur WhatsApp</button></div><div class="centre no-print"><div id="conteneurBtnEleves"></div></div><div id="listeElevesGestion"></div></div>
+</div>
+<div id="tabPaiements" style="display:none">
+<div class="carte"><h3>1. Nouveau Paiement</h3><p class="centre muted">1. Choisis l'élève - 2. Classe auto - 3. Tu vois son solde - 4. Tu enregistres</p><div class="form-paiement"><label>1. Choisir l'élève *</label><select id="paiementEleve" onchange="onElevePaiementChange()"><option value="">— Choisis l'élève —</option></select><label>2. Classe (auto)</label><input id="paiementClasse" readonly style="background:#f5f5f5" placeholder="Classe auto"><div id="infoSoldeEleve" class="info-solde" style="display:none"></div><label>3. Montant payé maintenant *</label><input type="number" id="paiementMontant" placeholder="Ex : 3000" oninput="calculerResteApresPaiement()"><label>4. Motif</label><select id="paiementMotif"><option value="Avance scolarite">Avance scolarité</option><option value="Inscription">Inscription</option><option value="Mensuel">Mensuel</option><option value="Trimestre 1">Trimestre 1</option><option value="Trimestre 2">Trimestre 2</option><option value="Trimestre 3">Trimestre 3</option><option value="Solde total">Solde total</option></select><label>5. Date</label><input type="date" id="paiementDate"><div id="apercuApresPaiement" class="info-solde" style="display:none"></div><button onclick="enregistrerPaiementFormulaire()" class="btn-noir" style="margin-top:12px">Enregistrer le paiement</button><p id="msgPaiement" class="centre" style="color:green;font-weight:700"></p></div></div>
+<div class="carte"><h3>2. Solde par Élève</h3><div class="btn-ligne no-print"><button onclick="filtrerPaiements('tous',this)" class="btn-filtre actif">Tous</button><button onclick="filtrerPaiements('paye',this)" class="btn-filtre">✓ Payés</button><button onclick="filtrerPaiements('avance',this)" class="btn-filtre">◐ Avance</button><button onclick="filtrerPaiements('nonpaye',this)" class="btn-filtre">✗ Non payés</button><button onclick="relancerTousLesImpayes()" class="btn-filtre">Relancer impayés</button></div><div class="centre no-print" style="margin:10px 0"><button class="btn-pdf" onclick="telechargerPaiementsPDF()">⬇ Télécharger en PDF</button> <button class="btn-pdf" onclick="partagerPaiementsWhatsApp()">💬 WhatsApp</button></div><div class="centre no-print"><div id="conteneurBtnPaiements"></div></div><div id="listePaiementsGestion"></div></div>
+<div class="carte"><h3>3. Historique des Paiements</h3><div class="centre no-print"><button class="btn-pdf" onclick="telechargerHistoriquePaiementsPDF()">⬇ Télécharger l'historique en PDF</button> <button class="btn-danger" onclick="effacerHistoriquePaiements()">🗑️ Effacer historique paiements - Remettre à zéro</button></div><div class="centre no-print"><div id="conteneurBtnHistoriquePaiements"></div></div><div id="historiquePaiements"></div></div>
+</div>
+<div id="tabEnseignants" style="display:none">
+<div class="carte no-print"><h3>1. Ajouter un enseignant</h3><label>Nom *</label><input id="ensNom" placeholder="Ex : Oustaz Ibrahim"><label>Téléphone *</label><input id="ensTel" placeholder="690000000"><label>Rôle *</label><select id="ensRole"><option value="Enseignant Coran">Enseignant Coran</option><option value="Enseignant Arabe">Enseignant Arabe</option><option value="Enseignant Hadith / Fiqh">Enseignant Hadith / Fiqh</option><option value="Surveillant">Surveillant</option><option value="Imam / Responsable Priere">Imam / Responsable Prière</option><option value="Directeur">Directeur</option><option value="Sous-Directeur">Sous-Directeur</option><option value="Secretaire">Secrétaire</option></select><label>Matière</label><select id="ensMatiere"><option value="Coran">Coran</option><option value="Langue Arabe">Langue Arabe</option><option value="Hadith">Hadith</option><option value="Fiqh">Fiqh</option><option value="Aquida">Aquida</option><option value="Sirah">Sirah</option><option value="Toutes les matieres">Toutes les matières</option></select><label>Classe</label><select id="ensClasse"><option value="Niveau 1">Niveau 1</option><option value="Niveau 2">Niveau 2</option><option value="Niveau 3">Niveau 3</option><option value="Niveau 4">Niveau 4</option><option value="Toutes les classes">Toutes les classes</option></select><label>Salaire (FCFA) *</label><input type="number" id="ensSalaire" placeholder="Ex : 30000"><button onclick="ajouterEnseignant()" class="btn-noir" style="margin-top:12px">Ajouter</button></div>
+<div class="carte"><h3>2. Liste des Enseignants</h3><div class="centre no-print"><button class="btn-pdf" onclick="telechargerEnseignantsPDF()">⬇ Télécharger en PDF</button> <button class="btn-pdf" onclick="creerGroupeWhatsAppEnseignants()">💬 Groupe WhatsApp</button> <button class="btn-pdf" onclick="envoyerMessageTousEnseignants()">✉️ Écrire à tous</button> <button class="btn-danger" onclick="effacerHistoriquePaiementsEnseignants()">🗑️ Effacer paiements enseignants</button></div><div class="centre no-print"><div id="conteneurBtnEnseignants"></div></div><div id="listeEnseignants"></div></div>
+<div class="carte"><h3>💬 Communication Enseignants</h3><p class="centre muted">Les enseignants se parlent entre eux, et toi tu peux leur écrire.</p><label>Choisir l'enseignant</label><select id="selectEnseignantCom"></select><label>Ton message</label><input id="msgEnseignantCom" placeholder="Ex : Réunion demain à 8h..."><button onclick="envoyerMessageUnEnseignant()" class="btn-noir" style="margin-top:10px">Envoyer sur WhatsApp</button><div class="centre" style="margin-top:12px"><button class="btn-pdf" onclick="creerGroupeWhatsAppEnseignants()">Créer le Groupe WhatsApp de tous les enseignants</button></div></div>
+</div>
+<div id="tabBulletins" style="display:none">
+<div class="carte"><h3>1. Saisir un bulletin</h3><p class="centre muted">Seules les matières choisies dans Paramètres s'affichent ici. Bulletin FIXE : toutes les matières fixées sortent, Absent = 0.</p><p class="centre"><b>Matières actives : <span id="affichageMatieresBulletin">...</span></b> - <a href="#" onclick="showTabGestion('tabParametres',document.querySelectorAll('.gestion-tab')[7]);return false">Changer dans Paramètres</a></p><p class="centre"><b>Composition : <span id="affichageTypeCompositionBulletin">Oral + Écrit</span></b></p><label>Élève *</label><select id="bulEleve" onchange="chargerNotesExistantes()"></select><label>Trimestre *</label><select id="bulTrimestre" onchange="chargerNotesExistantes()"><option value="Trimestre 1">Trimestre 1</option><option value="Trimestre 2">Trimestre 2</option><option value="Trimestre 3">Trimestre 3</option></select><label>Année</label><input id="bulAnnee" value="2026-2027"><label>Appréciation</label><input id="bulAppreciationGenerale" placeholder="Ex : Efforts à fournir"><div id="formNotes"></div><button onclick="enregistrerBulletinComplet()" class="btn-noir" style="margin-top:12px">Enregistrer le bulletin</button><p id="msgBulletin" class="centre" style="color:green;font-weight:700"></p></div>
+<div class="carte"><h3>2. Bulletins enregistrés</h3><div class="centre no-print"><button class="btn-pdf" onclick="telechargerBulletinsPDF()">⬇ Télécharger les bulletins en PDF</button> <button class="btn-danger" onclick="effacerHistoriqueBulletins()">🗑️ Effacer tous les bulletins - Remettre à zéro</button></div><div class="centre no-print"><div id="conteneurBtnBulletins"></div></div><div id="listeBulletins"></div></div>
+</div>
+<div id="tabPresence" style="display:none">
+<div class="carte"><h3>1. Feuille du jour</h3><p class="centre muted"><span id="titreEcolePresence"></span> - <span id="titreDatePresence"></span></p><label class="no-print">Date</label><input type="date" id="datePresence" class="no-print"><div class="no-print" style="margin-top:10px"><button onclick="sauvegarderPresence()" class="btn-noir">Enregistrer la présence</button></div><div class="centre no-print" style="margin:10px 0"><button class="btn-pdf" onclick="telechargerPresencePDF()">⬇ Télécharger en PDF</button></div><div class="centre no-print"><div id="conteneurBtnPresence"></div></div><div id="listePresence" style="margin-top:12px"></div></div>
+<div class="carte"><h3>2. Historique de présence</h3><div class="centre no-print"><button class="btn-danger" onclick="effacerHistoriquePresence()">🗑️ Effacer historique présence - Remettre à zéro</button></div><div class="centre no-print"><div id="conteneurBtnHistoriquePresence"></div></div><div id="historiquePresence"></div></div>
+</div>
+<div id="tabAnnuel" style="display:none">
+<div class="carte"><h3>1. Bilan de l'école - Fin d'année</h3><p class="centre muted"><span id="titreEcoleAnnuel"></span> - Année 2026-2027 - Matières : <span id="affichageMatieresAnnuel"></span></p><div class="no-print"><button onclick="calculerBilanAnnuel()" class="btn-noir">Voir le bilan de toute l'année</button></div><div id="zoneBilanEcole" style="margin-top:12px"></div></div>
+<div class="carte"><h3>2. Bulletins Annuels - Classement</h3><p class="centre muted">Moyenne Annuelle = (T1 + T2 + T3) / 3 - ≥10 = ADMIS - Seulement les matières actives comptent - Absent = 0</p><div class="centre no-print"><button class="btn-pdf" onclick="telechargerBilanAnnuelPDF()">⬇ Télécharger le bilan en PDF</button></div><div class="centre no-print"><div id="conteneurBtnAnnuels"></div></div><div id="listeBulletinsAnnuels"></div></div>
+</div>
+<div id="tabParametres" style="display:none">
+<div class="carte"><h3>Paramètres de l'école</h3><label>Frais total par élève (FCFA)</label><div style="display:flex;gap:8px"><input type="number" id="inputFraisTotal" placeholder="Ex : 10000"><button onclick="definirFraisTotal()" class="btn-or" style="width:auto">Définir</button></div><p class="centre" style="margin-top:10px">Actuel : <b id="affichageFraisTotal">Non défini</b></p></div>
+<div class="carte"><h3>📚 Matières du Bulletin - CHOISIS LES MATIÈRES</h3><p class="centre muted">Coche seulement les matières que tu veux. Ex : tu coches 5 matières, le bulletin va afficher seulement ces 5, et la moyenne sera calculée seulement sur ces 5. Absent = 0.</p><p class="centre"><b>Exemple :</b> Si tu coches Coran, Hadith, Fiqh, Arabe, Sirah - Moyenne = (Coran + Hadith + Fiqh + Arabe + Sirah) / 5</p><div id="listeChoixMatieres"></div><div class="btn-ligne no-print"><button class="btn-pdf" onclick="toutCocherMatieres()">Tout cocher</button><button class="btn-pdf" onclick="toutDecocherMatieres()">Tout décocher</button></div><button onclick="sauvegarderMatieresActives()" class="btn-noir" style="margin-top:12px">💾 Enregistrer les matières choisies + Type de composition</button><p id="msgMatieres" class="centre" style="color:green;font-weight:700"></p><p class="centre muted" style="margin-top:8px">Actuellement actives : <b id="affichageMatieresParametres">...</b><br>Composition : <b id="affichageTypeCompositionParam">Oral + Écrit</b></p></div>
+<div class="carte"><h3>📢 Divers - Publier à l'accueil</h3><p class="centre muted">Ce que tu écris ici va s'afficher sur la page d'accueil du site.</p><label>Titre</label><input id="diversTitre" placeholder="Ex : Réunion parents samedi"><label>Message</label><input id="diversTexte" placeholder="Ex : Réunion samedi à 9h à l'école..."><button onclick="publierDivers()" class="btn-noir" style="margin-top:10px">Publier ce Divers</button><button onclick="chargerDivers()" class="btn-pdf" style="margin-top:8px;width:100%">Voir mes Divers publiés</button><div id="listeDivers" style="margin-top:10px"></div></div>
+<div class="carte" style="background:#FFEBEE;border:2px solid #EF5350"><h3>⚠️ DANGER - REMETTRE TOUT À ZÉRO</h3><p class="centre">Ça efface Présence + Paiements + Bulletins d'un coup.<br><small>Il faudra écrire EFFACER pour valider.</small></p><div class="centre"><button class="btn-danger" style="background:#D32F2F;color:white;border:none;padding:12px 18px" onclick="effacerToutHistorique()">🗑️ TOUT EFFACER - REMETTRE À ZÉRO</button></div></div>
+<div class="carte"><h3>Informations</h3><p class="centre">École : <b id="titreEcolePaiements"></b><br><span id="titreEcoleEnseignants"></span></p><p class="centre muted" id="titreEcoleArabe"></p></div>
+</div>
+</div>
+</div>
+<button class="btn-flottant no-print" onclick="toggleMenuFlottant()">+</button>
+<div class="menu-flottant no-print" id="menuFlottant"><b style="display:block;text-align:center">Que veux-tu faire ?</b><button onclick="imprimerFeuilleActuelle()">🖨 Imprimer cette page</button><button onclick="telechargerPDFActuel()">⬇ Télécharger en PDF</button><button onclick="partagerWhatsAppActuel()">💬 Envoyer sur WhatsApp</button><button onclick="toggleMenuFlottant()">Fermer</button></div>
+<div id="zoneImpression" style="display:none"></div>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="firebase.js"></script>
+<script src="gestion.js"></script>
+</body>
+</html>
