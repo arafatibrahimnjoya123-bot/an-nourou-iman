@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Liaison Gestion - Sous-Directeurs | الربط بين الإدارة ونواب المدير</title>
+<link rel="stylesheet" href="style.css">
+<style>
+.card{background:white;padding:14px;border-radius:14px;margin:10px 0}
+.stat{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.stat div{background:#F1F8E9;padding:16px;border-radius:14px;text-align:center;border:1px solid #E8F5E9}
+.stat b{font-size:22px;display:block;color:#0F3D2E}
+.stat small{color:#666;font-size:12px}
+.btn{border:none;padding:11px 14px;border-radius:12px;font-weight:800;cursor:pointer}
+.btnVert{background:#0F3D2E;color:white}.btnOrange{background:#FF7A3D;color:white}.btnGris{background:#E8F5E9}.btnBleu{background:#1976D2;color:white}.btnRouge{background:#C62828;color:white}
+input,select{width:100%;padding:12px;border:1px solid #ddd;border-radius:10px;margin:6px 0;box-sizing:border-box}
+table{width:100%;border-collapse:collapse;margin-top:10px;font-size:13px;background:white}
+th{background:#0F3D2E;color:white;padding:10px;text-align:left;white-space:nowrap}
+td{padding:10px;border-bottom:1px solid #eee;vertical-align:top;white-space:nowrap}
+tr:nth-child(even){background:#F9F9F9}
+.badge{padding:4px 8px;border-radius:20px;font-size:12px;font-weight:700;display:inline-block}
+.badgeVert{background:#E8F5E9;color:#0F3D2E}.badgeRouge{background:#FFEBEE;color:#C62828}.badgeJaune{background:#FFF9C4;color:#8D6E00}.badgeBleu{background:#E3F2FD;color:#1976D2}
+.btnPetit{padding:7px 10px;border-radius:20px;border:none;font-weight:700;font-size:12px;cursor:pointer;text-decoration:none;display:inline-block;margin:2px}
+.btnWA{background:#25D366;color:white}
+.tableWrap{overflow-x:auto}
+.ar{color:#C9A227;font-weight:700;direction:rtl;display:inline-block}
+.en{color:#666;font-size:11px;font-style:italic}
+.ongletBtn{flex:1;padding:12px;border:none;border-radius:12px;font-weight:800;cursor:pointer;background:#E8F5E9}
+.ongletBtn.actif{background:#0F3D2E;color:white}
+</style>
+</head>
+<body>
+<div style="background:#0F3D2E;color:white;padding:14px;display:flex;justify-content:space-between;align-items:center;gap:8px">
+<b>☪️ LIAISON GESTION - SOUS-DIRECTEURS<br><span class="ar">الربط بين الإدارة ونواب المدير</span></b>
+<a href="gestion.html" style="background:#C9A227;color:#0F3D2E;padding:8px 12px;border-radius:20px;text-decoration:none;font-weight:800">← Retour Gestion <span class="ar">العودة للإدارة</span></a>
+</div>
+<!-- ✅ SÉCURITÉ ENLEVÉE : plus de loginPont, on arrive direct, car gestion.html est déjà sécurisé -->
+<div id="pontPanel">
+<div style="background:#E8F5E9;padding:12px;border-radius:12px">👋 Salam <span class="ar">السلام عليكم</span> - Voici tout ce que les Sous-Directeurs ont envoyé. <span class="ar">كل ما أرسله نواب المدير</span></div>
+<div style="display:flex;gap:8px;margin:12px 0">
+<button class="ongletBtn actif" id="btnOngletEnseignants" onclick="showOngletPont('tabPontEnseignants',this)">👨‍🏫 Enseignants <span class="ar">المعلمون</span></button>
+<button class="ongletBtn" id="btnOngletPaiements" onclick="showOngletPont('tabPontPaiements',this)">💰 Paiements <span class="ar">المدفوعات</span></button>
+<button class="ongletBtn" id="btnOngletDepenses" onclick="showOngletPont('tabPontDepenses',this)">🧾 Dépenses <span class="ar">المصاريف</span></button>
+<button class="ongletBtn" id="btnOngletDanger" onclick="showOngletPont('tabPontDanger',this)">🗑️ Danger <span class="ar">خطر</span></button>
+</div>
+<div id="tabPontEnseignants">
+<div class="card">
+<h3>👨‍🏫 Enseignants envoyés par les Sous-Directeurs <span class="ar">المعلمون المرسلون من نواب المدير</span></h3>
+<p style="text-align:center;font-size:12px">Ils sont déjà dans <b>enseignants</b>. Tu peux valider, changer le salaire, ou supprimer. <span class="ar">يمكنك المصادقة أو تغيير الراتب أو الحذف</span></p>
+<input id="recherchePontEns" placeholder="🔍 Cherche un enseignant... / ابحث عن معلم" oninput="chargerPontEnseignants()">
+<div class="tableWrap"><table><thead><tr><th>Enseignant <span class="ar">المعلم</span></th><th>Matière / Niveau <span class="ar">المادة / المستوى</span></th><th>École <span class="ar">المدرسة</span></th><th>Salaire <span class="ar">الراتب</span></th><th>Envoyé par <span class="ar">أرسله</span></th><th>Actions <span class="ar">إجراءات</span></th></tr></thead><tbody id="tbodyPontEnseignants"></tbody></table></div>
+</div>
+</div>
+<div id="tabPontPaiements" style="display:none">
+<div class="card">
+<h3>💰 Paiements - Calculs Officiels Gestion <span class="ar">المدفوعات - الحسابات الرسمية</span></h3>
+<div style="background:#FFF9C4;padding:10px;border-radius:10px;text-align:center;font-size:13px"><b>RÈGLE : <span class="ar">القاعدة</span></b><br>Encaissé = <b>VALIDÉ seulement</b> / المقبوض = الموثق فقط<br>Annulé + Refusé = <b>NE comptent JAMAIS</b> / الملغي + المرفوض = لا يُحسب أبداً</div>
+<div class="stat" style="margin-top:10px">
+<div>✅<br><b id="pontEncaisse">0</b><small>Encaissé Validé <span class="ar">المقبوض الموثق</span></small></div>
+<div>⏳<br><b id="pontAttente">0</b><small>En attente <span class="ar">قيد الانتظار</span></small></div>
+<div>❌<br><b id="pontAnnule" style="color:#C62828">0</b><small>Annulé (ne compte pas) <span class="ar">الملغي - لا يُحسب</span></small></div>
+<div>🧾<br><b id="pontDepenses">0</b><small>Dépenses <span class="ar">المصاريف</span></small></div>
+</div>
+<div style="background:#0F3D2E;color:white;border-radius:12px;padding:12px;text-align:center;margin-top:10px"><b>SOLDE OFFICIEL / الرصيد الرسمي : <span id="pontSolde">0</span> FCFA</b><br><small>Solde = Encaissé Validé - Dépenses</small></div>
+<label style="margin-top:12px">🎯 Filtrer par École <span class="ar">/ حسب المدرسة</span></label><select id="filtrePontEcole" onchange="chargerPontPaiements()"><option value="">Toutes les écoles <span class="ar">كل المدارس</span></option></select>
+<input id="recherchePontPaiement" placeholder="🔍 Cherche un élève... / ابحث عن تلميذ" oninput="chargerPontPaiements()">
+<div class="tableWrap"><table><thead><tr><th>Enfant <span class="ar">الطفل</span></th><th>Montant <span class="ar">المبلغ</span></th><th>École <span class="ar">المدرسة</span></th><th>Prix / Payé / Reste <span class="ar">السعر / المدفوع / الباقي</span></th><th>Statut <span class="ar">الحالة</span></th><th>Actions <span class="ar">إجراءات</span></th></tr></thead><tbody id="tbodyPontPaiements"></tbody></table></div>
+</div>
+</div>
+<div id="tabPontDepenses" style="display:none">
+<div class="card">
+<h3>🧾 Dépenses envoyées par les Sous-Directeurs <span class="ar">المصاريف المرسلة من نواب المدير</span></h3>
+<label>🎯 Filtrer par École <span class="ar">/ حسب المدرسة</span></label><select id="filtrePontDepEcole" onchange="chargerPontDepenses()"><option value="">Toutes les écoles</option></select>
+<div id="listePontDepenses" style="margin-top:10px"></div>
+</div>
+</div>
+<div id="tabPontDanger" style="display:none">
+<div class="card" style="border:3px solid #C62828">
+<h3 style="color:#C62828">🗑️ ZONE DANGER - Supprimer TOUT <span class="ar">منطقة الخطر - حذف الكل</span></h3>
+<p style="text-align:center;font-weight:800">⚠️ Ça efface : notes, paiements, présences, bulletins, emploi, dépenses, enseignants, inscriptions.<br><span class="ar">سيحذف كل شيء: العلامات، المدفوعات، الحضور، الكشوف، الجداول، المصاريف، المعلمون، التسجيلات</span><br><small>Tape juste <b>DELETE</b> pour confirmer.</small></p>
+<label>Tape DELETE en majuscules <span class="ar">/ اكتب DELETE بأحرف كبيرة</span></label><input id="pontDeleteConfirm" placeholder="DELETE">
+<button type="button" class="btn btnRouge" style="width:100%" onclick="confirmerSupprimerToutPont()">🗑️ SUPPRIMER TOUTES LES DONNÉES <span class="ar">حذف كل البيانات</span></button>
+<p id="msgPontDanger" style="text-align:center;font-weight:700"></p>
+</div>
+</div>
+<a href="gestion.html" style="display:block;text-align:center;background:#333;color:white;padding:12px;border-radius:12px;text-decoration:none;font-weight:800;margin-top:12px">← Retour Gestion <span class="ar">العودة للإدارة</span></a>
+</div>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="firebase.js"></script>
+<script>
+let PONT_DIRECTEUR={email:"gestion"}, PONT_PAIEMENTS=[], PONT_DEPENSES=[], PONT_ENSEIGNANTS=[], PONT_INSCRIPTIONS=[], PONT_PRIX={}, PONT_PRIX_SECOURS=10000;
+function nettoyerEmailPont(e){ return String(e||"").toLowerCase().trim(); }
+function nettoyerTelPont(t){ if(!t) return ""; return String(t).replace(/[\s\-\+]/g,"").replace(/^237/,""); }
+function normaliserPont(t){ return (t||"").toString().trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,""); }
+function showOngletPont(id,btn){ ['tabPontEnseignants','tabPontPaiements','tabPontDepenses','tabPontDanger'].forEach(x=>{ document.getElementById(x).style.display='none'; }); document.getElementById(id).style.display='block'; document.querySelectorAll('.ongletBtn').forEach(b=>b.classList.remove('actif')); if(btn) btn.classList.add('actif'); if(id==='tabPontEnseignants') chargerPontEnseignants(); if(id==='tabPontPaiements') chargerPontPaiements(); if(id==='tabPontDepenses') chargerPontDepenses(); }
+// ✅ PLUS DE seConnecterPont() - on ouvre direct
+function afficherPont(){ chargerPontPrix(); chargerPontEnseignants(); chargerPontPaiements(); chargerPontDepenses(); }
+function seDeconnecterPont(){ window.location.href="gestion.html"; }
+async function chargerPontPrix(){ PONT_PRIX={}; try{ let s1=await db.collection("prix_par_ecole").get(); s1.forEach(d=>{ let v=d.data(); if(v.nom||v.ecole) PONT_PRIX[normaliserPont(v.nom||v.ecole)]=Number(v.prix||0); }); }catch(e){} try{ let s2=await db.collection("ecoles").get(); s2.forEach(d=>{ let v=d.data(); if(v.nom && v.prix) PONT_PRIX[normaliserPont(v.nom)]=Number(v.prix); if(v.nom && v.frais) PONT_PRIX[normaliserPont(v.nom)]=Number(v.frais); }); }catch(e){} try{ let s3=await db.collection("config_gestion").doc("global").get(); if(s3.exists){ let v=s3.data(); if(v.prixSecours) PONT_PRIX_SECOURS=Number(v.prixSecours); if(v.fraisTotal) PONT_PRIX_SECOURS=Number(v.fraisTotal); if(v.prixParEcole){ Object.keys(v.prixParEcole).forEach(k=>{ PONT_PRIX[normaliserPont(k)]=Number(v.prixParEcole[k]); }); } } }catch(e){} try{ let s4=await db.collection("configFrais").limit(100).get(); s4.forEach(d=>{ let v=d.data(); if(v.ecoleNom && v.prix) PONT_PRIX[normaliserPont(v.ecoleNom)]=Number(v.prix); }); }catch(e){} }
+function getPrixPont(nomEcole){ if(!nomEcole) return PONT_PRIX_SECOURS; let p=PONT_PRIX[normaliserPont(nomEcole)]; if(p) return p; let cle=Object.keys(PONT_PRIX).find(k=>normaliserPont(nomEcole).includes(k)||k.includes(normaliserPont(nomEcole))); if(cle) return PONT_PRIX[cle]; return PONT_PRIX_SECOURS; }
+function dejaPayePont(nomEleve){ let tot=0; PONT_PAIEMENTS.forEach(p=>{ if((p.enfant||"").toLowerCase().trim()===String(nomEleve||"").toLowerCase().trim() && p.statut!=="refuse" && p.statut!=="annule" && p.statut!=="annulé") tot+=Number(p.montant||0); }); return tot; }
+async function chargerPontEnseignants(){ let box=document.getElementById('tbodyPontEnseignants'); if(!box) return; let q=(document.getElementById('recherchePontEns')?document.getElementById('recherchePontEns').value.toLowerCase():""); try{ let snap=await db.collection("enseignants").limit(200).get(); PONT_ENSEIGNANTS=[]; snap.forEach(doc=>PONT_ENSEIGNANTS.push({id:doc.id,...doc.data()})); let liste=PONT_ENSEIGNANTS.filter(e=>!q||JSON.stringify(e).toLowerCase().includes(q)); let html=""; liste.forEach(e=>{ let tel=nettoyerTelPont(e.tel||""); let nomSafe=String(e.nom||"").replace(/'/g,"\\'"); html+=`<tr><td><b>👨‍🏫 ${e.nom||""}</b><br><small>${e.tel||""}<br>${e.email||""}</small></td><td><b>${e.matiere||""}</b><br><small>${e.niveau||""}</small></td><td>${e.ecole||e.groupe||""}<br><small>${e.dateArr||""}</small></td><td><b>${Number(e.salaire||0).toLocaleString('fr-FR')} FCFA</b><br><small>${e.note||""}</small></td><td><small>${e.envoyePar||"Directeur"}</small><br><span class="badge ${e.statut==="actif"?"badgeVert":"badgeRouge"}">${e.statut||"actif"}</span></td><td><a class="btnPetit btnWA" href="https://wa.me/237${tel}?text=${encodeURIComponent("Salam "+e.nom+", c'est le Directeur. Merci pour ton travail. - An Nourou Iman")}" target="_blank">💬 WhatsApp</a><button type="button" class="btnPetit" style="background:#FF7A3D;color:white" onclick="modifierSalairePont('${e.id}')">💰 Salaire</button><button type="button" class="btnPetit" style="background:#C62828;color:white" onclick="supprimerEnseignantPont('${e.id}','${nomSafe}')">🗑️ Supprimer</button></td></tr>`; }); box.innerHTML=html||`<tr><td colspan="6" style="text-align:center">Aucun enseignant envoyé. / لا معلم مرسل</td></tr>`; }catch(e){ box.innerHTML=`<tr><td colspan="6">❌ ${e.message}</td></tr>`; } }
+async function modifierSalairePont(id){ let e=PONT_ENSEIGNANTS.find(x=>x.id===id); if(!e) return; let nouveau=prompt("💰 Nouveau salaire pour "+e.nom+" (actuel : "+Number(e.salaire||0).toLocaleString('fr-FR')+" FCFA) :",""+(e.salaire||0)); if(nouveau===null||nouveau==="") return; try{ await db.collection("enseignants").doc(id).update({salaire:Number(nouveau)}); chargerPontEnseignants(); }catch(err){ alert("❌ "+err.message); } }
+async function supprimerEnseignantPont(id, nom){ if(!confirm("Supprimer l'enseignant "+nom+" ? / حذف المعلم "+nom+" ؟")) return; try{ await db.collection("enseignants").doc(id).delete(); chargerPontEnseignants(); }catch(e){ alert("❌ "+e.message); } }
+async function chargerPontPaiements(){ let box=document.getElementById('tbodyPontPaiements'); try{ let snapP=await db.collection("paiements").limit(500).get(); PONT_PAIEMENTS=[]; snapP.forEach(doc=>PONT_PAIEMENTS.push({id:doc.id,...doc.data()})); let snapI=await db.collection("inscriptions").limit(300).get(); PONT_INSCRIPTIONS=[]; snapI.forEach(doc=>PONT_INSCRIPTIONS.push({id:doc.id,...doc.data()})); let snapD=await db.collection("depenses").limit(300).get(); PONT_DEPENSES=[]; snapD.forEach(doc=>PONT_DEPENSES.push({id:doc.id,...doc.data()})); let encaisse=0, attente=0, annuleTotal=0; PONT_PAIEMENTS.forEach(p=>{ if(p.statut==="valide") encaisse+=Number(p.montant||0); if(p.statut==="annule"||p.statut==="annulé") annuleTotal+=Number(p.montant||0); if(p.statut==="en_attente") attente++; }); let totalDep=0; PONT_DEPENSES.forEach(d=>totalDep+=Number(d.montant||0)); let solde=encaisse-totalDep; document.getElementById('pontEncaisse').textContent=encaisse.toLocaleString('fr-FR')+" FCFA"; document.getElementById('pontAttente').textContent=attente; document.getElementById('pontAnnule').textContent=annuleTotal.toLocaleString('fr-FR')+" FCFA"; document.getElementById('pontDepenses').textContent=totalDep.toLocaleString('fr-FR')+" FCFA"; document.getElementById('pontSolde').textContent=solde.toLocaleString('fr-FR'); let sel=document.getElementById('filtrePontEcole'); if(sel && sel.options.length<=1){ let ecoles=[...new Set(PONT_PAIEMENTS.map(p=>p.ecole||p.groupe||"").filter(Boolean))]; ecoles.forEach(ec=>sel.innerHTML+=`<option>${ec}</option>`); } let filtreEcole=sel?sel.value:""; let q=(document.getElementById('recherchePontPaiement')?document.getElementById('recherchePontPaiement').value.toLowerCase():""); let liste=PONT_PAIEMENTS.filter(p=>{ if(filtreEcole && (p.ecole||p.groupe||"")!==filtreEcole) return false; if(q && !JSON.stringify(p).toLowerCase().includes(q)) return false; return true; }); liste.sort((a,b)=>String(b.date||"").localeCompare(String(a.date||""))); let html=""; liste.forEach(p=>{ let prix=getPrixPont(p.ecole||p.groupe||""); let deja=dejaPayePont(p.enfant||""); let reste=Math.max(0,prix-deja); let badge=p.statut==="valide"?`<span class="badge badgeVert">✅ VALIDÉ</span>`:p.statut==="refuse"?`<span class="badge badgeRouge">❌ REFUSÉ</span>`:p.statut==="annule"||p.statut==="annulé"?`<span class="badge badgeRouge">❌ ANNULÉ - NE COMPTE PAS</span>`:`<span class="badge badgeJaune">⏳ EN ATTENTE</span>`; let btnAction=p.statut==="en_attente"?`<button type="button" class="btnPetit" style="background:#0F3D2E;color:white" onclick="validerPaiementPont('${p.id}')">✅ Valider</button><button type="button" class="btnPetit" style="background:#C62828;color:white" onclick="refuserPaiementPont('${p.id}')">❌ Refuser</button>`:`<button type="button" class="btnPetit" style="background:#666;color:white" onclick="remettreEnAttentePont('${p.id}')">↩ Remettre en attente</button>`; html+=`<tr style="${(p.statut==="annule"||p.statut==="annulé")?'background:#FFEBEE':''}"><td><b>${p.enfant||""}</b><br><small>${p.parent||""}</small></td><td><b>${Number(p.montant||0).toLocaleString('fr-FR')} FCFA</b><br><small>${p.motif||""} - ${p.mode||""}</small></td><td>${p.ecole||p.groupe||""}<br><small>${p.date||""}</small></td><td><small>Prix ${prix.toLocaleString('fr-FR')} - Payé ${deja.toLocaleString('fr-FR')}<br>Reste <b style="color:#C62828">${reste.toLocaleString('fr-FR')}</b></small></td><td>${badge}</td><td>${btnAction}</td></tr>`; }); box.innerHTML=html||`<tr><td colspan="6">Aucun paiement. / لا مدفوعات</td></tr>`; }catch(e){ box.innerHTML=`<tr><td colspan="6">❌ ${e.message}</td></tr>`; } }
+async function validerPaiementPont(id){ try{ await db.collection("paiements").doc(id).update({statut:"valide", validePar:"gestion"}); chargerPontPaiements(); }catch(e){ alert("❌ "+e.message); } }
+async function refuserPaiementPont(id){ if(!confirm("Refuser ce paiement ? / رفض هذا الدفع؟")) return; try{ await db.collection("paiements").doc(id).update({statut:"refuse"}); chargerPontPaiements(); }catch(e){ alert("❌ "+e.message); } }
+async function remettreEnAttentePont(id){ try{ await db.collection("paiements").doc(id).update({statut:"en_attente"}); chargerPontPaiements(); }catch(e){ alert("❌ "+e.message); } }
+async function chargerPontDepenses(){ let box=document.getElementById('listePontDepenses'); if(!box) return; try{ if(!PONT_DEPENSES.length){ let snap=await db.collection("depenses").limit(200).get(); PONT_DEPENSES=[]; snap.forEach(doc=>PONT_DEPENSES.push({id:doc.id,...doc.data()})); } let sel=document.getElementById('filtrePontDepEcole'); if(sel && sel.options.length<=1){ let ecoles=[...new Set(PONT_DEPENSES.map(d=>d.ecole||"").filter(Boolean))]; ecoles.forEach(ec=>sel.innerHTML+=`<option>${ec}</option>`); } let filtre=sel?sel.value:""; let liste=PONT_DEPENSES.filter(d=>!filtre||d.ecole===filtre); liste.sort((a,b)=>String(b.date||"").localeCompare(String(a.date||""))); let total=liste.reduce((s,x)=>s+Number(x.montant||0),0); box.innerHTML="<p style='text-align:center'><b>Total Dépenses affichées / مجموع المصاريف : "+total.toLocaleString('fr-FR')+" FCFA</b></p>"+(liste.length?liste.map(d=>'<div style="background:#FFF9C4;border:1px solid #FFE082;border-radius:10px;padding:8px;margin:6px 0;font-size:13px"><b>'+(d.ecole||"")+' - '+(d.categorie||"")+' - '+(d.motif||"")+'</b><br>'+(d.date||"")+' - <b>'+Number(d.montant||0).toLocaleString('fr-FR')+' FCFA</b><br><small>'+(d.payeur||d.envoyePar||"Sous-Directeur")+'</small></div>').join(''):"<p style='text-align:center'>Aucune dépense. / لا مصاريف</p>"); }catch(e){ box.innerHTML="❌ "+e.message; } }
+async function confirmerSupprimerToutPont(){ let conf=document.getElementById('pontDeleteConfirm').value.trim(); let msg=document.getElementById('msgPontDanger'); if(conf!=="DELETE"){ msg.style.color="red"; msg.textContent="❌ Tape DELETE en majuscules / اكتب DELETE بأحرف كبيرة"; return; } if(!confirm("DERNIÈRE CONFIRMATION : Supprimer VRAIMENT TOUTES les données ? Irréversible !")) return; msg.style.color="#666"; msg.textContent="⏳ Suppression en cours... Ne ferme pas la page."; let collections=["notes","paiements","presences","bulletins","emploi_temps","depenses","enseignants","inscriptions","divers"]; for(let col of collections){ try{ let s=await db.collection(col).limit(400).get(); for(let doc of s.docs){ await db.collection(col).doc(doc.id).delete(); } }catch(e){ console.log(col,e.message); } } msg.style.color="green"; msg.textContent="✅ TOUTES les données supprimées. Rechargement..."; setTimeout(()=>location.reload(),1500); }
+window.onload=()=>{ afficherPont(); }
+</script>
+</body>
+</html>

@@ -32,6 +32,25 @@ auth.onAuthStateChanged(async u=>{
     snapG.forEach(d=>{ let mail = (d.data().sousDirecteurEmail || "").trim().toLowerCase(); if(mail && mail === emailConnecte) estSousDirecteur = true; });
   }catch(e){}
   if(estSousDirecteur){ alert("⛔ Accès Directeur uniquement. Tu es redirigé vers ta page Gestion."); await auth.signOut(); window.location.href = "gestion.html"; return; }
+  // ===== BLOCAGE SECRÉTAIRE - SANS GÂTER LE RESTE =====
+  try{
+    let docU = await db.collection("utilisateurs").doc(emailConnecte).get();
+    if(docU.exists){
+      let roleU = String(docU.data().role || "").toLowerCase().trim();
+      if(roleU === "secretaire"){
+        alert("⛔ Accès réservé au Directeur.\n\nToi tu es Secrétaire, ton espace c'est gestion.html, pas ici.");
+        await auth.signOut();
+        window.location.href = "gestion.html";
+        return;
+      }
+      if(roleU && roleU !== "directeur" && roleU !== "admin" && roleU !== "directeur general" && roleU !== "directeur_general"){
+        alert("⛔ Accès réservé au Directeur. Tu es redirigé vers gestion.html");
+        await auth.signOut();
+        window.location.href = "gestion.html";
+        return;
+      }
+    }
+  }catch(e){ console.log("Vérification rôle admin:", e.message); }
   document.getElementById('adminPanel').style.display='block';
   document.getElementById('adminEmail').textContent=u.email;
   chargerEcolesAdmin(); chargerGroupesAdmin(); chargerInscriptions(); chargerPaiementsAdmin(); chargerBulletinsAdmin(); chargerDashboardDG(); chargerDiversAdmin();
@@ -54,8 +73,6 @@ function soldeEleveAdmin(nomEleve, nomEcole){
   let badge = type==="paye" ? `<span class="badge badge-paye">✓ PAYÉ</span>` : type==="avance" ? `<span class="badge badge-avance">◐ AVANCE</span>` : type==="nonpaye" ? `<span class="badge badge-nonpaye">✗ NON PAYÉ</span>` : `<span class="badge">Frais non défini</span>`;
   return {totalPaye, reste, frais, type, badge};
 }
-
-// ===== TABLEAU DE BORD DG =====
 async function chargerDashboardDG(){
   try{
     let snapE = await db.collection("ecoles").get(); cacheEcoles=[]; snapE.forEach(d=>cacheEcoles.push({id:d.id,...d.data()}));
@@ -109,8 +126,6 @@ async function chargerDashboardDG(){
     document.getElementById('meilleursDG').innerHTML = meilleurs.length ? meilleurs.map((m,i)=>`<div style="background:#E8F5E9;padding:10px;border-radius:12px;margin:6px 0">#${i+1} <b>${m.nom}</b> - ${m.moy.toFixed(2)} / 20</div>`).join('') : "Aucun bulletin.";
   }catch(e){ console.log(e); }
 }
-
-// ===== DIVERS =====
 async function publierDivers(){
   let titre=document.getElementById('divTitre').value.trim();
   let msg=document.getElementById('divMessage').value.trim();
@@ -130,7 +145,6 @@ async function chargerDiversAdmin(){
   }catch(e){}
 }
 async function supprimerDivers(id){ if(confirm("Supprimer cette annonce ?")){ await db.collection("divers").doc(id).delete(); chargerDiversAdmin(); } }
-
 document.getElementById('ecPhoto').onchange=function(e){ let f=e.target.files[0]; if(!f) return; let r=new FileReader(); r.onload=function(ev){ photoEcole=ev.target.result; let pr=document.getElementById('previewEcole'); pr.src=photoEcole; pr.style.display='block'; }; r.readAsDataURL(f); };
 async function sauvegarderEcole(){
   let nom=document.getElementById('ecNom').value.trim(); let quartier=document.getElementById('ecQuartier').value.trim();
@@ -192,8 +206,6 @@ async function accepterInscription(id){ await db.collection("inscriptions").doc(
 async function refuserInscription(id){ if(!confirm("Refuser cette inscription ?")) return; await db.collection("inscriptions").doc(id).update({ statut: "Refuse", dateRefus: new Date().toISOString() }); alert("❌ Inscription refusée"); chargerInscriptions(); chargerDashboardDG(); }
 async function supprimerIns(id){ if(confirm("Supprimer ?")){ await db.collection("inscriptions").doc(id).delete(); chargerInscriptions(); chargerDashboardDG(); } }
 function contacterParent(tel,enfant){ let msg=encodeURIComponent(`Assalamou Aleykoum, c'est le Groupe An Nourou Iman. Pour l'inscription de ${enfant}, nous vous confirmons...`); window.open(`https://wa.me/237${tel}?text=${msg}`,'_blank'); }
-
-// ===== PAIEMENTS - MEME STYLE QUE GESTION - TABLEAU REDUIT =====
 function filtrerPaiementsAdmin(f, btn){
   filtrePaiementAdmin = f;
   document.querySelectorAll('#tabPaiements .btn-filtre').forEach(b=>b.classList.remove('actif'));
@@ -246,7 +258,6 @@ async function chargerPaiementsAdmin(){
   document.getElementById('historiquePaiementsAdmin').innerHTML = hist.length ? h2 : "Aucun paiement.";
 }
 async function supprimerPaiement(id){ if(confirm("Supprimer ce paiement ?")){ await db.collection("paiements").doc(id).delete(); chargerPaiementsAdmin(); chargerDashboardDG(); } }
-
 async function chargerBulletinsAdmin(){
   let snap=await db.collection("bulletins").get();
   let list=[]; snap.forEach(d=>list.push({id:d.id,...d.data()}));

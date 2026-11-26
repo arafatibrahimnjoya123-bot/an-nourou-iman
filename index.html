@@ -5,15 +5,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>An Nourou Iman - Écoles & Groupes d'Études</title>
 <style>
+:root{--couleur-principale:#00A651;--couleur-bouton:#FF7A00;--couleur-or:#FFC107;--couleur-fond:#F7FAF5}
 *{box-sizing:border-box}
-body{margin:0;font-family:Inter,system-ui,Arial,sans-serif;background:#F7FAF5;color:#1A2B1A}
+body{margin:0;font-family:Inter,system-ui,Arial,sans-serif;background:var(--couleur-fond);color:#1A2B1A}
 .wrap{max-width:1080px;margin:0 auto;padding:0 14px}
 .top-utility{background:#0F2A14;color:#fff;position:sticky;top:0;z-index:100}
 .top-utility .wrap{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:8px 14px}
 .brand-left{display:flex;align-items:center;gap:10px}
 .btn-burger{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);color:#fff;font-size:20px;width:40px;height:40px;border-radius:10px;cursor:pointer}
 .brand-txt b{font-size:15px}
-.brand-txt small{display:block;font-size:11px;opacity:.75;color:#C9A227}
+.brand-txt small{display:block;font-size:11px;opacity:.75;color:var(--couleur-or)}
 .lang-select{display:flex;align-items:center;gap:6px;background:#fff;border-radius:999px;padding:4px 6px 4px 10px}
 .lang-select select{border:none;outline:none;background:transparent;font-weight:800;font-size:13px;color:#0F2A14;cursor:pointer;padding:4px 2px}
 .drawer-bg{position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;z-index:200}
@@ -22,13 +23,13 @@ body{margin:0;font-family:Inter,system-ui,Arial,sans-serif;background:#F7FAF5;co
 .drawer-bg.show{display:block}
 .drawer-head{background:#0F2A14;color:#fff;padding:18px 16px;position:relative}
 .drawer-head b{font-size:16px}
-.drawer-head small{color:#C9A227}
+.drawer-head small{color:var(--couleur-or)}
 .drawer-head p{margin:8px 0 0;font-size:12px;opacity:.8}
 .drawer-close{position:absolute;right:12px;top:12px;background:rgba(255,255,255,.2);border:none;color:#fff;width:32px;height:32px;border-radius:50%;cursor:pointer}
 .drawer-links{padding:12px;overflow-y:auto}
 .drawer-links a,.drawer-links button{display:flex;flex-direction:column;gap:2px;width:100%;text-align:left;background:#F1F8E9;border:1px solid #E8F5E9;color:#1B5E20;padding:12px;border-radius:12px;font-weight:700;font-size:14px;cursor:pointer;text-decoration:none;margin-bottom:8px;box-sizing:border-box}
 .drawer-links a.vert,.drawer-links button.vert{background:#66BB6A;color:#fff;border-color:#66BB6A}
-.drawer-links a.orange{background:#FF7A3D;color:#fff;border-color:#FF7A3D}
+.drawer-links a.orange{background:var(--couleur-bouton);color:#fff;border-color:var(--couleur-bouton)}
 .drawer-links a.blanc{background:#fff;color:#0F2A14;border-color:#ddd}
 .drawer-links small{color:#666;font-weight:400;font-size:12px}
 .drawer-foot{margin-top:auto;padding:12px;text-align:center;border-top:1px solid #eee;font-size:12px;color:#888}
@@ -38,15 +39,15 @@ body{margin:0;font-family:Inter,system-ui,Arial,sans-serif;background:#F7FAF5;co
 .menu-btn{border:1px solid #E8F5E9;background:#F1F8E9;color:#1B5E20;padding:8px 13px;border-radius:999px;font-weight:700;font-size:13px;cursor:pointer;flex:0 0 auto}
 .menu-btn.active,.menu-btn:hover{background:#1B5E20;color:#fff}
 .hero-court{text-align:center;padding:14px 0 10px}
-.hero-badge{display:inline-block;background:#FFF9C4;border:1px solid #FFE082;color:#5D4037;padding:6px 12px;border-radius:999px;font-weight:700;font-size:12px}
-.hero-img{width:100%;height:180px;object-fit:cover;border-radius:16px;margin:10px auto;display:block}
+.hero-badge{display:inline-block;background:#FFF9C4;border:1px solid var(--couleur-or);color:#5D4037;padding:6px 12px;border-radius:999px;font-weight:700;font-size:12px}
+.hero-img{width:100%;height:180px;object-fit:cover;border-radius:16px;margin:10px auto;display:block;border:3px solid var(--couleur-or)}
 .hero-court h1{font-size:30px;line-height:1.1;margin:6px 0 4px;color:#0F2A14}
-.hero-court h1 span{font-size:18px;color:#C9A227}
+.hero-court h1 span{font-size:18px;color:var(--couleur-or)}
 .hero-court p{max-width:600px;margin:0 auto 10px;color:#4A5A4A;line-height:1.5;font-size:13.5px}
-.signature-header{margin:0 0 10px;font-size:12px;color:#C9A227;font-weight:700}
+.signature-header{margin:0 0 10px;font-size:12px;color:var(--couleur-or);font-weight:700}
 .hero-btns{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
 .btn-dark{background:#0F2A14;color:#fff;border:none;padding:11px 16px;border-radius:999px;font-weight:800;cursor:pointer;font-size:13px}
-.btn-gold{background:#C9A227;color:#0F2A14;border:none;padding:11px 16px;border-radius:999px;font-weight:800;cursor:pointer;font-size:13px}
+.btn-gold{background:var(--couleur-or);color:#0F2A14;border:none;padding:11px 16px;border-radius:999px;font-weight:800;cursor:pointer;font-size:13px}
 .mini-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:12px 0 4px}
 .mini-card{background:#fff;border:1px solid #E8F5E9;border-radius:14px;padding:12px;text-align:center}
 .mini-card span{font-size:22px}
@@ -65,10 +66,10 @@ body{margin:0;font-family:Inter,system-ui,Arial,sans-serif;background:#F7FAF5;co
 .choix-type{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:8px}
 .choix-box{border:1px solid #C8E6C9;background:#F1F8E9;padding:11px;border-radius:12px;cursor:pointer;font-size:13px;line-height:1.5}
 .choix-box input{width:auto}
-.btn-publier{width:100%;background:#1B5E20;color:#fff;border:none;padding:13px;border-radius:12px;font-weight:800;cursor:pointer;margin-top:12px;font-size:14px}
+.btn-publier{width:100%;background:var(--couleur-principale);color:#fff;border:none;padding:13px;border-radius:12px;font-weight:800;cursor:pointer;margin-top:12px;font-size:14px}
 .btn-whatsapp{display:inline-block;background:#25D366;color:#fff;padding:11px 18px;border-radius:999px;text-decoration:none;font-weight:800;margin-top:10px}
 .contact-card{background:#fff;border:1px solid #E8F5E9;border-radius:18px;padding:18px}
-.info-box{background:#fff;border:1px solid #FFE082;border-left:5px solid #C9A227;border-radius:12px;padding:12px;text-align:left;line-height:1.5;font-size:13px}
+.info-box{background:#fff;border:1px solid var(--couleur-or);border-left:5px solid var(--couleur-or);border-radius:12px;padding:12px;text-align:left;line-height:1.5;font-size:13px}
 .modal{position:fixed;inset:0;background:rgba(0,0,0,.55);display:none;align-items:center;justify-content:center;padding:14px;z-index:99}
 .modal-box{background:#fff;border-radius:18px;max-width:600px;width:100%;padding:16px;max-height:85vh;overflow:auto;position:relative}
 .modal-close{position:absolute;right:12px;top:12px;background:#fff;border:1px solid #ddd;border-radius:50%;width:32px;height:32px;cursor:pointer}
@@ -76,127 +77,126 @@ body{margin:0;font-family:Inter,system-ui,Arial,sans-serif;background:#F7FAF5;co
 .footer .wrap{padding:16px 14px}
 .footer small{opacity:.7}
 .signature-box{display:inline-block;background:rgba(255,255,255,.08);border:1px solid rgba(201,162,39,.5);border-radius:12px;padding:10px 18px;margin:10px 0}
-.signature-name{font-family:'Brush Script MT','Segoe Script',cursive;font-size:28px;color:#C9A227;line-height:1.1;margin:2px 0}
+.signature-name{font-family:'Brush Script MT','Segoe Script',cursive;font-size:28px;color:var(--couleur-or);line-height:1.1;margin:2px 0}
+.ar{color:var(--couleur-or);font-weight:700;direction:rtl}
 @media(max-width:760px){.hero-court h1{font-size:26px}.hero-img{height:160px}}
 @media(max-width:480px){.mini-row{grid-template-columns:1fr 1fr}.brand-txt small{display:none}}
 </style>
 </head>
 <body>
 <div class="top-utility"><div class="wrap">
-<div class="brand-left"><button class="btn-burger" onclick="ouvrirDrawer()">☰</button><div class="brand-txt"><b>AN NOUROU IMAN</b><small>النور الإيمان • Yaoundé - Douala</small></div></div>
-<div class="lang-select"><span>🌐</span><select id="selectLangue" onchange="changerLangueSafe(this.value)"><option value="fr">Français</option><option value="en">English</option><option value="ar">العربية</option></select></div>
+<div class="brand-left"><button class="btn-burger" onclick="ouvrirDrawer()">☰</button><div class="brand-txt"><b id="brandTitre">AN NOUROU IMAN</b><small id="brandSousTitre">النور الإيمان • Yaoundé - Douala</small></div></div>
+<div class="lang-select"><span>🌐</span><select id="selectLangue" onchange="changerLangueSafe(this.value)"><option value="fr">Français / Français</option><option value="en">English</option><option value="ar">العربية / Arabe</option></select></div>
 </div></div>
 <div id="drawerBg" class="drawer-bg" onclick="fermerDrawer()"></div>
 <div id="drawer" class="drawer">
-<div class="drawer-head"><button class="drawer-close" onclick="fermerDrawer()">✖️</button><b>☪️ An Nourou Iman</b><br><small>النور الإيمان</small><p>Cheick Ibrahim Arafat<br>Fondateur & Directeur</p></div>
+<div class="drawer-head"><button class="drawer-close" onclick="fermerDrawer()">✖️</button><b>☪️ An Nourou Iman</b><br><small>النور الإيمان</small><p id="drawerSignature">Cheick Ibrahim Arafat<br>Fondateur & Directeur <span class="ar">المؤسس والمدير</span></p></div>
 <div class="drawer-links">
-<button onclick="allerA('secAccueil')">🏠 Retour à l'Accueil<small>Page principale</small></button>
-<a href="admin.html">🔐 Admin Directeur<small>Gestion totale</small></a>
-<a href="sousdirecteur.html" class="orange">👨‍🏫 Sous-Directeur<small>Élèves, notes, présence</small></a>
-<a href="gestion.html" class="vert">⚙️ Gestion<small>Élèves • Paiements • Bulletins</small></a>
-<a href="admin-accueil.html" class="blanc">✏️ Modifier l'accueil<small>Réservé Directeur - Mot de passe</small></a>
-<button onclick="allerA('secPaiement')">💰 Paiement / Frais<small>Payer</small></button>
-<button onclick="allerA('secContact')">📞 Contact<small>WhatsApp Directeur</small></button>
-<a href="resultats.html">🔍 Résultats<small>Voir les bulletins</small></a>
+<button onclick="allerA('secAccueil')">🏠 Retour à l'Accueil <span class="ar">/ العودة إلى الرئيسية</span><small>Page principale / الصفحة الرئيسية</small></button>
+<a href="admin.html">🔐 Admin Directeur <span class="ar">/ إدارة المدير</span><small>Gestion totale / الإدارة الكاملة</small></a>
+<a href="sousdirecteur.html" class="orange">👨‍🏫 Sous-Directeur <span class="ar">/ نائب المدير</span><small>Élèves, notes, présence / التلاميذ، النقاط، الحضور</small></a>
+<a href="gestion.html" class="vert">⚙️ Gestion <span class="ar">/ التسيير</span><small>Élèves • Paiements • Bulletins / التلاميذ • الدفع • الكشوف</small></a>
+<a href="admin-accueil.html" class="blanc">✏️ Modifier l'accueil <span class="ar">/ تعديل الرئيسية</span><small>Réservé Directeur - Mot de passe / خاص بالمدير</small></a>
+<button onclick="allerA('secPaiement')">💰 Paiement / Frais <span class="ar">/ الدفع / الرسوم</span><small>Payer / الدفع</small></button>
+<button onclick="allerA('secContact')">📞 Contact <span class="ar">/ الاتصال</span><small>WhatsApp Directeur / واتساب المدير</small></button>
+<a href="resultats.html">🔍 Résultats <span class="ar">/ النتائج</span><small>Voir les bulletins / رؤية الكشوف</small></a>
 </div>
 <div class="drawer-foot">© 2026 An Nourou Iman<br>Yaoundé • Douala • Cameroun</div>
 </div>
 <nav class="top-nav"><div class="wrap">
-<button onclick="allerA('secAccueil')" class="menu-btn active">🏠 Accueil</button>
-<button onclick="allerA('secEcoles')" class="menu-btn">🏫 Écoles</button>
-<button onclick="allerA('secGroupes')" class="menu-btn">👥 Groupes</button>
-<button onclick="allerA('secInscription')" class="menu-btn">📝 Inscription</button>
-<button onclick="allerA('secParcours')" class="menu-btn">📚 Parcours</button>
+<button onclick="allerA('secAccueil')" class="menu-btn active">🏠 Accueil <span class="ar">/ الرئيسية</span></button>
+<button onclick="allerA('secEcoles')" class="menu-btn">🏫 Écoles <span class="ar">/ المدارس</span></button>
+<button onclick="allerA('secGroupes')" class="menu-btn">👥 Groupes <span class="ar">/ المجموعات</span></button>
+<button onclick="allerA('secInscription')" class="menu-btn">📝 Inscription <span class="ar">/ التسجيل</span></button>
+<button onclick="allerA('secParcours')" class="menu-btn">📚 Parcours <span class="ar">/ المسار</span></button>
 </div></nav>
-
 <div id="secAccueil" class="section-page">
 <section class="hero-court">
-<div class="hero-badge">✨ Coran • Arabe • Tajwid • Hadith • Akhlaq</div>
-<img src="https://images.unsplash.com/photo-1585036156171-384164a8c675?w=900" class="hero-img" alt="École Coranique">
-<h1>An Nourou Iman <span>النور الإيمان</span></h1>
-<p>Assalamou Aleykoum. Nous formons vos enfants dans le Coran et les bonnes manières, à l'école ou près de chez vous.</p>
-<p class="signature-header">— Cheick Ibrahim Arafat, Fondateur & Directeur —</p>
+<div class="hero-badge">✨ Coran • Arabe • Tajwid • Hadith • Akhlaq <span class="ar">/ القرآن • العربية • التجويد • الحديث • الأخلاق</span></div>
+<img src="https://images.unsplash.com/photo-1585036156171-384164a8c675?w=900" class="hero-img" alt="École Coranique" id="heroImg">
+<h1 id="heroTitre">An Nourou Iman <span id="heroSousTitreAr">النور الإيمان</span></h1>
+<p id="heroTexte">Assalamou Aleykoum. Nous formons vos enfants dans le Coran et les bonnes manières, à l'école ou près de chez vous. <br><span class="ar">السلام عليكم. نكوّن أبناءكم في القرآن وحسن الأخلاق، في المدرسة أو قرب منزلكم.</span></p>
+<p class="signature-header" id="heroSignature">— Cheick Ibrahim Arafat, Fondateur & Directeur — <span class="ar">الشيخ إبراهيم عرفات، المؤسس والمدير</span></p>
 <div class="hero-btns">
-<button onclick="allerA('secEcoles')" class="btn-dark">🏫 Voir nos écoles →</button>
-<button onclick="allerA('secInscription')" class="btn-gold">📝 S'inscrire</button>
-<button onclick="allerA('secGroupes')" class="btn-dark">👥 Groupes →</button>
+<button onclick="allerA('secEcoles')" class="btn-dark">🏫 Voir nos écoles <span class="ar">/ رؤية مدارسنا</span> →</button>
+<button onclick="allerA('secInscription')" class="btn-gold">📝 S'inscrire <span class="ar">/ التسجيل</span></button>
+<button onclick="allerA('secGroupes')" class="btn-dark">👥 Groupes <span class="ar">/ المجموعات</span> →</button>
 </div>
 <div id="boxNews" style="display:none; background:#FFF9C4; border:1px solid #FFE082; border-left:6px solid #FF7A3D; border-radius:14px; padding:14px; margin:12px auto; max-width:600px; text-align:left;">
-<h3 style="margin:0 0 8px 0; color:#0F2A14;">📢 NEWS / ANNONCES</h3>
+<h3 style="margin:0 0 8px 0; color:#0F2A14;">📢 NEWS / ANNONCES <span class="ar">/ الأخبار / الإعلانات</span></h3>
 <div id="listeNewsAccueil"></div>
 </div>
 <div class="mini-row">
-<div class="mini-card"><span>🏫</span><b>Écoles Fixes</b><small>Efoulan • Ekounou • Foumbane</small></div>
-<div class="mini-card"><span>👥</span><b>Groupes d'Études</b><small>Douala • Yaoundé • Partout</small></div>
-<div class="mini-card"><span>🎓</span><b>5 Niveaux</b><small>Même programme</small></div>
+<div class="mini-card"><span>🏫</span><b>Écoles Fixes <span class="ar">/ مدارس ثابتة</span></b><small>Efoulan • Ekounou • Foumbane</small></div>
+<div class="mini-card"><span>👥</span><b>Groupes d'Études <span class="ar">/ مجموعات الدراسة</span></b><small>Douala • Yaoundé • Partout</small></div>
+<div class="mini-card"><span>🎓</span><b>5 Niveaux <span class="ar">/ 5 مستويات</span></b><small>Même programme <span class="ar">/ نفس البرنامج</span></small></div>
 </div>
-<div class="mini-valeurs"><span>📖 Coran</span><span>✍️ Arabe</span><span>🤲 Akhlaq</span><span>📊 Suivi parents</span></div>
+<div class="mini-valeurs"><span>📖 Coran <span class="ar">/ القرآن</span></span><span>✍️ Arabe <span class="ar">/ العربية</span></span><span>🤲 Akhlaq <span class="ar">/ الأخلاق</span></span><span>📊 Suivi parents <span class="ar">/ متابعة الأولياء</span></span></div>
 </section>
 </div>
-
 <div id="secEcoles" class="section-page" style="display:none;padding:12px 0">
-<h2 class="titre-section">🏫 Nos Écoles</h2>
-<p class="sous-section">Choisis une école fixe, vois ses frais et inscris-toi.</p>
-<div class="filtres"><input id="rechercheEcole" placeholder="🔍 Efoulan, Ekounou..." oninput="afficherEcolesSafe()"><select id="filtreQuartier" onchange="afficherEcolesSafe()"><option value="">Tous les quartiers</option></select></div>
-<div id="listeEcoles">⏳ Chargement... Si ça reste bloqué, vérifie que ecoles.js est bien dans GitHub.</div>
+<h2 class="titre-section">🏫 Nos Écoles <span class="ar">/ مدارسنا</span></h2>
+<p class="sous-section">Choisis une école fixe, vois ses frais et inscris-toi. <span class="ar">اختر مدرسة ثابتة، شاهد رسومها وسجّل.</span></p>
+<div class="filtres"><input id="rechercheEcole" placeholder="🔍 Efoulan, Ekounou... / ابحث..." oninput="afficherEcolesSafe()"><select id="filtreQuartier" onchange="afficherEcolesSafe()"><option value="">Tous les quartiers / كل الأحياء</option></select></div>
+<div id="listeEcoles">⏳ Chargement... / جاري التحميل...</div>
 </div>
 <div id="secGroupes" class="section-page" style="display:none;padding:12px 0">
-<h2 class="titre-section">👥 Groupes d'Études</h2>
-<p class="sous-section">Tu n'es pas à Yaoundé ? Rejoins un groupe près de chez toi.</p>
-<div class="filtres"><input id="rechercheGroupe" placeholder="🔍 Douala, Bafoussam..." oninput="afficherGroupesSafe()"><select id="filtreVilleGroupe" onchange="afficherGroupesSafe()"><option value="">Toutes les villes</option></select></div>
-<div id="listeGroupes">⏳ Chargement...</div>
-<div class="info-box" style="margin-top:10px">💡 <b>Tu ne vois pas ta ville ?</b><br><small>Inscris-toi, choisis "Groupe d'Études" et dis ta ville. Le Directeur va créer un groupe pour toi.</small></div>
+<h2 class="titre-section">👥 Groupes d'Études <span class="ar">/ مجموعات الدراسة</span></h2>
+<p class="sous-section">Tu n'es pas à Yaoundé ? Rejoins un groupe près de chez toi. <span class="ar">لست في ياوندي؟ انضم إلى مجموعة قرب منزلك.</span></p>
+<div class="filtres"><input id="rechercheGroupe" placeholder="🔍 Douala, Bafoussam... / ابحث..." oninput="afficherGroupesSafe()"><select id="filtreVilleGroupe" onchange="afficherGroupesSafe()"><option value="">Toutes les villes / كل المدن</option></select></div>
+<div id="listeGroupes">⏳ Chargement... / جاري التحميل...</div>
+<div class="info-box" style="margin-top:10px">💡 <b>Tu ne vois pas ta ville ? <span class="ar">/ لا ترى مدينتك؟</span></b><br><small>Inscris-toi, choisis "Groupe d'Études" et dis ta ville. <span class="ar">سجّل، اختر "مجموعة دراسة" وقل مدينتك.</span></small></div>
 </div>
 <div id="secInscription" class="section-page" style="display:none;padding:12px 0">
 <section class="form-card">
-<h2 style="text-align:center">📝 Inscription en ligne</h2>
-<p style="text-align:center;color:#666;font-size:13px;">2 minutes. Tu remplis, tu envoies, le Directeur te confirme.</p>
-<label class="label">🎯 Tu veux quoi ? *</label>
+<h2 style="text-align:center">📝 Inscription en ligne <span class="ar">/ التسجيل عبر الإنترنت</span></h2>
+<p style="text-align:center;color:#666;font-size:13px;">2 minutes. Tu remplis, tu envoies, le Directeur te confirme. <span class="ar">دقيقتان. املأ، أرسل، والمدير يؤكد لك.</span></p>
+<label class="label">🎯 Tu veux quoi ? <span class="ar">/ ماذا تريد؟</span> *</label>
 <div class="choix-type">
-<label class="choix-box"><input type="radio" name="typeIns" value="Ecole" checked onchange="changerTypeInsSafe()"> 🏫 <b>École fixe</b><br><small>Je viens à l'école</small></label>
-<label class="choix-box"><input type="radio" name="typeIns" value="Groupe" onchange="changerTypeInsSafe()"> 👥 <b>Groupe d'Études</b><br><small>Enseignant près de chez moi</small></label>
+<label class="choix-box"><input type="radio" name="typeIns" value="Ecole" checked onchange="changerTypeIns()"> 🏫 <b>École fixe <span class="ar">/ مدرسة ثابتة</span></b><br><small>Je viens à l'école <span class="ar">/ آتي إلى المدرسة</span></small></label>
+<label class="choix-box"><input type="radio" name="typeIns" value="Groupe" onchange="changerTypeIns()"> 👥 <b>Groupe d'Études <span class="ar">/ مجموعة دراسة</span></b><br><small>Enseignant près de chez moi <span class="ar">/ معلم قرب منزلي</span></small></label>
 </div>
-<div id="blocEcole"><label class="label">🏫 Choisis l'école *</label><select id="insEcole" class="select-cat"><option value="">-- Choisis une école --</option></select></div>
+<div id="blocEcole"><label class="label">🏫 Choisis l'école <span class="ar">/ اختر المدرسة</span> *</label><select id="insEcole" class="select-cat"><option value="">-- Choisis une école / اختر مدرسة --</option></select></div>
 <div id="blocGroupe" style="display:none">
-<label class="label">👥 Choisis le groupe *</label><select id="insGroupe" class="select-cat"><option value="">-- Choisis un groupe --</option></select>
-<label class="label">📍 Ta ville / Ton quartier *</label><input id="insVille" placeholder="Ex: Douala, Deïdo">
-<label class="label">🕐 Quand tu es libre ? *</label><select id="insDispo" class="select-cat"><option value="Samedi">Samedi</option><option value="Dimanche">Dimanche</option><option value="Samedi + Dimanche">Samedi + Dimanche</option><option value="Mercredi">Mercredi</option><option value="Soir">Soir</option><option value="Autre">Autre</option></select>
+<label class="label">👥 Choisis le groupe <span class="ar">/ اختر المجموعة</span> *</label><select id="insGroupe" class="select-cat"><option value="">-- Choisis un groupe / اختر مجموعة --</option><option value="Nouveau groupe demandé">➕ Nouveau groupe demandé - Je n'ai pas de groupe / مجموعة جديدة مطلوبة</option></select>
+<label class="label">📍 Ta ville / Ton quartier <span class="ar">/ مدينتك / حيّك</span> *</label><input id="insVille" placeholder="Ex: Douala, Deïdo">
+<label class="label">🕐 Quand tu es libre ? <span class="ar">/ متى أنت حر؟</span> *</label><select id="insDispo" class="select-cat"><option value="Samedi">Samedi / السبت</option><option value="Dimanche">Dimanche / الأحد</option><option value="Samedi + Dimanche">Samedi + Dimanche / السبت + الأحد</option><option value="Mercredi">Mercredi / الأربعاء</option><option value="Soir">Soir / المساء</option><option value="Autre">Autre / آخر</option></select>
 </div>
-<label class="label">📚 Niveau *</label><select id="insNiveau" class="select-cat"><option value="Niveau 1">Niveau 1 - Fondation</option><option value="Niveau 2">Niveau 2 - Lecture</option><option value="Niveau 3">Niveau 3 - Approfondissement</option><option value="Niveau 4">Niveau 4 - Maîtrise</option><option value="Niveau 5">Niveau 5 - Excellence</option></select>
-<label class="label">👶 Nom complet de l'enfant *</label><input id="insEnfant" placeholder="Ex: Aïcha Bello">
-<label class="label">🎂 Date de naissance *</label><input id="insDateNaissance" type="date">
-<label class="label">🏥 Lieu de naissance *</label><input id="insLieuNaissance" placeholder="Ex: Yaoundé">
-<label class="label">👤 Nom du parent *</label><input id="insParent" placeholder="Ex: Moussa Bello">
-<label class="label">📱 WhatsApp du parent *</label><input id="insTel" placeholder="Ex: 697919116">
-<label class="label">📍 Quartier</label><input id="insQuartier" placeholder="Ex: Efoulan">
-<button onclick="envoyerInscriptionSafe()" class="btn-publier">✅ Envoyer l'inscription</button>
+<label class="label">📚 Niveau <span class="ar">/ المستوى</span> *</label><select id="insNiveau" class="select-cat"><option value="Niveau 1">Niveau 1 - Fondation / المستوى 1 - الأساس</option><option value="Niveau 2">Niveau 2 - Lecture / المستوى 2 - القراءة</option><option value="Niveau 3">Niveau 3 - Approfondissement / المستوى 3 - التعمق</option><option value="Niveau 4">Niveau 4 - Maîtrise / المستوى 4 - الإتقان</option><option value="Niveau 5">Niveau 5 - Excellence / المستوى 5 - التميز</option></select>
+<label class="label">👶 Nom complet de l'enfant <span class="ar">/ اسم الطفل الكامل</span> *</label><input id="insEnfant" placeholder="Ex: Aïcha Bello">
+<label class="label">🎂 Date de naissance <span class="ar">/ تاريخ الميلاد</span> *</label><input id="insDateNaissance" type="date">
+<label class="label">🏥 Lieu de naissance <span class="ar">/ مكان الميلاد</span> *</label><input id="insLieuNaissance" placeholder="Ex: Yaoundé">
+<label class="label">👦👧 Sexe de l'enfant <span class="ar">/ جنس الطفل</span> *</label><select id="insSexe" class="select-cat"><option value="">-- Choisis / اختر --</option><option value="Fille">Fille / بنت</option><option value="Garçon">Garçon / ولد</option></select>
+<label class="label">👤 Nom du parent <span class="ar">/ اسم الولي</span> *</label><input id="insParent" placeholder="Ex: Moussa Bello">
+<label class="label">📱 WhatsApp du parent <span class="ar">/ واتساب الولي</span> *</label><input id="insTel" placeholder="Ex: 697919116" inputmode="numeric">
+<label class="label">📍 Quartier <span class="ar">/ الحي</span></label><input id="insQuartier" placeholder="Ex: Efoulan">
+<button onclick="envoyerInscription()" class="btn-publier">✅ Envoyer l'inscription <span class="ar">/ إرسال التسجيل</span></button>
 <p id="msgInscription" style="text-align:center;font-weight:bold"></p>
 </section>
 </div>
-<div id="secParcours" class="section-page" style="display:none"><section style="padding:12px 0;text-align:center"><p style="color:#C9A227;font-weight:800;letter-spacing:2px;font-size:11px">PARCOURS ÉDUCATIF</p><h2>Un seul programme, 5 niveaux</h2><p style="color:#666;font-size:13px">Coran • Arabe • Tajwid • Hadith • Akhlaq</p><div id="listeNiveaux"></div></section></div>
+<div id="secParcours" class="section-page" style="display:none"><section style="padding:12px 0;text-align:center"><p style="color:#C9A227;font-weight:800;letter-spacing:2px;font-size:11px">PARCOURS ÉDUCATIF <span class="ar">/ المسار التعليمي</span></p><h2>Un seul programme, 5 niveaux <span class="ar">/ برنامج واحد، 5 مستويات</span></h2><p style="color:#666;font-size:13px">Coran • Arabe • Tajwid • Hadith • Akhlaq <span class="ar">/ القرآن • العربية • التجويد • الحديث • الأخلاق</span></p><div id="listeNiveaux"></div></section></div>
 <div id="secPaiement" class="section-page" style="display:none;padding:12px 0">
 <section class="form-card">
-<h2 style="text-align:center">💰 Paiement / Frais</h2>
-<!-- ✅ ON CHOISIT L'ÉLÈVE : plus de champ à taper -->
-<label class="label">👶 Nom enfant *</label>
-<select id="payEnfant" class="select-cat"><option value="">⏳ Chargement des élèves inscrits...</option></select>
-<small style="color:#666">Choisis seulement un élève déjà inscrit. Si ton enfant n'est pas dans la liste, inscris-toi d'abord.</small>
-<label class="label">👤 Nom parent</label><input id="payParent" placeholder="Ex: Moussa Bello">
-<label class="label">📱 WhatsApp parent</label><input id="payTel" placeholder="Ex: 697919116">
-<label class="label">💰 Montant FCFA *</label><input id="payMontant" type="number" placeholder="Ex: 5000">
-<label class="label">📝 Motif</label><select id="payMotif" class="select-cat"><option>Inscription</option><option>Mensualité</option><option>Uniforme</option><option>Autre</option></select>
-<label class="label">💳 Mode</label><select id="payMode" class="select-cat"><option>Orange Money</option><option>MTN MoMo</option><option>Espèces</option></select>
-<button onclick="enregistrerPaiementSafe()" class="btn-publier">💰 Enregistrer Paiement</button>
+<h2 style="text-align:center">💰 Paiement / Frais <span class="ar">/ الدفع / الرسوم</span></h2>
+<label class="label">👶 Nom enfant <span class="ar">/ اسم الطفل</span> *</label>
+<select id="payEnfant" class="select-cat"><option value="">⏳ Chargement des élèves inscrits... / جاري تحميل التلاميذ...</option></select>
+<small style="color:#666">Choisis seulement un élève déjà inscrit. <span class="ar">اختر فقط تلميذاً مسجلاً.</span></small>
+<label class="label">👤 Nom parent <span class="ar">/ اسم الولي</span></label><input id="payParent" placeholder="Ex: Moussa Bello">
+<label class="label">📱 WhatsApp parent <span class="ar">/ واتساب الولي</span></label><input id="payTel" placeholder="Ex: 697919116">
+<label class="label">💰 Montant FCFA <span class="ar">/ المبلغ فرنك</span> *</label><input id="payMontant" type="number" placeholder="Ex: 5000">
+<label class="label">📝 Motif <span class="ar">/ السبب</span></label><select id="payMotif" class="select-cat"><option>Inscription / التسجيل</option><option>Mensualité / الشهرية</option><option>Uniforme / الزي</option><option>Autre / آخر</option></select>
+<label class="label">💳 Mode <span class="ar">/ الطريقة</span></label><select id="payMode" class="select-cat"><option>Orange Money</option><option>MTN MoMo</option><option>Espèces / نقداً</option></select>
+<button onclick="enregistrerPaiement()" class="btn-publier">💰 Enregistrer Paiement <span class="ar">/ تسجيل الدفع</span></button>
 <p id="msgPaiement" style="text-align:center;font-weight:bold"></p>
-<!-- ✅ PLUS DE LISTE DE PAIEMENT ICI : pas de bouton Voir les paiements, pas de listePaiements, pas de Valider / Refuser -->
+<p class="centre muted" style="font-size:11px">Ton paiement part en attente, le Directeur le valide dans Admin, puis il compte dans le solde.</p>
 </section>
 </div>
-<div id="secContact" class="section-page" style="display:none;padding:12px 0;text-align:center"><div class="contact-card"><h2>📞 Contact</h2><p><b>Groupe An Nourou Iman</b><br>Yaoundé • Douala • Cameroun</p><p>📱 WhatsApp Directeur : <b>697 91 91 16</b></p><a href="https://wa.me/237697919116" target="_blank" class="btn-whatsapp">💬 WhatsApp Direct</a></div></div>
-<div id="modalEcole" class="modal"><div class="modal-box"><button onclick="fermerModalSafe()" class="modal-close">✖️</button><div id="detailEcole"></div><button onclick="fermerModalSafe();allerA('secInscription')" class="btn-publier">📝 S'inscrire dans cette école</button></div></div>
-<div id="modalGroupe" class="modal"><div class="modal-box"><button onclick="fermerModalGroupeSafe()" class="modal-close">✖️</button><div id="detailGroupe"></div><button onclick="fermerModalGroupeSafe();allerA('secInscription')" class="btn-publier">👥 Rejoindre ce groupe</button></div></div>
+<div id="secContact" class="section-page" style="display:none;padding:12px 0;text-align:center"><div class="contact-card"><h2>📞 Contact <span class="ar">/ الاتصال</span></h2><p><b>Groupe An Nourou Iman</b><br>Yaoundé • Douala • Cameroun</p><p>📱 WhatsApp Directeur : <b id="contactWhats">697 91 91 16</b> <span class="ar">/ واتساب المدير</span></p><a href="https://wa.me/237697919116" target="_blank" class="btn-whatsapp" id="lienWhats">💬 WhatsApp Direct <span class="ar">/ واتساب مباشر</span></a></div></div>
+<div id="modalEcole" class="modal"><div class="modal-box"><button onclick="fermerModal()" class="modal-close">✖️</button><div id="detailEcole"></div><button onclick="fermerModal();allerA('secInscription')" class="btn-publier">📝 S'inscrire dans cette école <span class="ar">/ التسجيل في هذه المدرسة</span></button></div></div>
+<div id="modalGroupe" class="modal"><div class="modal-box"><button onclick="fermerModalGroupe()" class="modal-close">✖️</button><div id="detailGroupe"></div><button onclick="fermerModalGroupe();allerA('secInscription')" class="btn-publier">👥 Rejoindre ce groupe <span class="ar">/ الانضمام إلى هذه المجموعة</span></button></div></div>
 <footer class="footer"><div class="wrap">
 <b>☪️ Groupe An Nourou Iman</b><br><small>Yaoundé • Douala • Cameroun</small><br>
-<div class="signature-box"><small style="letter-spacing:2px;opacity:.8;">FONDATEUR & DIRECTEUR</small><br><div class="signature-name">Cheick Ibrahim Arafat</div><div style="font-size:13px;font-weight:800;">Cheick Ibrahim Arafat</div></div><br>
+<div class="signature-box"><small style="letter-spacing:2px;opacity:.8;">FONDATEUR & DIRECTEUR <span class="ar">/ المؤسس والمدير</span></small><br><div class="signature-name" id="footerNom">Cheick Ibrahim Arafat</div><div style="font-size:13px;font-weight:800;"><span id="footerNom2">Cheick Ibrahim Arafat</span> <span class="ar">/ الشيخ إبراهيم عرفات</span></div><div style="font-size:12px;opacity:.8;" id="footerFonction">Fondateur & Directeur / المؤسس والمدير</div></div><br>
 <small style="opacity:.6;">© 2026 An Nourou Iman</small>
 </div></footer>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
@@ -207,8 +207,7 @@ body{margin:0;font-family:Inter,system-ui,Arial,sans-serif;background:#F7FAF5;co
 <script src="menu.js"></script>
 <script src="ecoles.js"></script>
 <script src="groupes.js"></script>
-<script src="inscription.js"></script>
-<script src="paiement.js"></script>
+<!-- ✅ PLUS DE inscription.js NI paiement.js ICI - une seule version dans ce fichier, sinon ça se bagarre -->
 <script>
 function ouvrirDrawer(){ var d=document.getElementById('drawer'); if(d) d.classList.add('open'); var b=document.getElementById('drawerBg'); if(b) b.classList.add('show'); }
 function fermerDrawer(){ var d=document.getElementById('drawer'); if(d) d.classList.remove('open'); var b=document.getElementById('drawerBg'); if(b) b.classList.remove('show'); }
@@ -223,43 +222,193 @@ function allerA(sectionId){
   var map={secAccueil:0,secEcoles:1,secGroupes:2,secInscription:3,secParcours:4};
   if(map[sectionId]!==undefined && btns[map[sectionId]]){ btns[map[sectionId]].classList.add('active'); }
   if(sectionId==='secPaiement'){ chargerElevesPaiementAccueil(); }
+  if(sectionId==='secInscription'){ chargerEcolesGroupesInscription(); }
   window.scrollTo(0,0);
 }
 function showSection(id){ allerA(id); }
 function changerLangueSafe(l){ try{ if(typeof changerLangue==='function') changerLangue(l); }catch(e){} }
-function afficherEcolesSafe(){ try{ if(typeof afficherEcoles==='function') afficherEcoles(); }catch(e){ var el=document.getElementById('listeEcoles'); if(el) el.innerHTML='⚠️ ecoles.js manquant ou erreur Firebase. Vérifie firebase.js'; } }
+function afficherEcolesSafe(){ try{ if(typeof afficherEcoles==='function') afficherEcoles(); }catch(e){ var el=document.getElementById('listeEcoles'); if(el) el.innerHTML='⚠️ ecoles.js manquant'; } }
 function afficherGroupesSafe(){ try{ if(typeof afficherGroupes==='function') afficherGroupes(); }catch(e){} }
-function changerTypeInsSafe(){
-  try{ if(typeof changerTypeIns==='function'){ changerTypeIns(); return; } }catch(e){}
-  var isGroupe=document.querySelector('input[name="typeIns"]:checked');
-  var blocE=document.getElementById('blocEcole'), blocG=document.getElementById('blocGroupe');
-  if(isGroupe && isGroupe.value==='Groupe'){ if(blocE) blocE.style.display='none'; if(blocG) blocG.style.display='block'; }
-  else { if(blocE) blocE.style.display='block'; if(blocG) blocG.style.display='none'; }
+function fermerModal(){ var m=document.getElementById('modalEcole'); if(m) m.style.display='none'; }
+function fermerModalGroupe(){ var m=document.getElementById('modalGroupe'); if(m) m.style.display='none'; }
+// ===== INSCRIPTION - UNE SEULE VERSION - MÊMES CHAMPS QUE GESTION / ADMIN / RÉSULTATS =====
+// Collection inscriptions : { enfant, parent, tel (9 chiffres), niveau, dateNaissance, lieuNaissance, sexe, quartier, ville, dispo, type, ecole, ecoleNom, ecoleId, groupe, groupeNom, groupeId, statut:"en_attente", createdAt }
+function changerTypeIns(){
+  let radio = document.querySelector('input[name="typeIns"]:checked');
+  let type = radio ? radio.value : "Ecole";
+  let blocE = document.getElementById('blocEcole');
+  let blocG = document.getElementById('blocGroupe');
+  if(blocE) blocE.style.display = type==='Ecole' ? 'block' : 'none';
+  if(blocG) blocG.style.display = type==='Groupe' ? 'block' : 'none';
 }
-function envoyerInscriptionSafe(){ try{ if(typeof envoyerInscription==='function'){ envoyerInscription(); return; } }catch(e){} alert('⚠️ inscription.js manquant. Vérifie que le fichier est dans GitHub.'); }
-function enregistrerPaiementSafe(){
-  var sel=document.getElementById('payEnfant');
-  if(sel && !sel.value){ var m=document.getElementById('msgPaiement'); if(m){ m.style.color="red"; m.textContent="❌ Choisis ton enfant dans la liste. Si il n'y est pas, inscris-toi d'abord."; } return; }
-  try{ if(typeof enregistrerPaiement==='function'){ enregistrerPaiement(); return; } }catch(e){} alert('⚠️ paiement.js manquant.');
+function nettoyerTelAccueil(t){ return String(t||"").replace(/[^0-9]/g,"").replace(/^237/,"").slice(-9); }
+let ECOLES_INSCRIPTION = [];
+let GROUPES_INSCRIPTION = [];
+async function chargerEcolesGroupesInscription(){
+  let selE = document.getElementById('insEcole');
+  let selG = document.getElementById('insGroupe');
+  if(!selE && !selG) return;
+  try{
+    if(typeof db==='undefined' || !db) return;
+    let snapE = await db.collection("ecoles").get();
+    ECOLES_INSCRIPTION = [];
+    snapE.forEach(doc=>{ let d=doc.data(); ECOLES_INSCRIPTION.push({id:doc.id, nom:d.nom||doc.id, quartier:d.quartier||""}); });
+    if(selE){
+      let cur = selE.value;
+      selE.innerHTML = `<option value="">-- Choisis une école / اختر مدرسة --</option>`;
+      ECOLES_INSCRIPTION.forEach(e=>{ selE.innerHTML += `<option value="${e.id}||${e.nom}">${e.nom}${e.quartier ? " - "+e.quartier : ""}</option>`; });
+      if(cur) selE.value = cur;
+    }
+    let snapG = await db.collection("groupes").get();
+    GROUPES_INSCRIPTION = [];
+    snapG.forEach(doc=>{ let d=doc.data(); GROUPES_INSCRIPTION.push({id:doc.id, nom:d.nom||doc.id, ville:d.ville||"", quartier:d.quartier||""}); });
+    if(selG){
+      let cur = selG.value;
+      selG.innerHTML = `<option value="">-- Choisis un groupe / اختر مجموعة --</option><option value="Nouveau groupe demandé">➕ Nouveau groupe demandé - Je n'ai pas de groupe / مجموعة جديدة مطلوبة</option>`;
+      GROUPES_INSCRIPTION.forEach(g=>{ selG.innerHTML += `<option value="${g.id}||${g.nom}">${g.nom}${g.ville ? " - "+g.ville : ""}</option>`; });
+      if(cur) selG.value = cur;
+    }
+  }catch(e){ console.log("Inscription écoles:", e.message); }
 }
-// ✅ PLUS DE LISTE DE PAIEMENT : on bloque l'ancienne fonction de paiement.js pour qu'elle n'affiche rien à l'accueil
-function chargerPaiementsSafe(){ return; }
-function fermerModalSafe(){ var m=document.getElementById('modalEcole'); if(m) m.style.display='none'; try{ if(typeof fermerModal==='function') fermerModal(); }catch(e){} }
-function fermerModalGroupeSafe(){ var m=document.getElementById('modalGroupe'); if(m) m.style.display='none'; try{ if(typeof fermerModalGroupe==='function') fermerModalGroupe(); }catch(e){} }
+async function envoyerInscription(){
+  let msg = document.getElementById('msgInscription');
+  let typeEl = document.querySelector('input[name="typeIns"]:checked');
+  let type = typeEl ? typeEl.value : "Ecole";
+  let ecoleVal = document.getElementById('insEcole')?.value || "";
+  let groupeVal = document.getElementById('insGroupe')?.value || "";
+  let ville = document.getElementById('insVille')?.value.trim() || "";
+  let dispo = document.getElementById('insDispo')?.value || "";
+  let niveau = document.getElementById('insNiveau')?.value || "";
+  let enfant = document.getElementById('insEnfant')?.value.trim() || "";
+  let dateNaissance = document.getElementById('insDateNaissance')?.value || "";
+  let lieuNaissance = document.getElementById('insLieuNaissance')?.value.trim() || "";
+  let sexe = document.getElementById('insSexe')?.value || "";
+  let parent = document.getElementById('insParent')?.value.trim() || "";
+  let tel = nettoyerTelAccueil(document.getElementById('insTel')?.value || "");
+  let quartier = document.getElementById('insQuartier')?.value.trim() || "";
+  if(type==="Ecole" && !ecoleVal){ msg.style.color="red"; msg.textContent="❌ Choisis l'école."; return; }
+  if(type==="Groupe" && !groupeVal){ msg.style.color="red"; msg.textContent="❌ Choisis le groupe."; return; }
+  if(type==="Groupe" && groupeVal==="Nouveau groupe demandé" && !ville){ msg.style.color="red"; msg.textContent="⚠️ Mets ta ville / quartier pour créer ton groupe"; return; }
+  if(!enfant || !dateNaissance || !lieuNaissance || !sexe || !parent || !tel){ msg.style.color="red"; msg.textContent="❌ Remplis tout : Enfant, Naissance, Lieu, Sexe, Parent, Téléphone."; return; }
+  if(tel.length < 9){ msg.style.color="red"; msg.textContent="❌ Téléphone incomplet. Mets 9 chiffres, ex : 697919116."; return; }
+  if(new Date(dateNaissance) > new Date()){ msg.style.color="red"; msg.textContent="⚠️ Date de naissance dans le futur ? Vérifie."; return; }
+  let age = Math.floor((new Date() - new Date(dateNaissance)) / (1000*60*60*24*365.25));
+  let ecoleId="", ecoleNom="", ecoleQuartier="", groupeId="", groupeNom="", groupeVille="";
+  if(type==="Ecole"){
+    let p = ecoleVal.split("||"); ecoleId = p[0]||""; ecoleNom = p[1]||ecoleVal;
+    let e = ECOLES_INSCRIPTION.find(x=> x.id===ecoleId || x.nom===ecoleNom);
+    if(e){ ecoleId = e.id; ecoleNom = e.nom; ecoleQuartier = e.quartier||""; }
+  }
+  if(type==="Groupe" && groupeVal!=="Nouveau groupe demandé"){
+    let p = groupeVal.split("||"); groupeId = p[0]||""; groupeNom = p[1]||groupeVal;
+    let g = GROUPES_INSCRIPTION.find(x=> x.id===groupeId || x.nom===groupeNom);
+    if(g){ groupeId = g.id; groupeNom = g.nom; groupeVille = g.ville||g.quartier||""; }
+  }
+  if(type==="Groupe" && groupeVal==="Nouveau groupe demandé"){ groupeNom = "Nouveau groupe demandé"; groupeVille = ville; }
+  msg.style.color="#666"; msg.textContent="⏳ Envoi...";
+  try{
+    // Anti-doublon : même enfant + même téléphone
+    let deja = await db.collection("inscriptions").where("tel","==",tel).get();
+    let existe = false;
+    deja.forEach(d=>{ let c=d.data(); if(String(c.enfant||c.nomEnfant||"").trim().toLowerCase()===enfant.trim().toLowerCase()) existe=true; });
+    if(existe){ msg.style.color="red"; msg.textContent="⚠️ "+enfant+" est déjà inscrit avec ce téléphone ("+tel+"). Va voir le Directeur si tu veux modifier."; return; }
+    await db.collection("inscriptions").add({
+      enfant: enfant, nomEnfant: enfant, parent: parent,
+      tel: tel, telephone: tel, telParent: tel,
+      niveau: niveau, classe: niveau, age: age,
+      dateNaissance: dateNaissance, naissance: dateNaissance, lieuNaissance: lieuNaissance,
+      sexe: sexe, genre: sexe, quartier: quartier,
+      ville: ville || groupeVille || quartier || "", dispo: dispo, disponibilite: dispo, type: type,
+      ecole: type==="Ecole" ? ecoleNom : "", ecoleNom: type==="Ecole" ? ecoleNom : "", ecoleId: ecoleId, ecoleQuartier: ecoleQuartier,
+      groupe: type==="Groupe" ? groupeNom : "", groupeNom: type==="Groupe" ? groupeNom : "", groupeId: groupeId,
+      groupeVille: groupeVille || ville || "", groupeQuartier: ville || "",
+      statut: "en_attente", status: "en_attente",
+      date: new Date().toLocaleDateString('fr-FR'), dateInscription: new Date().toLocaleDateString('fr-FR'), createdAt: new Date()
+    });
+    msg.style.color="green";
+    msg.textContent = "✅ Inscription envoyée pour "+enfant+" - "+(type==="Ecole" ? ecoleNom : groupeNom)+". Le Directeur va la valider. Garde bien ce téléphone : "+tel+" pour voir les résultats.";
+    // WhatsApp auto - on garde ton idée
+    let nomLieu = type==="Ecole" ? ecoleNom : (groupeNom || ville);
+    let messageWA = "Assalamou Aleykoum " + parent + ", merci pour l'inscription de " + enfant + " à An Nourou Iman (" + nomLieu + "). Nous avons bien reçu votre demande. Le Directeur va vous recontacter.";
+    window.open("https://wa.me/237" + tel + "?text=" + encodeURIComponent(messageWA), "_blank");
+    document.getElementById('insEnfant').value=""; document.getElementById('insDateNaissance').value=""; document.getElementById('insLieuNaissance').value=""; document.getElementById('insParent').value=""; document.getElementById('insTel').value=""; document.getElementById('insQuartier').value=""; document.getElementById('insSexe').value=""; if(document.getElementById('insVille')) document.getElementById('insVille').value="";
+    chargerElevesPaiementAccueil();
+  }catch(e){ msg.style.color="red"; msg.textContent="❌ "+e.message; }
+}
+// ===== PAIEMENT ACCUEIL - UNE SEULE VERSION - CHOIX A : en_attente, Directeur valide =====
+async function enregistrerPaiement(){
+  let sel=document.getElementById('payEnfant');
+  let msg=document.getElementById('msgPaiement');
+  if(sel && !sel.value){ if(msg){ msg.style.color="red"; msg.textContent="❌ Choisis ton enfant dans la liste."; } return; }
+  let enfant = sel ? sel.value : "";
+  let parent = document.getElementById('payParent')?.value.trim() || "";
+  let tel = nettoyerTelAccueil(document.getElementById('payTel')?.value || "");
+  let montant = Number(document.getElementById('payMontant')?.value || 0);
+  let motif = document.getElementById('payMotif')?.value || "";
+  let mode = document.getElementById('payMode')?.value || "";
+  if(!enfant || !montant){ if(msg){ msg.style.color="red"; msg.textContent="❌ Choisis l'enfant et le montant."; } return; }
+  if(msg){ msg.style.color="#666"; msg.textContent="⏳ Envoi..."; }
+  try{
+    let ecoleEleve="", ecoleIdEleve="", groupeEleve="";
+    try{
+      let snap = await db.collection("inscriptions").where("enfant","==",enfant).limit(1).get();
+      if(!snap.empty){ let d = snap.docs[0].data(); ecoleEleve = d.ecole || d.ecoleNom || d.groupe || d.groupeNom || ""; ecoleIdEleve = d.ecoleId || d.groupeId || ""; groupeEleve = d.groupe || d.groupeNom || ""; if(!parent) parent = d.parent||""; if(!tel) tel = nettoyerTelAccueil(d.tel||""); }
+    }catch(e){}
+    await db.collection("paiements").add({
+      enfant: enfant, enfantNom: enfant, parent: parent, tel: tel.slice(-9),
+      montant: montant, motif: motif, mode: mode,
+      statut: "en_attente", statutPaiement: "en_attente",
+      ecole: ecoleEleve, ecoleNom: ecoleEleve, ecoleId: ecoleIdEleve, groupe: groupeEleve, groupeNom: groupeEleve,
+      envoyePar: "accueil-parent", date: new Date().toLocaleDateString('fr-FR'), createdAt: new Date()
+    });
+    if(msg){ msg.style.color="green"; msg.textContent="✅ Paiement envoyé en attente : "+montant+" FCFA pour "+enfant+". Le Directeur va le valider, après ça il comptera dans le solde."; }
+    let mEl = document.getElementById('payMontant'); if(mEl) mEl.value="";
+  }catch(e){ if(msg){ msg.style.color="red"; msg.textContent="❌ "+e.message; } }
+}
+async function appliquerCouleursAccueil(){
+  try{
+    if(typeof db==='undefined' || !db) return;
+    let doc=await db.collection("configAccueil").doc("couleurs").get();
+    if(!doc.exists) return;
+    let c=doc.data(); let r=document.documentElement;
+    if(c.principale) r.style.setProperty('--couleur-principale', c.principale);
+    if(c.bouton) r.style.setProperty('--couleur-bouton', c.bouton);
+    if(c.or) r.style.setProperty('--couleur-or', c.or);
+    if(c.fond) r.style.setProperty('--couleur-fond', c.fond);
+  }catch(e){ console.log('couleurs:', e.message); }
+}
 async function appliquerConfigAccueil(){
   try{
     if(typeof db==='undefined' || !db) return;
     let doc=await db.collection("configAccueil").doc("accueil").get();
     if(!doc.exists) return;
     let d=doc.data();
-    if(d.titre){ let h1=document.querySelector('.hero-court h1'); if(h1 && h1.childNodes[0]) h1.childNodes[0].textContent=d.titre+" "; }
-    if(d.texte){ let p=document.querySelector('.hero-court p'); if(p) p.textContent=d.texte; }
-    if(d.photo){ let img=document.querySelector('.hero-img'); if(img) img.src=d.photo; }
-    if(d.nom){ document.querySelectorAll('.signature-header').forEach(e=>e.textContent="— "+d.nom+", "+(d.fonction||"Fondateur & Directeur")+" —"); document.querySelectorAll('.signature-name').forEach(e=>e.textContent=d.nom); }
+    if(d.titre){
+      let h1=document.getElementById('heroTitre'); if(h1){ let span=document.getElementById('heroSousTitreAr'); h1.innerHTML=d.titre+' '+(span?'<span id="heroSousTitreAr">'+(d.sousTitreAr||span.textContent)+'</span>':''); }
+      let brand=document.getElementById('brandTitre'); if(brand) brand.textContent=d.titre;
+    }
+    if(d.sousTitreAr){
+      let s=document.getElementById('heroSousTitreAr'); if(s) s.textContent=d.sousTitreAr;
+      let b=document.getElementById('brandSousTitre'); if(b) b.textContent=d.sousTitreAr+' • Yaoundé - Douala';
+    }
+    if(d.texte){ let p=document.getElementById('heroTexte'); if(p){ p.innerHTML=d.texte; } }
+    if(d.photo){ let img=document.getElementById('heroImg'); if(img) img.src=d.photo; }
+    if(d.whats){
+      let telNettoye=String(d.whats).replace(/[^0-9]/g,"").replace(/^237/,"");
+      let c=document.getElementById('contactWhats'); if(c) c.textContent=telNettoye;
+      let lien=document.getElementById('lienWhats'); if(lien) lien.href="https://wa.me/237"+telNettoye;
+    }
+    if(d.nom){
+      let sig=document.getElementById('heroSignature'); if(sig) sig.innerHTML="— "+d.nom+", "+(d.fonction||"Fondateur & Directeur")+" —";
+      let dr=document.getElementById('drawerSignature'); if(dr) dr.innerHTML=d.nom+"<br>"+(d.fonction||"Fondateur & Directeur");
+      let f1=document.getElementById('footerNom'); if(f1) f1.textContent=d.nom;
+      let f2=document.getElementById('footerNom2'); if(f2) f2.textContent=d.nom;
+    }
+    if(d.fonction){ let ff=document.getElementById('footerFonction'); if(ff) ff.textContent=d.fonction; }
   }catch(e){ console.log('config accueil:', e.message); }
 }
+appliquerCouleursAccueil();
 appliquerConfigAccueil();
-// ===== ON CHOISIT L'ÉLÈVE - Liste des élèves déjà inscrits =====
 async function chargerElevesPaiementAccueil(){
   let sel=document.getElementById('payEnfant');
   if(!sel) return;
@@ -267,39 +416,44 @@ async function chargerElevesPaiementAccueil(){
     if(typeof db==='undefined' || !db) return;
     let snap=await db.collection("inscriptions").limit(200).get();
     let eleves=[];
-    snap.forEach(doc=>{ let d=doc.data(); let nom=d.enfant||d.nomEnfant||""; if(nom) eleves.push({nom:nom, parent:d.parent||"", ecole:d.ecole||d.groupe||""}); });
+    snap.forEach(doc=>{ let d=doc.data(); let nom=d.enfant||d.nomEnfant||""; if(nom) eleves.push({nom:nom, parent:d.parent||"", ecole:d.ecole||d.ecoleNom||d.groupe||d.groupeNom||""}); });
     eleves.sort((a,b)=>a.nom.localeCompare(b.nom));
-    if(!eleves.length){ sel.innerHTML=`<option value="">— Aucun élève inscrit pour le moment —</option>`; return; }
+    if(!eleves.length){ sel.innerHTML=`<option value="">— Aucun élève inscrit / لا يوجد تلميذ مسجل —</option>`; return; }
     let cur=sel.value;
-    sel.innerHTML=`<option value="">— Choisis ton enfant (inscrit) —</option>`;
-    eleves.forEach(e=>{
-      sel.innerHTML+=`<option value="${e.nom}">${e.nom} - ${e.ecole}</option>`;
-    });
+    sel.innerHTML=`<option value="">— Choisis ton enfant / اختر طفلك —</option>`;
+    eleves.forEach(e=>{ sel.innerHTML+=`<option value="${e.nom}">${e.nom} - ${e.ecole}</option>`; });
     if(cur) sel.value=cur;
-    sel.onchange=function(){
-      let choisi=eleves.find(x=>x.nom===sel.value);
-      if(choisi){ let p=document.getElementById('payParent'); if(p && !p.value) p.value=choisi.parent; }
-    };
-  }catch(e){ sel.innerHTML=`<option value="">— Erreur chargement —</option>`; }
+    sel.onchange=function(){ let choisi=eleves.find(x=>x.nom===sel.value); if(choisi){ let p=document.getElementById('payParent'); if(p && !p.value) p.value=choisi.parent; } };
+  }catch(e){ sel.innerHTML=`<option value="">— Erreur chargement / خطأ —</option>`; }
 }
 chargerElevesPaiementAccueil();
-// ===== NEWS / ANNONCES - ACCUEIL =====
+chargerEcolesGroupesInscription();
 async function chargerNewsAccueil(){
   let box=document.getElementById('boxNews');
   let liste=document.getElementById('listeNewsAccueil');
   if(!box||!liste) return;
   try{
     if(typeof db==='undefined' || !db){ box.style.display="none"; return; }
-    let snap=await db.collection("divers").orderBy("createdAt","desc").limit(20).get();
+    let tous=[];
+    try{ let s=await db.collection("divers").limit(20).get(); s.forEach(doc=>tous.push(doc.data())); }catch(e){}
+    try{ let s=await db.collection("annonces").limit(20).get(); s.forEach(doc=>tous.push(doc.data())); }catch(e){}
+    try{ let d=await db.collection("diversAccueil").doc("dernier").get(); if(d.exists) tous.push(d.data()); }catch(e){}
+    try{ let d=await db.collection("configDivers").doc("accueil").get(); if(d.exists) tous.push(d.data()); }catch(e){}
     let maintenant=new Date();
     let html="";
-    snap.forEach(doc=>{
-      let d=doc.data();
-      if(d.expireLe){
-        let exp=new Date(d.expireLe);
-        if(maintenant > exp) return;
-      }
-      html+=`<p style="margin:6px 0; line-height:1.5; border-bottom:1px solid #FFE082; padding-bottom:6px;"><b>${d.titre||""}</b><br>${d.texte||""}<br><small style="color:#666">📅 ${d.date||""} - ${d.ecole||""}</small></p>`;
+    tous.forEach(d=>{
+      let expire=null;
+      if(d.expireAt){ expire=d.expireAt.toDate ? d.expireAt.toDate() : new Date(d.expireAt); }
+      else if(d.expireLe){ expire=new Date(d.expireLe); }
+      else if(d.date && d.duree){ let dt=d.date.toDate ? d.date.toDate() : new Date(d.date); expire=new Date(dt); expire.setDate(expire.getDate()+Number(d.duree)); }
+      if(expire && maintenant > expire) return;
+      if(d.actif===false || d.visible===false) return;
+      let titre=d.titre||d.title||"";
+      let texte=d.message||d.texte||d.text||"";
+      let dateAff=d.date ? (d.date.toDate ? d.date.toDate().toLocaleDateString('fr-FR') : d.date) : "";
+      let ecoleAff=d.ecole||d.ecoleNom||"";
+      if(!titre && !texte) return;
+      html+=`<p style="margin:6px 0; line-height:1.5; border-bottom:1px solid #FFE082; padding-bottom:6px;"><b>${titre}</b><br>${texte}<br><small style="color:#666">📅 ${dateAff} - ${ecoleAff} - ${d.type||""}</small></p>`;
     });
     if(!html){ box.style.display="none"; }
     else { liste.innerHTML=html; box.style.display="block"; }
