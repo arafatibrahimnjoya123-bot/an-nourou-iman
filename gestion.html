@@ -88,15 +88,15 @@ input,select,textarea{width:100%;padding:10px;border:1px solid #C8E6C9;border-ra
 .popupBoxLarge{max-width:720px}
 .btnFermer{background:#EF5350;color:white;border:none;width:34px;height:34px;border-radius:50%;font-weight:900;cursor:pointer;float:right}
 @media(max-width:800px){.kpi{grid-template-columns:1fr 1fr}}
+/* ===== IMPRESSION = SEULEMENT LE BULLETIN, EN COULEUR ===== */
 @media print{
   @page{size:A4;margin:8mm}
-  body{background:white}
-  .no-print{display:none!important}
+  body{background:white;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  body *{visibility:hidden;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  #zoneImpression, #zoneImpression *{visibility:visible;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
+  #zoneImpression{display:block!important;position:absolute;left:0;top:0;width:100%;margin:0;padding:0}
   .bulletin-page{max-width:100%;border:1px solid #999;page-break-inside:avoid;page-break-after:avoid}
-  #zoneImpression{display:block!important}
-  #gestionPanel{display:block!important}
-  .page{max-width:100%;padding:0}
-  .carte{border:none}
+  .bulletin-page, .bulletin-page *{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
 }
 </style>
 </head>
@@ -259,8 +259,8 @@ input,select,textarea{width:100%;padding:10px;border:1px solid #C8E6C9;border-ra
 </div>
 <button class="btn-flottant no-print" onclick="toggleMenuFlottant()">＋</button>
 <div class="menu-flottant no-print" id="menuFlottant">
-<button onclick="imprimerFeuilleActuelle()">🖨️ Imprimer la page</button>
-<button onclick="telechargerPDFActuel()">⬇️ Télécharger en PDF</button>
+<button onclick="imprimerSeulBulletin()">🖨️ Imprimer le bulletin seul</button>
+<button onclick="imprimerSeulBulletin()">⬇️ Télécharger en PDF</button>
 <button onclick="partagerWhatsAppActuel()">💬 Envoyer sur WhatsApp</button>
 <button onclick="toggleMenuFlottant()">❌ Fermer</button>
 </div>
@@ -283,33 +283,77 @@ function fermerBulletin(){ var p=document.getElementById('popupBulletin'); if(p)
 function toggleMenuFlottant(){ var m=document.getElementById('menuFlottant'); if(m) m.style.display=(m.style.display==="block"?"none":"block"); }
 document.addEventListener('click', function(e){ if(!e.target.closest || !e.target.closest('.menu3')) fermerMenus3(); });
 window.addEventListener('load', function(){ setTimeout(function(){ if(typeof db === "undefined"){ var m=document.getElementById('msg'); if(m) m.textContent="❌ firebase.js ne charge pas db."; } }, 800); });
-// ===== BULLETIN 1 PAGE - ÉCRASE l'ancien de gestion.js - Français + Arabe, appréciation petite =====
+// ===== IMPRESSION = SEULEMENT LE BULLETIN, EN COULEUR =====
+function imprimerSeulBulletin(){
+  let zone = document.getElementById('zoneImpression');
+  if(!zone) return;
+  if(!zone.innerHTML.trim()){
+    let ann = document.getElementById('bulletinAnnuelEleve');
+    let rel = document.getElementById('releveTrimestreEleve');
+    if(ann && ann.innerHTML.trim()) zone.innerHTML = ann.innerHTML;
+    else if(rel && rel.innerHTML.trim()) zone.innerHTML = rel.innerHTML;
+    else { alert("Choisis d'abord un bulletin à voir."); return; }
+    zone.style.display = "block";
+  }
+  window.print();
+}
+function telechargerBulletinTrimestrePDF(){ imprimerSeulBulletin(); }
+function telechargerBulletinAnnuelPDF(){ imprimerSeulBulletin(); }
+function telechargerReleveTrimestrePDF(){ imprimerSeulBulletin(); }
+function imprimerFeuilleActuelle(){ imprimerSeulBulletin(); }
+function telechargerPDFActuel(){ imprimerSeulBulletin(); }
+function cacherBulletinBas(){ let zone=document.getElementById('zoneImpression'); if(zone){ zone.innerHTML=""; zone.style.display="none"; } }
+// ===== RANG PAR ÉCOLE + PAR NIVEAU =====
+function calculerRangBulletin(eleve, tri, moyEleve){
+  let eleveCible = TOUS_ELEVES_GESTION.find(function(e){ return normaliser(e.enfant||e.nomEnfant||"")===normaliser(eleve); }) || {};
+  let ecoleCible = normaliser(ecoleDeEleveBulletin(eleve) || eleveCible.ecole || eleveCible.ecoleNom || eleveCible.groupe || "");
+  let niveauCible = String(eleveCible.niveau || "").trim();
+  let parEleve = {};
+  let nbFixe = getNbMatieresFixees();
+  TOUS_BULLETINS.forEach(function(b){
+    if(b.trimestre !== tri) return;
+    let eObj = TOUS_ELEVES_GESTION.find(function(e){ return normaliser(e.enfant||e.nomEnfant||"")===normaliser(b.eleve); }) || {};
+    let ecoleB = normaliser(b.ecole || ecoleDeEleveBulletin(b.eleve) || eObj.ecole || eObj.ecoleNom || eObj.groupe || "");
+    let niveauB = String(eObj.niveau || "").trim();
+    if(ecoleCible && ecoleB && ecoleB !== ecoleCible) return;
+    if(niveauCible && niveauB && niveauB !== niveauCible) return;
+    let k = normaliser(b.eleve);
+    if(!parEleve[k]) parEleve[k] = { nom: b.eleve, total: 0 };
+    parEleve[k].total += Number(b.moyenne || 0);
+  });
+  let liste = Object.values(parEleve).map(function(g){ return { nom: g.nom, moy: g.total / nbFixe }; }).sort(function(a,b){ return b.moy - a.moy; });
+  let rang = liste.findIndex(function(g){ return normaliser(g.nom) === normaliser(eleve); }) + 1;
+  return { rang: rang || 1, total: liste.length || 1 };
+}
+// ===== BULLETIN 1 PAGE - Français + Arabe, Rang, Couleur, Cacher =====
 function voirBulletinDetail(eleve, tri){
   let lignes = TOUS_BULLETINS.filter(function(b){ return b.eleve===eleve && b.trimestre===tri; });
   let nbFixe = getNbMatieresFixees();
   let moy = calculerMoyenneTrimestre(lignes).toFixed(2);
+  let infoRang = calculerRangBulletin(eleve, tri, Number(moy));
   let ecoleSpecifique = (lignes[0] && lignes[0].ecole) || ecoleDeEleveBulletin(eleve) || monEcoleNom;
   let eleveObj = TOUS_ELEVES_GESTION.find(function(e){ return normaliser(e.enfant||e.nomEnfant||"")===normaliser(eleve); }) || {};
   let parentNom = eleveObj.parent || "";
   let telParent = eleveObj.tel || "";
   let niveauEleve = eleveObj.niveau || "";
   let app = (document.getElementById('bulAppreciationGenerale')?.value || "") || (lignes[0] && lignes[0].appreciation) || "";
+  let medal = infoRang.rang===1 ? "🥇" : infoRang.rang===2 ? "🥈" : infoRang.rang===3 ? "🥉" : "🏅";
   let html = '<div class="bulletin-page">';
   html += '<div class="b-head"><h2>☪️ INSTITUT NOUROUL IYMANE <span class="ar">- معهد نور الإيمان</span></h2><h3>🏫 '+ecoleSpecifique+' <span class="ar">- المدرسة</span></h3><p style="margin:2px 0;font-size:11px">Bulletin de Notes - <span class="ar">كشف النقاط</span> - '+tri+' - '+typeComposition+'</p></div>';
-  html += '<div class="b-infos"><div><b>Élève / <span class="ar">التلميذ</span> :</b> '+eleve+'<br><small>Parent / <span class="ar">الولي</span> : '+parentNom+' - '+telParent+'</small><br><small>Niveau / <span class="ar">المستوى</span> : '+niveauEleve+'</small></div><div style="text-align:center"><b>École / <span class="ar">المدرسة</span></b><br>'+ecoleSpecifique+'</div><div style="text-align:center"><b>Moyenne / <span class="ar">المعدل</span></b><br><b style="font-size:14px">'+moy+' / 20</b></div></div>';
+  html += '<div class="b-infos"><div><b>Élève / <span class="ar">التلميذ</span> :</b> '+eleve+'<br><small>Parent / <span class="ar">الولي</span> : '+parentNom+' - '+telParent+'</small><br><small>Niveau / <span class="ar">المستوى</span> : '+niveauEleve+'</small></div><div style="text-align:center"><b>École / <span class="ar">المدرسة</span></b><br>'+ecoleSpecifique+'</div><div style="text-align:center"><b>Moyenne / <span class="ar">المعدل</span></b><br><b style="font-size:14px">'+moy+' / 20</b><br><b style="font-size:11px;color:#0F3D2E">'+medal+' Rang / <span class="ar">الترتيب</span> : '+infoRang.rang+'e / '+infoRang.total+'</b><br><small>'+ecoleSpecifique+' - '+niveauEleve+'</small></div></div>';
   html += '<table><thead><tr><th>Matière / <span class="ar">المادة</span></th><th>Oral / <span class="ar">الشفوي</span> /10</th><th>Écrit / <span class="ar">الكتابي</span> /10</th><th>Total / <span class="ar">المجموع</span> /20</th></tr></thead><tbody>';
   lignes.forEach(function(l){ html += '<tr><td>'+nomMatiereBulletinSelonLangue(l.matiere)+'</td><td>'+(l.oral||0)+'</td><td>'+(l.ecrit||0)+'</td><td><b>'+(l.moyenne||0)+'</b></td></tr>'; });
   getMatieresActives().forEach(function(m){ if(!lignes.find(function(l){ return normaliser(l.matiere)===normaliser(m.fr); })){ html += '<tr><td>'+nomMatiereBulletinSelonLangue(m.fr)+' <small style="color:red">(Absent / <span class="ar">غائب</span>)</small></td><td>0</td><td>0</td><td><b style="color:red">0</b></td></tr>'; } });
   html += '</tbody></table>';
-  html += '<div class="b-total"><span>MOYENNE GÉNÉRALE / <span class="ar">المعدل العام</span></span><span>'+moy+' / 20</span></div>';
+  html += '<div class="b-total"><span>MOYENNE GÉNÉRALE / <span class="ar">المعدل العام</span> - Rang / <span class="ar">الترتيب</span> : '+infoRang.rang+'e / '+infoRang.total+' - '+ecoleSpecifique+' - '+niveauEleve+'</span><span>'+moy+' / 20</span></div>';
   html += '<div class="b-app"><b style="font-size:11px">💬 Appréciation / <span class="ar">الملاحظة</span> : <span style="font-weight:400">'+(app||"")+'</span></b><div class="ligne"></div><div class="ligne" style="margin-top:3px"></div></div>';
   html += '<div class="b-sign"><div style="border-top:1px solid #333;padding-top:4px"><b>Le Directeur / <span class="ar">المدير</span></b><br><br><span style="font-size:10px;color:#666">Signature + Cachet / <span class="ar">التوقيع والختم</span></span></div><div style="border-top:1px solid #333;padding-top:4px"><b>Le Parent / <span class="ar">الولي</span></b><br><br><span style="font-size:10px;color:#666">Vu et signé / <span class="ar">اطلع ووقع</span></span></div></div>';
   html += '<p style="text-align:center;font-size:10px;color:#666;margin:4px 0 0">INSTITUT NOUROUL IYMANE - <span class="ar">معهد نور الإيمان</span> - '+ecoleSpecifique+' - '+new Date().toLocaleDateString('fr-FR')+'</p></div>';
+  html = '<div class="no-print" style="text-align:center;margin-bottom:8px;display:flex;gap:8px;justify-content:center"><button onclick="imprimerSeulBulletin()" class="btn-noir" style="width:auto;padding:10px 16px">🎨 ⬇️ Télécharger en couleur</button><button onclick="cacherBulletinBas()" style="background:#EF5350;color:white;border:none;padding:10px 16px;border-radius:10px;font-weight:800;cursor:pointer">🙈 Cacher le bulletin</button></div>' + html;
   document.getElementById('zoneImpression').innerHTML = html;
   document.getElementById('zoneImpression').style.display = "block";
-  window.print();
 }
-// ===== BULLETIN ANNUEL + RELEVÉ aussi en 1 page, petit, Arabe =====
+// ===== BULLETIN ANNUEL + RELEVÉ aussi en 1 page, Rang École/Niveau =====
 function calculerBulletinAnnuelEleve(){
   let nom = document.getElementById('bilanAnnuelEleve')?.value || "";
   let box = document.getElementById('bulletinAnnuelEleve');
@@ -330,10 +374,13 @@ function calculerBulletinAnnuelEleve(){
     html += '<tr><td><b>'+t+'</b></td><td><b>'+moy+' / 20</b></td></tr>';
   });
   let moyAnn = (total/3).toFixed(2);
-  html += '</tbody></table><div class="b-total"><span>Moyenne Annuelle / <span class="ar">المعدل السنوي</span></span><span>'+moyAnn+' / 20 - '+(moyAnn>=10?"✅ ADMIS / مقبول":"❌ NON ADMIS / غير مقبول")+'</span></div>';
+  let infoRangAnn = calculerRangBulletin(nom, "Trimestre 1", Number(moyAnn));
+  html += '</tbody></table><div class="b-total"><span>Moyenne Annuelle / <span class="ar">المعدل السنوي</span> - Rang / <span class="ar">الترتيب</span> : '+infoRangAnn.rang+'e / '+infoRangAnn.total+'</span><span>'+moyAnn+' / 20 - '+(moyAnn>=10?"✅ ADMIS / مقبول":"❌ NON ADMIS / غير مقبول")+'</span></div>';
   html += '<div class="b-app"><b style="font-size:11px">💬 Appréciation / <span class="ar">الملاحظة</span> :</b><div class="ligne"></div></div>';
   html += '<div class="b-sign"><div style="border-top:1px solid #333;padding-top:4px"><b>Le Directeur / <span class="ar">المدير</span></b><br><br><span style="font-size:10px;color:#666">Signature + Cachet</span></div><div style="border-top:1px solid #333;padding-top:4px"><b>Le Parent / <span class="ar">الولي</span></b><br><br><span style="font-size:10px;color:#666">Vu et signé</span></div></div></div>';
   box.innerHTML = html;
+  document.getElementById('zoneImpression').innerHTML = html;
+  document.getElementById('zoneImpression').style.display = "block";
   let btns = document.getElementById('btnsBulletinAnnuel');
   if(btns) btns.style.display = "block";
 }
@@ -348,13 +395,16 @@ function calculerReleveTrimestre(){
   let nbFixe = getNbMatieresFixees();
   let moy = calculerMoyenneTrimestre(lignes).toFixed(2);
   let ecoleSpecifique = ecoleDeEleveBulletin(nom) || monEcoleNom;
+  let infoRangRel = calculerRangBulletin(nom, tri, Number(moy));
   let html = '<div class="bulletin-page"><div class="b-head"><h2>☪️ INSTITUT NOUROUL IYMANE <span class="ar">- معهد نور الإيمان</span></h2><h3>Relevé - <span class="ar">كشف النقاط</span> - '+tri+' - '+ecoleSpecifique+'</h3></div>';
-  html += '<div class="b-infos"><div><b>Élève / <span class="ar">التلميذ</span> :</b> '+nom+'</div><div><b>Moyenne / <span class="ar">المعدل</span> :</b> '+moy+' / 20</div></div>';
+  html += '<div class="b-infos"><div><b>Élève / <span class="ar">التلميذ</span> :</b> '+nom+'</div><div><b>Moyenne / <span class="ar">المعدل</span> :</b> '+moy+' / 20</div><div><b>Rang / <span class="ar">الترتيب</span> :</b> '+infoRangRel.rang+'e / '+infoRangRel.total+'</div></div>';
   html += '<table><thead><tr><th>Matière / <span class="ar">المادة</span></th><th>Oral / <span class="ar">الشفوي</span></th><th>Écrit / <span class="ar">الكتابي</span></th><th>Total / <span class="ar">المجموع</span></th></tr></thead><tbody>';
   lignes.forEach(function(l){ html += '<tr><td>'+l.matiere+'</td><td>'+(l.oral||0)+'</td><td>'+(l.ecrit||0)+'</td><td><b>'+(l.moyenne||0)+'</b></td></tr>'; });
-  html += '</tbody></table><div class="b-total"><span>Moyenne / <span class="ar">المعدل</span></span><span>'+moy+' / 20</span></div>';
+  html += '</tbody></table><div class="b-total"><span>Moyenne / <span class="ar">المعدل</span> - Rang / <span class="ar">الترتيب</span> : '+infoRangRel.rang+'e / '+infoRangRel.total+'</span><span>'+moy+' / 20</span></div>';
   html += '<div class="b-app"><b style="font-size:11px">💬 Appréciation / <span class="ar">الملاحظة</span> :</b><div class="ligne"></div></div></div>';
   box.innerHTML = html;
+  document.getElementById('zoneImpression').innerHTML = html;
+  document.getElementById('zoneImpression').style.display = "block";
   let btns = document.getElementById('btnsReleve');
   if(btns) btns.style.display = "block";
 }
@@ -365,6 +415,5 @@ function calculerReleveTrimestre(){
 </div></div>
 </body>
 </html>
-
 
 
