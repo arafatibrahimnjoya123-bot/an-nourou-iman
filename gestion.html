@@ -53,19 +53,20 @@ input,select,textarea{width:100%;padding:10px;border:1px solid #C8E6C9;border-ra
 .lien-action{color:#2E7D32;font-weight:800;text-decoration:underline;cursor:pointer;background:none;border:none;padding:0;font-size:11px}
 .form-paiement{background:#F1F8E9;border:1px solid #C8E6C9;padding:12px;border-radius:12px}
 .info-solde{background:white;border:1px solid #66BB6A;padding:10px;border-radius:10px;margin-top:8px;font-size:13px}
-/* ===== BULLETIN 1 PAGE - COMPACT + ARABE ===== */
-.bulletin-page{background:white;max-width:680px;margin:0 auto;border:1px solid #999;color:#111;font-size:11px;line-height:1.3;padding:8px 10px}
-.bulletin-page .b-head{background:#A5D6A7;color:#1B5E20;padding:6px;text-align:center;border-bottom:2px solid #FFE082}
-.bulletin-page .b-head h2{font-size:16px;margin:0}
-.bulletin-page .b-head h3{font-size:12px;margin:2px 0}
-.bulletin-page .b-infos{display:flex;justify-content:space-between;padding:6px 8px;font-size:11px;text-align:left;background:#FFF9C4}
-.bulletin-page table{width:100%;border-collapse:collapse;font-size:11px}
-.bulletin-page th{background:#A5D6A7;color:#1B5E20;padding:4px 6px;text-align:left;font-size:11px}
-.bulletin-page td{padding:3px 6px;border-bottom:1px solid #ddd;font-size:11px}
-.bulletin-page .b-total{background:#A5D6A7;color:#1B5E20;padding:6px 8px;display:flex;justify-content:space-between;font-weight:800;font-size:11px}
-.bulletin-page .b-app{padding:5px;text-align:left;font-size:11px;background:#E8F5E9;border-radius:8px;margin-top:6px}
-.bulletin-page .b-app .ligne{border-bottom:1px solid #999;height:12px}
-.bulletin-page .b-sign{display:flex;justify-content:space-between;padding:8px 16px 4px;font-size:11px;text-align:center}
+/* ===== BULLETIN PLEIN A4 - 1 PAGE ===== */
+.bulletin-page{background:white;width:100%;max-width:100%;margin:0 auto;border:1px solid #999;color:#111;font-size:13px;line-height:1.5;padding:14px 16px;min-height:277mm;display:flex;flex-direction:column;justify-content:space-between}
+.bulletin-page .b-head{background:#A5D6A7;color:#1B5E20;padding:14px;text-align:center;border-bottom:3px solid #FFE082}
+.bulletin-page .b-head h2{font-size:22px;margin:0}
+.bulletin-page .b-head h3{font-size:15px;margin:4px 0}
+.bulletin-page .b-head p{font-size:13px;margin:4px 0}
+.bulletin-page .b-infos{display:flex;justify-content:space-between;padding:12px 14px;font-size:13px;text-align:left;background:#FFF9C4}
+.bulletin-page table{width:100%;border-collapse:collapse;font-size:13px;flex:1}
+.bulletin-page th{background:#A5D6A7;color:#1B5E20;padding:10px 8px;text-align:left;font-size:13px}
+.bulletin-page td{padding:10px 8px;border-bottom:1px solid #ddd;font-size:13px}
+.bulletin-page .b-total{background:#A5D6A7;color:#1B5E20;padding:12px;display:flex;justify-content:space-between;font-weight:800;font-size:14px}
+.bulletin-page .b-app{padding:10px;text-align:left;font-size:13px;background:#E8F5E9;border-radius:8px;margin-top:10px}
+.bulletin-page .b-app .ligne{border-bottom:1px solid #999;height:18px}
+.bulletin-page .b-sign{display:flex;justify-content:space-between;padding:22px 30px 10px;font-size:13px;text-align:center}
 .btn-flottant{position:fixed;bottom:20px;right:20px;width:52px;height:52px;border-radius:50%;background:#66BB6A;color:white;border:2px solid #FFE082;font-size:24px;z-index:99}
 .menu-flottant{position:fixed;bottom:82px;right:20px;background:white;border:1px solid #ddd;border-radius:12px;padding:10px;width:250px;display:none;z-index:99}
 .menu-flottant button{width:100%;background:white;border:1px solid #eee;padding:12px;border-radius:8px;text-align:left;margin:4px 0;font-weight:700}
@@ -88,14 +89,15 @@ input,select,textarea{width:100%;padding:10px;border:1px solid #C8E6C9;border-ra
 .popupBoxLarge{max-width:720px}
 .btnFermer{background:#EF5350;color:white;border:none;width:34px;height:34px;border-radius:50%;font-weight:900;cursor:pointer;float:right}
 @media(max-width:800px){.kpi{grid-template-columns:1fr 1fr}}
-/* ===== IMPRESSION = SEULEMENT LE BULLETIN, EN COULEUR ===== */
+/* ===== IMPRESSION = SEULEMENT LE BULLETIN, PLEIN A4, EN COULEUR ===== */
 @media print{
-  @page{size:A4;margin:8mm}
+  @page{size:A4;margin:0}
+  html,body{margin:0;padding:0;width:210mm;height:297mm}
   body{background:white;-webkit-print-color-adjust:exact;print-color-adjust:exact}
   body *{visibility:hidden;-webkit-print-color-adjust:exact;print-color-adjust:exact}
   #zoneImpression, #zoneImpression *{visibility:visible;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
-  #zoneImpression{display:block!important;position:absolute;left:0;top:0;width:100%;margin:0;padding:0}
-  .bulletin-page{max-width:100%;border:1px solid #999;page-break-inside:avoid;page-break-after:avoid}
+  #zoneImpression{display:block!important;position:absolute;left:0;top:0;width:210mm;height:297mm;margin:0;padding:0}
+  .bulletin-page{width:210mm;height:297mm;max-width:210mm;min-height:297mm;border:none;padding:16mm 14mm;display:flex;flex-direction:column;justify-content:space-between;page-break-inside:avoid;page-break-after:avoid}
   .bulletin-page, .bulletin-page *{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
 }
 </style>
@@ -283,7 +285,7 @@ function fermerBulletin(){ var p=document.getElementById('popupBulletin'); if(p)
 function toggleMenuFlottant(){ var m=document.getElementById('menuFlottant'); if(m) m.style.display=(m.style.display==="block"?"none":"block"); }
 document.addEventListener('click', function(e){ if(!e.target.closest || !e.target.closest('.menu3')) fermerMenus3(); });
 window.addEventListener('load', function(){ setTimeout(function(){ if(typeof db === "undefined"){ var m=document.getElementById('msg'); if(m) m.textContent="❌ firebase.js ne charge pas db."; } }, 800); });
-// ===== IMPRESSION = SEULEMENT LE BULLETIN, EN COULEUR =====
+// ===== IMPRESSION = SEULEMENT LE BULLETIN, PLEIN A4, EN COULEUR =====
 function imprimerSeulBulletin(){
   let zone = document.getElementById('zoneImpression');
   if(!zone) return;
@@ -325,7 +327,7 @@ function calculerRangBulletin(eleve, tri, moyEleve){
   let rang = liste.findIndex(function(g){ return normaliser(g.nom) === normaliser(eleve); }) + 1;
   return { rang: rang || 1, total: liste.length || 1 };
 }
-// ===== BULLETIN 1 PAGE - Français + Arabe, Rang, Couleur, Cacher =====
+// ===== BULLETIN PLEIN A4 - Français + Arabe, Rang, Couleur, Cacher =====
 function voirBulletinDetail(eleve, tri){
   let lignes = TOUS_BULLETINS.filter(function(b){ return b.eleve===eleve && b.trimestre===tri; });
   let nbFixe = getNbMatieresFixees();
@@ -339,21 +341,21 @@ function voirBulletinDetail(eleve, tri){
   let app = (document.getElementById('bulAppreciationGenerale')?.value || "") || (lignes[0] && lignes[0].appreciation) || "";
   let medal = infoRang.rang===1 ? "🥇" : infoRang.rang===2 ? "🥈" : infoRang.rang===3 ? "🥉" : "🏅";
   let html = '<div class="bulletin-page">';
-  html += '<div class="b-head"><h2>☪️ INSTITUT NOUROUL IYMANE <span class="ar">- معهد نور الإيمان</span></h2><h3>🏫 '+ecoleSpecifique+' <span class="ar">- المدرسة</span></h3><p style="margin:2px 0;font-size:11px">Bulletin de Notes - <span class="ar">كشف النقاط</span> - '+tri+' - '+typeComposition+'</p></div>';
-  html += '<div class="b-infos"><div><b>Élève / <span class="ar">التلميذ</span> :</b> '+eleve+'<br><small>Parent / <span class="ar">الولي</span> : '+parentNom+' - '+telParent+'</small><br><small>Niveau / <span class="ar">المستوى</span> : '+niveauEleve+'</small></div><div style="text-align:center"><b>École / <span class="ar">المدرسة</span></b><br>'+ecoleSpecifique+'</div><div style="text-align:center"><b>Moyenne / <span class="ar">المعدل</span></b><br><b style="font-size:14px">'+moy+' / 20</b><br><b style="font-size:11px;color:#0F3D2E">'+medal+' Rang / <span class="ar">الترتيب</span> : '+infoRang.rang+'e / '+infoRang.total+'</b><br><small>'+ecoleSpecifique+' - '+niveauEleve+'</small></div></div>';
+  html += '<div class="b-head"><h2>☪️ INSTITUT NOUROUL IYMANE <span class="ar">- معهد نور الإيمان</span></h2><h3>🏫 '+ecoleSpecifique+' <span class="ar">- المدرسة</span></h3><p style="margin:4px 0;font-size:13px">Bulletin de Notes - <span class="ar">كشف النقاط</span> - '+tri+' - '+typeComposition+'</p></div>';
+  html += '<div class="b-infos"><div><b>Élève / <span class="ar">التلميذ</span> :</b> '+eleve+'<br><small>Parent / <span class="ar">الولي</span> : '+parentNom+' - '+telParent+'</small><br><small>Niveau / <span class="ar">المستوى</span> : '+niveauEleve+'</small></div><div style="text-align:center"><b>École / <span class="ar">المدرسة</span></b><br>'+ecoleSpecifique+'</div><div style="text-align:center"><b>Moyenne / <span class="ar">المعدل</span></b><br><b style="font-size:16px">'+moy+' / 20</b><br><b style="font-size:13px;color:#0F3D2E">'+medal+' Rang / <span class="ar">الترتيب</span> : '+infoRang.rang+'e / '+infoRang.total+'</b><br><small>'+ecoleSpecifique+' - '+niveauEleve+'</small></div></div>';
   html += '<table><thead><tr><th>Matière / <span class="ar">المادة</span></th><th>Oral / <span class="ar">الشفوي</span> /10</th><th>Écrit / <span class="ar">الكتابي</span> /10</th><th>Total / <span class="ar">المجموع</span> /20</th></tr></thead><tbody>';
   lignes.forEach(function(l){ html += '<tr><td>'+nomMatiereBulletinSelonLangue(l.matiere)+'</td><td>'+(l.oral||0)+'</td><td>'+(l.ecrit||0)+'</td><td><b>'+(l.moyenne||0)+'</b></td></tr>'; });
   getMatieresActives().forEach(function(m){ if(!lignes.find(function(l){ return normaliser(l.matiere)===normaliser(m.fr); })){ html += '<tr><td>'+nomMatiereBulletinSelonLangue(m.fr)+' <small style="color:red">(Absent / <span class="ar">غائب</span>)</small></td><td>0</td><td>0</td><td><b style="color:red">0</b></td></tr>'; } });
   html += '</tbody></table>';
   html += '<div class="b-total"><span>MOYENNE GÉNÉRALE / <span class="ar">المعدل العام</span> - Rang / <span class="ar">الترتيب</span> : '+infoRang.rang+'e / '+infoRang.total+' - '+ecoleSpecifique+' - '+niveauEleve+'</span><span>'+moy+' / 20</span></div>';
-  html += '<div class="b-app"><b style="font-size:11px">💬 Appréciation / <span class="ar">الملاحظة</span> : <span style="font-weight:400">'+(app||"")+'</span></b><div class="ligne"></div><div class="ligne" style="margin-top:3px"></div></div>';
-  html += '<div class="b-sign"><div style="border-top:1px solid #333;padding-top:4px"><b>Le Directeur / <span class="ar">المدير</span></b><br><br><span style="font-size:10px;color:#666">Signature + Cachet / <span class="ar">التوقيع والختم</span></span></div><div style="border-top:1px solid #333;padding-top:4px"><b>Le Parent / <span class="ar">الولي</span></b><br><br><span style="font-size:10px;color:#666">Vu et signé / <span class="ar">اطلع ووقع</span></span></div></div>';
-  html += '<p style="text-align:center;font-size:10px;color:#666;margin:4px 0 0">INSTITUT NOUROUL IYMANE - <span class="ar">معهد نور الإيمان</span> - '+ecoleSpecifique+' - '+new Date().toLocaleDateString('fr-FR')+'</p></div>';
+  html += '<div class="b-app"><b style="font-size:13px">💬 Appréciation / <span class="ar">الملاحظة</span> : <span style="font-weight:400">'+(app||"")+'</span></b><div class="ligne"></div><div class="ligne" style="margin-top:3px"></div></div>';
+  html += '<div class="b-sign"><div style="border-top:1px solid #333;padding-top:4px"><b>Le Directeur / <span class="ar">المدير</span></b><br><br><span style="font-size:11px;color:#666">Signature + Cachet / <span class="ar">التوقيع والختم</span></span></div><div style="border-top:1px solid #333;padding-top:4px"><b>Le Parent / <span class="ar">الولي</span></b><br><br><span style="font-size:11px;color:#666">Vu et signé / <span class="ar">اطلع ووقع</span></span></div></div>';
+  html += '<p style="text-align:center;font-size:11px;color:#666;margin:4px 0 0">INSTITUT NOUROUL IYMANE - <span class="ar">معهد نور الإيمان</span> - '+ecoleSpecifique+' - '+new Date().toLocaleDateString('fr-FR')+'</p></div>';
   html = '<div class="no-print" style="text-align:center;margin-bottom:8px;display:flex;gap:8px;justify-content:center"><button onclick="imprimerSeulBulletin()" class="btn-noir" style="width:auto;padding:10px 16px">🎨 ⬇️ Télécharger en couleur</button><button onclick="cacherBulletinBas()" style="background:#EF5350;color:white;border:none;padding:10px 16px;border-radius:10px;font-weight:800;cursor:pointer">🙈 Cacher le bulletin</button></div>' + html;
   document.getElementById('zoneImpression').innerHTML = html;
   document.getElementById('zoneImpression').style.display = "block";
 }
-// ===== BULLETIN ANNUEL + RELEVÉ aussi en 1 page, Rang École/Niveau =====
+// ===== BULLETIN ANNUEL + RELEVÉ aussi Plein A4, Rang École/Niveau =====
 function calculerBulletinAnnuelEleve(){
   let nom = document.getElementById('bilanAnnuelEleve')?.value || "";
   let box = document.getElementById('bulletinAnnuelEleve');
@@ -376,8 +378,8 @@ function calculerBulletinAnnuelEleve(){
   let moyAnn = (total/3).toFixed(2);
   let infoRangAnn = calculerRangBulletin(nom, "Trimestre 1", Number(moyAnn));
   html += '</tbody></table><div class="b-total"><span>Moyenne Annuelle / <span class="ar">المعدل السنوي</span> - Rang / <span class="ar">الترتيب</span> : '+infoRangAnn.rang+'e / '+infoRangAnn.total+'</span><span>'+moyAnn+' / 20 - '+(moyAnn>=10?"✅ ADMIS / مقبول":"❌ NON ADMIS / غير مقبول")+'</span></div>';
-  html += '<div class="b-app"><b style="font-size:11px">💬 Appréciation / <span class="ar">الملاحظة</span> :</b><div class="ligne"></div></div>';
-  html += '<div class="b-sign"><div style="border-top:1px solid #333;padding-top:4px"><b>Le Directeur / <span class="ar">المدير</span></b><br><br><span style="font-size:10px;color:#666">Signature + Cachet</span></div><div style="border-top:1px solid #333;padding-top:4px"><b>Le Parent / <span class="ar">الولي</span></b><br><br><span style="font-size:10px;color:#666">Vu et signé</span></div></div></div>';
+  html += '<div class="b-app"><b style="font-size:13px">💬 Appréciation / <span class="ar">الملاحظة</span> :</b><div class="ligne"></div></div>';
+  html += '<div class="b-sign"><div style="border-top:1px solid #333;padding-top:4px"><b>Le Directeur / <span class="ar">المدير</span></b><br><br><span style="font-size:11px;color:#666">Signature + Cachet</span></div><div style="border-top:1px solid #333;padding-top:4px"><b>Le Parent / <span class="ar">الولي</span></b><br><br><span style="font-size:11px;color:#666">Vu et signé</span></div></div></div>';
   box.innerHTML = html;
   document.getElementById('zoneImpression').innerHTML = html;
   document.getElementById('zoneImpression').style.display = "block";
@@ -401,7 +403,7 @@ function calculerReleveTrimestre(){
   html += '<table><thead><tr><th>Matière / <span class="ar">المادة</span></th><th>Oral / <span class="ar">الشفوي</span></th><th>Écrit / <span class="ar">الكتابي</span></th><th>Total / <span class="ar">المجموع</span></th></tr></thead><tbody>';
   lignes.forEach(function(l){ html += '<tr><td>'+l.matiere+'</td><td>'+(l.oral||0)+'</td><td>'+(l.ecrit||0)+'</td><td><b>'+(l.moyenne||0)+'</b></td></tr>'; });
   html += '</tbody></table><div class="b-total"><span>Moyenne / <span class="ar">المعدل</span> - Rang / <span class="ar">الترتيب</span> : '+infoRangRel.rang+'e / '+infoRangRel.total+'</span><span>'+moy+' / 20</span></div>';
-  html += '<div class="b-app"><b style="font-size:11px">💬 Appréciation / <span class="ar">الملاحظة</span> :</b><div class="ligne"></div></div></div>';
+  html += '<div class="b-app"><b style="font-size:13px">💬 Appréciation / <span class="ar">الملاحظة</span> :</b><div class="ligne"></div></div></div>';
   box.innerHTML = html;
   document.getElementById('zoneImpression').innerHTML = html;
   document.getElementById('zoneImpression').style.display = "block";
