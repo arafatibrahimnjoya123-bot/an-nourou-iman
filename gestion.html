@@ -53,7 +53,7 @@ input,select,textarea{width:100%;padding:10px;border:1px solid #C8E6C9;border-ra
 .lien-action{color:#2E7D32;font-weight:800;text-decoration:underline;cursor:pointer;background:none;border:none;padding:0;font-size:11px}
 .form-paiement{background:#F1F8E9;border:1px solid #C8E6C9;padding:12px;border-radius:12px}
 .info-solde{background:white;border:1px solid #66BB6A;padding:10px;border-radius:10px;margin-top:8px;font-size:13px}
-/* ===== BULLETIN PLEIN A4 - 1 PAGE ===== */
+/* ===== BULLETIN PLEIN A4 - 1 PAGE - SANS LIGNES APPRÉCIATION ===== */
 .bulletin-page{background:white;width:100%;max-width:100%;margin:0 auto;border:1px solid #999;color:#111;font-size:13px;line-height:1.5;padding:14px 16px;min-height:277mm;display:flex;flex-direction:column;justify-content:space-between}
 .bulletin-page .b-head{background:#A5D6A7;color:#1B5E20;padding:14px;text-align:center;border-bottom:3px solid #FFE082}
 .bulletin-page .b-head h2{font-size:22px;margin:0}
@@ -65,7 +65,6 @@ input,select,textarea{width:100%;padding:10px;border:1px solid #C8E6C9;border-ra
 .bulletin-page td{padding:10px 8px;border-bottom:1px solid #ddd;font-size:13px}
 .bulletin-page .b-total{background:#A5D6A7;color:#1B5E20;padding:12px;display:flex;justify-content:space-between;font-weight:800;font-size:14px}
 .bulletin-page .b-app{padding:10px;text-align:left;font-size:13px;background:#E8F5E9;border-radius:8px;margin-top:10px}
-.bulletin-page .b-app .ligne{border-bottom:1px solid #999;height:18px}
 .bulletin-page .b-sign{display:flex;justify-content:space-between;padding:22px 30px 10px;font-size:13px;text-align:center}
 .btn-flottant{position:fixed;bottom:20px;right:20px;width:52px;height:52px;border-radius:50%;background:#66BB6A;color:white;border:2px solid #FFE082;font-size:24px;z-index:99}
 .menu-flottant{position:fixed;bottom:82px;right:20px;background:white;border:1px solid #ddd;border-radius:12px;padding:10px;width:250px;display:none;z-index:99}
@@ -203,7 +202,7 @@ input,select,textarea{width:100%;padding:10px;border:1px solid #C8E6C9;border-ra
 </div>
 <div id="tabBulletins" style="display:none">
 <button class="btn-voir-tout no-print" onclick="voirToutOnglet('tabBulletins')">↩ Voir tout l'onglet Bulletins</button>
-<div class="carte" id="carteBul1"><div class="titre-ligne"><h3>Bulletins - Matières FIXES</h3></div><p class="centre muted">Matières : <b id="affichageMatieresBulletin"></b> - Composition : <b id="affichageTypeCompositionBulletin"></b></p><button onclick="chargerBulletinsTous()" class="btn-noir" style="margin-bottom:8px">🔄 Actualiser - Voir notes enseignants</button><button onclick="nettoyerBulletinsCasses()" class="btn-noir" style="margin-bottom:8px;background:#EF5350">🧹 Nettoyer les noms cassés</button><label>Filtrer par école *</label><select id="filtreEcoleBulletin" onchange="filtrerElevesBulletinParEcole()"><option value="">— Toutes les écoles —</option></select><p id="infoFiltreBulletin" class="centre muted" style="font-size:12px"></p><label>Langue du bulletin *</label><select id="langueBulletin" onchange="if(typeof chargerNotesExistantes==='function') chargerNotesExistantes()"><option value="fr-ar">Français - Arabe</option><option value="en-ar">Anglais - Arabe</option></select><label>Choisir l'élève *</label><select id="bulEleve" onchange="chargerNotesExistantes()"></select><label>Trimestre *</label><select id="bulTrimestre" onchange="chargerNotesExistantes()"><option value="Trimestre 1">Trimestre 1</option><option value="Trimestre 2">Trimestre 2</option><option value="Trimestre 3">Trimestre 3</option></select><label>Année</label><input id="bulAnnee" value="2026-2027"><div id="formNotes" style="margin-top:12px"></div><label>Appréciation générale</label><input id="bulAppreciationGenerale" placeholder="Ex : Très bon travail..."><button onclick="enregistrerBulletinComplet()" class="btn-noir" style="margin-top:12px">Enregistrer le bulletin</button><p id="msgBulletin" class="centre" style="color:green;font-weight:700"></p><div class="btn-row no-print"><button onclick="telechargerBulletinTrimestrePDF()" class="btn-noir">⬇️ PDF</button><button onclick="envoyerBulletinTrimestreWhatsApp()" class="btn-noir" style="background:#25D366">💬 WhatsApp</button><button onclick="envoyerBulletinTrimestreMail()" class="btn-noir" style="background:#1976D2">✉️ Mail</button></div></div>
+<div class="carte" id="carteBul1"><div class="titre-ligne"><h3>Bulletins - Matières FIXES</h3></div><p class="centre muted">Matières : <b id="affichageMatieresBulletin"></b> - Composition : <b id="affichageTypeCompositionBulletin"></b></p><button onclick="chargerBulletinsTous()" class="btn-noir" style="margin-bottom:8px">🔄 Actualiser - Voir notes enseignants</button><button onclick="nettoyerBulletinsCasses()" class="btn-noir" style="margin-bottom:8px;background:#EF5350">🧹 Nettoyer les noms cassés</button><label>Filtrer par école *</label><select id="filtreEcoleBulletin" onchange="filtrerElevesBulletinParEcole()"><option value="">— Toutes les écoles —</option></select><p id="infoFiltreBulletin" class="centre muted" style="font-size:12px"></p><label>Langue du bulletin *</label><select id="langueBulletin" onchange="if(typeof chargerNotesExistantes==='function') chargerNotesExistantes()"><option value="fr-ar">Français - Arabe</option><option value="en-ar">Anglais - Arabe</option></select><label>Choisir l'élève *</label><select id="bulEleve" onchange="chargerNotesExistantes()"></select><label>Trimestre *</label><select id="bulTrimestre" onchange="chargerNotesExistantes()"><option value="Trimestre 1">Trimestre 1</option><option value="Trimestre 2">Trimestre 2</option><option value="Trimestre 3">Trimestre 3</option></select><label>Année</label><input id="bulAnnee" value="2026-2027"><div id="formNotes" style="margin-top:12px"></div><label>Appréciation générale (optionnel - sinon auto)</label><input id="bulAppreciationGenerale" placeholder="Laisse vide = auto selon la moyenne"><button onclick="enregistrerBulletinComplet()" class="btn-noir" style="margin-top:12px">Enregistrer le bulletin</button><p id="msgBulletin" class="centre" style="color:green;font-weight:700"></p><div class="btn-row no-print"><button onclick="telechargerBulletinTrimestrePDF()" class="btn-noir">⬇️ PDF</button><button onclick="envoyerBulletinTrimestreWhatsApp()" class="btn-noir" style="background:#25D366">💬 WhatsApp</button><button onclick="envoyerBulletinTrimestreMail()" class="btn-noir" style="background:#1976D2">✉️ Mail</button></div></div>
 <div class="carte" id="carteBul2"><div class="titre-ligne"><h3>Liste des Bulletins</h3></div>
 <label>🔍 Chercher un élève dans la liste</label>
 <input id="rechercheEleveBulletin" placeholder="Tape le nom de l'élève..." list="listeElevesBulletin" oninput="afficherBulletins()">
@@ -305,6 +304,17 @@ function telechargerReleveTrimestrePDF(){ imprimerSeulBulletin(); }
 function imprimerFeuilleActuelle(){ imprimerSeulBulletin(); }
 function telechargerPDFActuel(){ imprimerSeulBulletin(); }
 function cacherBulletinBas(){ let zone=document.getElementById('zoneImpression'); if(zone){ zone.innerHTML=""; zone.style.display="none"; } }
+// ===== APPRÉCIATION AUTO EN FONCTION DE LA MOYENNE - SANS LIGNES =====
+function appreciationAuto(moy){
+  moy = Number(moy);
+  if(moy >= 18) return "Excellent, continue comme ça. / ممتاز، واصل هكذا";
+  if(moy >= 16) return "Très bien, bravo. / جيد جدا، أحسنت";
+  if(moy >= 14) return "Bien, bon travail. / جيد، عمل جيد";
+  if(moy >= 12) return "Assez bien, peut mieux faire. / حسن، يمكنك أن تفعل أفضل";
+  if(moy >= 10) return "Passable, il faut travailler plus. / مقبول، يجب أن تعمل أكثر";
+  if(moy >= 8) return "Insuffisant, redouble d'efforts. / غير كاف، ضاعف جهودك";
+  return "Faible, il faut beaucoup travailler. / ضعيف، يجب أن تعمل كثيرا";
+}
 // ===== RANG PAR ÉCOLE + PAR NIVEAU =====
 function calculerRangBulletin(eleve, tri, moyEleve){
   let eleveCible = TOUS_ELEVES_GESTION.find(function(e){ return normaliser(e.enfant||e.nomEnfant||"")===normaliser(eleve); }) || {};
@@ -327,7 +337,7 @@ function calculerRangBulletin(eleve, tri, moyEleve){
   let rang = liste.findIndex(function(g){ return normaliser(g.nom) === normaliser(eleve); }) + 1;
   return { rang: rang || 1, total: liste.length || 1 };
 }
-// ===== BULLETIN PLEIN A4 - Français + Arabe, Rang, Couleur, Cacher =====
+// ===== BULLETIN PLEIN A4 - Français + Arabe, Rang, Appréciation Auto, Sans Lignes =====
 function voirBulletinDetail(eleve, tri){
   let lignes = TOUS_BULLETINS.filter(function(b){ return b.eleve===eleve && b.trimestre===tri; });
   let nbFixe = getNbMatieresFixees();
@@ -338,7 +348,8 @@ function voirBulletinDetail(eleve, tri){
   let parentNom = eleveObj.parent || "";
   let telParent = eleveObj.tel || "";
   let niveauEleve = eleveObj.niveau || "";
-  let app = (document.getElementById('bulAppreciationGenerale')?.value || "") || (lignes[0] && lignes[0].appreciation) || "";
+  let appManuel = ((document.getElementById('bulAppreciationGenerale')?.value || "").trim() || (lignes[0] && lignes[0].appreciation) || "");
+  let app = appManuel ? appManuel : appreciationAuto(moy);
   let medal = infoRang.rang===1 ? "🥇" : infoRang.rang===2 ? "🥈" : infoRang.rang===3 ? "🥉" : "🏅";
   let html = '<div class="bulletin-page">';
   html += '<div class="b-head"><h2>☪️ INSTITUT NOUROUL IYMANE <span class="ar">- معهد نور الإيمان</span></h2><h3>🏫 '+ecoleSpecifique+' <span class="ar">- المدرسة</span></h3><p style="margin:4px 0;font-size:13px">Bulletin de Notes - <span class="ar">كشف النقاط</span> - '+tri+' - '+typeComposition+'</p></div>';
@@ -348,14 +359,14 @@ function voirBulletinDetail(eleve, tri){
   getMatieresActives().forEach(function(m){ if(!lignes.find(function(l){ return normaliser(l.matiere)===normaliser(m.fr); })){ html += '<tr><td>'+nomMatiereBulletinSelonLangue(m.fr)+' <small style="color:red">(Absent / <span class="ar">غائب</span>)</small></td><td>0</td><td>0</td><td><b style="color:red">0</b></td></tr>'; } });
   html += '</tbody></table>';
   html += '<div class="b-total"><span>MOYENNE GÉNÉRALE / <span class="ar">المعدل العام</span> - Rang / <span class="ar">الترتيب</span> : '+infoRang.rang+'e / '+infoRang.total+' - '+ecoleSpecifique+' - '+niveauEleve+'</span><span>'+moy+' / 20</span></div>';
-  html += '<div class="b-app"><b style="font-size:13px">💬 Appréciation / <span class="ar">الملاحظة</span> : <span style="font-weight:400">'+(app||"")+'</span></b><div class="ligne"></div><div class="ligne" style="margin-top:3px"></div></div>';
+  html += '<div class="b-app"><b style="font-size:13px">💬 Appréciation / <span class="ar">الملاحظة</span> : <span style="font-weight:400">'+app+'</span></b></div>';
   html += '<div class="b-sign"><div style="border-top:1px solid #333;padding-top:4px"><b>Le Directeur / <span class="ar">المدير</span></b><br><br><span style="font-size:11px;color:#666">Signature + Cachet / <span class="ar">التوقيع والختم</span></span></div><div style="border-top:1px solid #333;padding-top:4px"><b>Le Parent / <span class="ar">الولي</span></b><br><br><span style="font-size:11px;color:#666">Vu et signé / <span class="ar">اطلع ووقع</span></span></div></div>';
   html += '<p style="text-align:center;font-size:11px;color:#666;margin:4px 0 0">INSTITUT NOUROUL IYMANE - <span class="ar">معهد نور الإيمان</span> - '+ecoleSpecifique+' - '+new Date().toLocaleDateString('fr-FR')+'</p></div>';
   html = '<div class="no-print" style="text-align:center;margin-bottom:8px;display:flex;gap:8px;justify-content:center"><button onclick="imprimerSeulBulletin()" class="btn-noir" style="width:auto;padding:10px 16px">🎨 ⬇️ Télécharger en couleur</button><button onclick="cacherBulletinBas()" style="background:#EF5350;color:white;border:none;padding:10px 16px;border-radius:10px;font-weight:800;cursor:pointer">🙈 Cacher le bulletin</button></div>' + html;
   document.getElementById('zoneImpression').innerHTML = html;
   document.getElementById('zoneImpression').style.display = "block";
 }
-// ===== BULLETIN ANNUEL + RELEVÉ aussi Plein A4, Rang École/Niveau =====
+// ===== BULLETIN ANNUEL + RELEVÉ aussi Plein A4, Appréciation Auto, Sans Lignes =====
 function calculerBulletinAnnuelEleve(){
   let nom = document.getElementById('bilanAnnuelEleve')?.value || "";
   let box = document.getElementById('bulletinAnnuelEleve');
@@ -378,7 +389,7 @@ function calculerBulletinAnnuelEleve(){
   let moyAnn = (total/3).toFixed(2);
   let infoRangAnn = calculerRangBulletin(nom, "Trimestre 1", Number(moyAnn));
   html += '</tbody></table><div class="b-total"><span>Moyenne Annuelle / <span class="ar">المعدل السنوي</span> - Rang / <span class="ar">الترتيب</span> : '+infoRangAnn.rang+'e / '+infoRangAnn.total+'</span><span>'+moyAnn+' / 20 - '+(moyAnn>=10?"✅ ADMIS / مقبول":"❌ NON ADMIS / غير مقبول")+'</span></div>';
-  html += '<div class="b-app"><b style="font-size:13px">💬 Appréciation / <span class="ar">الملاحظة</span> :</b><div class="ligne"></div></div>';
+  html += '<div class="b-app"><b style="font-size:13px">💬 Appréciation / <span class="ar">الملاحظة</span> : <span style="font-weight:400">'+appreciationAuto(moyAnn)+'</span></b></div>';
   html += '<div class="b-sign"><div style="border-top:1px solid #333;padding-top:4px"><b>Le Directeur / <span class="ar">المدير</span></b><br><br><span style="font-size:11px;color:#666">Signature + Cachet</span></div><div style="border-top:1px solid #333;padding-top:4px"><b>Le Parent / <span class="ar">الولي</span></b><br><br><span style="font-size:11px;color:#666">Vu et signé</span></div></div></div>';
   box.innerHTML = html;
   document.getElementById('zoneImpression').innerHTML = html;
@@ -403,7 +414,7 @@ function calculerReleveTrimestre(){
   html += '<table><thead><tr><th>Matière / <span class="ar">المادة</span></th><th>Oral / <span class="ar">الشفوي</span></th><th>Écrit / <span class="ar">الكتابي</span></th><th>Total / <span class="ar">المجموع</span></th></tr></thead><tbody>';
   lignes.forEach(function(l){ html += '<tr><td>'+l.matiere+'</td><td>'+(l.oral||0)+'</td><td>'+(l.ecrit||0)+'</td><td><b>'+(l.moyenne||0)+'</b></td></tr>'; });
   html += '</tbody></table><div class="b-total"><span>Moyenne / <span class="ar">المعدل</span> - Rang / <span class="ar">الترتيب</span> : '+infoRangRel.rang+'e / '+infoRangRel.total+'</span><span>'+moy+' / 20</span></div>';
-  html += '<div class="b-app"><b style="font-size:13px">💬 Appréciation / <span class="ar">الملاحظة</span> :</b><div class="ligne"></div></div></div>';
+  html += '<div class="b-app"><b style="font-size:13px">💬 Appréciation / <span class="ar">الملاحظة</span> : <span style="font-weight:400">'+appreciationAuto(moy)+'</span></b></div></div>';
   box.innerHTML = html;
   document.getElementById('zoneImpression').innerHTML = html;
   document.getElementById('zoneImpression').style.display = "block";
@@ -417,5 +428,4 @@ function calculerReleveTrimestre(){
 </div></div>
 </body>
 </html>
-
 
