@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sous-Directeur - An Nourou Iman | نائب المدير - النور إيمان</title>
+<title>Sous-Directeur - An Nourou Iman | نائب المدير</title>
 <link rel="stylesheet" href="style.css">
 <style>
 .card{background:white;padding:14px;border-radius:14px;margin:10px 0}
@@ -28,7 +28,7 @@ tr:nth-child(even){background:#F9F9F9}
 .en{color:#666;font-size:11px;font-style:italic}
 .btn3{width:40px;height:40px;border-radius:50%;border:1px solid #ddd;background:#fff;font-size:22px;font-weight:900;cursor:pointer;line-height:1;display:flex;align-items:center;justify-content:center}
 .menu3{position:relative;flex:0 0 auto}
-.menu3-drop{display:none;position:absolute;right:0;top:46px;min-width:230px;background:#fff;border:1px solid #eee;border-radius:14px;box-shadow:0 10px 30px rgba(0,0,0,.18);z-index:50;overflow:hidden}
+.menu3-drop{display:none;position:absolute;right:0;top:46px;min-width:260px;background:#fff;border:1px solid #eee;border-radius:14px;box-shadow:0 10px 30px rgba(0,0,0,.18);z-index:50;overflow:hidden}
 .menu3-drop.show{display:block}
 .menu3-drop button{display:flex;gap:8px;align-items:center;width:100%;text-align:left;background:#fff;border:none;border-bottom:1px solid #f2f2f2;padding:13px 14px;font-size:14px;font-weight:700;cursor:pointer;color:#1A2B1A}
 .menu3-drop button:last-child{border-bottom:none}
@@ -50,11 +50,8 @@ tr:nth-child(even){background:#F9F9F9}
 .popupBox{background:white;width:100%;max-width:460px;border-radius:16px;padding:16px;position:relative;margin-top:20px}
 .popupBoxLarge{max-width:680px}
 .btnFermer{position:absolute;top:8px;right:10px;background:#C62828;color:white;border:none;width:34px;height:34px;border-radius:50%;font-size:16px;font-weight:800;cursor:pointer;z-index:10}
-.formNotesGrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-@media(max-width:500px){ .formNotesGrid{grid-template-columns:1fr} }
-.carteMatiere{background:#F9F9F9;border:1px solid #eee;border-radius:12px;padding:10px}
-.carteMatiere b{font-size:13px}
-.carteMatiere input{margin:6px 0 0 0;padding:10px;font-weight:800;text-align:center;font-size:16px}
+.check-matiere{display:inline-block;background:#F1F8E9;border:1px solid #C8E6C9;border-radius:10px;padding:8px 10px;margin:4px;font-size:13px;font-weight:700;cursor:pointer}
+.check-matiere input{width:auto;margin-right:6px}
 @media print{ body *{visibility:hidden} .popupAImprimer, .popupAImprimer *{visibility:visible} .popupAImprimer{position:absolute !important;top:0;left:0;right:0;bottom:auto;background:white !important;display:block !important;padding:0 !important} .noPrint{display:none !important} }
 </style>
 </head>
@@ -83,7 +80,7 @@ tr:nth-child(even){background:#F9F9F9}
 <div style="display:flex;gap:8px;margin-top:10px"><button type="button" class="btn btnRouge" style="flex:1" onclick="confirmerSupprimerToutSD()">🗑️ SUPPRIMER TOUT</button><button type="button" class="btn btnGris" style="flex:1" onclick="fermerPopupDanger()">Annuler</button></div>
 <p id="msgDanger" style="text-align:center;font-weight:800;color:#C62828"></p>
 </div></div>
-<div style="background:#0F3D2E;color:white;padding:14px;display:flex;justify-content:space-between;align-items:center;gap:8px"><button class="btn-burger" onclick="toggleDrawerSD()">☰</button><b>☪️ AN NOUROU IMAN - SOUS-DIRECTEUR <span class="ar">نائب المدير</span></b><a href="index.html" style="background:#C9A227;color:#0F3D2E;padding:8px 12px;border-radius:20px;text-decoration:none;font-weight:800">← Accueil</a></div>
+<div style="background:#0F3D2E;color:white;padding:14px;display:flex;justify-content:space-between;align-items:center;gap:8px"><button class="btn-burger" onclick="toggleDrawerSD()">☰</button><b>☪️ AN NOUROU IMAN - SOUS-DIRECTEUR <span class="ar">نائب المدير</span></b><a href="index.html" style="background:#C9A227;color:#0F2A14;padding:8px 12px;border-radius:20px;text-decoration:none;font-weight:800">← Accueil</a></div>
 <div class="drawer-overlay" id="drawerOverlaySD" onclick="fermerDrawerSD()"></div>
 <aside class="drawer" id="drawerSD">
 <div class="drawer-head"><b>☪️ MENU - SOUS-DIRECTEUR <span class="ar">القائمة</span></b><button onclick="fermerDrawerSD()">✕</button></div>
@@ -109,7 +106,9 @@ tr:nth-child(even){background:#F9F9F9}
 </div>
 <div class="drawer-groupe"><div class="drawer-groupe-titre">Cours</div>
 <button class="drawer-main" onclick="ouvrirOngletDrawerSD('tabPresence',this)">✅ Présence <span class="ar">الحضور</span></button>
-<button class="drawer-main" onclick="ouvrirOngletDrawerSD('tabNotes',this)">📝 Notes <span class="ar">العلامات</span></button>
+<button class="drawer-main" onclick="ouvrirOngletDrawerSD('tabNotes',this)">✅ Valider les Notes <span class="ar">اعتماد النقاط</span></button>
+<button class="drawer-sous" onclick="ouvrirSousPageSD('tabNotes','carteNotesValidation')">↳ 🟠 En attente - À valider</button>
+<button class="drawer-sous" onclick="ouvrirSousPageSD('tabNotes','carteNotesListe')">↳ 📋 Toutes les notes</button>
 <button class="drawer-main" onclick="ouvrirOngletDrawerSD('tabMoyennes',this)">📊 Moyennes <span class="ar">المعدلات</span></button>
 <button class="drawer-main" onclick="ouvrirOngletDrawerSD('tabEmploi',this)">📅 Emploi du temps <span class="ar">جدول الحصص</span></button>
 </div>
@@ -123,17 +122,19 @@ tr:nth-child(even){background:#F9F9F9}
 </aside>
 <div class="card" id="loginCard">
 <h2>🔐 Connexion Sous-Directeur <span class="ar">تسجيل دخول نائب المدير</span></h2>
-<label>📧 Ton Email</label><input id="sdEmail" placeholder="ibrahim@ecole.com">
-<label>📱 Ton WhatsApp</label><input id="sdTel" placeholder="697919116">
+<label>📧 Ton Email</label><input id="sdEmail" placeholder="ibrahim@ecole.com" autocomplete="email">
+<label>📱 Ton WhatsApp</label><input id="sdTel" placeholder="697919116" autocomplete="tel">
 <button type="button" class="btn btnVert" style="width:100%" onclick="seConnecterSD()">Se connecter <span class="ar">دخول</span></button>
 <p id="msgSD" style="text-align:center;font-weight:700;color:red"></p>
+<p style="text-align:center"><button type="button" onclick="effacerSessionSD()" style="background:none;border:none;color:#1976D2;text-decoration:underline;cursor:pointer;font-size:12px">Ça ne connecte pas ? Clique ici pour effacer l'ancienne session</button></p>
 </div>
 <div class="card" id="sdPanel" style="display:none">
 <div style="background:#E8F5E9;padding:12px;border-radius:12px">👋 Salam <span class="ar">السلام عليكم</span>, <b id="sdNom"></b><br><small id="sdInfo"></small><br><small id="matieresInfo" style="color:#0F3D2E;font-weight:700"></small><br><small id="prixInfo" style="color:#C62828;font-weight:800"></small></div>
+<div style="margin:10px 0"><button type="button" class="btn btnGris" style="width:100%" onclick="toutAfficherSD()">👁️ Tout afficher - Remettre toutes les cartes cachées</button></div>
 <div id="tabDashboard">
 <div class="card" id="carteDashKpi">
 <div class="titre-ligne"><h3>🏠 Tableau de Bord <span class="ar">لوحة القيادة</span></h3>
-<div class="menu3"><button type="button" class="btn3" onclick="toggleMenu3('menuDashboard',event)">⋮</button><div class="menu3-drop" id="menuDashboard"><button type="button" onclick="fermerMenus3();chargerInscriptionsSD()">🔄 Actualiser</button><button type="button" onclick="fermerMenus3();showTabSD('tabEleves',null)">👶 Voir Élèves</button><button type="button" onclick="fermerMenus3();showTabSD('tabPresence',null)">✅ Faire l'Appel</button></div></div></div>
+<div class="menu3"><button type="button" class="btn3" onclick="toggleMenu3('menuDashboard',event)">⋮</button><div class="menu3-drop" id="menuDashboard"><button type="button" onclick="fermerMenus3();chargerInscriptionsSD()">🔄 Actualiser</button><button type="button" onclick="fermerMenus3();showTabSD('tabEleves',null)">👶 Voir Élèves</button><button type="button" onclick="fermerMenus3();showTabSD('tabPresence',null)">✅ Faire l'Appel</button><button type="button" onclick="fermerMenus3();cacherCarteSD('carteDashKpi')">👁️ Cacher cette carte</button></div></div></div>
 <p style="color:#666;font-size:13px;text-align:center;">Voici ta situation en un coup d'œil. <span class="ar">وضعك بنظرة واحدة</span></p>
 <div class="stat">
 <div>👶<br><b id="stEleves">0</b><small>Élèves <span class="ar">التلاميذ</span></small></div>
@@ -141,18 +142,21 @@ tr:nth-child(even){background:#F9F9F9}
 <div>⏳<br><b id="stAttente">0</b><small>En attente <span class="ar">قيد الانتظار</span></small></div>
 <div>🔴<br><b id="stRetard" style="color:red">0</b><small>Retard <span class="ar">متأخر</span></small></div>
 </div>
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:10px;text-align:center"><div style="background:#FFF9C4;padding:10px;border-radius:10px"><b id="stNotesAttente" style="font-size:20px">0</b><br><small>🟠 Notes en attente</small></div><div style="background:#E8F5E9;padding:10px;border-radius:10px"><b id="stNotesValide" style="font-size:20px">0</b><br><small>🟢 Notes validées</small></div><div style="background:#FFEBEE;padding:10px;border-radius:10px"><b id="stNotesRefuse" style="font-size:20px">0</b><br><small>🔴 Notes refusées</small></div></div>
 <div id="dashboardParEcoleSD" style="margin-top:10px"></div>
 <div id="dashboardParGroupeSD" style="margin-top:10px"></div>
 <div id="dashboardTotalSD" style="margin-top:10px"></div>
 </div>
 <div class="card" id="carteDashEvol">
-<h3>📈 Évolution financière <span class="ar">التطور المالي</span></h3>
+<div class="titre-ligne"><h3>📈 Évolution financière <span class="ar">التطور المالي</span></h3>
+<div class="menu3"><button type="button" class="btn3" onclick="toggleMenu3('menuEvol',event)">⋮</button><div class="menu3-drop" id="menuEvol"><button type="button" onclick="fermerMenus3();calculerEvolutionFinanciereSD()">🔄 Actualiser</button><button type="button" onclick="fermerMenus3();cacherCarteSD('carteDashEvol')">👁️ Cacher cette carte</button></div></div></div>
 <p style="font-size:12px;text-align:center">Mois par mois.</p>
 <div id="evolutionFinanciereSD"></div>
 <button type="button" class="btn btnVert" style="width:100%;margin-top:8px" onclick="calculerEvolutionFinanciereSD()">🔄 Actualiser</button>
 </div>
 <div class="card" id="carteDashDanger" style="border:2px solid #C62828">
-<h3 style="text-align:center;color:#C62828">🗑️ ZONE DANGEREUSE <span class="ar">منطقة خطرة</span></h3>
+<div class="titre-ligne"><h3 style="color:#C62828">🗑️ ZONE DANGEREUSE <span class="ar">منطقة خطرة</span></h3>
+<div class="menu3"><button type="button" class="btn3" onclick="toggleMenu3('menuDanger',event)">⋮</button><div class="menu3-drop" id="menuDanger"><button type="button" onclick="fermerMenus3();cacherCarteSD('carteDashDanger')">👁️ Cacher cette carte</button></div></div></div>
 <p style="text-align:center;font-size:13px">Supprimer <b>TOUTES</b> les données de ton école ?<br>Uniquement avec <b>Email + Mot de passe du Directeur</b>.</p>
 <button type="button" class="btn btnRouge" style="width:100%" onclick="ouvrirPopupDanger()">🗑️ Supprimer TOUTES les données</button>
 </div>
@@ -160,24 +164,26 @@ tr:nth-child(even){background:#F9F9F9}
 <div id="tabEcole" style="display:none">
 <div class="card" id="carteEcoleListe">
 <div class="titre-ligne"><h3>🏫 Mon École / Groupe <span class="ar">مدرستي / المجموعة</span></h3>
-<div class="menu3"><button type="button" class="btn3" onclick="toggleMenu3('menuEcole',event)">⋮</button><div class="menu3-drop" id="menuEcole"><button type="button" onclick="fermerMenus3();telechargerPDF('tableEcole','MON ECOLE')">⬇️ Télécharger en PDF</button></div></div></div>
+<div class="menu3"><button type="button" class="btn3" onclick="toggleMenu3('menuEcole',event)">⋮</button><div class="menu3-drop" id="menuEcole"><button type="button" onclick="fermerMenus3();telechargerPDF('tableEcole','MON ECOLE')">⬇️ Télécharger en PDF</button><button type="button" onclick="fermerMenus3();telechargerExcelSD('tableEcole','Mon_Ecole')">⬇️ Télécharger en Excel</button><button type="button" onclick="fermerMenus3();cacherCarteSD('carteEcoleListe')">👁️ Cacher cette carte</button></div></div></div>
 <div class="tableWrap"><table id="tableEcole"><thead><tr><th>Type</th><th>Nom</th><th>Quartier / Ville</th><th>Responsable</th><th>Prix fixé</th></tr></thead><tbody id="tbodyEcole"></tbody></table></div>
 </div>
 <div class="card" id="carteEcoleMatieres">
-<h4>📚 Matières fixées par le Directeur <span class="ar">مواد حددها المدير</span></h4>
+<div class="titre-ligne"><h4>📚 Matières fixées par le Directeur <span class="ar">مواد حددها المدير</span></h4>
+<div class="menu3"><button type="button" class="btn3" onclick="toggleMenu3('menuEcoleMat',event)">⋮</button><div class="menu3-drop" id="menuEcoleMat"><button type="button" onclick="fermerMenus3();telechargerPDF('tableMatieresDirecteur','MATIERES DIRECTEUR')">⬇️ Télécharger en PDF</button><button type="button" onclick="fermerMenus3();telechargerExcelSD('tableMatieresDirecteur','Matieres_Directeur')">⬇️ Télécharger en Excel</button><button type="button" onclick="fermerMenus3();cacherCarteSD('carteEcoleMatieres')">👁️ Cacher cette carte</button></div></div></div>
 <div class="tableWrap"><table id="tableMatieresDirecteur"><thead><tr><th>Matière</th><th>Coefficient</th><th>Niveau / École</th></tr></thead><tbody id="tbodyMatieresDirecteur"></tbody></table></div>
 </div>
 </div>
 <div id="tabEleves" style="display:none">
 <div class="card" id="carteElevesListe">
 <div class="titre-ligne"><h3>👶 Mes Élèves <span class="ar">تلاميذي</span></h3>
-<div class="menu3"><button type="button" class="btn3" onclick="toggleMenu3('menuEleves',event)">⋮</button><div class="menu3-drop" id="menuEleves"><button type="button" onclick="fermerMenus3();chargerInscriptionsSD()">🔄 Actualiser</button><button type="button" onclick="fermerMenus3();telechargerPDF('tableEleves','LISTE ELEVES')">⬇️ Télécharger en PDF</button></div></div></div>
+<div class="menu3"><button type="button" class="btn3" onclick="toggleMenu3('menuEleves',event)">⋮</button><div class="menu3-drop" id="menuEleves"><button type="button" onclick="fermerMenus3();chargerInscriptionsSD()">🔄 Actualiser</button><button type="button" onclick="fermerMenus3();telechargerPDF('tableEleves','LISTE ELEVES')">⬇️ Télécharger en PDF</button><button type="button" onclick="fermerMenus3();telechargerExcelSD('tableEleves','Liste_Eleves')">⬇️ Télécharger en Excel</button><button type="button" onclick="fermerMenus3();cacherCarteSD('carteElevesListe')">👁️ Cacher cette carte</button></div></div></div>
 <label>🎯 Filtrer par mon École / Groupe - pour ne pas mélanger 2 écoles</label><select id="filtreEcoleElevesSD" onchange="filtrerEleves()"><option value="">Toutes mes écoles / groupes</option></select>
 <input id="rechercheEleve" placeholder="🔍 Tape le nom..." oninput="filtrerEleves()">
 <div class="tableWrap"><table id="tableEleves"><thead><tr><th>Enfant</th><th>Parent / WhatsApp</th><th>Niveau / École</th><th>Prix / Payé / Reste</th><th>Statut</th><th>Actions</th></tr></thead><tbody id="tbodyEleves"></tbody></table></div>
 </div>
 <div class="card" id="carteElevesPayes">
-<h3>✅ Élèves Déjà Payés par Niveau</h3>
+<div class="titre-ligne"><h3>✅ Élèves Déjà Payés par Niveau</h3>
+<div class="menu3"><button type="button" class="btn3" onclick="toggleMenu3('menuPayes',event)">⋮</button><div class="menu3-drop" id="menuPayes"><button type="button" onclick="fermerMenus3();telechargerPDF('tablePayesParNiveau','ELEVES PAYES')">⬇️ Télécharger en PDF</button><button type="button" onclick="fermerMenus3();telechargerExcelSD('tablePayesParNiveau','Eleves_Payes')">⬇️ Télécharger en Excel</button><button type="button" onclick="fermerMenus3();cacherCarteSD('carteElevesPayes')">👁️ Cacher cette carte</button></div></div></div>
 <label>🎯 Filtrer par Niveau</label><select id="filtreNiveauPayes" onchange="chargerElevesPayesParNiveau()"><option value="">Tous les niveaux</option><option>Maternelle</option><option>Primaire</option><option>Collège</option><option>Coran</option><option>Arabe</option><option>Niveau 1</option><option>Niveau 2</option><option>Niveau 3</option><option>Niveau 4</option><option>Niveau 5</option></select>
 <div id="resumePayesParNiveau" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin:10px 0"></div>
 <div class="tableWrap"><table id="tablePayesParNiveau"><thead><tr><th>Enfant</th><th>Parent</th><th>Niveau</th><th>École</th><th>Prix / Payé</th><th>Actions</th></tr></thead><tbody id="tbodyPayesParNiveau"></tbody></table></div>
@@ -185,11 +191,14 @@ tr:nth-child(even){background:#F9F9F9}
 </div>
 <div id="tabEnseignants" style="display:none">
 <div class="card" id="carteEnsForm">
-<h3>👨‍🏫 Ajouter un Enseignant</h3>
+<div class="titre-ligne"><h3>👨‍🏫 Ajouter un Enseignant</h3>
+<div class="menu3"><button type="button" class="btn3" onclick="toggleMenu3('menuEnsForm',event)">⋮</button><div class="menu3-drop" id="menuEnsForm"><button type="button" onclick="fermerMenus3();cacherCarteSD('carteEnsForm')">👁️ Cacher cette carte</button></div></div></div>
 <label>👨‍🏫 Nom complet *</label><input id="ensNom" placeholder="Ex : Oustaz Ibrahim">
 <label>📱 WhatsApp *</label><input id="ensTel" placeholder="697919116">
 <label>📧 Email</label><input id="ensEmail" placeholder="oustaz@ecole.com">
-<label>📚 Matière enseignée *</label><select id="ensMatiere"></select>
+<label>📚 Matières enseignées * - Coche plusieurs si tu veux</label>
+<div id="choixMatieresEnsSD" style="margin:6px 0"></div>
+<p style="font-size:12px;text-align:center;color:#666">Ex : tu peux cocher Coran + Arabe pour le même enseignant.</p>
 <label>📚 Niveau / Classe *</label><select id="ensNiveau"><option>Maternelle</option><option>Primaire</option><option>Collège</option><option>Coran</option><option>Arabe</option><option>Tous</option></select>
 <label>🏫 École / Groupe *</label><select id="ensEcole"></select>
 <label>💰 Salaire mensuel (FCFA)</label><input type="number" id="ensSalaire" placeholder="Ex : 50000">
@@ -198,42 +207,52 @@ tr:nth-child(even){background:#F9F9F9}
 <button type="button" class="btn btnVert" style="width:100%" onclick="ajouterEnseignantSD()">💾 Ajouter + Envoyer à la Gestion</button>
 <p id="msgEnseignantSD" style="text-align:center;font-weight:700"></p>
 </div>
-<div class="card" id="carteEnsListe"><h4 style="text-align:center">📋 Liste des Enseignants</h4><input id="rechercheEnseignantSD" placeholder="🔍 Cherche un enseignant..." oninput="chargerEnseignantsSD()"><div class="tableWrap"><table id="tableEnseignants"><thead><tr><th>Enseignant</th><th>Matière / Niveau</th><th>École</th><th>Salaire</th><th>Statut</th><th>Actions</th></tr></thead><tbody id="tbodyEnseignants"></tbody></table></div></div>
+<div class="card" id="carteEnsListe">
+<div class="titre-ligne"><h4>📋 Liste des Enseignants</h4>
+<div class="menu3"><button type="button" class="btn3" onclick="toggleMenu3('menuEnsListe',event)">⋮</button><div class="menu3-drop" id="menuEnsListe"><button type="button" onclick="fermerMenus3();telechargerPDF('tableEnseignants','ENSEIGNANTS')">⬇️ Télécharger en PDF</button><button type="button" onclick="fermerMenus3();telechargerExcelSD('tableEnseignants','Enseignants')">⬇️ Télécharger en Excel</button><button type="button" class="danger" onclick="fermerMenus3();if(confirm('Supprimer TOUS les enseignants affichés ?')) supprimerTousEnseignantsSD()">🗑️ Supprimer tous les enseignants</button><button type="button" onclick="fermerMenus3();cacherCarteSD('carteEnsListe')">👁️ Cacher cette carte</button></div></div></div>
+<input id="rechercheEnseignantSD" placeholder="🔍 Cherche un enseignant..." oninput="chargerEnseignantsSD()"><div class="tableWrap"><table id="tableEnseignants"><thead><tr><th>Enseignant</th><th>Matières / Niveau</th><th>École</th><th>Salaire</th><th>Statut</th><th>Actions</th></tr></thead><tbody id="tbodyEnseignants"></tbody></table></div></div>
 </div>
 <div id="tabPresence" style="display:none">
 <div class="card" id="cartePresenceJour">
-<h3>✅ Appel du jour - <span id="datePresence"></span></h3>
+<div class="titre-ligne"><h3>✅ Appel du jour - <span id="datePresence"></span></h3>
+<div class="menu3"><button type="button" class="btn3" onclick="toggleMenu3('menuPresJour',event)">⋮</button><div class="menu3-drop" id="menuPresJour"><button type="button" onclick="fermerMenus3();telechargerPDF('tablePresence','PRESENCE JOUR')">⬇️ Télécharger en PDF</button><button type="button" onclick="fermerMenus3();telechargerExcelSD('tablePresence','Presence_Jour')">⬇️ Télécharger en Excel</button><button type="button" onclick="fermerMenus3();cacherCarteSD('cartePresenceJour')">👁️ Cacher cette carte</button></div></div></div>
 <div class="tableWrap"><table id="tablePresence"><thead><tr><th>✔️</th><th>Enfant</th><th>Parent</th><th>École</th></tr></thead><tbody id="tbodyPresence"></tbody></table></div>
 <button type="button" class="btn btnVert" style="width:100%;margin-top:10px" onclick="enregistrerPresence()">💾 Enregistrer Présence</button><p id="msgPresence"></p>
 </div>
-<div class="card" id="cartePresenceHist"><h4>📋 Historique Présences</h4><div class="tableWrap"><table id="tableHistPresence"><thead><tr><th>Date</th><th>Présents</th><th>Absents</th><th>Noms Absents</th><th>Action</th></tr></thead><tbody id="tbodyHistPresence"></tbody></table></div></div>
+<div class="card" id="cartePresenceHist">
+<div class="titre-ligne"><h4>📋 Historique Présences</h4>
+<div class="menu3"><button type="button" class="btn3" onclick="toggleMenu3('menuPresHist',event)">⋮</button><div class="menu3-drop" id="menuPresHist"><button type="button" onclick="fermerMenus3();telechargerPDF('tableHistPresence','HISTORIQUE PRESENCES')">⬇️ Télécharger en PDF</button><button type="button" onclick="fermerMenus3();telechargerExcelSD('tableHistPresence','Historique_Presences')">⬇️ Télécharger en Excel</button><button type="button" onclick="fermerMenus3();cacherCarteSD('cartePresenceHist')">👁️ Cacher cette carte</button></div></div></div>
+<div class="tableWrap"><table id="tableHistPresence"><thead><tr><th>Date</th><th>Présents</th><th>Absents</th><th>Noms Absents</th><th>Action</th></tr></thead><tbody id="tbodyHistPresence"></tbody></table></div></div>
 </div>
 <div id="tabNotes" style="display:none">
-<div class="card" id="carteNotesForm">
-<h3>📝 Notes <span class="ar">العلامات</span></h3>
-<div style="background:#FFF9C4;padding:10px;border-radius:10px;text-align:center"><small>⚠️ <b>Matières fixées par le Directeur.</b><br>Tu choisis l'élève + le trimestre, tu mets toutes les notes d'un coup.<br><b>Mode : <span id="modeCompositionSD">Oral + Écrit</span></b><br><small style="color:#C62828;font-weight:800">⚠️ Oral et Écrit sont sur 10 max. Jamais plus que 10.</small></small></div>
-<div style="background:#E8F5E9;padding:12px;border-radius:12px;margin-top:8px">
-<label>👶 Choisir l'élève</label><select id="noteEleve" onchange="genererFormNotes()"></select>
-<label>📅 Trimestre</label><select id="noteTrimestre" onchange="genererFormNotes()"><option>Trimestre 1</option><option>Trimestre 2</option><option>Trimestre 3</option></select>
-<label>📝 Type d'évaluation</label><select id="noteType"><option>Devoir</option><option>Composition</option><option>Examen</option><option>Interrogation</option></select>
-<div id="formNotesToutes" style="margin-top:10px"></div>
-<button type="button" class="btn btnVert" style="width:100%;margin-top:10px" onclick="ajouterNotesEnUneFois()">💾 Enregistrer TOUTES les notes</button>
-<button type="button" class="btn btnGris" style="width:100%;margin-top:6px" onclick="annulerModificationNotes()">↩ Annuler la modification - Vider</button>
-<p id="msgNote"></p><p id="msgModificationNote" style="text-align:center;font-weight:800;color:#1976D2"></p>
-</div></div>
-<div class="card" id="carteNotesListe"><h4 style="text-align:center">📋 Liste des Notes - 1 ligne = 1 élève</h4><div class="tableWrap"><table id="tableNotes"><thead><tr><th>Nom</th><th>Trimestre</th><th>Moyenne</th><th>Action</th></tr></thead><tbody id="tbodyNotes"></tbody></table></div></div>
+<div class="card" id="carteNotesValidation">
+<div class="titre-ligne"><h3>✅ Valider les Notes - Envoyées par les Enseignants <span class="ar">اعتماد النقاط المرسلة من المعلمين</span></h3>
+<div class="menu3"><button type="button" class="btn3" onclick="toggleMenu3('menuNotesVal',event)">⋮</button><div class="menu3-drop" id="menuNotesVal"><button type="button" onclick="fermerMenus3();chargerNotes()">🔄 Actualiser</button><button type="button" onclick="fermerMenus3();telechargerExcelSD('tableNotes','Toutes_Notes')">⬇️ Télécharger en Excel</button><button type="button" onclick="fermerMenus3();cacherCarteSD('carteNotesValidation')">👁️ Cacher cette carte</button></div></div></div>
+<div style="background:#FFF9C4;padding:10px;border-radius:10px;text-align:center"><small>⚠️ <b>Tu n'entres PLUS de note.</b> Tu contrôles seulement.<br>L'Enseignant envoie → 🟠 En attente → Toi tu valides ✅ ou tu refuses ❌ + motif.<br>Seule la note <b>🟢 Validée</b> compte dans la Moyenne et le Bulletin.<br>Une note validée <b>ne redescend plus</b> en attente.</small></div>
+<div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap"><button type="button" class="btn btnGris" style="flex:1" onclick="setFiltreNotesSD('en_attente')">🟠 En attente seulement</button><button type="button" class="btn btnGris" style="flex:1" onclick="setFiltreNotesSD('tous')">👁️ Toutes les notes</button><button type="button" class="btn btnVert" style="flex:1" onclick="chargerNotes()">🔄 Actualiser</button></div>
+<label>🔍 Chercher un élève / enseignant</label><input id="rechercheNotesSD" placeholder="Tape le nom de l'élève ou de l'enseignant..." oninput="afficherNotesSD()">
+<label>📅 Filtrer par Trimestre</label><select id="filtreTrimestreNotesSD" onchange="afficherNotesSD()"><option value="">Tous les trimestres</option><option>Trimestre 1</option><option>Trimestre 2</option><option>Trimestre 3</option></select>
+<div id="listeNotesValidationSD"></div>
+<p id="msgValidationNoteSD" style="text-align:center;font-weight:800;color:green"></p>
+</div>
+<div class="card" id="carteNotesListe">
+<div class="titre-ligne"><h4>📋 Toutes les notes - Affichage seulement / عرض فقط</h4>
+<div class="menu3"><button type="button" class="btn3" onclick="toggleMenu3('menuNotesListe',event)">⋮</button><div class="menu3-drop" id="menuNotesListe"><button type="button" onclick="fermerMenus3();telechargerPDF('tableNotes','TOUTES NOTES')">⬇️ Télécharger en PDF</button><button type="button" onclick="fermerMenus3();telechargerExcelSD('tableNotes','Toutes_Notes')">⬇️ Télécharger en Excel</button><button type="button" onclick="fermerMenus3();cacherCarteSD('carteNotesListe')">👁️ Cacher cette carte</button></div></div></div>
+<p style="text-align:center;font-size:12px;color:#666">Tu ne peux pas modifier une note. Si elle est fausse, refuse-la, l'enseignant la corrige et la renvoie.</p><div class="tableWrap"><table id="tableNotes"><thead><tr><th>Élève</th><th>Trimestre</th><th>Moyenne validée /20</th><th>Statut</th></tr></thead><tbody id="tbodyNotes"></tbody></table></div></div>
 </div>
 <div id="tabMoyennes" style="display:none">
 <div class="card" id="carteMoyListe">
-<h3>📊 Moyennes <span class="ar">المعدلات</span></h3>
-<div style="background:#FFF9C4;padding:10px;border-radius:10px;text-align:center"><small>Formule : <b>Moyenne = Somme des Totaux / Nombre de matières fixées</b><br>Matière non composée = <b>0</b>, elle compte quand même.</small></div>
+<div class="titre-ligne"><h3>📊 Moyennes - NOTES VALIDÉES SEULEMENT <span class="ar">المعدلات - النقاط المعتمدة فقط</span></h3>
+<div class="menu3"><button type="button" class="btn3" onclick="toggleMenu3('menuMoy',event)">⋮</button><div class="menu3-drop" id="menuMoy"><button type="button" onclick="fermerMenus3();telechargerPDF('tableMoyennes','MOYENNES')">⬇️ Télécharger en PDF</button><button type="button" onclick="fermerMenus3();telechargerExcelSD('tableMoyennes','Moyennes')">⬇️ Télécharger en Excel</button><button type="button" onclick="fermerMenus3();cacherCarteSD('carteMoyListe')">👁️ Cacher cette carte</button></div></div></div>
+<div style="background:#FFF9C4;padding:10px;border-radius:10px;text-align:center"><small>Formule : <b>Moyenne = Somme des Totaux VALIDÉS / Nombre de matières fixées</b><br>Matière non composée ou en attente = <b>0</b>, elle compte quand même.</small></div>
 <label>📅 Filtrer par Trimestre</label><select id="filtreTrimestreMoy" onchange="chargerNotes()"><option value="">Tous les trimestres</option><option>Trimestre 1</option><option>Trimestre 2</option><option>Trimestre 3</option></select>
 <div class="tableWrap"><table id="tableMoyennes"><thead><tr><th>Élève</th><th>École</th><th>Composé / Fixé</th><th>Moyenne /20</th><th>Appréciation</th></tr></thead><tbody id="tbodyMoyennes"></tbody></table></div>
 </div>
 </div>
 <div id="tabEmploi" style="display:none">
 <div class="card" id="carteEmploiForm">
-<h3>📅 Emploi du Temps</h3>
+<div class="titre-ligne"><h3>📅 Emploi du Temps</h3>
+<div class="menu3"><button type="button" class="btn3" onclick="toggleMenu3('menuEmploiForm',event)">⋮</button><div class="menu3-drop" id="menuEmploiForm"><button type="button" onclick="fermerMenus3();cacherCarteSD('carteEmploiForm')">👁️ Cacher cette carte</button></div></div></div>
 <label>📅 Jour</label><select id="emploiJour"><option>Lundi</option><option>Mardi</option><option>Mercredi</option><option>Jeudi</option><option>Vendredi</option><option>Samedi</option><option>Dimanche</option></select>
 <label>🕐 Heure</label><input id="emploiHeure" placeholder="Ex: 08:00 - 09:00">
 <label>📚 Matière / Activité (du Directeur)</label><select id="emploiMatiere"></select>
@@ -242,14 +261,21 @@ tr:nth-child(even){background:#F9F9F9}
 <label>🏫 Groupe / École destinataire *</label><select id="emploiGroupeDest"><option value="">— Mon école (par défaut) —</option></select>
 <button type="button" class="btn btnVert" style="width:100%" onclick="ajouterEmploi()">💾 Ajouter au Planning</button><p id="msgEmploi"></p>
 </div>
-<div class="card" id="carteEmploiListe"><h4>📋 Liste + Envoyer</h4><div class="tableWrap"><table id="tableEmploi"><thead><tr><th>Jour</th><th>Heure</th><th>Matière</th><th>Enseignant</th><th>Niveau</th><th>Groupe</th><th>Envoyer</th><th>Action</th></tr></thead><tbody id="tbodyEmploi"></tbody></table></div></div>
+<div class="card" id="carteEmploiListe">
+<div class="titre-ligne"><h4>📋 Liste + Envoyer</h4>
+<div class="menu3"><button type="button" class="btn3" onclick="toggleMenu3('menuEmploiListe',event)">⋮</button><div class="menu3-drop" id="menuEmploiListe"><button type="button" onclick="fermerMenus3();telechargerPDF('tableEmploi','EMPLOI DU TEMPS')">⬇️ Télécharger en PDF</button><button type="button" onclick="fermerMenus3();telechargerExcelSD('tableEmploi','Emploi_Temps')">⬇️ Télécharger en Excel</button><button type="button" class="danger" onclick="fermerMenus3();if(confirm('Supprimer tout l\\'emploi du temps ?')) supprimerToutEmploiSD()">🗑️ Supprimer tout l'emploi</button><button type="button" onclick="fermerMenus3();cacherCarteSD('carteEmploiListe')">👁️ Cacher cette carte</button></div></div></div>
+<div class="tableWrap"><table id="tableEmploi"><thead><tr><th>Jour</th><th>Heure</th><th>Matière</th><th>Enseignant</th><th>Niveau</th><th>Groupe</th><th>Envoyer</th><th>Action</th></tr></thead><tbody id="tbodyEmploi"></tbody></table></div></div>
 </div>
 <div id="tabRetard" style="display:none">
-<div class="card" id="carteRetardListe"><h3>⏰ Qui n'a pas payé ? <span class="ar">من لم يدفع؟</span></h3><div class="tableWrap"><table id="tableRetard"><thead><tr><th>Enfant</th><th>Parent / WhatsApp</th><th>École</th><th>Prix / Payé / Reste</th><th>Action</th></tr></thead><tbody id="tbodyRetard"></tbody></table></div></div>
+<div class="card" id="carteRetardListe">
+<div class="titre-ligne"><h3>⏰ Qui n'a pas payé ? <span class="ar">من لم يدفع؟</span></h3>
+<div class="menu3"><button type="button" class="btn3" onclick="toggleMenu3('menuRetard',event)">⋮</button><div class="menu3-drop" id="menuRetard"><button type="button" onclick="fermerMenus3();telechargerPDF('tableRetard','QUI N A PAS PAYE')">⬇️ Télécharger en PDF</button><button type="button" onclick="fermerMenus3();telechargerExcelSD('tableRetard','Qui_Na_Pas_Paye')">⬇️ Télécharger en Excel</button><button type="button" onclick="fermerMenus3();cacherCarteSD('carteRetardListe')">👁️ Cacher cette carte</button></div></div></div>
+<div class="tableWrap"><table id="tableRetard"><thead><tr><th>Enfant</th><th>Parent / WhatsApp</th><th>École</th><th>Prix / Payé / Reste</th><th>Action</th></tr></thead><tbody id="tbodyRetard"></tbody></table></div></div>
 </div>
 <div id="tabPaiements" style="display:none">
 <div class="card" id="cartePaiementNouveau">
-<h3>💰 1. Nouveau Paiement - BLOQUÉ SI TROP</h3>
+<div class="titre-ligne"><h3>💰 1. Nouveau Paiement - BLOQUÉ SI TROP</h3>
+<div class="menu3"><button type="button" class="btn3" onclick="toggleMenu3('menuPayNew',event)">⋮</button><div class="menu3-drop" id="menuPayNew"><button type="button" onclick="fermerMenus3();cacherCarteSD('cartePaiementNouveau')">👁️ Cacher cette carte</button></div></div></div>
 <div style="background:#FFE0E0;padding:10px;border-radius:10px;text-align:center"><small>⚠️ Si prix = 10000 et déjà payé 9000, il ne reste que 1000. Si le parent donne 3000, on refuse.</small></div>
 <label>👶 Choisir l'élève *</label><select id="payEleve" onchange="actualiserRestePaiementSD()"></select>
 <p id="infoRestePaiementSD" style="text-align:center;font-weight:800;background:#E8F5E9;padding:10px;border-radius:10px"></p>
@@ -260,7 +286,8 @@ tr:nth-child(even){background:#F9F9F9}
 <button type="button" class="btn btnVert" style="width:100%" onclick="ajouterPaiementSD()">💾 Enregistrer ce paiement</button><p id="msgNouveauPaiementSD" style="text-align:center;font-weight:700"></p>
 </div>
 <div class="card" id="cartePaiementListe">
-<h3>💰 2. Liste des Paiements - VÉRIFIÉS SEULEMENT</h3>
+<div class="titre-ligne"><h3>💰 2. Liste des Paiements - VÉRIFIÉS SEULEMENT</h3>
+<div class="menu3"><button type="button" class="btn3" onclick="toggleMenu3('menuPayListe',event)">⋮</button><div class="menu3-drop" id="menuPayListe"><button type="button" onclick="fermerMenus3();telechargerPDF('tablePaiements','PAIEMENTS')">⬇️ Télécharger en PDF</button><button type="button" onclick="fermerMenus3();telechargerExcelSD('tablePaiements','Paiements')">⬇️ Télécharger en Excel</button><button type="button" onclick="fermerMenus3();cacherCarteSD('cartePaiementListe')">👁️ Cacher cette carte</button></div></div></div>
 <div style="background:#FFF9C4;padding:10px;border-radius:10px;text-align:center"><small>👀 Tu peux voir. <b>Seul le Directeur valide.</b><br>🛡️ <b>Les faux paiements d'inconnus via l'Accueil sont cachés.</b> <span id="nbFauxPaiements" style="font-weight:800;color:#C62828"></span></small></div>
 <div style="display:flex;gap:8px;margin-top:8px"><button type="button" class="btn btnGris" style="flex:1" onclick="setFiltrePaiementSD('verifies')">✅ Vérifiés seulement</button><button type="button" class="btn btnGris" style="flex:1" onclick="setFiltrePaiementSD('tous')">👁️ Voir aussi les faux</button></div>
 <input id="recherchePaiementSD" placeholder="🔍 Cherche un élève..." oninput="chargerPaiementsSD()" style="margin-top:8px">
@@ -269,7 +296,8 @@ tr:nth-child(even){background:#F9F9F9}
 </div>
 <div id="tabDepenses" style="display:none">
 <div class="card" id="carteDepForm">
-<h3 style="text-align:center">🧾 1. Envoyer une Dépense à la Gestion</h3>
+<div class="titre-ligne"><h3 style="text-align:center">🧾 1. Envoyer une Dépense à la Gestion</h3>
+<div class="menu3"><button type="button" class="btn3" onclick="toggleMenu3('menuDepForm',event)">⋮</button><div class="menu3-drop" id="menuDepForm"><button type="button" onclick="fermerMenus3();cacherCarteSD('carteDepForm')">👁️ Cacher cette carte</button></div></div></div>
 <label>École * - Ne change pas, c'est ton école</label><input id="depEcoleSD" readonly style="background:#f5f5f5">
 <label>Catégorie *</label><select id="depCategorieSD"><option value="Matériel">📚 Matériel (craies, livres)</option><option value="Salaire">👨‍🏫 Salaire</option><option value="Location">🏠 Location salle</option><option value="Transport">🚌 Transport</option><option value="Nourriture">🍲 Nourriture</option><option value="Activité">🎉 Activité / Fête</option><option value="Réparation">🔧 Réparation</option><option value="Autre">📌 Autre</option></select>
 <label>Motif *</label><input id="depMotifSD" placeholder="Ex : Achat de 10 Corans">
@@ -277,11 +305,15 @@ tr:nth-child(even){background:#F9F9F9}
 <label>Date *</label><input type="date" id="depDateSD">
 <button type="button" onclick="envoyerDepenseSD()" class="btn btnVert" style="width:100%;margin-top:10px">📤 Envoyer ma dépense à la Gestion</button><p id="msgDepenseSD" style="text-align:center;color:green;font-weight:700"></p>
 </div>
-<div class="card" id="carteDepListe"><h3 style="text-align:center">🧾 2. Mes Dépenses Envoyées</h3><div id="listeMesDepensesSD"></div></div>
+<div class="card" id="carteDepListe">
+<div class="titre-ligne"><h3 style="text-align:center">🧾 2. Mes Dépenses Envoyées</h3>
+<div class="menu3"><button type="button" class="btn3" onclick="toggleMenu3('menuDepListe',event)">⋮</button><div class="menu3-drop" id="menuDepListe"><button type="button" onclick="fermerMenus3();cacherCarteSD('carteDepListe')">👁️ Cacher cette carte</button></div></div></div>
+<div id="listeMesDepensesSD"></div></div>
 </div>
 <div id="tabAjout" style="display:none">
 <div class="card" id="carteAjoutForm">
-<h3>➕ Nouvelle Inscription</h3>
+<div class="titre-ligne"><h3>➕ Nouvelle Inscription</h3>
+<div class="menu3"><button type="button" class="btn3" onclick="toggleMenu3('menuAjout',event)">⋮</button><div class="menu3-drop" id="menuAjout"><button type="button" onclick="fermerMenus3();cacherCarteSD('carteAjoutForm')">👁️ Cacher cette carte</button></div></div></div>
 <p style="text-align:center;font-weight:800;background:#E8F5E9;padding:10px;border-radius:10px">💰 Prix de ton école : <b id="prixEcoleAjout">—</b><br><small>Si le parent paie plus que ce prix, on bloque aussi ici.</small></p>
 <label>👶 Nom de l'enfant *</label><input id="nEnfant" placeholder="Ex: Amina Ibrahim">
 <label>👤 Nom du Parent *</label><input id="nParent" placeholder="Ex: Ibrahim">
@@ -302,7 +334,7 @@ tr:nth-child(even){background:#F9F9F9}
 <script src="firebase.js"></script>
 <script>
 let SD=null, TOUTES_INSCRIPTIONS=[], TOUS_PAIEMENTS=[], TOUTES_NOTES=[], TOUT_EMPLOI=[], MATIERES_DIRECTEUR=[], TOUS_ENSEIGNANTS=[], TOUTES_DEPENSES_SD=[];
-let PRIX_PAR_ECOLE_SD={}, PRIX_SECOURS_SD=10000, FILTRE_PAIEMENT_SD='verifies', NOTE_EN_MODIF=null;
+let PRIX_PAR_ECOLE_SD={}, PRIX_SECOURS_SD=10000, FILTRE_PAIEMENT_SD='verifies', FILTRE_NOTES_SD='en_attente';
 let TYPE_COMPOSITION_SD="Oral + Écrit";
 function nettoyerTel(t){ if(!t) return ""; return String(t).replace(/[\s\-\+]/g,"").replace(/^237/,"").slice(-9); }
 function nettoyerEmail(e){ return String(e||"").toLowerCase().trim(); }
@@ -313,6 +345,14 @@ function joliNomMatiere(idOuNom){ if(!idOuNom) return ""; let s=String(idOuNom).
 function toggleMenu3(id,ev){ if(ev) ev.stopPropagation(); document.querySelectorAll('.menu3-drop').forEach(m=>{ if(m.id!==id) m.classList.remove('show'); }); let el=document.getElementById(id); if(el) el.classList.toggle('show'); }
 function fermerMenus3(){ document.querySelectorAll('.menu3-drop').forEach(m=>m.classList.remove('show')); }
 document.addEventListener('click', function(e){ if(!e.target.closest('.menu3')) fermerMenus3(); });
+function cacherCarteSD(carteId){ let el=document.getElementById(carteId); if(el) el.style.display='none'; }
+function toutAfficherSD(){ document.querySelectorAll('#sdPanel .card').forEach(c=>c.style.display='block'); showTabSD('tabDashboard',null); }
+function effacerSessionSD(){ try{ localStorage.removeItem("sd_session"); }catch(e){} SD=null; let l=document.getElementById('loginCard'); if(l) l.style.display='block'; let p=document.getElementById('sdPanel'); if(p) p.style.display='none'; let m=document.getElementById('msgSD'); if(m){ m.style.color="green"; m.textContent="✅ Ancienne session effacée. Mets ton Email + WhatsApp pour te reconnecter."; } }
+function telechargerExcelSD(idTable, nomFichier){
+  let table=document.getElementById(idTable); if(!table){ alert("Aucun tableau"); return; }
+  let lignes=[]; table.querySelectorAll("tr").forEach(tr=>{ let cellules=[]; tr.querySelectorAll("th,td").forEach(c=>{ let t=(c.innerText||"").replace(/\s+/g," ").trim().replace(/"/g,"\"\""); if(t==="Actions"||t==="Action") return; cellules.push('"'+t+'"'); }); if(cellules.length) lignes.push(cellules.join(";")); });
+  let blob=new Blob(["\ufeff"+lignes.join("\r\n")],{type:"text/csv;charset=utf-8;"}); let a=document.createElement("a"); a.href=URL.createObjectURL(blob); a.download=(nomFichier||"export")+".csv"; document.body.appendChild(a); a.click(); a.remove();
+}
 function toggleDrawerSD(){ document.getElementById('drawerSD').classList.toggle('show'); document.getElementById('drawerOverlaySD').classList.toggle('show'); }
 function fermerDrawerSD(){ document.getElementById('drawerSD').classList.remove('show'); document.getElementById('drawerOverlaySD').classList.remove('show'); }
 function voirToutOngletSD(tabId){ let tab=document.getElementById(tabId); if(!tab) return; tab.querySelectorAll(':scope > .card').forEach(c=>c.style.display='block'); }
@@ -326,46 +366,60 @@ function fermerRecu(){ document.getElementById('popupRecu').style.display="none"
 function telechargerPDF(idTable, titre){ let table=document.getElementById(idTable); if(!table){ alert("Aucun tableau"); return; } document.getElementById('titrePDF').textContent="☪️ AN NOUROU IMAN - "+titre; document.getElementById('sousTitrePDF').textContent="Sous-Directeur: "+(SD?SD.email:"")+" - Date: "+new Date().toLocaleDateString('fr-FR'); let clone=table.cloneNode(true); clone.querySelectorAll("a,button").forEach(b=>b.remove()); document.getElementById('contenuPDF').innerHTML=""; document.getElementById('contenuPDF').appendChild(clone); document.getElementById('popupPDF').style.display="flex"; }
 function fermerPDF(){ document.getElementById('popupPDF').style.display="none"; }
 function imprimerPopup(idPopup){ document.getElementById(idPopup).classList.add("popupAImprimer"); setTimeout(()=>{ window.print(); }, 100); }
-function showTabSD(id,btn){ fermerMenus3(); ['tabDashboard','tabEcole','tabEleves','tabPresence','tabNotes','tabMoyennes','tabEmploi','tabRetard','tabPaiements','tabAjout','tabDepenses','tabEnseignants'].forEach(x=>{ let el=document.getElementById(x); if(el) el.style.display='none'; }); document.getElementById(id).style.display='block'; if(id==='tabEleves') { chargerInscriptionsSD(); chargerElevesPayesParNiveau(); } if(id==='tabPresence') chargerPourPresence(); if(id==='tabNotes' || id==='tabMoyennes') chargerNotes(); if(id==='tabEmploi') chargerEmploi(); if(id==='tabRetard') chargerRetard(); if(id==='tabPaiements') chargerPaiementsSD(); if(id==='tabDashboard') chargerInscriptionsSD(); if(id==='tabDepenses') chargerMesDepensesSD(); if(id==='tabEnseignants') chargerEnseignantsSD(); }
+function showTabSD(id,btn){ fermerMenus3(); ['tabDashboard','tabEcole','tabEleves','tabPresence','tabNotes','tabMoyennes','tabEmploi','tabRetard','tabPaiements','tabAjout','tabDepenses','tabEnseignants'].forEach(x=>{ let el=document.getElementById(x); if(el) el.style.display='none'; }); let cible=document.getElementById(id); if(!cible) return; cible.style.display='block'; if(id==='tabEleves') { chargerInscriptionsSD(); chargerElevesPayesParNiveau(); } if(id==='tabPresence') chargerPourPresence(); if(id==='tabNotes' || id==='tabMoyennes') chargerNotes(); if(id==='tabEmploi') chargerEmploi(); if(id==='tabRetard') chargerRetard(); if(id==='tabPaiements') chargerPaiementsSD(); if(id==='tabDashboard') chargerInscriptionsSD(); if(id==='tabDepenses') chargerMesDepensesSD(); if(id==='tabEnseignants') chargerEnseignantsSD(); }
+function emailsDeValeurSD(v){ if(!v) return []; if(typeof v==="string") return [nettoyerEmail(v)]; if(Array.isArray(v)) return v.flatMap(x=>emailsDeValeurSD(x)); if(typeof v==="object") return [nettoyerEmail(v.email||v.mail||""),nettoyerEmail(v.sousDirecteurEmail||""),nettoyerEmail(v.emailSousDirecteur||"")].filter(x=>x); return []; }
+function emailsDeDocSD(d){ let out=[]; ["sousDirecteurEmail","sousDirecteur","sous_directeur","emailSousDirecteur","sousDirecteurMail","email","responsableEmail","directeurEmail","secretaireEmail","emailDirecteur","contactEmail","adminEmail"].forEach(k=>{ if(d[k]!==undefined) out=out.concat(emailsDeValeurSD(d[k])); }); return out.filter(x=>x); }
 async function seConnecterSD(){
   let email=nettoyerEmail(document.getElementById('sdEmail').value); let tel=nettoyerTel(document.getElementById('sdTel').value); let msg=document.getElementById('msgSD');
   if(!email||!tel){ msg.textContent="❌ Mets Email et WhatsApp"; return; } msg.style.color="#666"; msg.textContent="⏳ Vérification...";
   try{
+    if(typeof db==="undefined"||!db){ msg.style.color="red"; msg.textContent="❌ Base non chargée. Vérifie que firebase.js est dans le même dossier, puis actualise."; return; }
     let ecoleIdDeUtilisateur="", nomUtilisateur="";
-    try{ let snapU=await db.collection("utilisateurs").get(); snapU.forEach(d=>{ let u=d.data(); if(nettoyerEmail(u.email||"")===email){ ecoleIdDeUtilisateur=u.ecoleId||""; nomUtilisateur=u.nom||""; } }); }catch(e){}
+    try{ let snapU=await db.collection("utilisateurs").get(); snapU.forEach(d=>{ let u=d.data(); if(nettoyerEmail(u.email||u.mail||"")===email){ if(u.ecoleId) ecoleIdDeUtilisateur=String(u.ecoleId); if(u.nom) nomUtilisateur=u.nom; } }); }catch(e){}
+    try{ if(!ecoleIdDeUtilisateur){ let snapU2=await db.collection("utilisateurs").where("email","==",email).get(); snapU2.forEach(d=>{ let u=d.data(); if(u.ecoleId) ecoleIdDeUtilisateur=String(u.ecoleId); if(u.nom) nomUtilisateur=u.nom; }); } }catch(e){}
     let ecoles=[], groupes=[];
-    let snapE=await db.collection("ecoles").get();
-    snapE.forEach(doc=>{ let d=doc.data(); let emailsEcole=[d.sousDirecteurEmail,d.sousDirecteur,d.sous_directeur,d.emailSousDirecteur,d.directeurEmail,d.secretaireEmail,d.email,d.responsableEmail].map(x=>nettoyerEmail(x||"")); if(emailsEcole.includes(email) || (ecoleIdDeUtilisateur && String(doc.id)===String(ecoleIdDeUtilisateur))) ecoles.push({id:doc.id,...d}); });
-    let snapG=await db.collection("groupes").get();
-    snapG.forEach(doc=>{ let d=doc.data(); let emailsGroupe=[d.sousDirecteurEmail,d.sousDirecteur,d.sous_directeur,d.emailSousDirecteur,d.email,d.enseignantEmail].map(x=>nettoyerEmail(x||"")); if(emailsGroupe.includes(email) || (ecoleIdDeUtilisateur && String(doc.id)===String(ecoleIdDeUtilisateur))) groupes.push({id:doc.id,...d}); });
+    try{ let snapE=await db.collection("ecoles").get(); snapE.forEach(doc=>{ let d=doc.data(); if(emailsDeDocSD(d).includes(email) || (ecoleIdDeUtilisateur && String(doc.id)===String(ecoleIdDeUtilisateur))) ecoles.push({id:doc.id,...d}); }); }catch(e){}
+    try{ let snapG=await db.collection("groupes").get(); snapG.forEach(doc=>{ let d=doc.data(); if(emailsDeDocSD(d).includes(email) || (ecoleIdDeUtilisateur && String(doc.id)===String(ecoleIdDeUtilisateur))) groupes.push({id:doc.id,...d}); }); }catch(e){}
+    if(ecoleIdDeUtilisateur && !ecoles.length && !groupes.length){
+      try{ let docE=await db.collection("ecoles").doc(ecoleIdDeUtilisateur).get(); if(docE.exists) ecoles.push({id:docE.id,...docE.data()}); }catch(e){}
+      try{ if(!ecoles.length){ let docG=await db.collection("groupes").doc(ecoleIdDeUtilisateur).get(); if(docG.exists) groupes.push({id:docG.id,...docG.data()}); } }catch(e){}
+    }
+    if(!ecoles.length && !groupes.length){
+      try{ let snapSD=await db.collection("sousDirecteurs").get(); snapSD.forEach(doc=>{ let d=doc.data(); if(nettoyerEmail(d.email||d.mail||"")===email){ if(d.ecoleId) ecoleIdDeUtilisateur=String(d.ecoleId); if(d.nom) nomUtilisateur=d.nom; } }); }catch(e){}
+      try{ if(ecoleIdDeUtilisateur){ let docE=await db.collection("ecoles").doc(ecoleIdDeUtilisateur).get(); if(docE.exists) ecoles.push({id:docE.id,...docE.data()}); } }catch(e){}
+      try{ if(ecoleIdDeUtilisateur && !ecoles.length){ let docG=await db.collection("groupes").doc(ecoleIdDeUtilisateur).get(); if(docG.exists) groupes.push({id:docG.id,...docG.data()}); } }catch(e){}
+    }
     if(!ecoles.length && !groupes.length){ msg.style.color="red"; msg.textContent="❌ Email introuvable dans Admin -> Écoles / Groupes."; return; }
-    SD={email,tel,ecoles,groupes,nom:nomUtilisateur}; localStorage.setItem("sd_session", JSON.stringify(SD)); afficherSD();
-  }catch(e){ msg.textContent="❌ "+e.message; }
+    SD={email,tel,ecoles,groupes,nom:nomUtilisateur}; try{ localStorage.setItem("sd_session", JSON.stringify(SD)); }catch(e){}
+    msg.textContent=""; afficherSD();
+  }catch(e){ msg.style.color="red"; msg.textContent="❌ "+e.message; }
 }
 function seDeconnecterSD(){ try{ localStorage.removeItem("sd_session"); }catch(e){} location.reload(); }
 function afficherSD(){
-  document.getElementById('loginCard').style.display='none'; document.getElementById('sdPanel').style.display='block';
-  document.getElementById('sdNom').textContent = SD.nom || SD.email;
-  let noms=[]; SD.ecoles.forEach(e=>noms.push("🏫 "+(e.nom||"École"))); SD.groupes.forEach(g=>noms.push("👥 "+(g.nom||"Groupe"))); document.getElementById('sdInfo').textContent=noms.join(" • ");
-  let sel=document.getElementById('nEcole'); sel.innerHTML=""; SD.ecoles.forEach(e=>sel.innerHTML+=`<option value="${e.id}||${e.nom}">${e.nom} - École</option>`); SD.groupes.forEach(g=>sel.innerHTML+=`<option value="${g.id}||${g.nom}">${g.nom} - Groupe</option>`);
+  if(!SD||!Array.isArray(SD.ecoles)||!Array.isArray(SD.groupes)){ effacerSessionSD(); return; }
+  let loginEl=document.getElementById('loginCard'); if(loginEl) loginEl.style.display='none'; let panelEl=document.getElementById('sdPanel'); if(panelEl) panelEl.style.display='block';
+  let nomEl=document.getElementById('sdNom'); if(nomEl) nomEl.textContent = SD.nom || SD.email;
+  let infoEl=document.getElementById('sdInfo'); if(infoEl){ let noms=[]; SD.ecoles.forEach(e=>noms.push("🏫 "+(e.nom||"École"))); SD.groupes.forEach(g=>noms.push("👥 "+(g.nom||"Groupe"))); infoEl.textContent=noms.join(" • "); }
+  let sel=document.getElementById('nEcole'); if(sel){ sel.innerHTML=""; SD.ecoles.forEach(e=>sel.innerHTML+=`<option value="${e.id}||${e.nom}">${e.nom} - École</option>`); SD.groupes.forEach(g=>sel.innerHTML+=`<option value="${g.id}||${g.nom}">${g.nom} - Groupe</option>`); }
   let selEns=document.getElementById('ensEcole'); if(selEns){ selEns.innerHTML=""; SD.ecoles.forEach(e=>selEns.innerHTML+=`<option value="${e.id}||${e.nom}">${e.nom}</option>`); SD.groupes.forEach(g=>selEns.innerHTML+=`<option value="${g.id}||${g.nom}">${g.nom}</option>`); }
   let selEmploi=document.getElementById('emploiGroupeDest'); if(selEmploi){ selEmploi.innerHTML=`<option value="">— Mon école (par défaut) —</option>`; SD.ecoles.forEach(e=>selEmploi.innerHTML+=`<option value="${e.id}||${e.nom}">${e.nom}</option>`); SD.groupes.forEach(g=>selEmploi.innerHTML+=`<option value="${g.id}||${g.nom}">${g.nom}</option>`); }
   let selFiltre=document.getElementById('filtreEcoleElevesSD'); if(selFiltre){ selFiltre.innerHTML=`<option value="">Toutes mes écoles / groupes</option>`; SD.ecoles.forEach(e=>selFiltre.innerHTML+=`<option value="${e.nom}">${e.nom} - École</option>`); SD.groupes.forEach(g=>selFiltre.innerHTML+=`<option value="${g.nom}">${g.nom} - Groupe</option>`); }
   let depEcole=document.getElementById('depEcoleSD'); if(depEcole) depEcole.value = SD.ecoles[0]?.nom || SD.groupes[0]?.nom || "";
-  document.getElementById('datePresence').textContent=new Date().toLocaleDateString('fr-FR');
-  chargerPrixEcolesSD(); chargerMatieresDirecteur(); chargerInscriptionsSD(); chargerPaiementsSD(); chargerEnseignantsSD(); chargerElevesPayesParNiveau(); chargerMesDepensesSD();
+  let dateEl=document.getElementById('datePresence'); if(dateEl) dateEl.textContent=new Date().toLocaleDateString('fr-FR');
+  try{ chargerPrixEcolesSD(); }catch(e){}
+  try{ chargerMatieresDirecteur(); }catch(e){}
+  try{ chargerInscriptionsSD(); }catch(e){}
+  try{ chargerPaiementsSD(); }catch(e){}
+  try{ chargerEnseignantsSD(); }catch(e){}
+  try{ chargerElevesPayesParNiveau(); }catch(e){}
+  try{ chargerMesDepensesSD(); }catch(e){}
 }
-// ===== FILTRE STRICT - NE MÉLANGE PLUS 2 ÉCOLES =====
 function nomEcoleDocSD(d){ return String(d.ecole||d.ecoleNom||d.groupe||d.groupeNom||"").trim(); }
 function idEcoleDocSD(d){ return String(d.ecoleId||d.groupeId||d.idEcole||d.idGroupe||""); }
 function estAMoi(d){
   if(!SD) return false;
   let idDoc=idEcoleDocSD(d);
-  if(idDoc){
-    if(SD.ecoles.some(e=> String(e.id)===idDoc)) return true;
-    if(SD.groupes.some(g=> String(g.id)===idDoc)) return true;
-    return false;
-  }
+  if(idDoc){ if(SD.ecoles.some(e=> String(e.id)===idDoc)) return true; if(SD.groupes.some(g=> String(g.id)===idDoc)) return true; return false; }
   let nomDoc=normaliserSD(nomEcoleDocSD(d));
   if(!nomDoc) return false;
   if(SD.ecoles.some(e=> normaliserSD(e.nom||"")===nomDoc)) return true;
@@ -382,59 +436,13 @@ function getPrixEcoleSD(nomEcole, ecoleId){
   if(PRIX_SECOURS_SD>0) return Number(PRIX_SECOURS_SD);
   return 0;
 }
-function getPrixPourEleveSD(eleveObj){
-  if(!eleveObj) return PRIX_SECOURS_SD||0;
-  return getPrixEcoleSD(eleveObj.ecole||eleveObj.ecoleNom||eleveObj.groupe||eleveObj.groupeNom||"", eleveObj.ecoleId||eleveObj.groupeId||"");
-}
+function getPrixPourEleveSD(eleveObj){ if(!eleveObj) return PRIX_SECOURS_SD||0; return getPrixEcoleSD(eleveObj.ecole||eleveObj.ecoleNom||eleveObj.groupe||eleveObj.groupeNom||"", eleveObj.ecoleId||eleveObj.groupeId||""); }
 async function chargerPrixEcolesSD(){
   PRIX_PAR_ECOLE_SD={};
-  function setPrix(id, nom, prix){
-    if(!prix || prix<=0) return;
-    if(id){ PRIX_PAR_ECOLE_SD["ecoleId:"+id]=prix; PRIX_PAR_ECOLE_SD["id:"+id]=prix; }
-    if(nom){ PRIX_PAR_ECOLE_SD[normaliserSD(nom)]=prix; PRIX_PAR_ECOLE_SD[clePrixSD(nom)]=prix; }
-  }
-  try{
-    let s=await db.collection("configMatieres").get();
-    s.forEach(d=>{
-      let v=d.data();
-      let prix=Number(v.fraisTotal||v.fraisTotalInscription||0);
-      if(prix>0){
-        if(d.id==="global"){ if(SD){ SD.ecoles.forEach(e=> setPrix(e.id, e.nom, prix)); SD.groupes.forEach(g=> setPrix(g.id, g.nom, prix)); } }
-        else setPrix(d.id, v.ecoleNom||v.nom||"", prix);
-      }
-    });
-  }catch(e){}
-  try{
-    let d3=await db.collection("configFrais").doc("global").get();
-    if(d3.exists && d3.data().montant) PRIX_SECOURS_SD=Number(d3.data().montant);
-    if(SD){ for(let e of SD.ecoles){ try{ let dd=await db.collection("configFrais").doc(e.id).get(); if(dd.exists && dd.data().montant) setPrix(e.id, e.nom, Number(dd.data().montant)); }catch(e){} } }
-  }catch(e){}
-  try{
-    let docsALire=["global"];
-    if(SD){ SD.ecoles.forEach(e=>{ if(e.id) docsALire.push(e.id); }); SD.groupes.forEach(g=>{ if(g.id) docsALire.push(g.id); }); }
-    docsALire.push("TOUTES");
-    for(let docId of docsALire){
-      try{
-        let doc=await db.collection("configPrixEcoles").doc(docId).get();
-        if(doc.exists && doc.data().prix){
-          let mapPrix=doc.data().prix||{};
-          Object.keys(mapPrix).forEach(k=>{
-            if(k.endsWith("_nom")) return;
-            let prix=Number(mapPrix[k]);
-            if(prix>0){
-              PRIX_PAR_ECOLE_SD[k]=prix;
-              let nomStocke=mapPrix[k+"_nom"]||"";
-              if(nomStocke) setPrix("", nomStocke, prix);
-              if(SD){
-                SD.ecoles.forEach(e=>{ if(clePrixSD(e.nom)===k) setPrix(e.id, e.nom, prix); });
-                SD.groupes.forEach(g=>{ if(clePrixSD(g.nom)===k) setPrix(g.id, g.nom, prix); });
-              }
-            }
-          });
-        }
-      }catch(e){}
-    }
-  }catch(e){}
+  function setPrix(id, nom, prix){ if(!prix || prix<=0) return; if(id){ PRIX_PAR_ECOLE_SD["ecoleId:"+id]=prix; PRIX_PAR_ECOLE_SD["id:"+id]=prix; } if(nom){ PRIX_PAR_ECOLE_SD[normaliserSD(nom)]=prix; PRIX_PAR_ECOLE_SD[clePrixSD(nom)]=prix; } }
+  try{ let s=await db.collection("configMatieres").get(); s.forEach(d=>{ let v=d.data(); let prix=Number(v.fraisTotal||v.fraisTotalInscription||0); if(prix>0){ if(d.id==="global"){ if(SD){ SD.ecoles.forEach(e=> setPrix(e.id, e.nom, prix)); SD.groupes.forEach(g=> setPrix(g.id, g.nom, prix)); } } else setPrix(d.id, v.ecoleNom||v.nom||"", prix); } }); }catch(e){}
+  try{ let d3=await db.collection("configFrais").doc("global").get(); if(d3.exists && d3.data().montant) PRIX_SECOURS_SD=Number(d3.data().montant); if(SD){ for(let e of SD.ecoles){ try{ let dd=await db.collection("configFrais").doc(e.id).get(); if(dd.exists && dd.data().montant) setPrix(e.id, e.nom, Number(dd.data().montant)); }catch(e){} } } }catch(e){}
+  try{ let docsALire=["global"]; if(SD){ SD.ecoles.forEach(e=>{ if(e.id) docsALire.push(e.id); }); SD.groupes.forEach(g=>{ if(g.id) docsALire.push(g.id); }); } docsALire.push("TOUTES"); for(let docId of docsALire){ try{ let doc=await db.collection("configPrixEcoles").doc(docId).get(); if(doc.exists && doc.data().prix){ let mapPrix=doc.data().prix||{}; Object.keys(mapPrix).forEach(k=>{ if(k.endsWith("_nom")) return; let prix=Number(mapPrix[k]); if(prix>0){ PRIX_PAR_ECOLE_SD[k]=prix; let nomStocke=mapPrix[k+"_nom"]||""; if(nomStocke) setPrix("", nomStocke, prix); if(SD){ SD.ecoles.forEach(e=>{ if(clePrixSD(e.nom)===k) setPrix(e.id, e.nom, prix); }); SD.groupes.forEach(g=>{ if(clePrixSD(g.nom)===k) setPrix(g.id, g.nom, prix); }); } } }); } }catch(e){} } }catch(e){}
   if(!SD) return;
   let maEcole = SD.ecoles[0]?.nom || SD.groupes[0]?.nom || "";
   let maId = SD.ecoles[0]?.id || SD.groupes[0]?.id || "";
@@ -442,62 +450,28 @@ async function chargerPrixEcolesSD(){
   let el2=document.getElementById('prixInfo'); if(el2) el2.textContent="💰 Prix fixé pour "+maEcole+" : "+prix.toLocaleString('fr-FR')+" FCFA";
   let el4=document.getElementById('prixEcoleAjout'); if(el4) el4.textContent=prix.toLocaleString('fr-FR')+" FCFA - "+maEcole;
   let tbody=document.getElementById('tbodyEcole');
-  if(tbody){
-    let html="";
-    SD.ecoles.forEach(e=>{ html+=`<tr><td>🏫 École</td><td><b>${e.nom||""}</b></td><td>${e.quartier||""} ${e.ville||""}</td><td>${e.responsable||e.sousDirecteur||""}</td><td><b>${getPrixEcoleSD(e.nom||"", e.id).toLocaleString('fr-FR')} FCFA</b></td></tr>`; });
-    SD.groupes.forEach(g=>{ html+=`<tr><td>👥 Groupe</td><td><b>${g.nom||""}</b></td><td>${g.ville||""} - ${g.quartier||""}</td><td>${g.enseignant||""}</td><td><b>${getPrixEcoleSD(g.nom||"", g.id).toLocaleString('fr-FR')} FCFA</b></td></tr>`; });
-    tbody.innerHTML=html||`<tr><td colspan="5">Pas d'école.</td></tr>`;
-  }
+  if(tbody){ let html=""; SD.ecoles.forEach(e=>{ html+=`<tr><td>🏫 École</td><td><b>${e.nom||""}</b></td><td>${e.quartier||""} ${e.ville||""}</td><td>${e.responsable||e.sousDirecteur||""}</td><td><b>${getPrixEcoleSD(e.nom||"", e.id).toLocaleString('fr-FR')} FCFA</b></td></tr>`; }); SD.groupes.forEach(g=>{ html+=`<tr><td>👥 Groupe</td><td><b>${g.nom||""}</b></td><td>${g.ville||""} - ${g.quartier||""}</td><td>${g.enseignant||""}</td><td><b>${getPrixEcoleSD(g.nom||"", g.id).toLocaleString('fr-FR')} FCFA</b></td></tr>`; }); tbody.innerHTML=html||`<tr><td colspan="5">Pas d'école.</td></tr>`; }
   calculerDashboardEcolesSD();
 }
 async function chargerMatieresDirecteur(){
   let modeTrouve = "";
-  try{
-    let doc = await db.collection("matieres_publiees").doc("AN_NOUROU_IMAN").get();
-    if(doc.exists){
-      let v=doc.data();
-      if(v.matieresDetail && v.matieresDetail.length) MATIERES_DIRECTEUR=v.matieresDetail;
-      else if(v.matieresNoms) MATIERES_DIRECTEUR=v.matieresNoms.map(n=>({fr:n, nom:n}));
-      else if(v.matieres) MATIERES_DIRECTEUR=v.matieres.map(id=>({id:id, fr:joliNomMatiere(id)}));
-      if(v.typeComposition) modeTrouve = v.typeComposition;
-    }
-  }catch(e){}
-  if(!modeTrouve){
-    try{ let d3=await db.collection("configMatieres").doc("global").get(); if(d3.exists && d3.data().typeComposition) modeTrouve=d3.data().typeComposition; }catch(e){}
-  }
-  if(!modeTrouve && SD){
-    for(let e of SD.ecoles){
-      try{ let d2=await db.collection("configMatieres").doc(e.id).get(); if(d2.exists && d2.data().typeComposition){ modeTrouve=d2.data().typeComposition; break; } }catch(e){}
-    }
-  }
+  try{ let doc = await db.collection("matieres_publiees").doc("AN_NOUROU_IMAN").get(); if(doc.exists){ let v=doc.data(); if(v.matieresDetail && v.matieresDetail.length) MATIERES_DIRECTEUR=v.matieresDetail; else if(v.matieresNoms) MATIERES_DIRECTEUR=v.matieresNoms.map(n=>({fr:n, nom:n})); else if(v.matieres) MATIERES_DIRECTEUR=v.matieres.map(id=>({id:id, fr:joliNomMatiere(id)})); if(v.typeComposition) modeTrouve = v.typeComposition; } }catch(e){}
+  if(!modeTrouve){ try{ let d3=await db.collection("configMatieres").doc("global").get(); if(d3.exists && d3.data().typeComposition) modeTrouve=d3.data().typeComposition; }catch(e){} }
   if(modeTrouve) TYPE_COMPOSITION_SD = modeTrouve;
   if(!MATIERES_DIRECTEUR.length) MATIERES_DIRECTEUR=[{fr:"Coran"},{fr:"Hadith"},{fr:"Aquida"},{fr:"Fiqh"},{fr:"Langue Arabe"},{fr:"Sirah"},{fr:"Tawhid"},{fr:"Adhab"},{fr:"Mémorisation"},{fr:"Lecture"},{fr:"Écriture"},{fr:"Mathématiques"},{fr:"Français"}];
-  let elMode=document.getElementById('modeCompositionSD'); if(elMode) elMode.textContent=TYPE_COMPOSITION_SD;
   let elInfo=document.getElementById('matieresInfo'); if(elInfo) elInfo.textContent="📚 Matières du Directeur : "+MATIERES_DIRECTEUR.map(m=>m.fr||m.nom).join(", ")+" | Mode : "+TYPE_COMPOSITION_SD;
   let tbody=document.getElementById('tbodyMatieresDirecteur');
-  if(tbody){
-    let html="";
-    MATIERES_DIRECTEUR.forEach(m=>{ html+=`<tr><td><b>${joliNomMatiere(m.fr||m.nom||m.id)}</b></td><td>1</td><td>${SD?.ecoles[0]?.nom||""}</td></tr>`; });
-    tbody.innerHTML=html;
-  }
-  let selEns=document.getElementById('ensMatiere'); if(selEns){ selEns.innerHTML=""; MATIERES_DIRECTEUR.forEach(m=>{ selEns.innerHTML+=`<option value="${m.fr||m.nom}">${joliNomMatiere(m.fr||m.nom)}</option>`; }); }
+  if(tbody){ let html=""; MATIERES_DIRECTEUR.forEach(m=>{ html+=`<tr><td><b>${joliNomMatiere(m.fr||m.nom||m.id)}</b></td><td>1</td><td>${SD?.ecoles[0]?.nom||""}</td></tr>`; }); tbody.innerHTML=html; }
+  let boxMat=document.getElementById('choixMatieresEnsSD');
+  if(boxMat){ boxMat.innerHTML = MATIERES_DIRECTEUR.map(m=>`<label class="check-matiere"><input type="checkbox" class="matiereSD" value="${m.fr||m.nom}"> ${joliNomMatiere(m.fr||m.nom)}</label>`).join(""); }
   let selEmploi=document.getElementById('emploiMatiere'); if(selEmploi){ selEmploi.innerHTML=""; MATIERES_DIRECTEUR.forEach(m=>{ selEmploi.innerHTML+=`<option value="${m.fr||m.nom}">${joliNomMatiere(m.fr||m.nom)}</option>`; }); }
 }
 function statutPaiementValideSD(p){ let st=String(p.statut||p.status||"").toLowerCase().trim(); return (st==="valide"||st==="validé"||st==="validee"||st==="paye"||st==="payé"||st==="payee"||st==="ok"||st==="confirme"||st==="confirmé"); }
 function statutDepenseValideSD(d){ let st=String(d.statut||"").toLowerCase().trim(); return !(st==="en_attente"||st==="refuse"||st==="refusé"||st==="annule"||st==="annulé"); }
 function badgeDepenseSD(st){ st=String(st||"").toLowerCase(); if(st==="en_attente") return `<span class="badge badgeJaune">⏳ EN ATTENTE</span>`; if(st==="refuse"||st==="refusé") return `<span class="badge badgeRouge">❌ REFUSÉ</span>`; return `<span class="badge badgeVert">✅ VALIDÉ</span>`; }
 function totalPayeEleve(nom){ let tp=0; TOUS_PAIEMENTS.forEach(p=>{ if(normaliserSD(p.enfant||p.enfantNom||"")===normaliserSD(nom) && statutPaiementValideSD(p)) tp+=Number(p.montant||0); }); return tp; }
-function soldeEleveSD(nom){
-  let el=TOUTES_INSCRIPTIONS.find(e=> normaliserSD(e.enfant||e.nomEnfant||"")===normaliserSD(nom));
-  let totalDu = el ? getPrixPourEleveSD(el) : PRIX_SECOURS_SD||0;
-  let tp=totalPayeEleve(nom);
-  let reste=Math.max(0, totalDu-tp);
-  let statut = totalDu>0 && tp>=totalDu ? "paye" : tp>0 ? "avance" : "nonpaye";
-  return {totalDu, totalPaye:tp, reste, statut};
-}
-async function chargerToutesDepensesSD(){
-  try{ let snap=await db.collection("depenses").limit(300).get(); TOUTES_DEPENSES_SD=[]; snap.forEach(doc=>{ let d={id:doc.id,...doc.data()}; if(estAMoi(d)) TOUTES_DEPENSES_SD.push(d); }); }catch(e){}
-}
+function soldeEleveSD(nom){ let el=TOUTES_INSCRIPTIONS.find(e=> normaliserSD(e.enfant||e.nomEnfant||"")===normaliserSD(nom)); let totalDu = el ? getPrixPourEleveSD(el) : PRIX_SECOURS_SD||0; let tp=totalPayeEleve(nom); let reste=Math.max(0, totalDu-tp); let statut = totalDu>0 && tp>=totalDu ? "paye" : tp>0 ? "avance" : "nonpaye"; return {totalDu, totalPaye:tp, reste, statut}; }
+async function chargerToutesDepensesSD(){ try{ let snap=await db.collection("depenses").limit(300).get(); TOUTES_DEPENSES_SD=[]; snap.forEach(doc=>{ let d={id:doc.id,...doc.data()}; if(estAMoi(d)) TOUTES_DEPENSES_SD.push(d); }); }catch(e){} }
 async function chargerInscriptionsSD(){
   if(!SD) return;
   try{
@@ -515,39 +489,17 @@ function calculerDashboardEcolesSD(){
   let retard=TOUTES_INSCRIPTIONS.filter(e=> soldeEleveSD(e.enfant||e.nomEnfant||"").reste>0).length;
   let el=(id,v)=>{ let e=document.getElementById(id); if(e) e.textContent=v; };
   el('stEleves',total); el('stNbEcoles', SD.ecoles.length+SD.groupes.length); el('stAttente',attente); el('stRetard',retard);
+  let nAtt=TOUTES_NOTES.filter(n=> (n.statut||n.statutNote||"en_attente")==="en_attente").length;
+  let nVal=TOUTES_NOTES.filter(n=> (n.statut||n.statutNote||"")==="valide").length;
+  let nRef=TOUTES_NOTES.filter(n=> (n.statut||n.statutNote||"")==="refuse").length;
+  el('stNotesAttente',nAtt); el('stNotesValide',nVal); el('stNotesRefuse',nRef);
   let totEnc=0, totDep=0, totAtt=0;
   let boxE=document.getElementById('dashboardParEcoleSD');
-  if(boxE){
-    let h="";
-    SD.ecoles.forEach(ec=>{
-      let eleves=TOUTES_INSCRIPTIONS.filter(e=> estAMoiEcole(e, ec));
-      let attendu=0, encaisse=0;
-      eleves.forEach(e=>{ let s=soldeEleveSD(e.enfant||""); attendu+=s.totalDu; encaisse+=s.totalPaye; });
-      let depValide=TOUTES_DEPENSES_SD.filter(d=> estAMoiEcole(d, ec) && statutDepenseValideSD(d)).reduce((s,x)=>s+Number(x.montant||0),0);
-      let depAttente=TOUTES_DEPENSES_SD.filter(d=> estAMoiEcole(d, ec) && String(d.statut||"")==="en_attente").reduce((s,x)=>s+Number(x.montant||0),0);
-      let soldeNet=encaisse-depValide;
-      totEnc+=encaisse; totDep+=depValide; totAtt+=depAttente;
-      h+=`<div style="background:#F1F8E9;border:1px solid #C8E6C9;border-radius:10px;padding:10px;margin-bottom:6px">🏫 <b>${ec.nom}</b> - ${eleves.length} élève(s)<br>Encaissé : <b>${encaisse.toLocaleString('fr-FR')} FCFA</b> - Dépenses : <b>${depValide.toLocaleString('fr-FR')} FCFA</b> - ⏳ En attente : <b>${depAttente.toLocaleString('fr-FR')} FCFA</b><br>💰 <b>Solde = ${soldeNet.toLocaleString('fr-FR')} FCFA</b></div>`;
-    });
-    boxE.innerHTML=h;
-  }
+  if(boxE){ let h=""; SD.ecoles.forEach(ec=>{ let eleves=TOUTES_INSCRIPTIONS.filter(e=> estAMoiEcole(e, ec)); let encaisse=0; eleves.forEach(e=>{ let s=soldeEleveSD(e.enfant||""); encaisse+=s.totalPaye; }); let depValide=TOUTES_DEPENSES_SD.filter(d=> estAMoiEcole(d, ec) && statutDepenseValideSD(d)).reduce((s,x)=>s+Number(x.montant||0),0); let depAttente=TOUTES_DEPENSES_SD.filter(d=> estAMoiEcole(d, ec) && String(d.statut||"")==="en_attente").reduce((s,x)=>s+Number(x.montant||0),0); let soldeNet=encaisse-depValide; totEnc+=encaisse; totDep+=depValide; totAtt+=depAttente; h+=`<div style="background:#F1F8E9;border:1px solid #C8E6C9;border-radius:10px;padding:10px;margin-bottom:6px">🏫 <b>${ec.nom}</b> - ${eleves.length} élève(s)<br>Encaissé : <b>${encaisse.toLocaleString('fr-FR')} FCFA</b> - Dépenses : <b>${depValide.toLocaleString('fr-FR')} FCFA</b> - ⏳ En attente : <b>${depAttente.toLocaleString('fr-FR')} FCFA</b><br>💰 <b>Solde = ${soldeNet.toLocaleString('fr-FR')} FCFA</b></div>`; }); boxE.innerHTML=h; }
   let boxG=document.getElementById('dashboardParGroupeSD');
-  if(boxG){
-    let h="";
-    SD.groupes.forEach(gr=>{
-      let eleves=TOUTES_INSCRIPTIONS.filter(e=> estAMoiGroupe(e, gr));
-      let attendu=0, encaisse=0;
-      eleves.forEach(e=>{ let s=soldeEleveSD(e.enfant||""); attendu+=s.totalDu; encaisse+=s.totalPaye; });
-      let depValide=TOUTES_DEPENSES_SD.filter(d=> estAMoiGroupe(d, gr) && statutDepenseValideSD(d)).reduce((s,x)=>s+Number(x.montant||0),0);
-      let depAttente=TOUTES_DEPENSES_SD.filter(d=> estAMoiGroupe(d, gr) && String(d.statut||"")==="en_attente").reduce((s,x)=>s+Number(x.montant||0),0);
-      let soldeNet=encaisse-depValide;
-      totEnc+=encaisse; totDep+=depValide; totAtt+=depAttente;
-      h+=`<div style="background:#FFF8E1;border:1px solid #FFE082;border-radius:10px;padding:10px;margin-bottom:6px">👥 <b>${gr.nom}</b> - ${eleves.length} élève(s)<br>Encaissé : <b>${encaisse.toLocaleString('fr-FR')} FCFA</b> - Dépenses : <b>${depValide.toLocaleString('fr-FR')} FCFA</b> - ⏳ En attente : <b>${depAttente.toLocaleString('fr-FR')} FCFA</b><br>💰 <b>Solde = ${soldeNet.toLocaleString('fr-FR')} FCFA</b></div>`;
-    });
-    boxG.innerHTML=h;
-  }
+  if(boxG){ let h=""; SD.groupes.forEach(gr=>{ let eleves=TOUTES_INSCRIPTIONS.filter(e=> estAMoiGroupe(e, gr)); let encaisse=0; eleves.forEach(e=>{ let s=soldeEleveSD(e.enfant||""); encaisse+=s.totalPaye; }); let depValide=TOUTES_DEPENSES_SD.filter(d=> estAMoiGroupe(d, gr) && statutDepenseValideSD(d)).reduce((s,x)=>s+Number(x.montant||0),0); let depAttente=TOUTES_DEPENSES_SD.filter(d=> estAMoiGroupe(d, gr) && String(d.statut||"")==="en_attente").reduce((s,x)=>s+Number(x.montant||0),0); let soldeNet=encaisse-depValide; totEnc+=encaisse; totDep+=depValide; totAtt+=depAttente; h+=`<div style="background:#FFF8E1;border:1px solid #FFE082;border-radius:10px;padding:10px;margin-bottom:6px">👥 <b>${gr.nom}</b> - ${eleves.length} élève(s)<br>Encaissé : <b>${encaisse.toLocaleString('fr-FR')} FCFA</b> - Dépenses : <b>${depValide.toLocaleString('fr-FR')} FCFA</b> - ⏳ En attente : <b>${depAttente.toLocaleString('fr-FR')} FCFA</b><br>💰 <b>Solde = ${soldeNet.toLocaleString('fr-FR')} FCFA</b></div>`; }); boxG.innerHTML=h; }
   let boxT=document.getElementById('dashboardTotalSD');
-  if(boxT){ boxT.innerHTML=`<div style="background:#0F3D2E;color:white;border-radius:12px;padding:12px;text-align:center"><b>SOLDE TOTAL : ${(totEnc-totDep).toLocaleString('fr-FR')} FCFA</b></div>`; }
+  if(boxT){ boxT.innerHTML=`<div style="background:#0F3D2E;color:white;border-radius:12px;padding:12px;text-align:center"><b>SOLDE TOTAL : ${(totEnc-totDep).toLocaleString('fr-FR')} FCFA</b> | Encaissé : ${totEnc.toLocaleString('fr-FR')} FCFA | Dépenses validées : ${totDep.toLocaleString('fr-FR')} FCFA</div>`; }
 }
 function afficherElevesSD(){
   let tbody=document.getElementById('tbodyEleves'); if(!tbody) return;
@@ -563,7 +515,6 @@ function afficherElevesSD(){
     html+=`<tr><td><b>${nom}</b></td><td>${e.parent||""}<br><small>${e.tel||""}</small><br><a class="btnPetit btnWA" href="https://wa.me/237${nettoyerTel(e.tel||"")}" target="_blank">💬 WhatsApp</a></td><td><b>${e.niveau||""}</b><br><small>${e.ecole||e.ecoleNom||e.groupe||""}</small></td><td><b>${s.totalDu.toLocaleString('fr-FR')}</b> / <b>${s.totalPaye.toLocaleString('fr-FR')}</b> / <b style="color:red">${s.reste.toLocaleString('fr-FR')}</b></td><td>${badge}<br>${badgeDG}</td><td><button class="btnPetit btnRecu" onclick="imprimerRecu('${e.id}')">🧾 Reçu</button><button class="btnPetit" style="background:#FFEBEE;color:#C62828" onclick="supprimerInscriptionSD('${e.id}','${nom}')">🗑️</button></td></tr>`;
   });
   tbody.innerHTML=html;
-  let selNote=document.getElementById('noteEleve'); if(selNote){ let cur=selNote.value; selNote.innerHTML=`<option value="">— Choisis l'élève —</option>`; TOUTES_INSCRIPTIONS.forEach(e=>{ let nom=e.enfant||""; selNote.innerHTML+=`<option value="${nom}">${nom} - ${e.niveau||""}</option>`; }); if(cur) selNote.value=cur; }
   let selPay=document.getElementById('payEleve'); if(selPay){ let cur=selPay.value; selPay.innerHTML=`<option value="">— Choisis l'élève —</option>`; TOUTES_INSCRIPTIONS.forEach(e=>{ let nom=e.enfant||""; selPay.innerHTML+=`<option value="${nom}">${nom} - ${e.niveau||""}</option>`; }); if(cur) selPay.value=cur; }
 }
 function filtrerEleves(){ afficherElevesSD(); }
@@ -606,19 +557,24 @@ async function chargerEnseignantsSD(){
     let liste=TOUS_ENSEIGNANTS.filter(e=>{ if(q && !normaliserSD(JSON.stringify(e)).includes(q)) return false; return true; });
     let tbody=document.getElementById('tbodyEnseignants'); if(!tbody) return;
     if(!liste.length){ tbody.innerHTML=`<tr><td colspan="6" style="text-align:center">Aucun enseignant.</td></tr>`; return; }
-    let html=""; liste.forEach(e=>{ html+=`<tr><td><b>${e.nom||""}</b><br><small>${e.tel||""}</small></td><td>${e.matiere||""} / ${e.niveau||e.classe||""}</td><td>${e.ecole||""}</td><td>${Number(e.salaire||0).toLocaleString('fr-FR')}</td><td>${e.statut||"Actif"}</td><td><button class="btnPetit" style="background:#FFEBEE;color:#C62828" onclick="supprimerEnseignantSD('${e.id}')">🗑️</button></td></tr>`; });
+    let html=""; liste.forEach(e=>{ let mats=e.matieresListe||e.matieres||e.matiere||""; if(Array.isArray(mats)) mats=mats.join(", "); html+=`<tr><td><b>${e.nom||""}</b><br><small>${e.tel||""}</small></td><td>${mats} / ${e.niveau||e.classe||""}</td><td>${e.ecole||""}</td><td>${Number(e.salaire||0).toLocaleString('fr-FR')}</td><td>${e.statut||"Actif"}</td><td><button class="btnPetit" style="background:#FFEBEE;color:#C62828" onclick="supprimerEnseignantSD('${e.id}')">🗑️</button></td></tr>`; });
     tbody.innerHTML=html;
     let selProf=document.getElementById('emploiProf'); if(selProf){ selProf.innerHTML=`<option value="">— Choisis —</option>`; TOUS_ENSEIGNANTS.forEach(e=>{ selProf.innerHTML+=`<option value="${e.nom}">${e.nom}</option>`; }); }
   }catch(e){ console.log(e.message); }
 }
 async function ajouterEnseignantSD(){
-  let nom=document.getElementById('ensNom').value.trim(); let tel=nettoyerTel(document.getElementById('ensTel').value); let email=document.getElementById('ensEmail').value.trim(); let matiere=document.getElementById('ensMatiere').value; let niveau=document.getElementById('ensNiveau').value; let ecoleVal=document.getElementById('ensEcole').value; let salaire=Number(document.getElementById('ensSalaire').value||0); let date=document.getElementById('ensDate').value; let note=document.getElementById('ensNote').value;
+  let nom=document.getElementById('ensNom').value.trim(); let tel=nettoyerTel(document.getElementById('ensTel').value); let email=document.getElementById('ensEmail').value.trim(); let niveau=document.getElementById('ensNiveau').value; let ecoleVal=document.getElementById('ensEcole').value; let salaire=Number(document.getElementById('ensSalaire').value||0); let date=document.getElementById('ensDate').value; let note=document.getElementById('ensNote').value;
   let msg=document.getElementById('msgEnseignantSD');
+  let matieresChoisies=[...document.querySelectorAll('.matiereSD:checked')].map(c=>c.value);
+  let matieresTexte=matieresChoisies.join(", ");
   if(!nom||!tel){ msg.style.color="red"; msg.textContent="❌ Mets Nom + WhatsApp"; return; }
+  if(!matieresChoisies.length){ msg.style.color="red"; msg.textContent="❌ Coche au moins 1 matière"; return; }
   let parts=ecoleVal.split("||"); let ecoleId=parts[0]||""; let ecoleNom=parts[1]||"";
-  try{ await db.collection("enseignants").add({nom, tel, email, matiere, niveau, classe:niveau, ecole:ecoleNom, ecoleNom:ecoleNom, ecoleId:ecoleId, salaire, date, note, statut:"Actif", envoyePar:SD.email, createdAt:new Date()}); msg.style.color="green"; msg.textContent="✅ Enseignant ajouté !"; document.getElementById('ensNom').value=""; document.getElementById('ensTel').value=""; chargerEnseignantsSD(); }catch(e){ msg.style.color="red"; msg.textContent="❌ "+e.message; }
+  try{ await db.collection("enseignants").add({nom, tel, email, matiere:matieresTexte, matieres:matieresTexte, matieresListe:matieresChoisies, niveau, classe:niveau, ecole:ecoleNom, ecoleNom:ecoleNom, ecoleId:ecoleId, salaire, date, note, statut:"Actif", envoyePar:SD.email, createdAt:new Date()}); msg.style.color="green"; msg.textContent="✅ Enseignant ajouté ! Matières : "+matieresTexte; document.getElementById('ensNom').value=""; document.getElementById('ensTel').value=""; document.querySelectorAll('.matiereSD').forEach(c=>c.checked=false); chargerEnseignantsSD(); }catch(e){ msg.style.color="red"; msg.textContent="❌ "+e.message; }
 }
 async function supprimerEnseignantSD(id){ if(!confirm("Supprimer cet enseignant ?")) return; try{ await db.collection("enseignants").doc(id).delete(); chargerEnseignantsSD(); }catch(e){ alert("❌ "+e.message); } }
+async function supprimerTousEnseignantsSD(){ try{ for(let e of TOUS_ENSEIGNANTS){ await db.collection("enseignants").doc(e.id).delete(); } chargerEnseignantsSD(); }catch(e){ alert("❌ "+e.message); } }
+async function supprimerToutEmploiSD(){ try{ let snap=await db.collection("emploi_temps").get(); for(let doc of snap.docs){ if(estAMoi(doc.data())) await db.collection("emploi_temps").doc(doc.id).delete(); } chargerEmploi(); }catch(e){ alert("❌ "+e.message); } }
 async function chargerPourPresence(){
   if(!SD) return;
   let tbody=document.getElementById('tbodyPresence'); if(!tbody) return;
@@ -629,10 +585,7 @@ async function chargerPourPresence(){
     let hist=[]; snap.forEach(doc=>{ let d={id:doc.id,...doc.data()}; if(estAMoi(d)) hist.push(d); });
     let tbodyH=document.getElementById('tbodyHistPresence'); if(tbodyH){
       if(!hist.length) tbodyH.innerHTML=`<tr><td colspan="5" style="text-align:center">Aucune présence.</td></tr>`;
-      else{
-        let h=""; hist.slice().reverse().forEach(p=>{ h+=`<tr><td>${p.date||""}</td><td>${p.presents??""}</td><td>${p.absents??""}</td><td>${(p.absentsNoms||[]).join(", ")}</td><td><button class="btnPetit" style="background:#FFEBEE;color:#C62828" onclick="supprimerPresenceSD('${p.id}')">🗑️</button></td></tr>`; });
-        tbodyH.innerHTML=h;
-      }
+      else{ let h=""; hist.slice().reverse().forEach(p=>{ h+=`<tr><td>${p.date||""}</td><td>${p.presents??""}</td><td>${p.absents??""}</td><td>${(p.absentsNoms||[]).join(", ")}</td><td><button class="btnPetit" style="background:#FFEBEE;color:#C62828" onclick="supprimerPresenceSD('${p.id}')">🗑️</button></td></tr>`; }); tbodyH.innerHTML=h; }
     }
   }catch(e){}
 }
@@ -648,103 +601,181 @@ async function enregistrerPresence(){
 async function supprimerPresenceSD(id){ if(!confirm("Supprimer ?")) return; try{ await db.collection("presences").doc(id).delete(); chargerPourPresence(); }catch(e){ alert("❌ "+e.message); } }
 async function chargerNotes(){
   try{
-    let snap=await db.collection("notes").limit(500).get();
-    TOUTES_NOTES=[]; snap.forEach(doc=>{ let d={id:doc.id,...doc.data()}; if(estAMoi(d)) TOUTES_NOTES.push(d); });
-    afficherNotesSD(); afficherMoyennesSD();
+    TOUTES_NOTES=[];
+    try{ let snapB=await db.collection("bulletins").limit(500).get(); snapB.forEach(doc=>{ let d={id:doc.id, source:"bulletins", ...doc.data()}; if(estAMoi(d)) TOUTES_NOTES.push(d); }); }catch(e){}
+    try{ let snapN=await db.collection("notes").limit(500).get(); snapN.forEach(doc=>{ let d={id:doc.id, source:"notes", ...doc.data()}; if(estAMoi(d) && !TOUTES_NOTES.find(x=> x.source==="bulletins" && x.id===doc.id)) TOUTES_NOTES.push(d); }); }catch(e){}
+    afficherNotesSD(); afficherMoyennesSD(); calculerDashboardEcolesSD();
   }catch(e){ console.log(e.message); }
 }
-function afficherNotesSD(){
-  let tbody=document.getElementById('tbodyNotes'); if(!tbody) return;
-  let parEleve={};
-  TOUTES_NOTES.forEach(n=>{ let k=(n.eleve||n.enfant||"")+"||"+(n.trimestre||""); if(!parEleve[k]) parEleve[k]={eleve:n.eleve||n.enfant||"", trimestre:n.trimestre||"", total:0, nb:0}; parEleve[k].total+=Math.min(20, Number(n.moyenne||n.note||n.total||0)); parEleve[k].nb++; });
-  if(!Object.keys(parEleve).length){ tbody.innerHTML=`<tr><td colspan="4" style="text-align:center">Aucune note.</td></tr>`; return; }
-  let nbFixe=MATIERES_DIRECTEUR.length||1;
-  let html=""; Object.values(parEleve).forEach(g=>{ let moy=Math.min(20,(g.total/nbFixe)).toFixed(2); html+=`<tr><td><b>${g.eleve}</b></td><td>${g.trimestre}</td><td><b>${moy} / 20</b></td><td><button class="btnPetit" style="background:#E3F2FD" onclick="modifierNotesEleve('${g.eleve}','${g.trimestre}')">✏️ Modifier</button></td></tr>`; });
-  tbody.innerHTML=html;
+function setFiltreNotesSD(f){ FILTRE_NOTES_SD=f; afficherNotesSD(); }
+function statutNoteSD(n){ return n.statut||n.statutNote||"en_attente"; }
+
+function totalVraiNoteSD(n){
+  let mode=String(TYPE_COMPOSITION_SD||"oral_ecrit").toLowerCase();
+  let oral=Number(n.oral||n.noteOral||0);
+  let ecrit=Number(n.ecrit||n.noteEcrit||0);
+  let devoir=Number(n.devoir||n.noteDevoir||0);
+  let compo=Number(n.composition||n.noteComposition||n.examen||0);
+  let unique=Number(n.moyenne||n.note||n.total||n.noteUnique||0);
+  if(mode.includes("devoir")){
+    if(devoir>0 || compo>0) return Math.min(20, devoir+compo);
+    if(unique>0) return Math.min(20, unique);
+  }
+  if(mode.includes("composition") && !mode.includes("devoir")){
+    if(compo>0) return Math.min(20, compo);
+    if(unique>0) return Math.min(20, unique);
+    if(oral>0 || ecrit>0) return Math.min(20, oral+ecrit);
+  }
+  if(mode.includes("oral") && mode.includes("seul")){
+    if(oral>0) return Math.min(20, oral);
+    if(unique>0) return Math.min(20, unique);
+  }
+  if(mode.includes("controle") || mode.includes("continu")){
+    let cc=Number(n.controle||n.controleContinu||n.cc||0);
+    if(cc>0) return Math.min(20, cc);
+    if(unique>0) return Math.min(20, unique);
+  }
+  if(oral>0 || ecrit>0) return Math.min(20, oral+ecrit);
+  return Math.min(20, unique);
 }
+function detailNoteSD(n){
+  let mode=String(TYPE_COMPOSITION_SD||"oral_ecrit").toLowerCase();
+  let oral=Number(n.oral||0); let ecrit=Number(n.ecrit||0);
+  let devoir=Number(n.devoir||0); let compo=Number(n.composition||0);
+  let cc=Number(n.controle||n.controleContinu||n.cc||0);
+  if(mode.includes("devoir") && (devoir>0 || compo>0)) return `Dev ${devoir} + Compo ${compo}`;
+  if(mode.includes("composition") && !mode.includes("devoir") && compo>0) return `Compo ${compo}`;
+  if(mode.includes("controle") && cc>0) return `CC ${cc}`;
+  if(mode.includes("oral") && mode.includes("seul")) return `Oral ${oral}`;
+  if(oral>0 || ecrit>0) return `O ${oral} + E ${ecrit}`;
+  return `Note ${totalVraiNoteSD(n)}`;
+}
+function afficherNotesSD(){
+  let box=document.getElementById('listeNotesValidationSD');
+  let tbody=document.getElementById('tbodyNotes');
+  let q=normaliserSD(document.getElementById('rechercheNotesSD')?.value||"");
+  let filtreTri=document.getElementById('filtreTrimestreNotesSD')?.value||"";
+  let matieres=MATIERES_DIRECTEUR.map(m=>m.fr||m.nom||m.id);
+  let parEleve={};
+  TOUTES_NOTES.forEach(n=>{
+    let eleve=n.eleve||n.enfant||"";
+    if(!eleve) return;
+    if(filtreTri && n.trimestre!==filtreTri) return;
+    if(q && !normaliserSD(JSON.stringify(n)).includes(q)) return;
+    let cle=eleve+"||"+(n.trimestre||"");
+    if(!parEleve[cle]) parEleve[cle]={eleve:eleve, trimestre:n.trimestre||"", enseignant:n.enseignant||n.enseignantNom||"", notes:{}};
+    let cleMat=normaliserSD(n.matiere||"");
+    let ancien=parEleve[cle].notes[cleMat];
+    let dateN=n.createdAt?.seconds||n.dateValidation?.seconds||0;
+    let dateA=ancien?.createdAt?.seconds||ancien?.dateValidation?.seconds||0;
+    if(!ancien || dateN>=dateA) parEleve[cle].notes[cleMat]=n;
+    if(n.enseignant||n.enseignantNom) parEleve[cle].enseignant=n.enseignant||n.enseignantNom;
+  });
+  let lignes=Object.values(parEleve).sort((a,b)=>a.eleve.localeCompare(b.eleve));
+  if(tbody){
+    if(!lignes.length){ tbody.innerHTML=`<tr><td colspan="4" style="text-align:center">Aucune note validée.</td></tr>`; }
+    else{
+      let html="";
+      lignes.forEach(g=>{
+        let total=0; let nbValide=0;
+        matieres.forEach(m=>{ let n=g.notes[normaliserSD(m)]; if(n && statutNoteSD(n)==="valide"){ total+=totalVraiNoteSD(n); nbValide++; } });
+        let moy=nbValide>0 ? (total/nbValide).toFixed(2) : "0.00";
+        let label=nbValide>=matieres.length ? "✅ Finale" : `⏳ En cours ${nbValide}/${matieres.length}`;
+        let st = nbValide>0 ? `<span class="badge badgeVert">🟢 Validée</span>` : `<span class="badge badgeJaune">🟠 En attente</span>`;
+        html+=`<tr><td><b>${g.eleve}</b></td><td>${g.trimestre}</td><td><b>${moy} / 20</b><br><small>${label} - Mode : ${TYPE_COMPOSITION_SD}</small></td><td>${st}</td></tr>`;
+      });
+      tbody.innerHTML=html;
+    }
+  }
+  if(!box) return;
+  if(!lignes.length){ box.innerHTML=`<p style="text-align:center">Aucune note.</p>`; return; }
+  let html=`<div style="text-align:center;margin-bottom:8px"><b>Mode du Directeur : ${TYPE_COMPOSITION_SD}</b></div><div class="tableWrap"><table><thead><tr><th style="min-width:130px">Élève</th><th>Trimestre</th><th>Enseignant</th>`;
+  matieres.forEach(m=>{ html+=`<th style="min-width:80px;text-align:center">${joliNomMatiere(m)}</th>`; });
+  html+=`<th>Moyenne /20</th><th>Action</th></tr></thead><tbody>`;
+  lignes.forEach(g=>{
+    let total=0; let nbValide=0; let nbAtt=0;
+    matieres.forEach(m=>{ let n=g.notes[normaliserSD(m)]; if(n && statutNoteSD(n)==="valide"){ total+=totalVraiNoteSD(n); nbValide++; } if(n && statutNoteSD(n)==="en_attente") nbAtt++; });
+    let moy=nbValide>0 ? (total/nbValide).toFixed(2) : "0.00";
+    let label=nbValide>=matieres.length ? "✅ Finale" : `⏳ ${nbValide}/${matieres.length}`;
+    html+=`<tr><td><b>${g.eleve}</b></td><td>${g.trimestre}</td><td><small>${g.enseignant||"—"}</small></td>`;
+    matieres.forEach(m=>{
+      let n=g.notes[normaliserSD(m)];
+      if(!n){ html+=`<td style="text-align:center;background:#F5F5F5;color:#999">-</td>`; return; }
+      let st=statutNoteSD(n);
+      let val=totalVraiNoteSD(n);
+      let det=detailNoteSD(n);
+      if(st==="valide"){ html+=`<td style="text-align:center;background:#E8F5E9;font-weight:800">${val} ✅<br><small>${det}</small></td>`; }
+      else if(st==="refuse"){ html+=`<td style="text-align:center;background:#FFEBEE;color:#C62828;font-weight:800">${val} ❌<br><small>${det}</small><br><button class="btnPetit" style="background:#fff;color:#C62828;border:1px solid #C62828" onclick="validerCelluleSD('${n.id}','${n.source||"bulletins"}')">Re-valider</button></td>`; }
+      else{ html+=`<td style="text-align:center;background:#FFF9C4;font-weight:800">${val} 🟠<br><small>${det}</small><br><button class="btnPetit" style="background:#0F3D2E;color:white" onclick="validerCelluleSD('${n.id}','${n.source||"bulletins"}')">✅</button><button class="btnPetit" style="background:#C62828;color:white" onclick="refuserUneNoteSD('${n.id}','${n.source||"bulletins"}')">❌</button></td>`; }
+    });
+    html+=`<td style="text-align:center"><b>${moy}</b><br><small>${label}</small></td><td><button class="btnPetit" style="background:#0F3D2E;color:white" onclick="validerToutEleveSD('${g.eleve.replace(/'/g,"\\'")}','${g.trimestre}')">✅ Valider tout</button><br><button class="btnPetit" style="background:#C62828;color:white" onclick="refuserToutEleveSD('${g.eleve.replace(/'/g,"\\'")}','${g.trimestre}')">❌ Refuser tout</button></td></tr>`;
+  });
+  html+=`</tbody></table></div>`;
+  box.innerHTML=html;
+}
+
+
+async function validerCelluleSD(id, source){
+  try{
+    let col = source==="notes" ? "notes" : "bulletins";
+    await db.collection(col).doc(id).update({statut:"valide", statutNote:"valide", motifRefus:"", validePar:SD.email||SD.nom||"Sous-Directeur", dateValidation:new Date(), updatedAt:new Date()});
+    document.getElementById('msgValidationNoteSD').textContent="✅ Matière validée.";
+    await chargerNotes();
+  }catch(e){ alert("❌ "+e.message); }
+}
+async function validerUneNoteSD(id, source){
+  try{
+    let col = source==="notes" ? "notes" : "bulletins";
+    await db.collection(col).doc(id).update({statut:"valide", statutNote:"valide", motifRefus:"", validePar:SD.email||SD.nom||"Sous-Directeur", dateValidation:new Date(), updatedAt:new Date()});
+    document.getElementById('msgValidationNoteSD').textContent="✅ Note validée. Elle compte maintenant dans la moyenne. Elle reste validée.";
+    FILTRE_NOTES_SD='tous';
+    await chargerNotes();
+  }catch(e){ alert("❌ "+e.message); }
+}
+async function refuserUneNoteSD(id, source){
+  let motif = prompt("Motif du refus ? Ex : Note trop haute, corrige et renvoie.\nMotif / السبب :");
+  if(motif===null) return;
+  if(!motif.trim()) motif="À corriger / للتصحيح";
+  try{
+    let col = source==="notes" ? "notes" : "bulletins";
+    await db.collection(col).doc(id).update({statut:"refuse", statutNote:"refuse", motifRefus:motif, validePar:SD.email||SD.nom||"Sous-Directeur", dateValidation:new Date(), updatedAt:new Date()});
+    document.getElementById('msgValidationNoteSD').textContent="❌ Note refusée. L'enseignant va la corriger.";
+    FILTRE_NOTES_SD='tous';
+    await chargerNotes();
+  }catch(e){ alert("❌ "+e.message); }
+}
+async function validerToutEleveSD(eleve, trimestre){
+  if(!confirm("Valider TOUTES les notes en attente de "+eleve+" - "+trimestre+" ?")) return;
+  try{
+    let cibles=TOUTES_NOTES.filter(n=> (n.eleve||n.enfant||"")===eleve && n.trimestre===trimestre && statutNoteSD(n)==="en_attente");
+    for(let n of cibles){ let col = n.source==="notes" ? "notes" : "bulletins"; await db.collection(col).doc(n.id).update({statut:"valide", statutNote:"valide", motifRefus:"", validePar:SD.email||SD.nom||"Sous-Directeur", dateValidation:new Date(), updatedAt:new Date()}); }
+    document.getElementById('msgValidationNoteSD').textContent="✅ Toutes les notes de "+eleve+" validées.";
+    FILTRE_NOTES_SD='tous';
+    await chargerNotes();
+  }catch(e){ alert("❌ "+e.message); }
+}
+async function refuserToutEleveSD(eleve, trimestre){
+  let motif = prompt("Motif du refus pour tout "+eleve+" - "+trimestre+" ?");
+  if(motif===null) return;
+  if(!motif.trim()) motif="À corriger / للتصحيح";
+  try{
+    let cibles=TOUTES_NOTES.filter(n=> (n.eleve||n.enfant||"")===eleve && n.trimestre===trimestre && statutNoteSD(n)==="en_attente");
+    for(let n of cibles){ let col = n.source==="notes" ? "notes" : "bulletins"; await db.collection(col).doc(n.id).update({statut:"refuse", statutNote:"refuse", motifRefus:motif, validePar:SD.email||SD.nom||"Sous-Directeur", dateValidation:new Date(), updatedAt:new Date()}); }
+    document.getElementById('msgValidationNoteSD').textContent="❌ Toutes les notes de "+eleve+" refusées.";
+    FILTRE_NOTES_SD='tous';
+    await chargerNotes();
+  }catch(e){ alert("❌ "+e.message); }
+}
+
 function afficherMoyennesSD(){
   let tbody=document.getElementById('tbodyMoyennes'); if(!tbody) return;
   let filtre=document.getElementById('filtreTrimestreMoy')?.value||"";
   let parEleve={};
-  TOUTES_NOTES.forEach(n=>{ if(filtre && n.trimestre!==filtre) return; let k=n.eleve||n.enfant||""; if(!parEleve[k]) parEleve[k]={eleve:k, ecole:n.ecole||n.ecoleNom||"", total:0, nb:0}; parEleve[k].total+=Math.min(20, Number(n.moyenne||n.note||0)); parEleve[k].nb++; });
-  if(!Object.keys(parEleve).length){ tbody.innerHTML=`<tr><td colspan="5" style="text-align:center">Aucune moyenne.</td></tr>`; return; }
+  TOUTES_NOTES.filter(n=> statutNoteSD(n)==="valide").forEach(n=>{ if(filtre && n.trimestre!==filtre) return; let k=n.eleve||n.enfant||""; if(!parEleve[k]) parEleve[k]={eleve:k, ecole:n.ecole||n.ecoleNom||"", total:0, nb:0}; parEleve[k].total+=totalVraiNoteSD(n); parEleve[k].nb++; });
+  if(!Object.keys(parEleve).length){ tbody.innerHTML=`<tr><td colspan="5" style="text-align:center">Aucune moyenne validée. Valide d'abord les notes.</td></tr>`; return; }
   let nbFixe=MATIERES_DIRECTEUR.length||1;
-  let html=""; Object.values(parEleve).forEach(g=>{ let moy=Math.min(20,(g.total/nbFixe)).toFixed(2); let app = moy>=16?"🌟 Excellent":moy>=14?"👏 Très bien":moy>=12?"👍 Bien":moy>=10?"✅ Passable":"❌ Insuffisant"; html+=`<tr><td><b>${g.eleve}</b></td><td>${g.ecole}</td><td>${g.nb} / ${nbFixe}</td><td><b>${moy} / 20</b></td><td>${app}</td></tr>`; });
+  let html=""; Object.values(parEleve).forEach(g=>{ let moy=(g.total/g.nb).toFixed(2); let app = moy>=16?"🌟 Excellent":moy>=14?"👏 Très bien":moy>=12?"👍 Bien":moy>=10?"✅ Passable":"❌ Insuffisant"; let label=g.nb>=nbFixe?"✅ Finale":`⏳ En cours ${g.nb}/${nbFixe}`; html+=`<tr><td><b>${g.eleve}</b></td><td>${g.ecole}</td><td>${g.nb} / ${nbFixe} - ${label}</td><td><b>${moy} / 20</b></td><td>${app}</td></tr>`; });
   tbody.innerHTML=html;
-}
-function genererFormNotes(){
-  let eleve=document.getElementById('noteEleve').value; let tri=document.getElementById('noteTrimestre').value; let box=document.getElementById('formNotesToutes');
-  if(!eleve){ box.innerHTML=""; return; }
-  let mode=TYPE_COMPOSITION_SD||"Oral + Écrit";
-  let showOral = mode!=="Écrit seul";
-  let showEcrit = mode!=="Oral seul";
-  if(mode==="Note unique"){ showOral=true; showEcrit=false; }
-  let html=`<div class="formNotesGrid">`;
-  MATIERES_DIRECTEUR.forEach(m=>{
-    let nomM=m.fr||m.nom||"";
-    let exist=TOUTES_NOTES.find(n=> normaliserSD(n.eleve||n.enfant||"")===normaliserSD(eleve) && n.trimestre===tri && normaliserSD(n.matiere||"")===normaliserSD(nomM));
-    let oral=exist?Number(exist.oral||0):0, ecrit=exist?Number(exist.ecrit||0):0;
-    if(mode==="Oral seul") ecrit=0;
-    if(mode==="Écrit seul") oral=0;
-    if(mode==="Note unique") ecrit=0;
-    oral=Math.min(10,Math.max(0,oral)); ecrit=Math.min(10,Math.max(0,ecrit));
-    html+=`<div class="carteMatiere"><b>${joliNomMatiere(nomM)}</b><br><small>Mode : ${mode}</small>`;
-    if(showOral) html+=`<label>Oral /10</label><input type="number" min="0" max="10" step="0.5" class="note-input" data-matiere="${nomM}" data-type="oral" value="${oral}" oninput="calculerTotalNoteSD(this)">`;
-    if(showEcrit) html+=`<label>Écrit /10</label><input type="number" min="0" max="10" step="0.5" class="note-input" data-matiere="${nomM}" data-type="ecrit" value="${ecrit}" oninput="calculerTotalNoteSD(this)">`;
-    html+=`<div style="text-align:center;margin-top:6px">Total : <b class="total-ligne" data-matiere="${nomM}">${calculerTotalModeSD(oral, ecrit).toFixed(1)} / 20</b></div></div>`;
-  });
-  html+=`</div>`; box.innerHTML=html;
-  if(existNotesPour(eleve, tri)){ document.getElementById('msgModificationNote').textContent="✏️ Tu modifies les notes de "+eleve+" - "+tri; NOTE_EN_MODIF={eleve, trimestre:tri}; } else { document.getElementById('msgModificationNote').textContent=""; NOTE_EN_MODIF=null; }
-}
-function existNotesPour(eleve, tri){ return TOUTES_NOTES.some(n=> normaliserSD(n.eleve||n.enfant||"")===normaliserSD(eleve) && n.trimestre===tri); }
-function calculerTotalModeSD(oral, ecrit){
-  oral=Math.min(10,Math.max(0,Number(oral||0)));
-  ecrit=Math.min(10,Math.max(0,Number(ecrit||0)));
-  let mode=TYPE_COMPOSITION_SD||"Oral + Écrit";
-  if(mode==="Oral seul") return Math.min(20, oral*2);
-  if(mode==="Écrit seul") return Math.min(20, ecrit*2);
-  if(mode==="Note unique") return Math.min(20, oral*2);
-  return Math.min(20, oral+ecrit);
-}
-function calculerTotalNoteSD(input){
-  if(Number(input.value)>10){ input.value=10; alert("⚠️ C'est sur 10 maximum, pas plus."); }
-  if(Number(input.value)<0) input.value=0;
-  let mat=input.dataset.matiere;
-  let oral=Number(document.querySelector(`input[data-matiere="${mat}"][data-type="oral"]`)?.value||0);
-  let ecrit=Number(document.querySelector(`input[data-matiere="${mat}"][data-type="ecrit"]`)?.value||0);
-  let el=document.querySelector(`.total-ligne[data-matiere="${mat}"]`); if(el) el.textContent=calculerTotalModeSD(oral, ecrit).toFixed(1)+" / 20";
-}
-function modifierNotesEleve(eleve, tri){
-  showTabSD('tabNotes',null);
-  setTimeout(()=>{ document.getElementById('noteEleve').value=eleve; document.getElementById('noteTrimestre').value=tri; genererFormNotes(); },300);
-}
-function annulerModificationNotes(){ document.getElementById('formNotesToutes').innerHTML=""; document.getElementById('noteEleve').value=""; document.getElementById('msgModificationNote').textContent=""; NOTE_EN_MODIF=null; }
-async function ajouterNotesEnUneFois(){
-  let eleve=document.getElementById('noteEleve').value; let tri=document.getElementById('noteTrimestre').value; let type=document.getElementById('noteType').value; let msg=document.getElementById('msgNote');
-  if(!eleve){ msg.style.color="red"; msg.textContent="❌ Choisis l'élève"; return; }
-  let inputs=[...document.querySelectorAll('#formNotesToutes input[data-matiere]')];
-  if(!inputs.length){ msg.style.color="red"; msg.textContent="❌ Aucune matière"; return; }
-  let elObj=TOUTES_INSCRIPTIONS.find(e=> (e.enfant||"")===eleve) || {};
-  try{
-    let parMatiere={};
-    inputs.forEach(inp=>{ let mat=inp.dataset.matiere; if(!parMatiere[mat]) parMatiere[mat]={oral:0, ecrit:0}; parMatiere[mat][inp.dataset.type]=Math.min(10,Math.max(0,Number(inp.value||0))); });
-    for(let mat of Object.keys(parMatiere)){
-      let o=parMatiere[mat].oral||0, e=parMatiere[mat].ecrit||0;
-      if(TYPE_COMPOSITION_SD==="Oral seul") e=0;
-      if(TYPE_COMPOSITION_SD==="Écrit seul") o=0;
-      if(TYPE_COMPOSITION_SD==="Note unique") e=0;
-      let moyenne=calculerTotalModeSD(o, e);
-      let exist=TOUTES_NOTES.find(n=> normaliserSD(n.eleve||n.enfant||"")===normaliserSD(eleve) && n.trimestre===tri && normaliserSD(n.matiere||"")===normaliserSD(mat));
-      if(exist && exist.id){
-        await db.collection("notes").doc(exist.id).update({oral:o, ecrit:e, moyenne:moyenne, type:type, ecole:elObj.ecole||elObj.ecoleNom||SD.ecoles[0]?.nom||"", ecoleId:elObj.ecoleId||SD.ecoles[0]?.id||""});
-      } else {
-        await db.collection("notes").add({eleve, enfant:eleve, trimestre:tri, type:type, matiere:mat, oral:o, ecrit:e, moyenne:moyenne, note:moyenne, total:moyenne, ecole:elObj.ecole||elObj.ecoleNom||SD.ecoles[0]?.nom||"", ecoleNom:elObj.ecole||elObj.ecoleNom||SD.ecoles[0]?.nom||"", ecoleId:elObj.ecoleId||SD.ecoles[0]?.id||"", createdAt:new Date()});
-      }
-    }
-    msg.style.color="green"; msg.textContent="✅ Toutes les notes enregistrées pour "+eleve+" ("+TYPE_COMPOSITION_SD+") - "+tri;
-    await chargerNotes();
-    genererFormNotes();
-  }catch(e){ msg.style.color="red"; msg.textContent="❌ "+e.message; }
 }
 async function chargerEmploi(){
   try{
@@ -782,19 +813,13 @@ async function chargerPaiementsSD(silent){
     let tbody=document.getElementById('tbodyPaiements'); if(!tbody) return;
     let faux=0;
     let liste=TOUS_PAIEMENTS.filter(p=>{
-      if(FILTRE_PAIEMENT_SD==='verifies'){
-        let el=TOUTES_INSCRIPTIONS.find(e=> normaliserSD(e.enfant||"")===normaliserSD(p.enfant||""));
-        if(!el){ faux++; return false; }
-      }
+      if(FILTRE_PAIEMENT_SD==='verifies'){ let el=TOUTES_INSCRIPTIONS.find(e=> normaliserSD(e.enfant||"")===normaliserSD(p.enfant||"")); if(!el){ faux++; return false; } }
       if(q && !normaliserSD(JSON.stringify(p)).includes(q)) return false;
       return true;
     });
     let elFaux=document.getElementById('nbFauxPaiements'); if(elFaux) elFaux.textContent = faux>0 ? `(${faux} faux caché(s))` : "";
     if(!liste.length){ tbody.innerHTML=`<tr><td colspan="7" style="text-align:center">Aucun paiement.</td></tr>`; return; }
-    let html=""; liste.slice().reverse().forEach(p=>{
-      let s=soldeEleveSD(p.enfant||"");
-      html+=`<tr><td><b>${p.enfant||""}</b></td><td><b>${Number(p.montant||0).toLocaleString('fr-FR')}</b></td><td>${p.motif||""} / ${p.mode||""}</td><td>${p.parent||""}<br><small>${p.tel||""}</small></td><td>${s.totalPaye.toLocaleString('fr-FR')} / <b style="color:red">${s.reste.toLocaleString('fr-FR')}</b></td><td>${p.statut||""}</td><td><button class="btnPetit btnRecu" onclick="imprimerRecuPaiement('${p.id}')">🧾 Reçu</button></td></tr>`;
-    });
+    let html=""; liste.slice().reverse().forEach(p=>{ let s=soldeEleveSD(p.enfant||""); html+=`<tr><td><b>${p.enfant||""}</b></td><td><b>${Number(p.montant||0).toLocaleString('fr-FR')}</b></td><td>${p.motif||""} / ${p.mode||""}</td><td>${p.parent||""}<br><small>${p.tel||""}</small></td><td>${s.totalPaye.toLocaleString('fr-FR')} / <b style="color:red">${s.reste.toLocaleString('fr-FR')}</b></td><td>${p.statut||""}</td><td><button class="btnPetit btnRecu" onclick="imprimerRecuPaiement('${p.id}')">🧾 Reçu</button></td></tr>`; });
     tbody.innerHTML=html;
   }catch(e){ console.log(e.message); }
 }
@@ -864,8 +889,8 @@ async function calculerEvolutionFinanciereSD(){
 window.addEventListener('load', ()=>{
   try{
     let s=localStorage.getItem("sd_session");
-    if(s){ SD=JSON.parse(s); afficherSD(); }
-  }catch(e){}
+    if(s){ SD=JSON.parse(s); if(!SD||!Array.isArray(SD.ecoles)||!Array.isArray(SD.groupes)||!SD.email){ effacerSessionSD(); return; } if(typeof db==="undefined"||!db){ return; } afficherSD(); }
+  }catch(e){ effacerSessionSD(); }
 });
 </script>
 </body>

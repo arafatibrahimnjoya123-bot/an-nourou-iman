@@ -96,6 +96,7 @@ body{margin:0;font-family:Inter,system-ui,Arial,sans-serif;background:var(--coul
 <a href="admin.html">🔐 Admin Directeur <span class="ar">/ إدارة المدير</span><small>Gestion totale / الإدارة الكاملة</small></a>
 <a href="sousdirecteur.html" class="orange">👨‍🏫 Sous-Directeur <span class="ar">/ نائب المدير</span><small>Élèves, notes, présence / التلاميذ، النقاط، الحضور</small></a>
 <a href="gestion.html" class="vert">⚙️ Gestion <span class="ar">/ التسيير</span><small>Élèves • Paiements • Bulletins / التلاميذ • الدفع • الكشوف</small></a>
+<a href="enseignant.html" class="vert">👨‍🏫 Enseignant <span class="ar">/ المعلم</span><small>Notes, présence, bulletins / النقاط، الحضور، الكشوف</small></a>
 <a href="admin-accueil.html" class="blanc">✏️ Modifier l'accueil <span class="ar">/ تعديل الرئيسية</span><small>Réservé Directeur - Mot de passe / خاص بالمدير</small></a>
 <button onclick="allerA('secPaiement')">💰 Paiement / Frais <span class="ar">/ الدفع / الرسوم</span><small>Payer / الدفع</small></button>
 <button onclick="allerA('secContact')">📞 Contact <span class="ar">/ الاتصال</span><small>WhatsApp Directeur / واتساب المدير</small></button>
@@ -207,7 +208,6 @@ body{margin:0;font-family:Inter,system-ui,Arial,sans-serif;background:var(--coul
 <script src="menu.js"></script>
 <script src="ecoles.js"></script>
 <script src="groupes.js"></script>
-<!-- ✅ PLUS DE inscription.js NI paiement.js ICI - une seule version dans ce fichier, sinon ça se bagarre -->
 <script>
 function ouvrirDrawer(){ var d=document.getElementById('drawer'); if(d) d.classList.add('open'); var b=document.getElementById('drawerBg'); if(b) b.classList.add('show'); }
 function fermerDrawer(){ var d=document.getElementById('drawer'); if(d) d.classList.remove('open'); var b=document.getElementById('drawerBg'); if(b) b.classList.remove('show'); }
@@ -231,8 +231,6 @@ function afficherEcolesSafe(){ try{ if(typeof afficherEcoles==='function') affic
 function afficherGroupesSafe(){ try{ if(typeof afficherGroupes==='function') afficherGroupes(); }catch(e){} }
 function fermerModal(){ var m=document.getElementById('modalEcole'); if(m) m.style.display='none'; }
 function fermerModalGroupe(){ var m=document.getElementById('modalGroupe'); if(m) m.style.display='none'; }
-// ===== INSCRIPTION - UNE SEULE VERSION - MÊMES CHAMPS QUE GESTION / ADMIN / RÉSULTATS =====
-// Collection inscriptions : { enfant, parent, tel (9 chiffres), niveau, dateNaissance, lieuNaissance, sexe, quartier, ville, dispo, type, ecole, ecoleNom, ecoleId, groupe, groupeNom, groupeId, statut:"en_attente", createdAt }
 function changerTypeIns(){
   let radio = document.querySelector('input[name="typeIns"]:checked');
   let type = radio ? radio.value : "Ecole";
@@ -307,7 +305,6 @@ async function envoyerInscription(){
   if(type==="Groupe" && groupeVal==="Nouveau groupe demandé"){ groupeNom = "Nouveau groupe demandé"; groupeVille = ville; }
   msg.style.color="#666"; msg.textContent="⏳ Envoi...";
   try{
-    // Anti-doublon : même enfant + même téléphone
     let deja = await db.collection("inscriptions").where("tel","==",tel).get();
     let existe = false;
     deja.forEach(d=>{ let c=d.data(); if(String(c.enfant||c.nomEnfant||"").trim().toLowerCase()===enfant.trim().toLowerCase()) existe=true; });
@@ -327,7 +324,6 @@ async function envoyerInscription(){
     });
     msg.style.color="green";
     msg.textContent = "✅ Inscription envoyée pour "+enfant+" - "+(type==="Ecole" ? ecoleNom : groupeNom)+". Le Directeur va la valider. Garde bien ce téléphone : "+tel+" pour voir les résultats.";
-    // WhatsApp auto - on garde ton idée
     let nomLieu = type==="Ecole" ? ecoleNom : (groupeNom || ville);
     let messageWA = "Assalamou Aleykoum " + parent + ", merci pour l'inscription de " + enfant + " à An Nourou Iman (" + nomLieu + "). Nous avons bien reçu votre demande. Le Directeur va vous recontacter.";
     window.open("https://wa.me/237" + tel + "?text=" + encodeURIComponent(messageWA), "_blank");
@@ -335,7 +331,6 @@ async function envoyerInscription(){
     chargerElevesPaiementAccueil();
   }catch(e){ msg.style.color="red"; msg.textContent="❌ "+e.message; }
 }
-// ===== PAIEMENT ACCUEIL - UNE SEULE VERSION - CHOIX A : en_attente, Directeur valide =====
 async function enregistrerPaiement(){
   let sel=document.getElementById('payEnfant');
   let msg=document.getElementById('msgPaiement');

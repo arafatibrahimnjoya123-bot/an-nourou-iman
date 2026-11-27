@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Gestion - Institut Nouroul Iymane / الإدارة - معهد نور الإيمان</title>
+<title>Gestion - Institut Nouroul Iymane</title>
 <link rel="stylesheet" href="style.css">
 <style>
 *{box-sizing:border-box}
@@ -24,7 +24,6 @@ body{background:#F7FAF8;color:#222;font-family:Inter,Arial,sans-serif;margin:0}
 .drawer button.drawer-main.actif{background:#66BB6A;color:white}
 .drawer button.drawer-sous{width:100%;text-align:left;background:white;border:none;border-bottom:1px solid #f1f1f1;padding:10px 10px 10px 28px;font-size:13px;cursor:pointer;color:#333}
 .drawer a.drawer-link{display:block;background:#C9A227;color:#0F3D2E;padding:12px;border-radius:12px;text-decoration:none;font-weight:800;text-align:center;margin-bottom:6px;line-height:1.4}
-.drawer a.drawer-link span.ar{color:#0F3D2E}
 .page{max-width:1000px;margin:0 auto;padding:12px}
 .carte{background:white;border:1px solid #E0EDE1;border-radius:14px;padding:12px;margin-bottom:12px}
 .carte h2,.carte h3{text-align:center;color:#2E7D32;margin:0 0 8px 0;font-size:16px}
@@ -48,11 +47,6 @@ input,select,textarea{width:100%;padding:10px;border:1px solid #C8E6C9;border-ra
 .badge-paye{background:#66BB6A;color:white}
 .badge-avance{background:#FFF9C4;color:#5D4037;border:1px solid #FFE082}
 .badge-nonpaye{background:#FFCDD2;color:#7A1A1A}
-.badge-accepte{background:#66BB6A;color:white}
-.badge-attente{background:white;color:#2E7D32;border:1px dashed #66BB6A}
-.lien-action{color:#2E7D32;font-weight:800;text-decoration:underline;cursor:pointer;background:none;border:none;padding:0;font-size:11px}
-.form-paiement{background:#F1F8E9;border:1px solid #C8E6C9;padding:12px;border-radius:12px}
-.info-solde{background:white;border:1px solid #66BB6A;padding:10px;border-radius:10px;margin-top:8px;font-size:13px}
 .bulletin-page{background:white;width:100%;max-width:100%;margin:0 auto;border:1px solid #999;color:#111;font-size:13px;line-height:1.5;padding:14px 16px;min-height:277mm;display:flex;flex-direction:column;justify-content:space-between}
 .bulletin-page .b-head{background:#A5D6A7;color:#1B5E20;padding:14px;text-align:center;border-bottom:3px solid #FFE082}
 .bulletin-page .b-head h2{font-size:22px;margin:0}
@@ -62,6 +56,8 @@ input,select,textarea{width:100%;padding:10px;border:1px solid #C8E6C9;border-ra
 .bulletin-page table{width:100%;border-collapse:collapse;font-size:13px;flex:1}
 .bulletin-page th{background:#A5D6A7;color:#1B5E20;padding:10px 8px;text-align:left;font-size:13px}
 .bulletin-page td{padding:10px 8px;border-bottom:1px solid #ddd;font-size:13px}
+.bulletin-page td small{white-space:nowrap;font-size:11px}
+.bulletin-page th:last-child,.bulletin-page td:last-child{white-space:nowrap}
 .bulletin-page .b-total{background:#A5D6A7;color:#1B5E20;padding:12px;display:flex;justify-content:space-between;font-weight:800;font-size:14px}
 .bulletin-page .b-app{padding:10px;text-align:left;font-size:13px;background:#E8F5E9;border-radius:8px;margin-top:10px}
 .bulletin-page .b-sign{display:flex;justify-content:space-between;padding:22px 30px 10px;font-size:13px;text-align:center}
@@ -71,8 +67,8 @@ input,select,textarea{width:100%;padding:10px;border:1px solid #C8E6C9;border-ra
 .ar{color:#C9A227;font-weight:700}
 .titre-ligne{display:flex;justify-content:space-between;align-items:center;gap:8px}
 .titre-ligne h2,.titre-ligne h3{flex:1;text-align:center}
-.menu3{position:relative;flex:0 0 auto}
-.btn3{width:36px;height:36px;border-radius:50%;border:1px solid #C8E6C9;background:#fff;font-size:22px;cursor:pointer;color:#2E7D32}
+.menu3{position:relative;flex:0 0 auto;display:inline-block}
+.btn3{width:36px;height:36px;border-radius:50%;border:1px solid #C8E6C9;background:#fff;font-size:22px;cursor:pointer;color:#2E7D32;line-height:1}
 .menu3-drop{display:none;position:absolute;right:0;top:42px;min-width:220px;background:#fff;border:1px solid #eee;border-radius:14px;box-shadow:0 10px 30px rgba(0,0,0,.18);z-index:50;overflow:hidden}
 .menu3-drop.show{display:block}
 .menu3-drop button{display:block;width:100%;text-align:left;background:#fff;border:none;border-bottom:1px solid #f2f2f2;padding:12px 14px;font-size:14px;font-weight:700;cursor:pointer}
@@ -84,18 +80,16 @@ input,select,textarea{width:100%;padding:10px;border:1px solid #C8E6C9;border-ra
 .popup{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:100;overflow:auto;padding:12px}
 .popup.show{display:block}
 .popupBox{background:white;max-width:720px;margin:20px auto;border-radius:14px;padding:14px}
-.popupBoxLarge{max-width:720px}
 .btnFermer{background:#EF5350;color:white;border:none;width:34px;height:34px;border-radius:50%;font-weight:900;cursor:pointer;float:right}
 @media(max-width:800px){.kpi{grid-template-columns:1fr 1fr}}
 @media print{
   @page{size:A4;margin:0}
   html,body{margin:0;padding:0;width:210mm;height:297mm}
   body{background:white;-webkit-print-color-adjust:exact;print-color-adjust:exact}
-  body *{visibility:hidden;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  body *{visibility:hidden}
   #zoneImpression, #zoneImpression *{visibility:visible;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
   #zoneImpression{display:block!important;position:absolute;left:0;top:0;width:210mm;height:297mm;margin:0;padding:0}
-  .bulletin-page{width:210mm;height:297mm;max-width:210mm;min-height:297mm;border:none;padding:16mm 14mm;display:flex;flex-direction:column;justify-content:space-between;page-break-inside:avoid;page-break-after:avoid}
-  .bulletin-page, .bulletin-page *{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
+  .bulletin-page{width:210mm;height:297mm;max-width:210mm;min-height:297mm;border:none;padding:16mm 14mm;display:flex;flex-direction:column;justify-content:space-between}
 }
 </style>
 </head>
@@ -103,165 +97,155 @@ input,select,textarea{width:100%;padding:10px;border:1px solid #C8E6C9;border-ra
 <div class="topbar no-print"><button class="btn-burger" onclick="toggleDrawerGestion()">☰</button><b>INSTITUT NOUROUL IYMANE - SECRÉTAIRE <span class="ar">/ معهد نور الإيمان - السكرتيرة</span></b><span id="topEcole">...</span><a href="index.html">Site / الموقع</a></div>
 <div class="drawer-overlay no-print" id="drawerOverlay" onclick="fermerDrawerGestion()"></div>
 <aside class="drawer no-print" id="drawerGestion">
-<div class="drawer-head"><b>☪️ MENU - GESTION <span class="ar">/ القائمة - الإدارة</span></b><button onclick="fermerDrawerGestion()">✕</button></div>
-<div class="drawer-groupe"><div class="drawer-groupe-titre">Accueil / الرئيسية</div>
-<button class="drawer-main gestion-tab actif" onclick="ouvrirOngletDrawer('tabDashboard',this)">📊 Tableau de bord <span class="ar">/ لوحة التحكم</span></button>
-<button class="drawer-sous" onclick="ouvrirSousPageGestion('tabDashboard','carteDashKpi')">↳ Chiffres clés <span class="ar">/ الأرقام الرئيسية</span></button>
-<button class="drawer-sous" onclick="ouvrirSousPageGestion('tabDashboard','carteDashAfaire')">↳ À faire aujourd'hui <span class="ar">/ مهام اليوم</span></button>
-<button class="drawer-sous" onclick="ouvrirSousPageGestion('tabDashboard','carteDashDerniers')">↳ Derniers paiements <span class="ar">/ آخر المدفوعات</span></button>
+<div class="drawer-head"><b>☪️ MENU - GESTION</b><button onclick="fermerDrawerGestion()">✕</button></div>
+<div class="drawer-groupe"><div class="drawer-groupe-titre">Accueil</div>
+<button class="drawer-main gestion-tab actif" onclick="ouvrirOngletDrawer('tabDashboard',this)">📊 Tableau de bord</button>
+<button class="drawer-sous" onclick="ouvrirSousPageGestion('tabDashboard','carteDashKpi')">↳ Chiffres clés</button>
+<button class="drawer-sous" onclick="ouvrirSousPageGestion('tabDashboard','carteDashAfaire')">↳ À faire aujourd'hui</button>
+<button class="drawer-sous" onclick="ouvrirSousPageGestion('tabDashboard','carteDashDerniers')">↳ Derniers paiements</button>
 </div>
-<div class="drawer-groupe"><div class="drawer-groupe-titre">Élèves / التلاميذ</div>
-<button class="drawer-main gestion-tab" onclick="ouvrirOngletDrawer('tabEleves',this)">👨‍🎓 Élèves <span class="ar">/ التلاميذ</span></button>
-<button class="drawer-sous" onclick="ouvrirSousPageGestion('tabEleves','carteElevesListe')">↳ Liste des élèves <span class="ar">/ قائمة التلاميذ</span></button>
+<div class="drawer-groupe"><div class="drawer-groupe-titre">Élèves</div>
+<button class="drawer-main gestion-tab" onclick="ouvrirOngletDrawer('tabEleves',this)">👨‍🎓 Élèves</button>
+<button class="drawer-sous" onclick="ouvrirSousPageGestion('tabEleves','carteElevesListe')">↳ Liste des élèves</button>
 </div>
-<div class="drawer-groupe"><div class="drawer-groupe-titre">Argent / المال</div>
-<button class="drawer-main gestion-tab" onclick="ouvrirOngletDrawer('tabPaiements',this)">💰 Paiements <span class="ar">/ المدفوعات</span></button>
-<button class="drawer-sous" onclick="ouvrirSousPageGestion('tabPaiements','cartePaiement1')">↳ 1. Nouveau paiement <span class="ar">/ دفع جديد</span></button>
-<button class="drawer-sous" onclick="ouvrirSousPageGestion('tabPaiements','cartePaiement2')">↳ 2. Solde par élève <span class="ar">/ رصيد التلميذ</span></button>
-<button class="drawer-sous" onclick="ouvrirSousPageGestion('tabPaiements','cartePaiement3')">↳ 3. Historique <span class="ar">/ السجل</span></button>
-<button class="drawer-sous" onclick="ouvrirSousPageGestion('tabPaiements','cartePaiement4')">↳ 4. Remise <span class="ar">/ تخفيض</span></button>
-<button class="drawer-sous" onclick="ouvrirSousPageGestion('tabPaiements','cartePaiement5')">↳ 5. Reçu d'un élève <span class="ar">/ إيصال التلميذ</span></button>
-<button class="drawer-sous" onclick="ouvrirSousPageGestion('tabPaiements','cartePaiement6')">↳ 6. Total par école <span class="ar">/ المجموع حسب المدرسة</span></button>
-<button class="drawer-sous" onclick="ouvrirSousPageGestion('tabPaiements','cartePaiement7')">↳ 7. Relancer impayés <span class="ar">/ تذكير المتأخرين</span></button>
+<div class="drawer-groupe"><div class="drawer-groupe-titre">Argent</div>
+<button class="drawer-main gestion-tab" onclick="ouvrirOngletDrawer('tabPaiements',this)">💰 Paiements</button>
+<button class="drawer-sous" onclick="ouvrirSousPageGestion('tabPaiements','cartePaiement1')">↳ 1. Nouveau paiement</button>
+<button class="drawer-sous" onclick="ouvrirSousPageGestion('tabPaiements','cartePaiement2')">↳ 2. Solde par élève</button>
+<button class="drawer-sous" onclick="ouvrirSousPageGestion('tabPaiements','cartePaiement3')">↳ 3. Historique</button>
+<button class="drawer-sous" onclick="ouvrirSousPageGestion('tabPaiements','cartePaiement4')">↳ 4. Remise</button>
+<button class="drawer-sous" onclick="ouvrirSousPageGestion('tabPaiements','cartePaiement5')">↳ 5. Reçu d'un élève</button>
+<button class="drawer-sous" onclick="ouvrirSousPageGestion('tabPaiements','cartePaiement6')">↳ 6. Total par école</button>
+<button class="drawer-sous" onclick="ouvrirSousPageGestion('tabPaiements','cartePaiement7')">↳ 7. Relancer impayés</button>
 </div>
-<div class="drawer-groupe"><div class="drawer-groupe-titre">Personnel / الموظفون</div>
-<button class="drawer-main gestion-tab" onclick="ouvrirOngletDrawer('tabEnseignants',this)">👨‍🏫 Enseignants <span class="ar">/ المعلمون</span></button>
-<button class="drawer-sous" onclick="ouvrirSousPageGestion('tabEnseignants','carteEns1')">↳ 1. Ajouter <span class="ar">/ إضافة</span></button>
-<button class="drawer-sous" onclick="ouvrirSousPageGestion('tabEnseignants','carteEns2')">↳ 2. Liste <span class="ar">/ القائمة</span></button>
-<button class="drawer-sous" onclick="ouvrirSousPageGestion('tabEnseignants','carteEvolutionPaie')">↳ 3. Évolution des payes <span class="ar">/ تطور الأجور</span></button>
-<button class="drawer-sous" onclick="ouvrirSousPageGestion('tabEnseignants','carteSoldeNetEnseignants')">↳ 4. Solde net <span class="ar">/ الرصيد الصافي</span></button>
-<button class="drawer-sous" onclick="ouvrirSousPageGestion('tabEnseignants','carteEnsCom')">↳ 5. Communication <span class="ar">/ التواصل</span></button>
+<div class="drawer-groupe"><div class="drawer-groupe-titre">Personnel</div>
+<button class="drawer-main gestion-tab" onclick="ouvrirOngletDrawer('tabEnseignants',this)">👨‍🏫 Enseignants</button>
+<button class="drawer-sous" onclick="ouvrirSousPageGestion('tabEnseignants','carteEns1')">↳ 1. Ajouter</button>
+<button class="drawer-sous" onclick="ouvrirSousPageGestion('tabEnseignants','carteEns2')">↳ 2. Liste</button>
+<button class="drawer-sous" onclick="ouvrirSousPageGestion('tabEnseignants','carteEvolutionPaie')">↳ 3. Évolution des payes</button>
+<button class="drawer-sous" onclick="ouvrirSousPageGestion('tabEnseignants','carteSoldeNetEnseignants')">↳ 4. Solde net</button>
+<button class="drawer-sous" onclick="ouvrirSousPageGestion('tabEnseignants','carteEnsCom')">↳ 5. Communication</button>
 </div>
-<div class="drawer-groupe"><div class="drawer-groupe-titre">Notes & Présence / النقاط والحضور</div>
-<button class="drawer-main gestion-tab" onclick="ouvrirOngletDrawer('tabBulletins',this)">📝 Bulletins <span class="ar">/ الكشوف</span></button>
-<button class="drawer-sous" onclick="ouvrirSousPageGestion('tabBulletins','carteBul1')">↳ Saisir les notes <span class="ar">/ إدخال النقاط</span></button>
-<button class="drawer-sous" onclick="ouvrirSousPageGestion('tabBulletins','carteBul2')">↳ Liste des bulletins <span class="ar">/ قائمة الكشوف</span></button>
-<button class="drawer-main gestion-tab" onclick="ouvrirOngletDrawer('tabPresence',this)">✅ Présence <span class="ar">/ الحضور</span></button>
-<button class="drawer-sous" onclick="ouvrirSousPageGestion('tabPresence','cartePres1')">↳ Présence par élève <span class="ar">/ حضور التلميذ</span></button>
-<button class="drawer-sous" onclick="ouvrirSousPageGestion('tabPresence','cartePres2')">↳ Historique des appels <span class="ar">/ سجل المناداة</span></button>
+<div class="drawer-groupe"><div class="drawer-groupe-titre">Notes & Présence</div>
+<button class="drawer-main gestion-tab" onclick="ouvrirOngletDrawer('tabBulletins',this)">📝 Bulletins</button>
+<button class="drawer-sous" onclick="ouvrirSousPageGestion('tabBulletins','carteBul1')">↳ Saisir les notes</button>
+<button class="drawer-sous" onclick="ouvrirSousPageGestion('tabBulletins','carteBul2')">↳ Tableau des Notes</button>
+<button class="drawer-main gestion-tab" onclick="ouvrirOngletDrawer('tabPresence',this)">✅ Présence</button>
+<button class="drawer-sous" onclick="ouvrirSousPageGestion('tabPresence','cartePres1')">↳ Présence par élève</button>
+<button class="drawer-sous" onclick="ouvrirSousPageGestion('tabPresence','cartePres2')">↳ Historique des appels</button>
 </div>
-<div class="drawer-groupe"><div class="drawer-groupe-titre">Fin d'année / نهاية السنة</div>
-<button class="drawer-main gestion-tab" onclick="ouvrirOngletDrawer('tabAnnuel',this)">🏆 Bilan Annuel <span class="ar">/ الحصيلة السنوية</span></button>
-<button class="drawer-sous" onclick="ouvrirSousPageGestion('tabAnnuel','carteAnn1')">↳ 1. Bilan + Payés + Activités <span class="ar">/ الحصيلة + المدفوعات + الأنشطة</span></button>
-<button class="drawer-sous" onclick="ouvrirSousPageGestion('tabAnnuel','carteAnnBulletin')">↳ 2. Bulletin annuel + Rang <span class="ar">/ الكشف السنوي + الترتيب</span></button>
-<button class="drawer-sous" onclick="ouvrirSousPageGestion('tabAnnuel','carteAnnReleve')">↳ 3. Relevé par trimestre <span class="ar">/ كشف النقاط لكل فصل</span></button>
-<button class="drawer-sous" onclick="ouvrirSousPageGestion('tabAnnuel','carteAnn2')">↳ 4. Liste annuelle <span class="ar">/ القائمة السنوية</span></button>
+<div class="drawer-groupe"><div class="drawer-groupe-titre">Fin d'année</div>
+<button class="drawer-main gestion-tab" onclick="ouvrirOngletDrawer('tabAnnuel',this)">🏆 Bilan Annuel</button>
+<button class="drawer-sous" onclick="ouvrirSousPageGestion('tabAnnuel','carteAnn1')">↳ 1. Bilan + Payés + Activités</button>
+<button class="drawer-sous" onclick="ouvrirSousPageGestion('tabAnnuel','carteAnnBulletin')">↳ 2. Bulletin annuel + Rang</button>
+<button class="drawer-sous" onclick="ouvrirSousPageGestion('tabAnnuel','carteAnnReleve')">↳ 3. Relevé par trimestre</button>
+<button class="drawer-sous" onclick="ouvrirSousPageGestion('tabAnnuel','carteAnn2')">↳ 4. Liste annuelle</button>
 </div>
-<div class="drawer-groupe"><div class="drawer-groupe-titre">Vie de l'école / حياة المدرسة</div>
-<button class="drawer-main gestion-tab" onclick="ouvrirOngletDrawer('tabActivites',this)">🎉 Activités & Dépenses <span class="ar">/ الأنشطة والمصاريف</span></button>
-<button class="drawer-sous" onclick="ouvrirSousPageGestion('tabActivites','carteActAjout')">↳ 1. Ajouter activité <span class="ar">/ إضافة نشاط</span></button>
-<button class="drawer-sous" onclick="ouvrirSousPageGestion('tabActivites','carteActListe')">↳ 2. Liste activités <span class="ar">/ قائمة الأنشطة</span></button>
-<button class="drawer-sous" onclick="ouvrirSousPageGestion('tabActivites','carteDepAjout')">↳ 3. Ajouter dépense <span class="ar">/ إضافة مصروف</span></button>
-<button class="drawer-sous" onclick="ouvrirSousPageGestion('tabActivites','carteDepListe')">↳ 4. Liste dépenses <span class="ar">/ قائمة المصاريف</span></button>
-<button class="drawer-sous" onclick="ouvrirSousPageGestion('tabActivites','carteDepTotaux')">↳ 5. Totaux par école <span class="ar">/ المجاميع حسب المدرسة</span></button>
+<div class="drawer-groupe"><div class="drawer-groupe-titre">Vie de l'école</div>
+<button class="drawer-main gestion-tab" onclick="ouvrirOngletDrawer('tabActivites',this)">🎉 Activités & Dépenses</button>
+<button class="drawer-sous" onclick="ouvrirSousPageGestion('tabActivites','carteActAjout')">↳ 1. Ajouter activité</button>
+<button class="drawer-sous" onclick="ouvrirSousPageGestion('tabActivites','carteActListe')">↳ 2. Liste activités</button>
+<button class="drawer-sous" onclick="ouvrirSousPageGestion('tabActivites','carteDepAjout')">↳ 3. Ajouter dépense</button>
+<button class="drawer-sous" onclick="ouvrirSousPageGestion('tabActivites','carteDepListe')">↳ 4. Liste dépenses</button>
+<button class="drawer-sous" onclick="ouvrirSousPageGestion('tabActivites','carteDepTotaux')">↳ 5. Totaux par école</button>
 </div>
-<div class="drawer-groupe"><div class="drawer-groupe-titre">Liaison / التواصل</div>
-<a href="liaison-gestion-sd.html" class="drawer-link">🔗 Voir Sous-Directeurs - Enseignants / Paiements Annulés / Dépenses<br><span class="ar">عرض نواب المدير</span></a>
+<div class="drawer-groupe"><div class="drawer-groupe-titre">Liaison</div>
+<a href="liaison-gestion-sd.html" class="drawer-link">🔗 Voir Sous-Directeurs</a>
 </div>
-<div class="drawer-groupe"><div class="drawer-groupe-titre">Réglages / الإعدادات</div>
-<button class="drawer-main gestion-tab" onclick="ouvrirOngletDrawer('tabParametres',this)">⚙️ Paramètres <span class="ar">/ الإعدادات</span></button>
-<button class="drawer-sous" onclick="ouvrirSousPageGestion('tabParametres','carteParMode')">↳ Mode composition <span class="ar">/ طريقة الامتحان</span></button>
-<button class="drawer-sous" onclick="ouvrirSousPageGestion('tabParametres','carteParMatieres')">↳ Matières <span class="ar">/ المواد</span></button>
-<button class="drawer-sous" onclick="ouvrirSousPageGestion('tabParametres','carteParPrix')">↳ Prix par école <span class="ar">/ السعر حسب المدرسة</span></button>
-<button class="drawer-sous" onclick="ouvrirSousPageGestion('tabParametres','carteParDivers')">↳ Divers <span class="ar">/ متنوعات</span></button>
+<div class="drawer-groupe"><div class="drawer-groupe-titre">Réglages</div>
+<button class="drawer-main gestion-tab" onclick="ouvrirOngletDrawer('tabParametres',this)">⚙️ Paramètres</button>
+<button class="drawer-sous" onclick="ouvrirSousPageGestion('tabParametres','carteParMode')">↳ Mode composition</button>
+<button class="drawer-sous" onclick="ouvrirSousPageGestion('tabParametres','carteParMatieres')">↳ Matières</button>
+<button class="drawer-sous" onclick="ouvrirSousPageGestion('tabParametres','carteParPrix')">↳ Prix par école</button>
+<button class="drawer-sous" onclick="ouvrirSousPageGestion('tabParametres','carteParDivers')">↳ Divers</button>
 </div>
 </aside>
 <div class="page">
-<div class="carte" id="loginCard"><h2>Connexion Secrétaire <span class="ar">/ دخول السكرتيرة</span></h2><p class="centre muted">Seule la Secrétaire créée par le Directeur dans admin.html peut entrer ici. <span class="ar">/ فقط السكرتيرة التي أنشأها المدير يمكنها الدخول هنا.</span></p><label>📧 Email * <span class="ar">/ البريد</span></label><input type="email" id="email" placeholder="Ex: faousia@secretaire.com" autocomplete="email"><label>📱 Numéro * <span class="ar">/ الرقم</span></label><input id="gestionTel" placeholder="Ex: 697919116" inputmode="numeric" autocomplete="tel"><label>🔑 Mot de passe * <span class="ar">/ كلمة السر</span></label><input type="password" id="password" placeholder="Mot de passe créé par le Directeur" autocomplete="current-password"><button onclick="seConnecterGestion()" id="btnConnexion" class="btn-noir" style="margin-top:12px">Se connecter <span class="ar">/ دخول</span></button><p id="msg" style="color:red;text-align:center"></p></div>
+<div class="carte" id="loginCard"><h2>Connexion Secrétaire</h2><p class="centre muted">Seule la Secrétaire créée par le Directeur dans admin.html peut entrer ici.</p><label>📧 Email *</label><input type="email" id="email" placeholder="Ex: faousia@secretaire.com"><label>📱 Numéro *</label><input id="gestionTel" placeholder="Ex: 697919116"><label>🔑 Mot de passe *</label><input type="password" id="password" placeholder="Mot de passe créé par le Directeur"><button onclick="seConnecterGestion()" id="btnConnexion" class="btn-noir" style="margin-top:12px">Se connecter</button><p id="msg" style="color:red;text-align:center"></p></div>
 <div id="gestionPanel" style="display:none">
-<div class="carte centre"><small>Assalamou Aleykoum - السلام عليكم - <b id="gestionEmail"></b> - <button onclick="seDeconnecterGestion()" style="background:white;border:1px solid #ccc;padding:4px 10px;border-radius:20px">Déconnexion / خروج</button></small></div>
+<div class="carte centre"><small>Assalamou Aleykoum - <b id="gestionEmail"></b> - <button onclick="seDeconnecterGestion()" style="background:white;border:1px solid #ccc;padding:4px 10px;border-radius:20px">Déconnexion</button></small></div>
 <div id="tabDashboard">
-<button class="btn-voir-tout no-print" onclick="voirToutOnglet('tabDashboard')">↩ Voir tout l'onglet Tableau de bord <span class="ar">/ عرض كل لوحة التحكم</span></button>
-<div class="carte" id="carteDashKpi"><div class="titre-ligne"><h2>Tableau de bord - <span id="monEcoleNom">...</span> <span class="ar">/ لوحة التحكم</span></h2></div><p class="centre muted">Aujourd'hui / اليوم : <span id="dateJour"></span> - Matières / المواد : <b id="affichageMatieresActives">Toutes / الكل</b></p><p class="centre muted">Composition / الامتحان : <b id="affichageTypeComposition">Oral + Écrit / شفوي + كتابي</b></p><p class="centre muted">💰 Prix / السعر : <b id="affichagePrixParEcoleDashboard">Chaque école a son prix / لكل مدرسة سعرها</b></p><div class="kpi"><div><b id="statTotal">0</b><small>Élèves / التلاميذ</small></div><div><b id="statAccepte">0</b><small>Acceptés DG / المقبولون</small></div><div><b id="statEnAttente">0</b><small>En attente DG / في الانتظار</small></div><div><b id="statPaye">0</b><small>✓ Payé complet / دفع كامل</small></div><div><b id="statNonPaye">0</b><small>Doivent encore / لم يدفعوا بعد</small></div><div class="vert"><b id="statMontant">0</b><small>FCFA encaissé / المبلغ المحصل</small></div></div></div>
-<div class="carte" id="carteDashAfaire"><div class="titre-ligne"><h3>⚠️ À faire aujourd'hui <span class="ar">/ مهام اليوم</span></h3></div><div id="alertesJour"></div></div>
-<div class="carte" id="carteDashDerniers"><div class="titre-ligne"><h3>Derniers paiements <span class="ar">/ آخر المدفوعات</span></h3></div><div id="derniersPaiementsDashboard"></div></div>
+<button class="btn-voir-tout no-print" onclick="voirToutOnglet('tabDashboard')">↩ Voir tout l'onglet Tableau de bord</button>
+<div class="carte" id="carteDashKpi"><div class="titre-ligne"><h2>Tableau de bord - <span id="monEcoleNom">...</span></h2><div class="menu3"><button class="btn3" onclick="toggleMenu3('menu3Dash',event)">⋮</button><div class="menu3-drop" id="menu3Dash"><div class="menu3-titre">Actions</div><button onclick="voirToutOnglet('tabDashboard')">↩ Voir tout</button><button onclick="location.reload()">🔄 Actualiser</button></div></div></div><p class="centre muted">Aujourd'hui : <span id="dateJour"></span> - Matières : <b id="affichageMatieresActives">Toutes</b></p><p class="centre muted">Composition : <b id="affichageTypeComposition">Oral + Écrit</b></p><p class="centre muted">💰 Prix : <b id="affichagePrixParEcoleDashboard">Chaque école a son prix</b></p><div class="kpi"><div><b id="statTotal">0</b><small>Élèves</small></div><div><b id="statAccepte">0</b><small>Acceptés DG</small></div><div><b id="statEnAttente">0</b><small>En attente DG</small></div><div><b id="statPaye">0</b><small>✓ Payé complet</small></div><div><b id="statNonPaye">0</b><small>Doivent encore</small></div><div class="vert"><b id="statMontant">0</b><small>FCFA encaissé</small></div></div></div>
+<div class="carte" id="carteDashAfaire"><div class="titre-ligne"><h3>⚠️ À faire aujourd'hui</h3><div class="menu3"><button class="btn3" onclick="toggleMenu3('menu3Afaire',event)">⋮</button><div class="menu3-drop" id="menu3Afaire"><button onclick="location.reload()">🔄 Actualiser</button></div></div></div><div id="alertesJour"></div></div>
+<div class="carte" id="carteDashDerniers"><div class="titre-ligne"><h3>Derniers paiements</h3><div class="menu3"><button class="btn3" onclick="toggleMenu3('menu3Derniers',event)">⋮</button><div class="menu3-drop" id="menu3Derniers"><button onclick="location.reload()">🔄 Actualiser</button></div></div></div><div id="derniersPaiementsDashboard"></div></div>
 </div>
 <div id="tabEleves" style="display:none">
-<button class="btn-voir-tout no-print" onclick="voirToutOnglet('tabEleves')">↩ Voir tout l'onglet Élèves <span class="ar">/ عرض كل التلاميذ</span></button>
-<div class="carte" id="carteElevesListe"><div class="titre-ligne"><h3>Liste des Élèves <span class="ar">/ قائمة التلاميذ</span></h3></div><p class="centre muted"><span id="titreEcoleEleves"></span> - Frais / الرسوم : <span id="titreFraisEleves"></span> FCFA - <span id="titreDateEleves"></span></p><div id="effectifsParEcoleEleves" style="margin-top:10px"></div><label>Filtrer par école / groupe <span class="ar">/ تصفية حسب المدرسة</span></label><select id="filtreEcoleEleves" onchange="filtrerElevesParEcole()"><option value="">— Toutes les écoles / كل المدارس —</option></select><label>Filtrer par niveau <span class="ar">/ تصفية حسب المستوى</span></label><select id="filtreNiveauEleves" onchange="filtrerElevesParNiveau()"><option value="">— Tous les niveaux / كل المستويات —</option></select><p id="infoFiltreEleves" class="centre muted" style="font-size:12px"></p><div style="margin-top:10px"><input type="text" id="rechercheEleve" placeholder="🔍 Rechercher un élève... / ابحث عن تلميذ..." oninput="filtrerEleves(filtreEleveActuel, document.querySelector('#tabEleves .btn-filtre.actif'))"></div><div id="listeElevesGestion"></div></div>
+<button class="btn-voir-tout no-print" onclick="voirToutOnglet('tabEleves')">↩ Voir tout l'onglet Élèves</button>
+<div class="carte" id="carteElevesListe"><div class="titre-ligne"><h3>Liste des Élèves</h3><div class="menu3"><button class="btn3" onclick="toggleMenu3('menu3Eleves',event)">⋮</button><div class="menu3-drop" id="menu3Eleves"><button onclick="location.reload()">🔄 Actualiser</button></div></div></div><p class="centre muted"><span id="titreEcoleEleves"></span> - Frais : <span id="titreFraisEleves"></span> FCFA - <span id="titreDateEleves"></span></p><div id="effectifsParEcoleEleves" style="margin-top:10px"></div><label>Filtrer par école / groupe</label><select id="filtreEcoleEleves" onchange="filtrerElevesParEcole()"><option value="">— Toutes les écoles —</option></select><label>Filtrer par niveau</label><select id="filtreNiveauEleves" onchange="filtrerElevesParNiveau()"><option value="">— Tous les niveaux —</option></select><p id="infoFiltreEleves" class="centre muted" style="font-size:12px"></p><div style="margin-top:10px"><input type="text" id="rechercheEleve" placeholder="🔍 Rechercher un élève..." oninput="filtrerEleves(filtreEleveActuel, document.querySelector('#tabEleves .btn-filtre.actif'))"></div><div id="listeElevesGestion"></div></div>
 </div>
 <div id="tabPaiements" style="display:none">
-<button class="btn-voir-tout no-print" onclick="voirToutOnglet('tabPaiements')">↩ Voir tout l'onglet Paiements <span class="ar">/ عرض كل المدفوعات</span></button>
-<div class="carte" id="cartePaiement1"><div class="titre-ligne"><h3>1. Nouveau Paiement <span class="ar">/ 1. دفع جديد</span></h3></div><div class="form-paiement"><label>1. Choisir l'élève * <span class="ar">/ اختر التلميذ</span></label><select id="paiementEleve" onchange="onElevePaiementChange()"><option value="">— Choisis l'élève / اختر التلميذ —</option></select><label>2. Classe (auto) <span class="ar">/ القسم</span></label><input id="paiementClasse" readonly style="background:#f5f5f5" placeholder="Classe auto / القسم"><div id="infoPrixEcoleEleve" class="info-solde" style="display:none;background:#FFF9C4"></div><div id="infoSoldeEleve" class="info-solde" style="display:none"></div><div id="infoRemiseElevePaiement" class="info-solde" style="display:none;background:#FFF9C4"></div><label>3. Montant payé * <span class="ar">/ المبلغ المدفوع</span></label><input type="number" id="paiementMontant" placeholder="Ex : 3000" oninput="calculerResteApresPaiement()"><label>4. Motif <span class="ar">/ السبب</span></label><select id="paiementMotif"><option value="Avance scolarite">Avance scolarité / مقدم</option><option value="Inscription">Inscription / التسجيل</option><option value="Mensuel">Mensuel / شهري</option><option value="Trimestre 1">Trimestre 1 / الفصل الأول</option><option value="Trimestre 2">Trimestre 2 / الفصل الثاني</option><option value="Trimestre 3">Trimestre 3 / الفصل الثالث</option><option value="Solde total">Solde total / الرصيد الكلي</option></select><label>5. Date <span class="ar">/ التاريخ</span></label><input type="date" id="paiementDate"><div id="apercuApresPaiement" class="info-solde" style="display:none"></div><button onclick="enregistrerPaiementFormulaire()" class="btn-noir" style="margin-top:12px">Enregistrer le paiement / حفظ الدفع</button><p id="msgPaiement" class="centre" style="color:green;font-weight:700"></p></div></div>
-<div class="carte" id="cartePaiement2"><div class="titre-ligne"><h3>2. Solde par Élève <span class="ar">/ 2. رصيد التلميذ</span></h3></div><div id="listePrixParEcolePaiements" style="background:#FFF9C4;border:1px solid #FFE082;border-radius:10px;padding:8px;margin-bottom:8px;text-align:center;font-size:12px"></div><div id="listePaiementsGestion"></div></div>
-<div class="carte" id="cartePaiement3"><div class="titre-ligne"><h3>3. Historique des Paiements <span class="ar">/ 3. سجل المدفوعات</span></h3></div><div id="historiquePaiements"></div></div>
-<div class="carte" id="cartePaiement4"><div class="titre-ligne"><h3>4. Remise / Prix spécial <span class="ar">/ 4. تخفيض / سعر خاص</span></h3></div><label>Choisir l'élève <span class="ar">/ اختر التلميذ</span></label><select id="remiseEleve"><option value="">— Choisis l'élève / اختر التلميذ —</option></select><label>Nouveau prix (FCFA) <span class="ar">/ السعر الجديد</span></label><input type="number" id="remiseMontant" placeholder="Ex : 5000"><label>Motif <span class="ar">/ السبب</span></label><input id="remiseMotif" placeholder="Ex : Orphelin... / يتيم..."><button onclick="enregistrerRemise()" class="btn-noir" style="margin-top:10px">💾 Enregistrer la remise / حفظ التخفيض</button><p id="msgRemise" class="centre" style="color:green;font-weight:700"></p><div id="listeRemises" style="margin-top:10px"></div></div>
-<div class="carte" id="cartePaiement5"><div class="titre-ligne"><h3>5. Historique d'un seul élève + Reçu <span class="ar">/ 5. سجل تلميذ واحد + إيصال</span></h3></div><label>Choisir l'élève <span class="ar">/ اختر التلميذ</span></label><select id="historiqueEleveSelect" onchange="afficherHistoriqueUnEleve()"><option value="">— Choisis l'élève / اختر التلميذ —</option></select><div id="historiqueUnEleve" style="margin-top:10px"></div></div>
-<div class="carte" id="cartePaiement6"><div class="titre-ligne"><h3>6. Total par École <span class="ar">/ 6. المجموع حسب المدرسة</span></h3></div><div id="totauxParEcole"></div><button onclick="partagerTotauxParEcoleWhatsApp()" class="btn-noir" style="margin-top:10px">💬 Envoyer sur WhatsApp / إرسال عبر واتساب</button></div>
-<div class="carte" id="cartePaiement7"><div class="titre-ligne"><h3>7. Relancer les impayés <span class="ar">/ 7. تذكير المتأخرين</span></h3></div><label>Choisir l'école <span class="ar">/ اختر المدرسة</span></label><select id="relanceEcole"><option value="">— Toutes les écoles / كل المدارس —</option></select><button onclick="relancerImpayesParEcole()" class="btn-noir" style="margin-top:10px">📣 Relancer / تذكير</button><div id="apercuRelance" style="margin-top:10px"></div></div>
+<button class="btn-voir-tout no-print" onclick="voirToutOnglet('tabPaiements')">↩ Voir tout l'onglet Paiements</button>
+<div class="carte" id="cartePaiement1"><div class="titre-ligne"><h3>1. Nouveau Paiement</h3><div class="menu3"><button class="btn3" onclick="toggleMenu3('menu3Pay1',event)">⋮</button><div class="menu3-drop" id="menu3Pay1"><button onclick="location.reload()">🔄 Actualiser</button></div></div></div><div class="form-paiement"><label>1. Choisir l'élève *</label><select id="paiementEleve" onchange="onElevePaiementChange()"><option value="">— Choisis l'élève —</option></select><label>2. Classe (auto)</label><input id="paiementClasse" readonly style="background:#f5f5f5" placeholder="Classe auto"><div id="infoPrixEcoleEleve" class="info-solde" style="display:none;background:#FFF9C4"></div><div id="infoSoldeEleve" class="info-solde" style="display:none"></div><div id="infoRemiseElevePaiement" class="info-solde" style="display:none;background:#FFF9C4"></div><label>3. Montant payé *</label><input type="number" id="paiementMontant" placeholder="Ex : 3000" oninput="calculerResteApresPaiement()"><label>4. Motif</label><select id="paiementMotif"><option value="Avance scolarite">Avance scolarité</option><option value="Inscription">Inscription</option><option value="Mensuel">Mensuel</option><option value="Trimestre 1">Trimestre 1</option><option value="Trimestre 2">Trimestre 2</option><option value="Trimestre 3">Trimestre 3</option><option value="Solde total">Solde total</option></select><label>5. Date</label><input type="date" id="paiementDate"><div id="apercuApresPaiement" class="info-solde" style="display:none"></div><button onclick="enregistrerPaiementFormulaire()" class="btn-noir" style="margin-top:12px">Enregistrer le paiement</button><p id="msgPaiement" class="centre" style="color:green;font-weight:700"></p></div></div>
+<div class="carte" id="cartePaiement2"><div class="titre-ligne"><h3>2. Solde par Élève</h3><div class="menu3"><button class="btn3" onclick="toggleMenu3('menu3Pay2',event)">⋮</button><div class="menu3-drop" id="menu3Pay2"><button onclick="location.reload()">🔄 Actualiser</button></div></div></div><div id="listePrixParEcolePaiements" style="background:#FFF9C4;border:1px solid #FFE082;border-radius:10px;padding:8px;margin-bottom:8px;text-align:center;font-size:12px"></div><div id="listePaiementsGestion"></div></div>
+<div class="carte" id="cartePaiement3"><div class="titre-ligne"><h3>3. Historique des Paiements</h3><div class="menu3"><button class="btn3" onclick="toggleMenu3('menu3Pay3',event)">⋮</button><div class="menu3-drop" id="menu3Pay3"><button onclick="location.reload()">🔄 Actualiser</button></div></div></div><div id="historiquePaiements"></div></div>
+<div class="carte" id="cartePaiement4"><div class="titre-ligne"><h3>4. Remise / Prix spécial</h3><div class="menu3"><button class="btn3" onclick="toggleMenu3('menu3Pay4',event)">⋮</button><div class="menu3-drop" id="menu3Pay4"><button onclick="location.reload()">🔄 Actualiser</button></div></div></div><label>Choisir l'élève</label><select id="remiseEleve"><option value="">— Choisis l'élève —</option></select><label>Nouveau prix (FCFA)</label><input type="number" id="remiseMontant" placeholder="Ex : 5000"><label>Motif</label><input id="remiseMotif" placeholder="Ex : Orphelin..."><button onclick="enregistrerRemise()" class="btn-noir" style="margin-top:10px">💾 Enregistrer la remise</button><p id="msgRemise" class="centre" style="color:green;font-weight:700"></p><div id="listeRemises" style="margin-top:10px"></div></div>
+<div class="carte" id="cartePaiement5"><div class="titre-ligne"><h3>5. Historique d'un seul élève + Reçu</h3><div class="menu3"><button class="btn3" onclick="toggleMenu3('menu3Pay5',event)">⋮</button><div class="menu3-drop" id="menu3Pay5"><button onclick="location.reload()">🔄 Actualiser</button></div></div></div><label>Choisir l'élève</label><select id="historiqueEleveSelect" onchange="afficherHistoriqueUnEleve()"><option value="">— Choisis l'élève —</option></select><div id="historiqueUnEleve" style="margin-top:10px"></div></div>
+<div class="carte" id="cartePaiement6"><div class="titre-ligne"><h3>6. Total par École</h3><div class="menu3"><button class="btn3" onclick="toggleMenu3('menu3Pay6',event)">⋮</button><div class="menu3-drop" id="menu3Pay6"><button onclick="partagerTotauxParEcoleWhatsApp()">💬 WhatsApp</button></div></div></div><div id="totauxParEcole"></div><button onclick="partagerTotauxParEcoleWhatsApp()" class="btn-noir" style="margin-top:10px">💬 Envoyer sur WhatsApp</button></div>
+<div class="carte" id="cartePaiement7"><div class="titre-ligne"><h3>7. Relancer les impayés</h3><div class="menu3"><button class="btn3" onclick="toggleMenu3('menu3Pay7',event)">⋮</button><div class="menu3-drop" id="menu3Pay7"><button onclick="relancerImpayesParEcole()">📣 Relancer</button></div></div></div><label>Choisir l'école</label><select id="relanceEcole"><option value="">— Toutes les écoles —</option></select><button onclick="relancerImpayesParEcole()" class="btn-noir" style="margin-top:10px">📣 Relancer</button><div id="apercuRelance" style="margin-top:10px"></div></div>
 </div>
 <div id="tabEnseignants" style="display:none">
-<button class="btn-voir-tout no-print" onclick="voirToutOnglet('tabEnseignants')">↩ Voir tout l'onglet Enseignants <span class="ar">/ عرض كل المعلمين</span></button>
-<div class="carte" id="carteEns1"><div class="titre-ligne"><h3>1. Ajouter un enseignant <span class="ar">/ 1. إضافة معلم</span></h3></div><label>Nom * <span class="ar">/ الاسم</span></label><input id="ensNom" placeholder="Ex : Oustaz Ibrahim"><label>Téléphone * <span class="ar">/ الهاتف</span></label><input id="ensTel" placeholder="690000000"><label>Rôle * <span class="ar">/ الدور</span></label><select id="ensRole"><option value="Enseignant Coran">Enseignant Coran / معلم القرآن</option><option value="Enseignant Arabe">Enseignant Arabe / معلم العربية</option><option value="Enseignant Hadith / Fiqh">Enseignant Hadith / Fiqh / معلم الحديث / الفقه</option><option value="Surveillant">Surveillant / مراقب</option><option value="Imam / Responsable Priere">Imam / Responsable Prière / إمام</option><option value="Directeur">Directeur / المدير</option><option value="Sous-Directeur">Sous-Directeur / نائب المدير</option><option value="Secretaire">Secrétaire / السكرتيرة</option></select><label>Matière <span class="ar">/ المادة</span></label><select id="ensMatiere"><option value="Coran">Coran / القرآن</option><option value="Langue Arabe">Langue Arabe / اللغة العربية</option><option value="Hadith">Hadith / الحديث</option><option value="Fiqh">Fiqh / الفقه</option><option value="Aquida">Aquida / العقيدة</option><option value="Sirah">Sirah / السيرة</option><option value="Toutes les matieres">Toutes les matières / كل المواد</option></select><label>Classe <span class="ar">/ القسم</span></label><select id="ensClasse"><option value="Niveau 1">Niveau 1 / المستوى 1</option><option value="Niveau 2">Niveau 2 / المستوى 2</option><option value="Niveau 3">Niveau 3 / المستوى 3</option><option value="Niveau 4">Niveau 4 / المستوى 4</option><option value="Toutes les classes">Toutes les classes / كل الأقسام</option></select><label>Salaire (FCFA) * <span class="ar">/ الراتب</span></label><input type="number" id="ensSalaire" placeholder="Ex : 30000"><button onclick="ajouterEnseignant()" class="btn-noir" style="margin-top:12px">Ajouter / إضافة</button></div>
-<div class="carte" id="carteEns2"><div class="titre-ligne"><h3>2. Liste des Enseignants <span class="ar">/ 2. قائمة المعلمين</span></h3></div><p id="msgPontEnseignants" class="centre" style="font-weight:700;color:green"></p><div id="listeEnseignants"></div></div>
-<div class="carte" id="carteEvolutionPaie"><div class="titre-ligne"><h3>3. Évolution des Payes <span class="ar">/ 3. تطور أجور المعلمين</span></h3></div><p class="centre muted">Salaire prévu, déjà payé, reste, mois par mois. <span class="ar">/ الراتب المتوقع، المدفوع، الباقي، شهرا بشهر.</span></p><label>Filtrer par enseignant <span class="ar">/ تصفية حسب المعلم</span></label><select id="evolutionEnseignantSelect" onchange="calculerEvolutionPaieEnseignants()"><option value="">— Tous les enseignants / كل المعلمين —</option></select><div id="evolutionPaieEnseignants" style="margin-top:10px"></div></div>
-<div class="carte" id="carteSoldeNetEnseignants"><div class="titre-ligne"><h3>💰 4. Solde Net - Enseignants <span class="ar">/ 4. الرصيد الصافي - المعلمون</span></h3></div><button onclick="calculerSoldeNetEnseignants()" class="btn-noir" style="margin-top:10px">🔄 Calculer le solde net / حساب الرصيد الصافي</button><div id="soldeNetEnseignants" style="margin-top:10px"></div></div>
-<div class="carte" id="carteEnsCom"><div class="titre-ligne"><h3>5. Communication Enseignants <span class="ar">/ 5. التواصل مع المعلمين</span></h3></div><label>Choisir l'enseignant <span class="ar">/ اختر المعلم</span></label><select id="selectEnseignantCom"></select><label>Ton message <span class="ar">/ رسالتك</span></label><input id="msgEnseignantCom" placeholder="Ex : Réunion demain à 8h... / اجتماع غدا..."><button onclick="envoyerMessageUnEnseignant()" class="btn-noir" style="margin-top:10px">Envoyer sur WhatsApp / إرسال عبر واتساب</button></div>
+<button class="btn-voir-tout no-print" onclick="voirToutOnglet('tabEnseignants')">↩ Voir tout l'onglet Enseignants</button>
+<div class="carte" id="carteEns1"><div class="titre-ligne"><h3>1. Ajouter un enseignant</h3><div class="menu3"><button class="btn3" onclick="toggleMenu3('menu3Ens1',event)">⋮</button><div class="menu3-drop" id="menu3Ens1"><button onclick="location.reload()">🔄 Actualiser</button></div></div></div><label>Nom *</label><input id="ensNom" placeholder="Ex : Oustaz Ibrahim"><label>Téléphone *</label><input id="ensTel" placeholder="690000000"><label>Rôle *</label><select id="ensRole"><option value="Enseignant Coran">Enseignant Coran</option><option value="Enseignant Arabe">Enseignant Arabe</option><option value="Enseignant Hadith / Fiqh">Enseignant Hadith / Fiqh</option><option value="Surveillant">Surveillant</option><option value="Imam / Responsable Priere">Imam / Responsable Prière</option><option value="Directeur">Directeur</option><option value="Sous-Directeur">Sous-Directeur</option><option value="Secretaire">Secrétaire</option></select><label>Matière</label><select id="ensMatiere"><option value="Coran">Coran</option><option value="Langue Arabe">Langue Arabe</option><option value="Hadith">Hadith</option><option value="Fiqh">Fiqh</option><option value="Aquida">Aquida</option><option value="Sirah">Sirah</option><option value="Toutes les matieres">Toutes les matières</option></select><label>Classe</label><select id="ensClasse"><option value="Niveau 1">Niveau 1</option><option value="Niveau 2">Niveau 2</option><option value="Niveau 3">Niveau 3</option><option value="Niveau 4">Niveau 4</option><option value="Toutes les classes">Toutes les classes</option></select><label>Salaire (FCFA) *</label><input type="number" id="ensSalaire" placeholder="Ex : 30000"><button onclick="ajouterEnseignant()" class="btn-noir" style="margin-top:12px">Ajouter</button></div>
+<div class="carte" id="carteEns2"><div class="titre-ligne"><h3>2. Liste des Enseignants</h3><div class="menu3"><button class="btn3" onclick="toggleMenu3('menu3Ens2',event)">⋮</button><div class="menu3-drop" id="menu3Ens2"><button onclick="location.reload()">🔄 Actualiser</button></div></div></div><p id="msgPontEnseignants" class="centre" style="font-weight:700;color:green"></p><div id="listeEnseignants"></div></div>
+<div class="carte" id="carteEvolutionPaie"><div class="titre-ligne"><h3>3. Évolution des Payes</h3><div class="menu3"><button class="btn3" onclick="toggleMenu3('menu3Ens3',event)">⋮</button><div class="menu3-drop" id="menu3Ens3"><button onclick="location.reload()">🔄 Actualiser</button></div></div></div><p class="centre muted">Salaire prévu, déjà payé, reste, mois par mois.</p><label>Filtrer par enseignant</label><select id="evolutionEnseignantSelect" onchange="calculerEvolutionPaieEnseignants()"><option value="">— Tous les enseignants —</option></select><div id="evolutionPaieEnseignants" style="margin-top:10px"></div></div>
+<div class="carte" id="carteSoldeNetEnseignants"><div class="titre-ligne"><h3>💰 4. Solde Net - Enseignants</h3><div class="menu3"><button class="btn3" onclick="toggleMenu3('menu3Ens4',event)">⋮</button><div class="menu3-drop" id="menu3Ens4"><button onclick="calculerSoldeNetEnseignants()">🔄 Calculer</button></div></div></div><button onclick="calculerSoldeNetEnseignants()" class="btn-noir" style="margin-top:10px">🔄 Calculer le solde net</button><div id="soldeNetEnseignants" style="margin-top:10px"></div></div>
+<div class="carte" id="carteEnsCom"><div class="titre-ligne"><h3>5. Communication Enseignants</h3><div class="menu3"><button class="btn3" onclick="toggleMenu3('menu3Ens5',event)">⋮</button><div class="menu3-drop" id="menu3Ens5"><button onclick="location.reload()">🔄 Actualiser</button></div></div></div><label>Choisir l'enseignant</label><select id="selectEnseignantCom"></select><label>Ton message</label><input id="msgEnseignantCom" placeholder="Ex : Réunion demain à 8h..."><button onclick="envoyerMessageUnEnseignant()" class="btn-noir" style="margin-top:10px">Envoyer sur WhatsApp</button></div>
 </div>
 <div id="tabBulletins" style="display:none">
-<button class="btn-voir-tout no-print" onclick="voirToutOnglet('tabBulletins')">↩ Voir tout l'onglet Bulletins <span class="ar">/ عرض كل الكشوف</span></button>
-<div class="carte" id="carteBul1"><div class="titre-ligne"><h3>Bulletins - Matières FIXES <span class="ar">/ الكشوف - المواد الثابتة</span></h3></div><p class="centre muted">Matières / المواد : <b id="affichageMatieresBulletin"></b> - Composition / الامتحان : <b id="affichageTypeCompositionBulletin"></b></p><button onclick="chargerBulletinsTous()" class="btn-noir" style="margin-bottom:8px">🔄 Actualiser - Voir notes enseignants / تحديث - عرض نقاط المعلمين</button><button onclick="nettoyerBulletinsCasses()" class="btn-noir" style="margin-bottom:8px;background:#EF5350">🧹 Nettoyer les noms cassés / تنظيف الأسماء المعطلة</button><label>Filtrer par école * <span class="ar">/ تصفية حسب المدرسة</span></label><select id="filtreEcoleBulletin" onchange="filtrerElevesBulletinParEcole()"><option value="">— Toutes les écoles / كل المدارس —</option></select><p id="infoFiltreBulletin" class="centre muted" style="font-size:12px"></p><label>Langue du bulletin * <span class="ar">/ لغة الكشف</span></label><select id="langueBulletin" onchange="if(typeof chargerNotesExistantes==='function') chargerNotesExistantes()"><option value="fr-ar">Français - Arabe / فرنسي - عربي</option><option value="en-ar">Anglais - Arabe / إنجليزي - عربي</option></select><label>Choisir l'élève * <span class="ar">/ اختر التلميذ</span></label><select id="bulEleve" onchange="chargerNotesExistantes()"></select><label>Trimestre * <span class="ar">/ الفصل</span></label><select id="bulTrimestre" onchange="chargerNotesExistantes()"><option value="Trimestre 1">Trimestre 1 / الفصل الأول</option><option value="Trimestre 2">Trimestre 2 / الفصل الثاني</option><option value="Trimestre 3">Trimestre 3 / الفصل الثالث</option></select><label>Année <span class="ar">/ السنة</span></label><input id="bulAnnee" value="2026-2027"><div id="formNotes" style="margin-top:12px"></div><label>Appréciation générale (optionnel - sinon auto) <span class="ar">/ الملاحظة العامة</span></label><input id="bulAppreciationGenerale" placeholder="Laisse vide = auto selon la moyenne / اتركه فارغا = تلقائي"><button onclick="enregistrerBulletinComplet()" class="btn-noir" style="margin-top:12px">Enregistrer le bulletin / حفظ الكشف</button><p id="msgBulletin" class="centre" style="color:green;font-weight:700"></p><div class="btn-row no-print"><button onclick="telechargerBulletinTrimestrePDF()" class="btn-noir">⬇️ PDF</button><button onclick="envoyerBulletinTrimestreWhatsApp()" class="btn-noir" style="background:#25D366">💬 WhatsApp / واتساب</button><button onclick="envoyerBulletinTrimestreMail()" class="btn-noir" style="background:#1976D2">✉️ Mail / بريد</button></div></div>
-<div class="carte" id="carteBul2"><div class="titre-ligne"><h3>Liste des Bulletins - Détails par Matière <span class="ar">/ قائمة الكشوف - التفاصيل حسب المادة</span></h3></div>
-<label>🔍 Chercher un élève dans la liste <span class="ar">/ ابحث عن تلميذ</span></label>
-<input id="rechercheEleveBulletin" placeholder="Tape le nom de l'élève... / اكتب اسم التلميذ..." list="listeElevesBulletin" oninput="afficherBulletins()">
+<button class="btn-voir-tout no-print" onclick="voirToutOnglet('tabBulletins')">↩ Voir tout l'onglet Bulletins</button>
+<div class="carte" id="carteBul1"><div class="titre-ligne"><h3>Bulletins - Matières FIXES</h3><div class="menu3"><button class="btn3" onclick="toggleMenu3('menu3Bul1',event)">⋮</button><div class="menu3-drop" id="menu3Bul1"><div class="menu3-titre">Actions</div><button onclick="chargerBulletinsTous()">🔄 Actualiser</button><button onclick="nettoyerBulletinsCasses()">🧹 Nettoyer les noms cassés</button></div></div></div><p class="centre muted">Matières : <b id="affichageMatieresBulletin"></b> - Composition : <b id="affichageTypeCompositionBulletin"></b></p><button onclick="chargerBulletinsTous()" class="btn-noir" style="margin-bottom:8px">🔄 Actualiser - Voir notes enseignants</button><button onclick="nettoyerBulletinsCasses()" class="btn-noir" style="margin-bottom:8px;background:#EF5350">🧹 Nettoyer les noms cassés</button><label>Filtrer par école *</label><select id="filtreEcoleBulletin" onchange="filtrerElevesBulletinParEcole()"><option value="">— Toutes les écoles —</option></select><p id="infoFiltreBulletin" class="centre muted" style="font-size:12px"></p><label>Langue du bulletin *</label><select id="langueBulletin" onchange="if(typeof chargerNotesExistantes==='function') chargerNotesExistantes()"><option value="fr-ar">Français - Arabe</option><option value="en-ar">Anglais - Arabe</option></select><label>Choisir l'élève *</label><select id="bulEleve" onchange="chargerNotesExistantes()"></select><label>Trimestre *</label><select id="bulTrimestre" onchange="chargerNotesExistantes()"><option value="Trimestre 1">Trimestre 1</option><option value="Trimestre 2">Trimestre 2</option><option value="Trimestre 3">Trimestre 3</option></select><label>Année</label><input id="bulAnnee" value="2026-2027"><div id="formNotes" style="margin-top:12px"></div><label>Appréciation générale (optionnel - sinon auto)</label><input id="bulAppreciationGenerale" placeholder="Laisse vide = auto selon la moyenne"><button onclick="enregistrerBulletinComplet()" class="btn-noir" style="margin-top:12px">Enregistrer le bulletin</button><p id="msgBulletin" class="centre" style="color:green;font-weight:700"></p><div class="btn-row no-print">
+<button onclick="deblocquerBulletinEleve()" style="background:#FF9800;color:white;padding:10px;border:none;border-radius:8px;cursor:pointer">🔓 Débloquer / Corriger</button>
+<button onclick="supprimerBulletinEleve()" style="background:#EF5350;color:white;padding:10px;border:none;border-radius:8px;cursor:pointer">🗑️ Supprimer</button>
+  <button onclick="telechargerBulletinTrimestrePDF()" class="btn-noir">⬇️ PDF</button><button onclick="envoyerBulletinTrimestreWhatsApp()" class="btn-noir" style="background:#25D366">💬 WhatsApp</button><button onclick="envoyerBulletinTrimestreMail()" class="btn-noir" style="background:#1976D2">✉️ Mail</button></div></div>
+<div class="carte" id="carteBul2"><div class="titre-ligne"><h3>Tableau des Notes - Comme Sous-Directeur <span class="ar">/ جدول النقاط</span></h3><div class="menu3"><button class="btn3" onclick="toggleMenu3('menu3Notes',event)">⋮</button><div class="menu3-drop" id="menu3Notes"><div class="menu3-titre">Actions tableau</div><button onclick="chargerBulletinsTous()">🔄 Actualiser</button><button onclick="telechargerToutesNotesPDF()">⬇️ Télécharger tout en PDF</button><button onclick="partagerToutesNotesWhatsApp()">💬 Envoyer tout sur WhatsApp</button></div></div></div>
+<label>🔍 Chercher un élève</label>
+<input id="rechercheEleveBulletin" placeholder="Tape le nom de l'élève..." list="listeElevesBulletin" oninput="afficherNotesGestion()">
 <datalist id="listeElevesBulletin"></datalist>
-<label>Filtrer la liste - Trimestre <span class="ar">/ تصفية القائمة - الفصل</span></label><select id="filtreTrimestreBulletin" onchange="afficherBulletins()"><option value="">— Tous les trimestres / كل الفصول —</option><option>Trimestre 1</option><option>Trimestre 2</option><option>Trimestre 3</option></select>
-<div id="listeBulletins"></div></div>
+<label>Filtrer la liste - Trimestre</label><select id="filtreTrimestreBulletin" onchange="afficherNotesGestion()"><option value="">— Tous les trimestres —</option><option>Trimestre 1</option><option>Trimestre 2</option><option>Trimestre 3</option></select>
+<div id="listeBulletins"></div>
+<div id="tableauNotesGestion" style="margin-top:10px;overflow-x:auto"></div>
+</div>
 </div>
 <div id="tabPresence" style="display:none">
-<button class="btn-voir-tout no-print" onclick="voirToutOnglet('tabPresence')">↩ Voir tout l'onglet Présence <span class="ar">/ عرض كل الحضور</span></button>
-<div class="carte" id="cartePres1"><div class="titre-ligne"><h3>Présence par Élève <span class="ar">/ حضور التلميذ</span></h3></div><p class="centre muted"><span id="titreEcolePresence"></span> - <span id="titreDatePresence"></span></p><label>Filtrer par école <span class="ar">/ تصفية حسب المدرسة</span></label><select id="filtreEcolePresence" onchange="filtrerPresenceParEcoleNiveau()"><option value="">— Toutes les écoles / كل المدارس —</option></select><label>Filtrer par niveau <span class="ar">/ تصفية حسب المستوى</span></label><select id="filtreNiveauPresence" onchange="filtrerPresenceParEcoleNiveau()"><option value="">— Tous les niveaux / كل المستويات —</option></select><button onclick="chargerPresence()" class="btn-noir" style="margin-top:10px">🔄 Actualiser / تحديث</button><div id="listePresenceParEleve" style="margin-top:10px"></div><div id="listePresence" style="display:none"></div><input type="date" id="datePresence" style="display:none"></div>
-<div class="carte" id="cartePres2"><div class="titre-ligne"><h3>Historique des appels <span class="ar">/ سجل المناداة</span></h3></div><div id="historiquePresence"></div></div>
+<button class="btn-voir-tout no-print" onclick="voirToutOnglet('tabPresence')">↩ Voir tout l'onglet Présence</button>
+<div class="carte" id="cartePres1"><div class="titre-ligne"><h3>Présence par Élève</h3><div class="menu3"><button class="btn3" onclick="toggleMenu3('menu3Pres1',event)">⋮</button><div class="menu3-drop" id="menu3Pres1"><button onclick="chargerPresence()">🔄 Actualiser</button></div></div></div><p class="centre muted"><span id="titreEcolePresence"></span> - <span id="titreDatePresence"></span></p><label>Filtrer par école</label><select id="filtreEcolePresence" onchange="filtrerPresenceParEcoleNiveau()"><option value="">— Toutes les écoles —</option></select><label>Filtrer par niveau</label><select id="filtreNiveauPresence" onchange="filtrerPresenceParEcoleNiveau()"><option value="">— Tous les niveaux —</option></select><button onclick="chargerPresence()" class="btn-noir" style="margin-top:10px">🔄 Actualiser</button><div id="listePresenceParEleve" style="margin-top:10px"></div><div id="listePresence" style="display:none"></div><input type="date" id="datePresence" style="display:none"></div>
+<div class="carte" id="cartePres2"><div class="titre-ligne"><h3>Historique des appels</h3><div class="menu3"><button class="btn3" onclick="toggleMenu3('menu3Pres2',event)">⋮</button><div class="menu3-drop" id="menu3Pres2"><button onclick="location.reload()">🔄 Actualiser</button></div></div></div><div id="historiquePresence"></div></div>
 </div>
 <div id="tabAnnuel" style="display:none">
-<button class="btn-voir-tout no-print" onclick="voirToutOnglet('tabAnnuel')">↩ Voir tout l'onglet Bilan Annuel <span class="ar">/ عرض كل الحصيلة السنوية</span></button>
-<div class="carte" id="carteAnn1"><div class="titre-ligne"><h3>Bilan Annuel - 2026-2027 <span class="ar">/ الحصيلة السنوية</span></h3></div><p class="centre muted">Matières / المواد : <b id="affichageMatieresAnnuel"></b></p>
-<label>🔍 Chercher par école <span class="ar">/ ابحث حسب المدرسة</span></label>
-<input id="rechercheEcoleAnnuel" placeholder="Tape le nom de l'école... / اكتب اسم المدرسة..." list="listeEcolesAnnuel" oninput="calculerBilanAnnuel()">
-<datalist id="listeEcolesAnnuel"></datalist>
-<label>🔍 Chercher par élève <span class="ar">/ ابحث حسب التلميذ</span></label>
-<input id="rechercheEleveAnnuel" placeholder="Tape le nom de l'élève... / اكتب اسم التلميذ..." list="listeElevesAnnuel" oninput="calculerBilanAnnuel()">
-<datalist id="listeElevesAnnuel"></datalist>
-<div id="zoneBilanEcole"></div><div id="bilanPayesActivites" style="margin-top:12px"></div><button onclick="calculerBilanAnnuel()" class="btn-noir" style="margin-top:10px">Voir / Calculer le bilan / عرض / حساب الحصيلة</button></div>
-<div class="carte" id="carteAnnBulletin"><div class="titre-ligne"><h3>Bulletin Annuel + Rang <span class="ar">/ الكشف السنوي + الترتيب</span></h3></div><p class="centre muted">Règle / القاعدة : (T1+T2+T3)/3. Si un trimestre manque, on met 0. / إذا غاب فصل، نضع 0. Ex : (12+0+0)/3 = 4,00</p><label>1. Filtrer par école * <span class="ar">/ 1. تصفية حسب المدرسة</span></label><select id="filtreEcoleBulletinAnnuel" onchange="filtrerElevesAnnuelParEcole()"><option value="">— Toutes les écoles / كل المدارس —</option></select><p id="msgFiltreAnnuel" class="centre muted" style="font-size:11px">Si la liste est vide, attends 3 sec puis rouvre l'onglet. / إذا كانت القائمة فارغة، انتظر 3 ثوان ثم أعد فتح التبويب.</p><label>2. Choisir l'élève * <span class="ar">/ 2. اختر التلميذ</span></label><select id="bilanAnnuelEleve"><option value="">— Choisis d'abord l'école / اختر المدرسة أولا —</option></select><label>Année <span class="ar">/ السنة</span></label><input id="bilanAnnuelAnnee" value="2026-2027"><button onclick="calculerBulletinAnnuelEleve()" class="btn-noir" style="margin-top:10px">📋 Voir Bulletin Annuel + Rang / عرض الكشف السنوي + الترتيب</button><p id="msgBulletinAnnuel" class="centre" style="color:green;font-weight:700"></p><div id="bulletinAnnuelEleve" style="margin-top:10px"></div><div class="btn-row no-print" id="btnsBulletinAnnuel" style="display:none"><button onclick="telechargerBulletinAnnuelPDF()" class="btn-noir">⬇️ PDF</button><button onclick="partagerBulletinAnnuelWhatsApp()" class="btn-noir" style="background:#25D366">💬 WhatsApp / واتساب</button><button onclick="envoyerBulletinAnnuelMail()" class="btn-noir" style="background:#1976D2">✉️ Mail / بريد</button><button onclick="cacherBulletinAnnuel()" style="background:#EF5350;color:white;border:none;padding:10px;border-radius:10px;font-weight:800;cursor:pointer;flex:1">🙈 Cacher / إخفاء</button></div></div>
-<div class="carte" id="carteAnnReleve"><div class="titre-ligne"><h3>Relevé par Trimestre <span class="ar">/ كشف النقاط لكل فصل</span></h3></div><label>1. Filtrer par école * <span class="ar">/ 1. تصفية حسب المدرسة</span></label><select id="filtreEcoleReleve" onchange="filtrerElevesReleveParEcole()"><option value="">— Toutes les écoles / كل المدارس —</option></select><label>2. Choisir l'élève * <span class="ar">/ 2. اختر التلميذ</span></label><select id="releveEleve"><option value="">— Choisis d'abord l'école / اختر المدرسة أولا —</option></select><label>Trimestre * <span class="ar">/ الفصل</span></label><select id="releveTrimestre"><option value="Trimestre 1">Trimestre 1 - الفصل الأول</option><option value="Trimestre 2">Trimestre 2 - الفصل الثاني</option><option value="Trimestre 3">Trimestre 3 - الفصل الثالث</option></select><label>Année <span class="ar">/ السنة</span></label><input id="releveAnnee" value="2026-2027"><button onclick="calculerReleveTrimestre()" class="btn-noir" style="margin-top:10px">📄 Voir le relevé / عرض الكشف</button><p id="msgReleve" class="centre" style="color:green;font-weight:700"></p><div id="releveTrimestreEleve" style="margin-top:10px"></div><div class="btn-row no-print" id="btnsReleve" style="display:none"><button onclick="telechargerReleveTrimestrePDF()" class="btn-noir">⬇️ PDF</button><button onclick="partagerReleveTrimestreWhatsApp()" class="btn-noir" style="background:#25D366">💬 WhatsApp / واتساب</button><button onclick="envoyerReleveTrimestreMail()" class="btn-noir" style="background:#1976D2">✉️ Mail / بريد</button><button onclick="cacherReleve()" style="background:#EF5350;color:white;border:none;padding:10px;border-radius:10px;font-weight:800;cursor:pointer;flex:1">🙈 Cacher / إخفاء</button></div></div>
-<div class="carte" id="carteAnn2"><div class="titre-ligne"><h3>Liste Annuelle - Rang / Décision <span class="ar">/ القائمة السنوية - الترتيب / القرار</span></h3></div><div id="listeBulletinsAnnuels"></div></div>
+<button class="btn-voir-tout no-print" onclick="voirToutOnglet('tabAnnuel')">↩ Voir tout l'onglet Bilan Annuel</button>
+<div class="carte" id="carteAnn1"><div class="titre-ligne"><h3>Bilan Annuel - 2026-2027</h3><div class="menu3"><button class="btn3" onclick="toggleMenu3('menu3Ann1',event)">⋮</button><div class="menu3-drop" id="menu3Ann1"><button onclick="calculerBilanAnnuel()">🔄 Calculer</button></div></div></div><p class="centre muted">Matières : <b id="affichageMatieresAnnuel"></b></p><label>🔍 Chercher par école</label><input id="rechercheEcoleAnnuel" placeholder="Tape le nom de l'école..." list="listeEcolesAnnuel" oninput="calculerBilanAnnuel()"><datalist id="listeEcolesAnnuel"></datalist><label>🔍 Chercher par élève</label><input id="rechercheEleveAnnuel" placeholder="Tape le nom de l'élève..." list="listeElevesAnnuel" oninput="calculerBilanAnnuel()"><datalist id="listeElevesAnnuel"></datalist><div id="zoneBilanEcole"></div><div id="bilanPayesActivites" style="margin-top:12px"></div><button onclick="calculerBilanAnnuel()" class="btn-noir" style="margin-top:10px">Voir / Calculer le bilan</button></div>
+<div class="carte" id="carteAnnBulletin"><div class="titre-ligne"><h3>Bulletin Annuel + Rang</h3><div class="menu3"><button class="btn3" onclick="toggleMenu3('menu3AnnBul',event)">⋮</button><div class="menu3-drop" id="menu3AnnBul"><button onclick="telechargerBulletinAnnuelPDF()">⬇️ PDF</button><button onclick="partagerBulletinAnnuelWhatsApp()">💬 WhatsApp</button></div></div></div><p class="centre muted">Règle : (T1+T2+T3)/3. Si un trimestre manque, on met 0.</p><label>1. Filtrer par école *</label><select id="filtreEcoleBulletinAnnuel" onchange="filtrerElevesAnnuelParEcole()"><option value="">— Toutes les écoles —</option></select><p id="msgFiltreAnnuel" class="centre muted" style="font-size:11px">Si la liste est vide, attends 3 sec puis rouvre l'onglet.</p><label>2. Choisir l'élève *</label><select id="bilanAnnuelEleve"><option value="">— Choisis d'abord l'école —</option></select><label>Année</label><input id="bilanAnnuelAnnee" value="2026-2027"><button onclick="calculerBulletinAnnuelEleve()" class="btn-noir" style="margin-top:10px">📋 Voir Bulletin Annuel + Rang</button><p id="msgBulletinAnnuel" class="centre" style="color:green;font-weight:700"></p><div id="bulletinAnnuelEleve" style="margin-top:10px"></div><div class="btn-row no-print" id="btnsBulletinAnnuel" style="display:none"><button onclick="telechargerBulletinAnnuelPDF()" class="btn-noir">⬇️ PDF</button><button onclick="partagerBulletinAnnuelWhatsApp()" class="btn-noir" style="background:#25D366">💬 WhatsApp</button><button onclick="envoyerBulletinAnnuelMail()" class="btn-noir" style="background:#1976D2">✉️ Mail</button><button onclick="cacherBulletinAnnuel()" style="background:#EF5350;color:white;border:none;padding:10px;border-radius:10px;font-weight:800;cursor:pointer;flex:1">🙈 Cacher</button></div></div>
+<div class="carte" id="carteAnnReleve"><div class="titre-ligne"><h3>Relevé par Trimestre</h3><div class="menu3"><button class="btn3" onclick="toggleMenu3('menu3AnnRel',event)">⋮</button><div class="menu3-drop" id="menu3AnnRel"><button onclick="telechargerReleveTrimestrePDF()">⬇️ PDF</button></div></div></div><label>1. Filtrer par école *</label><select id="filtreEcoleReleve" onchange="filtrerElevesReleveParEcole()"><option value="">— Toutes les écoles —</option></select><label>2. Choisir l'élève *</label><select id="releveEleve"><option value="">— Choisis d'abord l'école —</option></select><label>Trimestre *</label><select id="releveTrimestre"><option value="Trimestre 1">Trimestre 1</option><option value="Trimestre 2">Trimestre 2</option><option value="Trimestre 3">Trimestre 3</option></select><label>Année</label><input id="releveAnnee" value="2026-2027"><button onclick="calculerReleveTrimestre()" class="btn-noir" style="margin-top:10px">📄 Voir le relevé</button><p id="msgReleve" class="centre" style="color:green;font-weight:700"></p><div id="releveTrimestreEleve" style="margin-top:10px"></div><div class="btn-row no-print" id="btnsReleve" style="display:none"><button onclick="telechargerReleveTrimestrePDF()" class="btn-noir">⬇️ PDF</button><button onclick="partagerReleveTrimestreWhatsApp()" class="btn-noir" style="background:#25D366">💬 WhatsApp</button><button onclick="envoyerReleveTrimestreMail()" class="btn-noir" style="background:#1976D2">✉️ Mail</button><button onclick="cacherReleve()" style="background:#EF5350;color:white;border:none;padding:10px;border-radius:10px;font-weight:800;cursor:pointer;flex:1">🙈 Cacher</button></div></div>
+<div class="carte" id="carteAnn2"><div class="titre-ligne"><h3>Liste Annuelle - Rang / Décision</h3><div class="menu3"><button class="btn3" onclick="toggleMenu3('menu3Ann2',event)">⋮</button><div class="menu3-drop" id="menu3Ann2"><button onclick="location.reload()">🔄 Actualiser</button></div></div></div><div id="listeBulletinsAnnuels"></div></div>
 </div>
 <div id="tabActivites" style="display:none">
-<button class="btn-voir-tout no-print" onclick="voirToutOnglet('tabActivites')">↩ Voir tout l'onglet Activités & Dépenses <span class="ar">/ عرض كل الأنشطة والمصاريف</span></button>
-<div class="carte" id="carteActAjout"><div class="titre-ligne"><h3>1. Ajouter une Activité <span class="ar">/ 1. إضافة نشاط</span></h3></div><p class="centre muted">Sortie, Fête, Concours Coran, Sport, Excursion, Réunion parents... <span class="ar">/ خرجة، حفلة، مسابقة قرآن، رياضة، رحلة، اجتماع أولياء...</span></p><label>École / Groupe * <span class="ar">/ المدرسة / المجموعة</span></label><select id="actEcole"><option value="">— Choisis l'école / اختر المدرسة —</option></select><label>Type * <span class="ar">/ النوع</span></label><select id="actType"><option value="Sortie">🚶 Sortie / خرجة</option><option value="Fête">🎉 Fête / Cérémonie / حفلة</option><option value="Concours">🏆 Concours Coran / Arabe / مسابقة قرآن / عربي</option><option value="Sport">⚽ Sport / رياضة</option><option value="Excursion">🚌 Excursion / رحلة</option><option value="Réunion">👥 Réunion parents / اجتماع أولياء</option><option value="Journée culturelle">🎭 Journée culturelle / يوم ثقافي</option><option value="Autre">📌 Autre / آخر</option></select><label>Titre * <span class="ar">/ العنوان</span></label><input id="actTitre" placeholder="Ex : Fête de fin d'année / حفلة نهاية السنة"><label>Description <span class="ar">/ الوصف</span></label><textarea id="actDesc" rows="2" placeholder="Ex : Tous les élèves + parents... / كل التلاميذ + الأولياء..."></textarea><label>Date * <span class="ar">/ التاريخ</span></label><input type="date" id="actDate"><label>Participants <span class="ar">/ المشاركون</span></label><input type="number" id="actParticipants" placeholder="Ex : 45"><button onclick="ajouterActivite()" class="btn-noir" style="margin-top:10px">➕ Ajouter l'activité / إضافة النشاط</button><p id="msgActivite" class="centre" style="color:green;font-weight:700"></p></div>
-<div class="carte" id="carteActListe"><div class="titre-ligne"><h3>2. Liste des Activités <span class="ar">/ 2. قائمة الأنشطة</span></h3></div>
-<label>🔍 Filtrer activités par école <span class="ar">/ تصفية الأنشطة حسب المدرسة</span></label>
-<input id="filtreActEcole" placeholder="Tape le nom de l'école... / اكتب اسم المدرسة..." list="listeEcolesAct" oninput="chargerActivitesDepenses()">
-<datalist id="listeEcolesAct"></datalist>
-<div id="listeActivites" style="margin-top:10px"></div></div>
-<div class="carte" id="carteDepAjout"><div class="titre-ligne"><h3>3. Ajouter une Dépense <span class="ar">/ 3. إضافة مصروف</span></h3></div><p class="centre muted">Chaque école connaît ses propres dépenses. <span class="ar">/ كل مدرسة تعرف مصاريفها الخاصة.</span></p><label>École / Groupe * <span class="ar">/ المدرسة / المجموعة</span></label><select id="depEcole"><option value="">— Choisis l'école / اختر المدرسة —</option></select><label>Catégorie * <span class="ar">/ الفئة</span></label><select id="depCategorie"><option value="Matériel">📚 Matériel / أدوات</option><option value="Salaire">👨‍🏫 Salaire / راتب</option><option value="Location">🏠 Location salle / كراء القاعة</option><option value="Transport">🚌 Transport / نقل</option><option value="Nourriture">🍲 Nourriture / طعام</option><option value="Activité">🎉 Activité / Fête / نشاط / حفلة</option><option value="Réparation">🔧 Réparation / إصلاح</option><option value="Autre">📌 Autre / آخر</option></select><label>Motif * <span class="ar">/ السبب</span></label><input id="depMotif" placeholder="Ex : Achat de 10 Corans / شراء 10 مصاحف"><label>Montant (FCFA) * <span class="ar">/ المبلغ</span></label><input type="number" id="depMontant" placeholder="Ex : 25000"><label>Date * <span class="ar">/ التاريخ</span></label><input type="date" id="depDate"><label>Qui a payé ? <span class="ar">/ من دفع ؟</span></label><input id="depPayeur" placeholder="Ex : Secrétaire / السكرتيرة"><button onclick="ajouterDepense()" class="btn-noir" style="margin-top:10px">➕ Ajouter la dépense / إضافة المصروف</button><p id="msgDepense" class="centre" style="color:green;font-weight:700"></p></div>
-<div class="carte" id="carteDepListe"><div class="titre-ligne"><h3>4. Liste des Dépenses <span class="ar">/ 4. قائمة المصاريف</span></h3></div>
-<label>🔍 Filtrer dépenses par école <span class="ar">/ تصفية المصاريف حسب المدرسة</span></label>
-<input id="filtreDepEcole" placeholder="Tape le nom de l'école... / اكتب اسم المدرسة..." list="listeEcolesDep" oninput="chargerActivitesDepenses()">
-<datalist id="listeEcolesDep"></datalist>
-<div id="listeDepenses" style="margin-top:10px"></div></div>
-<div class="carte" id="carteDepTotaux"><div class="titre-ligne"><h3>5. Totaux par École <span class="ar">/ 5. المجاميع حسب المدرسة</span></h3></div><div id="totauxDepensesParEcole"></div><div class="btn-row no-print"><button onclick="partagerDepensesWhatsApp()" class="btn-noir" style="background:#25D366">💬 WhatsApp / واتساب</button><button onclick="envoyerDepensesMail()" class="btn-noir" style="background:#1976D2">✉️ Mail / بريد</button></div></div>
+<button class="btn-voir-tout no-print" onclick="voirToutOnglet('tabActivites')">↩ Voir tout l'onglet Activités & Dépenses</button>
+<div class="carte" id="carteActAjout"><div class="titre-ligne"><h3>1. Ajouter une Activité</h3><div class="menu3"><button class="btn3" onclick="toggleMenu3('menu3Act1',event)">⋮</button><div class="menu3-drop" id="menu3Act1"><button onclick="location.reload()">🔄 Actualiser</button></div></div></div><p class="centre muted">Sortie, Fête, Concours Coran, Sport, Excursion, Réunion parents...</p><label>École / Groupe *</label><select id="actEcole"><option value="">— Choisis l'école —</option></select><label>Type *</label><select id="actType"><option value="Sortie">🚶 Sortie</option><option value="Fête">🎉 Fête / Cérémonie</option><option value="Concours">🏆 Concours Coran / Arabe</option><option value="Sport">⚽ Sport</option><option value="Excursion">🚌 Excursion</option><option value="Réunion">👥 Réunion parents</option><option value="Journée culturelle">🎭 Journée culturelle</option><option value="Autre">📌 Autre</option></select><label>Titre *</label><input id="actTitre" placeholder="Ex : Fête de fin d'année"><label>Description</label><textarea id="actDesc" rows="2" placeholder="Ex : Tous les élèves + parents..."></textarea><label>Date *</label><input type="date" id="actDate"><label>Participants</label><input type="number" id="actParticipants" placeholder="Ex : 45"><button onclick="ajouterActivite()" class="btn-noir" style="margin-top:10px">➕ Ajouter l'activité</button><p id="msgActivite" class="centre" style="color:green;font-weight:700"></p></div>
+<div class="carte" id="carteActListe"><div class="titre-ligne"><h3>2. Liste des Activités</h3><div class="menu3"><button class="btn3" onclick="toggleMenu3('menu3Act2',event)">⋮</button><div class="menu3-drop" id="menu3Act2"><button onclick="location.reload()">🔄 Actualiser</button></div></div></div><label>🔍 Filtrer activités par école</label><input id="filtreActEcole" placeholder="Tape le nom de l'école..." list="listeEcolesAct" oninput="chargerActivitesDepenses()"><datalist id="listeEcolesAct"></datalist><div id="listeActivites" style="margin-top:10px"></div></div>
+<div class="carte" id="carteDepAjout"><div class="titre-ligne"><h3>3. Ajouter une Dépense</h3><div class="menu3"><button class="btn3" onclick="toggleMenu3('menu3Dep1',event)">⋮</button><div class="menu3-drop" id="menu3Dep1"><button onclick="location.reload()">🔄 Actualiser</button></div></div></div><p class="centre muted">Chaque école connaît ses propres dépenses.</p><label>École / Groupe *</label><select id="depEcole"><option value="">— Choisis l'école —</option></select><label>Catégorie *</label><select id="depCategorie"><option value="Matériel">📚 Matériel</option><option value="Salaire">👨‍🏫 Salaire</option><option value="Location">🏠 Location salle</option><option value="Transport">🚌 Transport</option><option value="Nourriture">🍲 Nourriture</option><option value="Activité">🎉 Activité / Fête</option><option value="Réparation">🔧 Réparation</option><option value="Autre">📌 Autre</option></select><label>Motif *</label><input id="depMotif" placeholder="Ex : Achat de 10 Corans"><label>Montant (FCFA) *</label><input type="number" id="depMontant" placeholder="Ex : 25000"><label>Date *</label><input type="date" id="depDate"><label>Qui a payé ?</label><input id="depPayeur" placeholder="Ex : Secrétaire"><button onclick="ajouterDepense()" class="btn-noir" style="margin-top:10px">➕ Ajouter la dépense</button><p id="msgDepense" class="centre" style="color:green;font-weight:700"></p></div>
+<div class="carte" id="carteDepListe"><div class="titre-ligne"><h3>4. Liste des Dépenses</h3><div class="menu3"><button class="btn3" onclick="toggleMenu3('menu3Dep2',event)">⋮</button><div class="menu3-drop" id="menu3Dep2"><button onclick="location.reload()">🔄 Actualiser</button></div></div></div><label>🔍 Filtrer dépenses par école</label><input id="filtreDepEcole" placeholder="Tape le nom de l'école..." list="listeEcolesDep" oninput="chargerActivitesDepenses()"><datalist id="listeEcolesDep"></datalist><div id="listeDepenses" style="margin-top:10px"></div></div>
+<div class="carte" id="carteDepTotaux"><div class="titre-ligne"><h3>5. Totaux par École</h3><div class="menu3"><button class="btn3" onclick="toggleMenu3('menu3Dep3',event)">⋮</button><div class="menu3-drop" id="menu3Dep3"><button onclick="partagerDepensesWhatsApp()">💬 WhatsApp</button></div></div></div><div id="totauxDepensesParEcole"></div><div class="btn-row no-print"><button onclick="partagerDepensesWhatsApp()" class="btn-noir" style="background:#25D366">💬 WhatsApp</button><button onclick="envoyerDepensesMail()" class="btn-noir" style="background:#1976D2">✉️ Mail</button></div></div>
 </div>
 <div id="tabParametres" style="display:none">
-<button class="btn-voir-tout no-print" onclick="voirToutOnglet('tabParametres')">↩ Voir tout l'onglet Paramètres <span class="ar">/ عرض كل الإعدادات</span></button>
-<div class="carte" id="carteParMode" style="border:2px solid #FFE082;background:#FFF9C4"><div class="titre-ligne"><h3>📝 Mode de composition <span class="ar">/ طريقة الامتحان</span></h3></div><label>Mode * <span class="ar">/ الطريقة</span></label><select id="selectTypeComposition"><option value="oral-ecrit">Oral + Écrit (Oral /10 + Écrit /10 = Total /20) / شفوي + كتابي</option><option value="oral">Oral seul (Oral /20) / شفوي فقط</option><option value="ecrit">Écrit seul (Écrit /20) / كتابي فقط</option><option value="note-unique">Note unique (Note /20) / نقطة واحدة</option></select><button onclick="sauvegarderTypeComposition()" class="btn-noir" style="margin-top:10px">💾 Enregistrer le mode / حفظ الطريقة</button><p id="msgTypeComposition" class="centre" style="color:green;font-weight:700"></p><p class="centre muted">Actuel / الحالي : <b id="affichageTypeCompositionChoisi">Oral + Écrit / شفوي + كتابي</b></p></div>
-<div class="carte" id="carteParMatieres"><div class="titre-ligne"><h3>⚙️ Matières + Composition <span class="ar">/ المواد + الامتحان</span></h3></div><p class="centre muted">Matières / المواد : <b id="affichageMatieresParametres"></b> - Composition / الامتحان : <b id="affichageTypeCompositionParam"></b></p><div id="listeChoixMatieres"></div><div class="centre" style="margin-top:10px"><button onclick="toutCocherMatieres()" class="btn-or">✅ Tout cocher / تحديد الكل</button> <button onclick="toutDecocherMatieres()" class="btn-or">❌ Tout décocher / إلغاء تحديد الكل</button></div><button onclick="sauvegarderMatieresActives()" class="btn-noir" style="margin-top:12px">💾 Enregistrer - FIXER les matières / حفظ - تثبيت المواد</button><p id="msgMatieres" class="centre" style="color:green;font-weight:700"></p></div>
-<div class="carte" id="carteParPrix" style="border:2px solid #66BB6A"><div class="titre-ligne"><h3>💰 Prix par École <span class="ar">/ السعر حسب المدرسة</span></h3></div><label>1. Choisis l'école * <span class="ar">/ 1. اختر المدرسة</span></label><select id="selectNomEcolePrix"><option value="">— Choisis l'école / اختر المدرسة —</option></select><p id="msgListeEcoles" class="centre muted" style="font-size:11px">Chargement... / تحميل...</p><label>2. Ou nouvelle école (optionnel) <span class="ar">/ 2. أو مدرسة جديدة</span></label><input id="inputNomEcolePrix" placeholder="Ex : Nouvelle école / مدرسة جديدة"><label>3. Prix (FCFA) * <span class="ar">/ 3. السعر</span></label><input type="number" id="inputPrixEcole" placeholder="Ex : 15000"><button onclick="enregistrerPrixParEcole()" class="btn-noir" style="margin-top:10px">💾 Enregistrer ce prix / حفظ هذا السعر</button><p id="msgPrixEcole" class="centre" style="color:green;font-weight:700"></p><div id="listePrixParEcole" style="margin-top:10px"></div><label style="margin-top:12px">💰 Prix Secours (global) <span class="ar">/ السعر الاحتياطي</span></label><input type="number" id="inputPrixSecours" placeholder="Ex : 10000"><button onclick="enregistrerPrixSecours()" class="btn-noir" style="margin-top:8px;background:#FF9800">💾 Enregistrer le prix secours / حفظ السعر الاحتياطي</button></div>
-<div class="carte"><div class="titre-ligne"><h3>💰 Frais Total - Ancien prix <span class="ar">/ الرسوم الكلية - السعر القديم</span></h3></div><p class="centre muted">Actuel / الحالي : <b id="affichageFraisTotal">Non défini / غير محدد</b></p><label>Frais total par élève * <span class="ar">/ الرسوم الكلية للتلميذ</span></label><input type="number" id="inputFraisTotal" placeholder="Ex : 10000"><button onclick="definirFraisTotal()" class="btn-noir" style="margin-top:10px">💾 Enregistrer / حفظ</button></div>
-<div class="carte" id="carteParDivers"><div class="titre-ligne"><h3>📢 Divers - Annonce <span class="ar">/ متنوعات - إعلان</span></h3></div><label>Titre <span class="ar">/ العنوان</span></label><input id="diversTitre" placeholder="Ex : Réunion parents / اجتماع أولياء"><label>Message <span class="ar">/ الرسالة</span></label><input id="diversTexte" placeholder="Ex : Réunion samedi à 8h... / اجتماع السبت..."><label>Durée (jours) <span class="ar">/ المدة (أيام)</span></label><input type="number" id="diversDuree" value="7"><button onclick="publierDivers()" class="btn-noir" style="margin-top:10px">📢 Publier / نشر</button><div id="listeDivers" style="margin-top:10px"></div></div>
-<div class="carte"><div class="titre-ligne"><h3>ℹ️ Infos École <span class="ar">/ معلومات المدرسة</span></h3></div><p class="centre">École / المدرسة : <b id="monEcoleNom2">...</b></p></div>
-<div class="carte"><div class="titre-ligne"><h3>🗑️ Zone Dangereuse <span class="ar">/ منطقة الخطر</span></h3></div><button onclick="effacerToutHistorique()" class="btn-noir" style="background:#EF5350">🗑️ TOUT EFFACER - Écris EFFACER / حذف الكل - اكتب EFFACER</button></div>
+<button class="btn-voir-tout no-print" onclick="voirToutOnglet('tabParametres')">↩ Voir tout l'onglet Paramètres</button>
+<div class="carte" id="carteParMode" style="border:2px solid #FFE082;background:#FFF9C4"><div class="titre-ligne"><h3>📝 Mode de composition</h3><div class="menu3"><button class="btn3" onclick="toggleMenu3('menu3ParMode',event)">⋮</button><div class="menu3-drop" id="menu3ParMode"><button onclick="sauvegarderTypeComposition()">💾 Enregistrer</button></div></div></div><label>Mode *</label><select id="selectTypeComposition"><option value="oral-ecrit">Oral + Écrit (Oral /10 + Écrit /10 = Total /20)</option><option value="oral">Oral seul (Oral /20)</option><option value="ecrit">Écrit seul (Écrit /20)</option><option value="note-unique">Note unique (Note /20)</option></select><button onclick="sauvegarderTypeComposition()" class="btn-noir" style="margin-top:10px">💾 Enregistrer le mode</button><p id="msgTypeComposition" class="centre" style="color:green;font-weight:700"></p><p class="centre muted">Actuel : <b id="affichageTypeCompositionChoisi">Oral + Écrit</b></p></div>
+<div class="carte" id="carteParMatieres"><div class="titre-ligne"><h3>⚙️ Matières + Composition</h3><div class="menu3"><button class="btn3" onclick="toggleMenu3('menu3ParMat',event)">⋮</button><div class="menu3-drop" id="menu3ParMat"><button onclick="sauvegarderMatieresActives()">💾 Enregistrer</button></div></div></div><p class="centre muted">Matières : <b id="affichageMatieresParametres"></b> - Composition : <b id="affichageTypeCompositionParam"></b></p><div id="listeChoixMatieres"></div><div class="centre" style="margin-top:10px"><button onclick="toutCocherMatieres()" class="btn-or">✅ Tout cocher</button> <button onclick="toutDecocherMatieres()" class="btn-or">❌ Tout décocher</button></div><button onclick="sauvegarderMatieresActives()" class="btn-noir" style="margin-top:12px">💾 Enregistrer - FIXER les matières</button><p id="msgMatieres" class="centre" style="color:green;font-weight:700"></p></div>
+<div class="carte" id="carteParPrix" style="border:2px solid #66BB6A"><div class="titre-ligne"><h3>💰 Prix par École</h3><div class="menu3"><button class="btn3" onclick="toggleMenu3('menu3ParPrix',event)">⋮</button><div class="menu3-drop" id="menu3ParPrix"><button onclick="enregistrerPrixParEcole()">💾 Enregistrer</button></div></div></div><label>1. Choisis l'école *</label><select id="selectNomEcolePrix"><option value="">— Choisis l'école —</option></select><p id="msgListeEcoles" class="centre muted" style="font-size:11px">Chargement...</p><label>2. Ou nouvelle école (optionnel)</label><input id="inputNomEcolePrix" placeholder="Ex : Nouvelle école"><label>3. Prix (FCFA) *</label><input type="number" id="inputPrixEcole" placeholder="Ex : 15000"><button onclick="enregistrerPrixParEcole()" class="btn-noir" style="margin-top:10px">💾 Enregistrer ce prix</button><p id="msgPrixEcole" class="centre" style="color:green;font-weight:700"></p><div id="listePrixParEcole" style="margin-top:10px"></div><label style="margin-top:12px">💰 Prix Secours (global)</label><input type="number" id="inputPrixSecours" placeholder="Ex : 10000"><button onclick="enregistrerPrixSecours()" class="btn-noir" style="margin-top:8px;background:#FF9800">💾 Enregistrer le prix secours</button></div>
+<div class="carte"><div class="titre-ligne"><h3>💰 Frais Total - Ancien prix</h3><div class="menu3"><button class="btn3" onclick="toggleMenu3('menu3ParFrais',event)">⋮</button><div class="menu3-drop" id="menu3ParFrais"><button onclick="definirFraisTotal()">💾 Enregistrer</button></div></div></div><p class="centre muted">Actuel : <b id="affichageFraisTotal">Non défini</b></p><label>Frais total par élève *</label><input type="number" id="inputFraisTotal" placeholder="Ex : 10000"><button onclick="definirFraisTotal()" class="btn-noir" style="margin-top:10px">💾 Enregistrer</button></div>
+<div class="carte" id="carteParDivers"><div class="titre-ligne"><h3>📢 Divers - Annonce</h3><div class="menu3"><button class="btn3" onclick="toggleMenu3('menu3ParDiv',event)">⋮</button><div class="menu3-drop" id="menu3ParDiv"><button onclick="publierDivers()">📢 Publier</button></div></div></div><label>Titre</label><input id="diversTitre" placeholder="Ex : Réunion parents"><label>Message</label><input id="diversTexte" placeholder="Ex : Réunion samedi à 8h..."><label>Durée (jours)</label><input type="number" id="diversDuree" value="7"><button onclick="publierDivers()" class="btn-noir" style="margin-top:10px">📢 Publier</button><div id="listeDivers" style="margin-top:10px"></div></div>
+<div class="carte"><div class="titre-ligne"><h3>ℹ️ Infos École</h3><div class="menu3"><button class="btn3" onclick="toggleMenu3('menu3ParInfo',event)">⋮</button><div class="menu3-drop" id="menu3ParInfo"><button onclick="location.reload()">🔄 Actualiser</button></div></div></div><p class="centre">École : <b id="monEcoleNom2">...</b></p></div>
+<div class="carte"><div class="titre-ligne"><h3>🗑️ Zone Dangereuse</h3><div class="menu3"><button class="btn3" onclick="toggleMenu3('menu3ParDanger',event)">⋮</button><div class="menu3-drop" id="menu3ParDanger"><button onclick="effacerToutHistorique()">🗑️ TOUT EFFACER</button></div></div></div><button onclick="effacerToutHistorique()" class="btn-noir" style="background:#EF5350">🗑️ TOUT EFFACER - Écris EFFACER</button></div>
 </div>
 <div id="zoneImpression" style="display:none;margin-top:12px"></div>
 </div>
 </div>
 <button class="btn-flottant no-print" onclick="toggleMenuFlottant()">＋</button>
 <div class="menu-flottant no-print" id="menuFlottant">
-<button onclick="imprimerSeulBulletin()">🖨️ Imprimer le bulletin seul / طباعة الكشف فقط</button>
-<button onclick="imprimerSeulBulletin()">⬇️ Télécharger en PDF / تحميل PDF</button>
-<button onclick="partagerWhatsAppActuel()">💬 Envoyer sur WhatsApp / إرسال عبر واتساب</button>
-<button onclick="toggleMenuFlottant()">❌ Fermer / إغلاق</button>
+<button onclick="imprimerSeulBulletin()">🖨️ Imprimer le bulletin seul</button>
+<button onclick="imprimerSeulBulletin()">⬇️ Télécharger en PDF</button>
+<button onclick="partagerWhatsAppActuel()">💬 Envoyer sur WhatsApp</button>
+<button onclick="toggleMenuFlottant()">❌ Fermer</button>
 </div>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
@@ -290,7 +274,7 @@ function imprimerSeulBulletin(){
     let rel = document.getElementById('releveTrimestreEleve');
     if(ann && ann.innerHTML.trim()) zone.innerHTML = ann.innerHTML;
     else if(rel && rel.innerHTML.trim()) zone.innerHTML = rel.innerHTML;
-    else { alert("Choisis d'abord un bulletin à voir. / اختر كشفا أولا."); return; }
+    else { alert("Choisis d'abord un bulletin à voir."); return; }
     zone.style.display = "block";
   }
   window.print();
@@ -298,12 +282,125 @@ function imprimerSeulBulletin(){
 function telechargerBulletinTrimestrePDF(){ imprimerSeulBulletin(); }
 function telechargerBulletinAnnuelPDF(){ imprimerSeulBulletin(); }
 function telechargerReleveTrimestrePDF(){ imprimerSeulBulletin(); }
-function imprimerFeuilleActuelle(){ imprimerSeulBulletin(); }
-function telechargerPDFActuel(){ imprimerSeulBulletin(); }
+function telechargerToutesNotesPDF(){ let z=document.getElementById('tableauNotesGestion'); if(!z || !z.innerHTML.trim()){ alert("Aucune note à télécharger."); return; } let zone=document.getElementById('zoneImpression'); zone.innerHTML=z.innerHTML; zone.style.display="block"; window.print(); }
+function partagerToutesNotesWhatsApp(){ let t=document.getElementById('tableauNotesGestion')?.innerText||""; if(!t.trim()){ alert("Aucune note."); return; } window.open("https://wa.me/?text="+encodeURIComponent("Notes - Institut Nouroul Iymane\n"+t.slice(0,3000)),"_blank"); }
 function cacherBulletinBas(){ let zone=document.getElementById('zoneImpression'); if(zone){ zone.innerHTML=""; zone.style.display="none"; } }
 function cacherBulletinAnnuel(){ let b=document.getElementById('bulletinAnnuelEleve'); if(b) b.innerHTML=""; let btns=document.getElementById('btnsBulletinAnnuel'); if(btns) btns.style.display="none"; cacherBulletinBas(); }
 function cacherReleve(){ let b=document.getElementById('releveTrimestreEleve'); if(b) b.innerHTML=""; let btns=document.getElementById('btnsReleve'); if(btns) btns.style.display="none"; cacherBulletinBas(); }
-function cacherListeBulletins(){ let z=document.getElementById('zoneImpression'); if(z){ z.innerHTML=""; z.style.display="none"; } }
+function totalVraiNoteGestion(n){
+  let mode=String(window.TYPE_COMPOSITION||localStorage.getItem('typeComposition')||"oral-ecrit").toLowerCase();
+  let oral=Number(n.oral||n.noteOral||0), ecrit=Number(n.ecrit||n.noteEcrit||0);
+  let devoir=Number(n.devoir||n.noteDevoir||0), compo=Number(n.composition||n.noteComposition||n.examen||0);
+  let unique=Number(n.moyenne||n.note||n.total||n.noteUnique||0);
+  if(mode.includes("devoir")){ if(devoir>0||compo>0) return Math.min(20,devoir+compo); if(unique>0) return Math.min(20,unique); }
+  if(mode.includes("composition") && !mode.includes("devoir")){ if(compo>0) return Math.min(20,compo); if(unique>0) return Math.min(20,unique); if(oral>0||ecrit>0) return Math.min(20,oral+ecrit); }
+  if(mode.includes("oral") && mode.includes("seul")){ if(oral>0) return Math.min(20,oral); if(unique>0) return Math.min(20,unique); }
+  if(oral>0||ecrit>0) return Math.min(20,oral+ecrit);
+  return Math.min(20,unique);
+}
+function detailNoteGestion(n){
+  let mode=String(window.TYPE_COMPOSITION||localStorage.getItem('typeComposition')||"oral-ecrit").toLowerCase();
+  let oral=Number(n.oral||0), ecrit=Number(n.ecrit||0), devoir=Number(n.devoir||0), compo=Number(n.composition||0);
+  if(mode.includes("devoir") && (devoir>0||compo>0)) return devoir + " + " + compo;
+  if(mode.includes("composition") && !mode.includes("devoir") && compo>0) return "" + compo;
+  if(oral>0||ecrit>0) return oral + " + " + ecrit;
+  return "" + totalVraiNoteGestion(n);
+}
+function afficherNotesGestion(){
+  let box=document.getElementById('tableauNotesGestion'); if(!box) return;
+  let q=(document.getElementById('rechercheEleveBulletin')?.value||"").toLowerCase().trim();
+  let tri=document.getElementById('filtreTrimestreBulletin')?.value||"";
+  let matieres=[];
+  if(typeof MATIERES_ACTIVES!=="undefined" && MATIERES_ACTIVES.length) matieres=MATIERES_ACTIVES;
+  else if(typeof TOUS_BULLETINS!=="undefined"){ let s=new Set(); TOUS_BULLETINS.forEach(b=>{ if(b.matiere) s.add(b.matiere); }); matieres=[...s]; }
+  let parEleve={};
+  (typeof TOUS_BULLETINS!=="undefined"?TOUS_BULLETINS:[]).forEach(b=>{
+    if(tri && b.trimestre!==tri) return;
+    if(q && !(b.eleve||"").toLowerCase().includes(q)) return;
+    let k=(b.eleve||"")+"||"+(b.trimestre||"");
+    if(!parEleve[k]) parEleve[k]={eleve:b.eleve, trimestre:b.trimestre, ecole:b.ecole||"", notes:{}};
+    let cle=(b.matiere||"").toLowerCase().trim();
+    parEleve[k].notes[cle]=b;
+  });
+  let lignes=Object.values(parEleve).sort((a,b)=>a.eleve.localeCompare(b.eleve));
+  if(!lignes.length){ box.innerHTML=`<p class="centre">Aucune note.</p>`; return; }
+  let html=`<div class="centre" style="margin-bottom:8px"><b>Mode : ${window.TYPE_COMPOSITION||"Oral + Écrit"}</b></div><div style="overflow-x:auto"><table class="table-blanc"><thead><tr><th>Élève</th><th>Trimestre</th>`;
+  matieres.forEach(m=>{ html+=`<th style="text-align:center">${m}</th>`; });
+  html+=`<th>Moyenne /20</th><th>Voir Bulletin</th><th>Télécharger</th><th>⋮</th></tr></thead><tbody>`;
+  lignes.forEach((g,idx)=>{
+    let total=0, nb=0;
+    matieres.forEach(m=>{ let n=g.notes[String(m).toLowerCase().trim()]; if(n){ total+=totalVraiNoteGestion(n); nb++; } });
+    let moy=nb>0?(total/nb).toFixed(2):"0.00";
+    let label=nb>=matieres.length?"✅ Finale":`⏳ ${nb}/${matieres.length}`;
+    html+=`<tr><td><b>${g.eleve}</b></td><td>${g.trimestre}</td>`;
+    matieres.forEach(m=>{ let n=g.notes[String(m).toLowerCase().trim()]; if(!n){ html+=`<td style="text-align:center;background:#F5F5F5;color:#999">-</td>`; return; } let v=totalVraiNoteGestion(n), d=detailNoteGestion(n); html+=`<td style="text-align:center;background:#E8F5E9;font-weight:800;white-space:nowrap">${v}<br><small style="white-space:nowrap">${d}</small></td>`; });
+    html+=`<td style="text-align:center"><b>${moy}</b><br><small>${label}</small></td>`;
+    html+=`<td style="text-align:center"><button class="btn-or" onclick="voirBulletinEleveGestion('${String(g.eleve).replace(/'/g,"\\'")}','${g.trimestre}')">👁️ Voir</button></td>`;
+    html+=`<td style="text-align:center"><button class="btn-or" onclick="telechargerBulletinEleveGestion('${String(g.eleve).replace(/'/g,"\\'")}','${g.trimestre}')">⬇️ PDF</button></td>`;
+    html+=`<td><div class="menu3"><button class="btn3" onclick="toggleMenu3('m3_${idx}',event)">⋮</button><div class="menu3-drop" id="m3_${idx}"><button onclick="voirBulletinEleveGestion('${String(g.eleve).replace(/'/g,"\\'")}','${g.trimestre}')">👁️ Voir Bulletin</button><button onclick="telechargerBulletinEleveGestion('${String(g.eleve).replace(/'/g,"\\'")}','${g.trimestre}')">⬇️ Télécharger PDF</button><button onclick="envoyerBulletinEleveWhatsAppGestion('${String(g.eleve).replace(/'/g,"\\'")}','${g.trimestre}')">💬 WhatsApp</button></div></div></td></tr>`;
+  });
+  html+=`</tbody></table></div>`;
+  box.innerHTML=html;
+}
+function voirBulletinEleveGestion(eleve,tri){
+  let sel=document.getElementById('bulEleve'); if(sel) sel.value=eleve;
+  let t=document.getElementById('bulTrimestre'); if(t) t.value=tri;
+  if(typeof chargerNotesExistantes==="function"){ try{ chargerNotesExistantes(); }catch(e){} }
+  let tab=document.getElementById('tabBulletins'); if(tab) tab.style.display="block";
+  let carte=document.getElementById('carteBul1'); if(carte) carte.style.display="block";
+  setTimeout(function(){
+    if(typeof voirBulletinDetail==="function"){ voirBulletinDetail(eleve, tri); }
+    else { alert("voirBulletinDetail n'existe pas. Vérifie que la Partie 2 est bien collée."); }
+    let zone=document.getElementById('zoneImpression');
+    if(zone) zone.scrollIntoView({behavior:'smooth'});
+  }, 300);
+}
+function telechargerBulletinEleveGestion(eleve,tri){
+  voirBulletinEleveGestion(eleve,tri);
+  setTimeout(function(){ let zone=document.getElementById('zoneImpression'); if(zone && zone.innerHTML.trim()){ window.print(); } else if(typeof telechargerBulletinTrimestrePDF==="function") telechargerBulletinTrimestrePDF(); else window.print(); }, 800);
+}
+function envoyerBulletinEleveWhatsAppGestion(eleve,tri){
+  voirBulletinEleveGestion(eleve,tri);
+  setTimeout(()=>{ if(typeof envoyerBulletinTrimestreWhatsApp==="function") envoyerBulletinTrimestreWhatsApp(); },600);
+}
+// ===== BOUTONS DEBLOQUER + SUPPRIMER =====
+function deblocquerBulletinEleve(){
+  let eleve = document.getElementById('bulEleve')?.value || "";
+  let tri = document.getElementById('bulTrimestre')?.value || "Trimestre 1";
+  if(!eleve){ alert("Choisis d'abord l'élève."); return; }
+  if(typeof chargerNotesExistantes==="function"){ try{ chargerNotesExistantes(); }catch(e){} }
+  let msg = document.getElementById('msgBulletin');
+  if(msg){ msg.style.color="#FF9800"; msg.textContent="🔓 Bulletin débloqué pour "+eleve+" - "+tri+" : corrige les notes puis clique sur Enregistrer le bulletin."; }
+  alert("🔓 Bulletin débloqué pour "+eleve+" - "+tri+"\n\nCorrige les notes puis clique sur Enregistrer le bulletin.");
+}
+async function supprimerBulletinEleve(){
+  let eleve = document.getElementById('bulEleve')?.value || "";
+  let tri = document.getElementById('bulTrimestre')?.value || "Trimestre 1";
+  if(!eleve){ alert("Choisis d'abord l'élève."); return; }
+  if(!confirm("🗑️ SUPPRIMER le bulletin de\n\n"+eleve+"\n"+tri+" ?\n\nCette action est définitive.")) return;
+  try{
+    let supprime = 0;
+    for(let col of ["bulletins","notes"]){
+      try{
+        let snap = await db.collection(col).where("eleve","==",eleve).where("trimestre","==",tri).get();
+        for(let doc of snap.docs){ await db.collection(col).doc(doc.id).delete(); supprime++; }
+      }catch(e){}
+    }
+    if(typeof TOUS_BULLETINS!=="undefined"){
+      TOUS_BULLETINS = TOUS_BULLETINS.filter(function(b){ return !(b.eleve===eleve && b.trimestre===tri); });
+    }
+    if(typeof chargerNotesExistantes==="function"){ try{ chargerNotesExistantes(); }catch(e){} }
+    if(typeof afficherBulletins==="function"){ try{ afficherBulletins(); }catch(e){} }
+    if(typeof afficherNotesGestion==="function"){ try{ afficherNotesGestion(); }catch(e){} }
+    let msg = document.getElementById('msgBulletin');
+    if(msg){ msg.style.color="#EF5350"; msg.textContent="🗑️ Bulletin supprimé : "+eleve+" - "+tri+" ("+supprime+" note(s))"; }
+    alert("🗑️ Bulletin supprimé : "+eleve+" - "+tri);
+    let zone = document.getElementById('zoneImpression');
+    if(zone){ zone.innerHTML=""; zone.style.display="none"; }
+  }catch(e){ alert("❌ Erreur suppression : "+e.message); }
+}
+// ===== FIN BOUTONS =====
+function afficherBulletins(){ if(typeof afficherNotesGestion==="function") afficherNotesGestion(); }
 function appreciationAuto(moy){
   moy = Number(moy);
   if(moy >= 18) return "Excellent, continue comme ça. / ممتاز، واصل هكذا";
@@ -319,51 +416,21 @@ function getEcoleDunEleve(nomEleve, objEleve){
     let c = objEleve.ecole || objEleve.ecoleNom || objEleve.nomEcole || objEleve.groupe || objEleve.school || objEleve.classeEcole || objEleve.ecoleGroupe || "";
     if(c && String(c).trim()) return String(c).trim();
   }
-  try{
-    if(typeof ecoleDeEleveBulletin==="function"){
-      let ec = ecoleDeEleveBulletin(nomEleve||"");
-      if(ec && String(ec).trim()) return String(ec).trim();
-    }
-  }catch(e){}
-  if(typeof TOUS_BULLETINS!=="undefined"){
-    let b = TOUS_BULLETINS.find(function(x){ return normaliser(x.eleve||"")===normaliser(nomEleve||"") && x.ecole; });
-    if(b && b.ecole) return String(b.ecole).trim();
-  }
+  try{ if(typeof ecoleDeEleveBulletin==="function"){ let ec = ecoleDeEleveBulletin(nomEleve||""); if(ec && String(ec).trim()) return String(ec).trim(); } }catch(e){}
+  if(typeof TOUS_BULLETINS!=="undefined"){ let b = TOUS_BULLETINS.find(function(x){ return normaliser(x.eleve||"")===normaliser(nomEleve||"") && x.ecole; }); if(b && b.ecole) return String(b.ecole).trim(); }
   return "";
 }
 function getToutesLesEcolesAnnuel(){
   let set = new Set();
-  if(typeof TOUS_ELEVES_GESTION!=="undefined"){
-    TOUS_ELEVES_GESTION.forEach(function(e){
-      let nom = e.enfant || e.nomEnfant || "";
-      let ec = getEcoleDunEleve(nom, e);
-      if(ec) set.add(ec);
-    });
-  }
-  if(typeof TOUS_BULLETINS!=="undefined"){
-    TOUS_BULLETINS.forEach(function(b){ if(b.ecole) set.add(String(b.ecole).trim()); });
-  }
-  ["filtreEcoleBulletin","filtreEcoleEleves","filtreEcolePresence","selectNomEcolePrix"].forEach(function(id){
-    let s = document.getElementById(id);
-    if(s){
-      Array.from(s.options||[]).forEach(function(o){
-        let v = (o.value||o.text||"").trim();
-        if(v && v.indexOf("Toutes")<0 && v.indexOf("Choisis")<0) set.add(v);
-      });
-    }
-  });
+  if(typeof TOUS_ELEVES_GESTION!=="undefined"){ TOUS_ELEVES_GESTION.forEach(function(e){ let nom = e.enfant || e.nomEnfant || ""; let ec = getEcoleDunEleve(nom, e); if(ec) set.add(ec); }); }
+  if(typeof TOUS_BULLETINS!=="undefined"){ TOUS_BULLETINS.forEach(function(b){ if(b.ecole) set.add(String(b.ecole).trim()); }); }
+  ["filtreEcoleBulletin","filtreEcoleEleves","filtreEcolePresence","selectNomEcolePrix"].forEach(function(id){ let s = document.getElementById(id); if(s){ Array.from(s.options||[]).forEach(function(o){ let v = (o.value||o.text||"").trim(); if(v && v.indexOf("Toutes")<0 && v.indexOf("Choisis")<0) set.add(v); }); } });
   return [...set].sort();
 }
 function remplirFiltresEcoleAnnuel(){
   let ecoles = getToutesLesEcolesAnnuel();
   if(!ecoles.length) return false;
-  ["filtreEcoleBulletinAnnuel","filtreEcoleReleve"].forEach(function(id){
-    let s = document.getElementById(id);
-    if(!s) return;
-    let actuel = s.value;
-    s.innerHTML = '<option value="">— Toutes les écoles / كل المدارس —</option>' + ecoles.map(function(ec){ return '<option value="'+ec+'">'+ec+'</option>'; }).join("");
-    if(actuel) s.value = actuel;
-  });
+  ["filtreEcoleBulletinAnnuel","filtreEcoleReleve"].forEach(function(id){ let s = document.getElementById(id); if(!s) return; let actuel = s.value; s.innerHTML = '<option value="">— Toutes les écoles —</option>' + ecoles.map(function(ec){ return '<option value="'+ec+'">'+ec+'</option>'; }).join(""); if(actuel) s.value = actuel; });
   return true;
 }
 function filtrerElevesAnnuelParEcole(){
@@ -372,26 +439,8 @@ function filtrerElevesAnnuelParEcole(){
   let sel = document.getElementById('bilanAnnuelEleve');
   if(!sel) return;
   let liste = [];
-  if(typeof TOUS_ELEVES_GESTION!=="undefined"){
-    liste = TOUS_ELEVES_GESTION.filter(function(e){
-      if(!ecole) return true;
-      let nom = e.enfant || e.nomEnfant || "";
-      let ec = getEcoleDunEleve(nom, e);
-      return normaliser(ec) === normaliser(ecole);
-    });
-  }
-  if(!liste.length && typeof TOUS_BULLETINS!=="undefined"){
-    let noms = [...new Set(TOUS_BULLETINS.map(function(b){ return b.eleve; }))];
-    liste = noms.filter(function(nom){
-      if(!ecole) return true;
-      let ec = getEcoleDunEleve(nom, null);
-      return normaliser(ec) === normaliser(ecole);
-    }).map(function(nom){ return { enfant: nom, niveau: "" }; });
-  }
-  sel.innerHTML = '<option value="">— Choisis l\'élève ('+liste.length+') / اختر التلميذ —</option>' + liste.map(function(e){
-    let nom = e.enfant || e.nomEnfant || "";
-    return '<option value="'+nom+'">'+nom+' - '+(e.niveau||"")+'</option>';
-  }).join("");
+  if(typeof TOUS_ELEVES_GESTION!=="undefined"){ liste = TOUS_ELEVES_GESTION.filter(function(e){ if(!ecole) return true; let nom = e.enfant || e.nomEnfant || ""; let ec = getEcoleDunEleve(nom, e); return normaliser(ec) === normaliser(ecole); }); }
+  sel.innerHTML = '<option value="">— Choisis l\'élève ('+liste.length+') —</option>' + liste.map(function(e){ let nom = e.enfant || e.nomEnfant || ""; return '<option value="'+nom+'">'+nom+' - '+(e.niveau||"")+'</option>'; }).join("");
 }
 function filtrerElevesReleveParEcole(){
   remplirFiltresEcoleAnnuel();
@@ -399,33 +448,11 @@ function filtrerElevesReleveParEcole(){
   let sel = document.getElementById('releveEleve');
   if(!sel) return;
   let liste = [];
-  if(typeof TOUS_ELEVES_GESTION!=="undefined"){
-    liste = TOUS_ELEVES_GESTION.filter(function(e){
-      if(!ecole) return true;
-      let nom = e.enfant || e.nomEnfant || "";
-      let ec = getEcoleDunEleve(nom, e);
-      return normaliser(ec) === normaliser(ecole);
-    });
-  }
-  if(!liste.length && typeof TOUS_BULLETINS!=="undefined"){
-    let noms = [...new Set(TOUS_BULLETINS.map(function(b){ return b.eleve; }))];
-    liste = noms.filter(function(nom){
-      if(!ecole) return true;
-      let ec = getEcoleDunEleve(nom, null);
-      return normaliser(ec) === normaliser(ecole);
-    }).map(function(nom){ return { enfant: nom, niveau: "" }; });
-  }
-  sel.innerHTML = '<option value="">— Choisis l\'élève ('+liste.length+') / اختر التلميذ —</option>' + liste.map(function(e){
-    let nom = e.enfant || e.nomEnfant || "";
-    return '<option value="'+nom+'">'+nom+' - '+(e.niveau||"")+'</option>';
-  }).join("");
+  if(typeof TOUS_ELEVES_GESTION!=="undefined"){ liste = TOUS_ELEVES_GESTION.filter(function(e){ if(!ecole) return true; let nom = e.enfant || e.nomEnfant || ""; let ec = getEcoleDunEleve(nom, e); return normaliser(ec) === normaliser(ecole); }); }
+  sel.innerHTML = '<option value="">— Choisis l\'élève ('+liste.length+') —</option>' + liste.map(function(e){ let nom = e.enfant || e.nomEnfant || ""; return '<option value="'+nom+'">'+nom+' - '+(e.niveau||"")+'</option>'; }).join("");
 }
 let _tentativesFiltreAnnuel = 0;
-let _timerFiltreAnnuel = setInterval(function(){
-  _tentativesFiltreAnnuel++;
-  let ok = remplirFiltresEcoleAnnuel();
-  if(ok || _tentativesFiltreAnnuel > 20) clearInterval(_timerFiltreAnnuel);
-}, 1000);
+let _timerFiltreAnnuel = setInterval(function(){ _tentativesFiltreAnnuel++; let ok = remplirFiltresEcoleAnnuel(); if(ok || _tentativesFiltreAnnuel > 20) clearInterval(_timerFiltreAnnuel); }, 1000);
 function calculerRangBulletin(eleve, tri, moyEleve){
   let eleveCible = TOUS_ELEVES_GESTION.find(function(e){ return normaliser(e.enfant||e.nomEnfant||"")===normaliser(eleve); }) || {};
   let ecoleCible = normaliser(ecoleDeEleveBulletin(eleve) || eleveCible.ecole || eleveCible.ecoleNom || eleveCible.groupe || "");
@@ -447,10 +474,37 @@ function calculerRangBulletin(eleve, tri, moyEleve){
   let rang = liste.findIndex(function(g){ return normaliser(g.nom) === normaliser(eleve); }) + 1;
   return { rang: rang || 1, total: liste.length || 1 };
 }
+function totalVraiNoteGestion2(n){
+  if(typeof totalVraiNoteGestion==="function") return totalVraiNoteGestion(n);
+  let mode=String(window.TYPE_COMPOSITION||localStorage.getItem('typeComposition')||"oral-ecrit").toLowerCase();
+  let oral=Number(n.oral||n.noteOral||0), ecrit=Number(n.ecrit||n.noteEcrit||0);
+  let devoir=Number(n.devoir||n.noteDevoir||0), compo=Number(n.composition||n.noteComposition||n.examen||0);
+  let unique=Number(n.moyenne||n.note||n.total||n.noteUnique||0);
+  if(mode.includes("devoir")){ if(devoir>0||compo>0) return Math.min(20,devoir+compo); if(unique>0) return Math.min(20,unique); }
+  if(mode.includes("composition") && !mode.includes("devoir")){ if(compo>0) return Math.min(20,compo); if(unique>0) return Math.min(20,unique); if(oral>0||ecrit>0) return Math.min(20,oral+ecrit); }
+  if(mode.includes("oral") && mode.includes("seul")){ if(oral>0) return Math.min(20,oral); if(unique>0) return Math.min(20,unique); }
+  if(oral>0||ecrit>0) return Math.min(20,oral+ecrit);
+  return Math.min(20,unique);
+}
+function detailNoteGestion2(n){
+  if(typeof detailNoteGestion==="function") return detailNoteGestion(n);
+  let mode=String(window.TYPE_COMPOSITION||localStorage.getItem('typeComposition')||"oral-ecrit").toLowerCase();
+  let oral=Number(n.oral||0), ecrit=Number(n.ecrit||0), devoir=Number(n.devoir||0), compo=Number(n.composition||0);
+  if(mode.includes("devoir") && (devoir>0||compo>0)) return devoir + " + " + compo;
+  if(mode.includes("composition") && !mode.includes("devoir") && compo>0) return "" + compo;
+  if(oral>0||ecrit>0) return oral + " + " + ecrit;
+  return "" + totalVraiNoteGestion2(n);
+}
+function calculerMoyenneTrimestreCorrige(lignes){
+  if(!lignes || !lignes.length) return 0;
+  let nbFixe = (typeof getNbMatieresFixees==="function" ? getNbMatieresFixees() : lignes.length) || lignes.length;
+  let total=0;
+  lignes.forEach(function(l){ total+=totalVraiNoteGestion2(l); });
+  return total / nbFixe;
+}
 function voirBulletinDetail(eleve, tri){
   let lignes = TOUS_BULLETINS.filter(function(b){ return b.eleve===eleve && b.trimestre===tri; });
-  let nbFixe = getNbMatieresFixees();
-  let moy = calculerMoyenneTrimestre(lignes).toFixed(2);
+  let moy = calculerMoyenneTrimestreCorrige(lignes).toFixed(2);
   let infoRang = calculerRangBulletin(eleve, tri, Number(moy));
   let ecoleSpecifique = (lignes[0] && lignes[0].ecole) || ecoleDeEleveBulletin(eleve) || monEcoleNom;
   let eleveObj = TOUS_ELEVES_GESTION.find(function(e){ return normaliser(e.enfant||e.nomEnfant||"")===normaliser(eleve); }) || {};
@@ -460,12 +514,21 @@ function voirBulletinDetail(eleve, tri){
   let appManuel = ((document.getElementById('bulAppreciationGenerale')?.value || "").trim() || (lignes[0] && lignes[0].appreciation) || "");
   let app = appManuel ? appManuel : appreciationAuto(moy);
   let medal = infoRang.rang===1 ? "🥇" : infoRang.rang===2 ? "🥈" : infoRang.rang===3 ? "🥉" : "🏅";
+  let modeAff = String(window.TYPE_COMPOSITION||localStorage.getItem('typeComposition')||"oral-ecrit").toLowerCase();
+  let col1 = modeAff.includes("devoir") ? "Devoir / الواجب /10" : modeAff.includes("composition") ? "Composition / الامتحان /20" : "Oral / الشفوي /10";
+  let col2 = modeAff.includes("devoir") ? "Composition / الامتحان /10" : modeAff.includes("composition") ? "—" : "Écrit / الكتابي /10";
   let html = '<div class="bulletin-page">';
   html += '<div class="b-head"><h2>☪️ INSTITUT NOUROUL IYMANE <span class="ar">- معهد نور الإيمان</span></h2><h3>🏫 '+ecoleSpecifique+' <span class="ar">- المدرسة</span></h3><p style="margin:4px 0;font-size:13px">Bulletin de Notes - <span class="ar">كشف النقاط</span> - '+tri+' - '+typeComposition+'</p></div>';
   html += '<div class="b-infos"><div><b>Élève / <span class="ar">التلميذ</span> :</b> '+eleve+'<br><small>Parent / <span class="ar">الولي</span> : '+parentNom+' - '+telParent+'</small><br><small>Niveau / <span class="ar">المستوى</span> : '+niveauEleve+'</small></div><div style="text-align:center"><b>École / <span class="ar">المدرسة</span></b><br>'+ecoleSpecifique+'</div><div style="text-align:center"><b>Moyenne / <span class="ar">المعدل</span></b><br><b style="font-size:16px">'+moy+' / 20</b><br><b style="font-size:13px;color:#0F3D2E">'+medal+' Rang / <span class="ar">الترتيب</span> : '+infoRang.rang+'e / '+infoRang.total+'</b><br><small>'+ecoleSpecifique+' - '+niveauEleve+'</small></div></div>';
-  html += '<table><thead><tr><th>Matière / <span class="ar">المادة</span></th><th>Oral / <span class="ar">الشفوي</span> /10</th><th>Écrit / <span class="ar">الكتابي</span> /10</th><th>Total / <span class="ar">المجموع</span> /20</th></tr></thead><tbody>';
-  lignes.forEach(function(l){ html += '<tr><td>'+nomMatiereBulletinSelonLangue(l.matiere)+'</td><td>'+(l.oral||0)+'</td><td>'+(l.ecrit||0)+'</td><td><b>'+(l.moyenne||0)+'</b></td></tr>'; });
-  getMatieresActives().forEach(function(m){ if(!lignes.find(function(l){ return normaliser(l.matiere)===normaliser(m.fr); })){ html += '<tr><td>'+nomMatiereBulletinSelonLangue(m.fr)+' <small style="color:red">(Absent / <span class="ar">غائب</span>)</small></td><td>0</td><td>0</td><td><b style="color:red">0</b></td></tr>'; } });
+  html += '<table><thead><tr><th>Matière / <span class="ar">المادة</span></th><th>'+col1+'</th><th>'+col2+'</th><th>Total / <span class="ar">المجموع</span> /20</th><th>Détail</th></tr></thead><tbody>';
+  lignes.forEach(function(l){
+    let oral=Number(l.oral||0), ecrit=Number(l.ecrit||0), devoir=Number(l.devoir||0), compo=Number(l.composition||0);
+    let c1 = modeAff.includes("devoir") ? devoir : modeAff.includes("composition") ? compo : oral;
+    let c2 = modeAff.includes("devoir") ? compo : modeAff.includes("composition") ? "-" : ecrit;
+    let tot = totalVraiNoteGestion2(l);
+    html += '<tr><td>'+nomMatiereBulletinSelonLangue(l.matiere)+'</td><td>'+c1+'</td><td>'+c2+'</td><td><b>'+tot+'</b></td><td style="white-space:nowrap"><small>'+detailNoteGestion2(l)+'</small></td></tr>';
+  });
+  getMatieresActives().forEach(function(m){ if(!lignes.find(function(l){ return normaliser(l.matiere)===normaliser(m.fr); })){ html += '<tr><td>'+nomMatiereBulletinSelonLangue(m.fr)+' <small style="color:red">(Absent / <span class="ar">غائب</span>)</small></td><td>0</td><td>-</td><td><b style="color:red">0</b></td><td style="white-space:nowrap"><small>0 + 0</small></td></tr>'; } });
   html += '</tbody></table>';
   html += '<div class="b-total"><span>MOYENNE GÉNÉRALE / <span class="ar">المعدل العام</span> - Rang / <span class="ar">الترتيب</span> : '+infoRang.rang+'e / '+infoRang.total+' - '+ecoleSpecifique+' - '+niveauEleve+'</span><span>'+moy+' / 20</span></div>';
   html += '<div class="b-app"><b style="font-size:13px">💬 Appréciation / <span class="ar">الملاحظة</span> : <span style="font-weight:400">'+app+'</span></b></div>';
@@ -479,68 +542,61 @@ function calculerBulletinAnnuelEleve(){
   let nom = document.getElementById('bilanAnnuelEleve')?.value || "";
   let box = document.getElementById('bulletinAnnuelEleve');
   if(!box) return;
-  if(!nom){ box.innerHTML = '<p class="centre muted">Choisis l\'élève. / اختر التلميذ.</p>'; return; }
+  if(!nom){ box.innerHTML = '<p class="centre muted">Choisis l\'élève.</p>'; return; }
   let tris = ["Trimestre 1","Trimestre 2","Trimestre 3"];
-  let nbFixe = getNbMatieresFixees();
   let total = 0;
   let eleveObj = TOUS_ELEVES_GESTION.find(function(e){ return normaliser(e.enfant||e.nomEnfant||"")===normaliser(nom); }) || {};
   let ecoleSpecifique = ecoleDeEleveBulletin(nom) || monEcoleNom;
-  let html = '<div class="bulletin-page"><div class="b-head"><h2>☪️ INSTITUT NOUROUL IYMANE <span class="ar">- معهد نور الإيمان</span></h2><h3>Bulletin Annuel / <span class="ar">الكشف السنوي</span> - '+ecoleSpecifique+'</h3></div>';
-  html += '<div class="b-infos"><div><b>Élève / <span class="ar">التلميذ</span> :</b> '+nom+'<br><small>Parent / <span class="ar">الولي</span> : '+(eleveObj.parent||"")+'</small><br><small>Niveau / <span class="ar">المستوى</span> : '+(eleveObj.niveau||"")+'</small></div><div><b>École / <span class="ar">المدرسة</span></b><br>'+ecoleSpecifique+'</div></div>';
-  html += '<table><thead><tr><th>Trimestre / <span class="ar">الفصل</span></th><th>Moyenne / <span class="ar">المعدل</span></th></tr></thead><tbody>';
+  let html = '<div class="bulletin-page"><div class="b-head"><h2>☪️ INSTITUT NOUROUL IYMANE</h2><h3>Bulletin Annuel - '+ecoleSpecifique+'</h3></div>';
+  html += '<div class="b-infos"><div><b>Élève :</b> '+nom+'<br><small>Parent : '+(eleveObj.parent||"")+'</small><br><small>Niveau : '+(eleveObj.niveau||"")+'</small></div><div><b>École</b><br>'+ecoleSpecifique+'</div></div>';
+  html += '<table><thead><tr><th>Trimestre</th><th>Moyenne</th><th style="text-align:right">⋮</th></tr></thead><tbody>';
   tris.forEach(function(t){
     let lignes = TOUS_BULLETINS.filter(function(b){ return normaliser(b.eleve)===normaliser(nom) && b.trimestre===t; });
-    let moy = lignes.length ? (lignes.reduce(function(s,x){ return s+Number(x.moyenne||0); },0)/nbFixe).toFixed(2) : "0.00";
+    let moy = lignes.length ? calculerMoyenneTrimestreCorrige(lignes).toFixed(2) : "0.00";
     total += Number(moy);
-    html += '<tr><td><b>'+t+'</b></td><td><b>'+moy+' / 20</b></td></tr>';
+    html += '<tr><td><b>'+t+'</b></td><td><b>'+moy+' / 20</b></td><td style="text-align:right"><div class="menu3"><button class="btn3" onclick="toggleMenu3(\'m3ann_'+t.replace(/ /g,'_')+'\',event)">⋮</button><div class="menu3-drop" id="m3ann_'+t.replace(/ /g,'_')+'"><button onclick="calculerReleveTrimestre()">👁️ Voir Relevé</button><button onclick="telechargerBulletinAnnuelPDF()">⬇️ Télécharger</button></div></div></td></tr>';
   });
   let moyAnn = (total/3).toFixed(2);
   let infoRangAnn = calculerRangBulletin(nom, "Trimestre 1", Number(moyAnn));
-  html += '</tbody></table><div class="b-total"><span>Moyenne Annuelle / <span class="ar">المعدل السنوي</span> - Rang / <span class="ar">الترتيب</span> : '+infoRangAnn.rang+'e / '+infoRangAnn.total+'</span><span>'+moyAnn+' / 20 - '+(moyAnn>=10?"✅ ADMIS / مقبول":"❌ NON ADMIS / غير مقبول")+'</span></div>';
-  html += '<div class="b-app"><b style="font-size:13px">💬 Appréciation / <span class="ar">الملاحظة</span> : <span style="font-weight:400">'+appreciationAuto(moyAnn)+'</span></b></div>';
-  html += '<div class="b-sign"><div style="border-top:1px solid #333;padding-top:4px"><b>Le Directeur / <span class="ar">المدير</span></b><br><br><span style="font-size:11px;color:#666">Signature + Cachet / التوقيع والختم</span></div><div style="border-top:1px solid #333;padding-top:4px"><b>Le Parent / <span class="ar">الولي</span></b><br><br><span style="font-size:11px;color:#666">Vu et signé / اطلع ووقع</span></div></div></div>';
-  let htmlAvecBtns = '<div class="no-print" style="text-align:center;margin-bottom:8px;display:flex;gap:8px;justify-content:center"><button onclick="imprimerSeulBulletin()" class="btn-noir" style="width:auto;padding:10px 16px">🎨 ⬇️ Télécharger en couleur / تحميل ملون</button><button onclick="cacherBulletinAnnuel()" style="background:#EF5350;color:white;border:none;padding:10px 16px;border-radius:10px;font-weight:800;cursor:pointer">🙈 Cacher le bulletin / إخفاء الكشف</button></div>' + html;
+  html += '</tbody></table><div class="b-total"><span>Moyenne Annuelle - Rang : '+infoRangAnn.rang+'e / '+infoRangAnn.total+'</span><span>'+moyAnn+' / 20 - '+(moyAnn>=10?"✅ ADMIS":"❌ NON ADMIS")+'</span></div>';
+  html += '<div class="b-app"><b>💬 Appréciation : <span style="font-weight:400">'+appreciationAuto(moyAnn)+'</span></b></div>';
+  html += '<div class="b-sign"><div style="border-top:1px solid #333;padding-top:4px"><b>Le Directeur</b><br><br><span style="font-size:11px;color:#666">Signature + Cachet</span></div><div style="border-top:1px solid #333;padding-top:4px"><b>Le Parent</b><br><br><span style="font-size:11px;color:#666">Vu et signé</span></div></div></div>';
+  let htmlAvecBtns = '<div class="no-print" style="text-align:center;margin-bottom:8px;display:flex;gap:8px;justify-content:center"><button onclick="imprimerSeulBulletin()" class="btn-noir" style="width:auto;padding:10px 16px">🎨 ⬇️ Télécharger en couleur</button><button onclick="cacherBulletinAnnuel()" style="background:#EF5350;color:white;border:none;padding:10px 16px;border-radius:10px;font-weight:800;cursor:pointer">🙈 Cacher</button></div>' + html;
   box.innerHTML = htmlAvecBtns;
   document.getElementById('zoneImpression').innerHTML = htmlAvecBtns;
   document.getElementById('zoneImpression').style.display = "block";
-  let btns = document.getElementById('btnsBulletinAnnuel');
-  if(btns) btns.style.display = "block";
+  let btns = document.getElementById('btnsBulletinAnnuel'); if(btns) btns.style.display = "block";
 }
 function calculerReleveTrimestre(){
   let nom = document.getElementById('releveEleve')?.value || "";
   let tri = document.getElementById('releveTrimestre')?.value || "Trimestre 1";
   let box = document.getElementById('releveTrimestreEleve');
   if(!box) return;
-  if(!nom){ box.innerHTML = '<p class="centre muted">Choisis l\'élève. / اختر التلميذ.</p>'; return; }
+  if(!nom){ box.innerHTML = '<p class="centre muted">Choisis l\'élève.</p>'; return; }
   let lignes = TOUS_BULLETINS.filter(function(b){ return normaliser(b.eleve)===normaliser(nom) && b.trimestre===tri; });
-  if(!lignes.length){ box.innerHTML = '<p class="centre muted">Aucune note pour '+nom+' - '+tri+' / لا توجد نقاط</p>'; return; }
-  let nbFixe = getNbMatieresFixees();
-  let moy = calculerMoyenneTrimestre(lignes).toFixed(2);
+  if(!lignes.length){ box.innerHTML = '<p class="centre muted">Aucune note pour '+nom+' - '+tri+'</p>'; return; }
+  let moy = calculerMoyenneTrimestreCorrige(lignes).toFixed(2);
   let ecoleSpecifique = ecoleDeEleveBulletin(nom) || monEcoleNom;
   let infoRangRel = calculerRangBulletin(nom, tri, Number(moy));
-  let html = '<div class="bulletin-page"><div class="b-head"><h2>☪️ INSTITUT NOUROUL IYMANE <span class="ar">- معهد نور الإيمان</span></h2><h3>Relevé - <span class="ar">كشف النقاط</span> - '+tri+' - '+ecoleSpecifique+'</h3></div>';
-  html += '<div class="b-infos"><div><b>Élève / <span class="ar">التلميذ</span> :</b> '+nom+'</div><div><b>Moyenne / <span class="ar">المعدل</span> :</b> '+moy+' / 20</div><div><b>Rang / <span class="ar">الترتيب</span> :</b> '+infoRangRel.rang+'e / '+infoRangRel.total+'</div></div>';
-  html += '<table><thead><tr><th>Matière / <span class="ar">المادة</span></th><th>Oral / <span class="ar">الشفوي</span></th><th>Écrit / <span class="ar">الكتابي</span></th><th>Total / <span class="ar">المجموع</span></th></tr></thead><tbody>';
-  lignes.forEach(function(l){ html += '<tr><td>'+l.matiere+'</td><td>'+(l.oral||0)+'</td><td>'+(l.ecrit||0)+'</td><td><b>'+(l.moyenne||0)+'</b></td></tr>'; });
-  html += '</tbody></table><div class="b-total"><span>Moyenne / <span class="ar">المعدل</span> - Rang / <span class="ar">الترتيب</span> : '+infoRangRel.rang+'e / '+infoRangRel.total+'</span><span>'+moy+' / 20</span></div>';
-  html += '<div class="b-app"><b style="font-size:13px">💬 Appréciation / <span class="ar">الملاحظة</span> : <span style="font-weight:400">'+appreciationAuto(moy)+'</span></b></div></div>';
-  let htmlAvecBtns2 = '<div class="no-print" style="text-align:center;margin-bottom:8px;display:flex;gap:8px;justify-content:center"><button onclick="imprimerSeulBulletin()" class="btn-noir" style="width:auto;padding:10px 16px">🎨 ⬇️ Télécharger en couleur / تحميل ملون</button><button onclick="cacherReleve()" style="background:#EF5350;color:white;border:none;padding:10px 16px;border-radius:10px;font-weight:800;cursor:pointer">🙈 Cacher le bulletin / إخفاء الكشف</button></div>' + html;
+  let html = '<div class="bulletin-page"><div class="b-head"><h2>☪️ INSTITUT NOUROUL IYMANE</h2><h3>Relevé - '+tri+' - '+ecoleSpecifique+'</h3></div>';
+  html += '<div class="b-infos"><div><b>Élève :</b> '+nom+'</div><div><b>Moyenne :</b> '+moy+' / 20</div><div><b>Rang :</b> '+infoRangRel.rang+'e / '+infoRangRel.total+'</div></div>';
+  html += '<table><thead><tr><th>Matière</th><th>Oral</th><th>Écrit</th><th>Total</th><th>Détail</th><th>⋮</th></tr></thead><tbody>';
+  lignes.forEach(function(l,idx){ html += '<tr><td>'+l.matiere+'</td><td>'+(l.oral||0)+'</td><td>'+(l.ecrit||0)+'</td><td><b>'+totalVraiNoteGestion2(l)+'</b></td><td style="white-space:nowrap"><small>'+detailNoteGestion2(l)+'</small></td><td><div class="menu3"><button class="btn3" onclick="toggleMenu3(\'m3rel_'+idx+'\',event)">⋮</button><div class="menu3-drop" id="m3rel_'+idx+'"><button onclick="voirBulletinDetail(\''+nom.replace(/\'/g,"\\'")+'\',\''+tri+'\')">👁️ Voir Bulletin</button><button onclick="telechargerReleveTrimestrePDF()">⬇️ Télécharger</button></div></div></td></tr>'; });
+  html += '</tbody></table><div class="b-total"><span>Moyenne - Rang : '+infoRangRel.rang+'e / '+infoRangRel.total+'</span><span>'+moy+' / 20</span></div>';
+  html += '<div class="b-app"><b>💬 Appréciation : <span style="font-weight:400">'+appreciationAuto(moy)+'</span></b></div></div>';
+  let htmlAvecBtns2 = '<div class="no-print" style="text-align:center;margin-bottom:8px;display:flex;gap:8px;justify-content:center"><button onclick="imprimerSeulBulletin()" class="btn-noir" style="width:auto;padding:10px 16px">🎨 ⬇️ Télécharger en couleur</button><button onclick="cacherReleve()" style="background:#EF5350;color:white;border:none;padding:10px 16px;border-radius:10px;font-weight:800;cursor:pointer">🙈 Cacher</button></div>' + html;
   box.innerHTML = htmlAvecBtns2;
   document.getElementById('zoneImpression').innerHTML = htmlAvecBtns2;
   document.getElementById('zoneImpression').style.display = "block";
-  let btns = document.getElementById('btnsReleve');
-  if(btns) btns.style.display = "block";
+  let btns = document.getElementById('btnsReleve'); if(btns) btns.style.display = "block";
 }
 function afficherBulletins(){
-  let box = document.getElementById('listeBulletins');
-  if(!box) return;
+  if(typeof afficherNotesGestion==="function"){ afficherNotesGestion(); return; }
+  let box = document.getElementById('listeBulletins'); if(!box) return;
   let recherche = (document.getElementById('rechercheEleveBulletin')?.value || "").trim().toLowerCase();
   let filtreTri = document.getElementById('filtreTrimestreBulletin')?.value || "";
   let dl = document.getElementById('listeElevesBulletin');
-  if(dl){
-    let noms = [...new Set(TOUS_BULLETINS.map(function(b){ return b.eleve; }))].sort();
-    dl.innerHTML = noms.map(function(n){ return '<option value="'+n+'">'; }).join("");
-  }
+  if(dl){ let noms = [...new Set(TOUS_BULLETINS.map(function(b){ return b.eleve; }))].sort(); dl.innerHTML = noms.map(function(n){ return '<option value="'+n+'">'; }).join(""); }
   let groupes = {};
   TOUS_BULLETINS.forEach(function(b){
     if(filtreTri && b.trimestre !== filtreTri) return;
@@ -550,25 +606,22 @@ function afficherBulletins(){
     groupes[k].lignes.push(b);
   });
   let cles = Object.keys(groupes).sort();
-  if(!cles.length){
-    box.innerHTML = '<p class="centre muted">Aucun bulletin. Enregistre d\'abord un bulletin. / لا يوجد كشف. سجل كشفا أولا.</p>';
-    return;
-  }
+  if(!cles.length){ box.innerHTML = '<p class="centre muted">Aucune note. Enregistre d\'abord un bulletin.</p>'; return; }
   let html = "";
-  cles.forEach(function(k){
+  cles.forEach(function(k, idx){
     let g = groupes[k];
-    let moy = calculerMoyenneTrimestre(g.lignes).toFixed(2);
+    let moy = calculerMoyenneTrimestreCorrige(g.lignes).toFixed(2);
     let rang = calculerRangBulletin(g.eleve, g.trimestre, Number(moy));
     let ecole = (g.lignes[0] && g.lignes[0].ecole) || ecoleDeEleveBulletin(g.eleve) || "";
     let eleveObj = TOUS_ELEVES_GESTION.find(function(e){ return normaliser(e.enfant||e.nomEnfant||"")===normaliser(g.eleve); }) || {};
     html += '<div style="background:#F1F8E9;border:1px solid #C8E6C9;border-radius:12px;padding:10px;margin-bottom:10px">';
-    html += '<div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap"><div><b style="font-size:14px">'+g.eleve+'</b><br><small>'+ecole+' - '+(eleveObj.niveau||"")+' - '+g.trimestre+'</small></div><div style="text-align:right"><b style="color:#2E7D32;font-size:14px">Moy / المعدل : '+moy+' / 20</b><br><small>🏅 Rang / الترتيب : '+rang.rang+'e / '+rang.total+'</small><br><small>'+appreciationAuto(moy)+'</small></div></div>';
-    html += '<table class="table-blanc" style="min-width:0"><thead><tr><th>Matière / المادة</th><th>Oral / الشفوي /10</th><th>Écrit / الكتابي /10</th><th>Total / المجموع /20</th></tr></thead><tbody>';
-    g.lignes.forEach(function(l){
-      html += '<tr><td>'+nomMatiereBulletinSelonLangue(l.matiere)+'</td><td>'+(l.oral||0)+'</td><td>'+(l.ecrit||0)+'</td><td><b>'+(l.moyenne||0)+'</b></td></tr>';
+    html += '<div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap"><div><b style="font-size:14px">'+g.eleve+'</b><br><small>'+ecole+' - '+(eleveObj.niveau||"")+' - '+g.trimestre+'</small></div><div style="text-align:right"><b style="color:#2E7D32;font-size:14px">Moy : '+moy+' / 20</b><br><small>🏅 Rang : '+rang.rang+'e / '+rang.total+'</small><br><small>'+appreciationAuto(moy)+'</small></div><div class="menu3"><button class="btn3" onclick="toggleMenu3(\'m3tab_'+idx+'\',event)">⋮</button><div class="menu3-drop" id="m3tab_'+idx+'"><button onclick="voirBulletinDetail(\''+g.eleve.replace(/\'/g,"\\'")+'\',\''+g.trimestre+'\')">👁️ Voir Bulletin</button><button onclick="voirBulletinEleveGestion(\''+g.eleve.replace(/\'/g,"\\'")+'\',\''+g.trimestre+'\')">⬇️ Télécharger PDF</button></div></div></div>';
+    html += '<table class="table-blanc" style="min-width:0"><thead><tr><th>Matière</th><th>Oral /10</th><th>Écrit /10</th><th>Total /20</th><th>Détail</th><th>Voir</th><th>⬇️</th><th>⋮</th></tr></thead><tbody>';
+    g.lignes.forEach(function(l, j){
+      html += '<tr><td>'+nomMatiereBulletinSelonLangue(l.matiere)+'</td><td>'+(l.oral||0)+'</td><td>'+(l.ecrit||0)+'</td><td><b>'+totalVraiNoteGestion2(l)+'</b></td><td style="white-space:nowrap"><small>'+detailNoteGestion2(l)+'</small></td><td><button class="btn-or" onclick="voirBulletinDetail(\''+g.eleve.replace(/\'/g,"\\'")+'\',\''+g.trimestre+'\')">👁️ Voir</button></td><td><button class="btn-or" onclick="telechargerBulletinEleveGestion(\''+g.eleve.replace(/\'/g,"\\'")+'\',\''+g.trimestre+'\')">⬇️</button></td><td><div class="menu3"><button class="btn3" onclick="toggleMenu3(\'m3l_'+idx+'_'+j+'\',event)">⋮</button><div class="menu3-drop" id="m3l_'+idx+'_'+j+'"><button onclick="voirBulletinDetail(\''+g.eleve.replace(/\'/g,"\\'")+'\',\''+g.trimestre+'\')">👁️ Voir Bulletin</button><button onclick="telechargerBulletinEleveGestion(\''+g.eleve.replace(/\'/g,"\\'")+'\',\''+g.trimestre+'\')">⬇️ Télécharger</button></div></div></td></tr>';
     });
     html += '</tbody></table>';
-    html += '<div style="display:flex;gap:8px;margin-top:8px"><button onclick="voirBulletinDetail(\''+g.eleve.replace(/\'/g,"\\'")+'\',\''+g.trimestre+'\')" class="btn-noir" style="padding:8px">👁️ Voir Bulletin Plein A4 / عرض الكشف كاملا</button><button onclick="cacherListeBulletins()" style="background:#EF5350;color:white;border:none;padding:8px;border-radius:10px;font-weight:800;cursor:pointer;flex:1">🙈 Cacher / إخفاء</button></div>';
+    html += '<div style="display:flex;gap:8px;margin-top:8px"><button onclick="voirBulletinDetail(\''+g.eleve.replace(/\'/g,"\\'")+'\',\''+g.trimestre+'\')" class="btn-noir" style="padding:8px">👁️ Voir Bulletin Plein A4</button><button onclick="telechargerBulletinEleveGestion(\''+g.eleve.replace(/\'/g,"\\'")+'\',\''+g.trimestre+'\')" class="btn-noir" style="padding:8px;background:#C9A227;color:#0F3D2E">⬇️ Télécharger PDF</button><button onclick="cacherListeBulletins()" style="background:#EF5350;color:white;border:none;padding:8px;border-radius:10px;font-weight:800;cursor:pointer;flex:1">🙈 Cacher</button></div>';
     html += '</div>';
   });
   box.innerHTML = html;
@@ -581,5 +634,3 @@ setTimeout(function(){ if(typeof afficherBulletins==="function") afficherBulleti
 </div></div>
 </body>
 </html>
-
-

@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="fr"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Enseignant - Institut Nouroul Iymane / المعلم</title><link rel="stylesheet" href="style.css">
+<style>
+*{box-sizing:border-box}
+body{background:#F7FAF8;color:#222;font-family:Inter,Arial,sans-serif;margin:0}
+.topbar{background:#E8F5E9;color:#1B5E20;padding:14px 18px;display:flex;justify-content:space-between;align-items:center;border-bottom:3px solid #A5D6A7;position:sticky;top:0;z-index:20}
+.topbar b{letter-spacing:1px;color:#1B5E20}
+.topbar a{color:#1B5E20;text-decoration:none;border:1px solid #1B5E20;padding:6px 12px;border-radius:20px;font-size:13px;background:white}
+.page{max-width:1000px;margin:0 auto;padding:12px}
+.carte{background:white;border:1px solid #E0EDE1;border-radius:14px;padding:12px;margin-bottom:12px}
+.carte h2,.carte h3{text-align:center;color:#2E7D32;margin:0 0 8px 0;font-size:16px}
+.centre{text-align:center}
+.muted{color:#666;font-size:12px}
+label{display:block;font-weight:700;font-size:12px;margin-top:10px;color:#2E7D32}
+input,select,textarea{width:100%;padding:10px;border:1px solid #C8E6C9;border-radius:10px;background:white;margin-top:4px;font-size:14px}
+.btn-noir{background:#66BB6A;color:white;border:none;padding:12px;border-radius:10px;font-weight:800;width:100%;font-size:15px;cursor:pointer}
+.kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:10px}
+.kpi div{background:#F1F8E9;border:1px solid #C8E6C9;border-radius:12px;padding:9px;text-align:center}
+.kpi b{font-size:18px;color:#2E7D32;display:block}
+.table-blanc{width:100%;min-width:560px;border-collapse:collapse;font-size:11px;margin-top:8px}
+.table-blanc th{background:#A5D6A7;color:#1B5E20;padding:6px;text-align:center;border:1px solid #C8E6C9;white-space:nowrap}
+.table-blanc td{border:1px solid #E8F5E9;padding:6px;background:white;font-size:11px;text-align:center;white-space:nowrap}
+.table-blanc td.td-nom{text-align:left}
+.badge{display:inline-block;padding:2px 7px;border-radius:20px;font-size:10px;font-weight:800;white-space:nowrap}
+.badge-attente{background:#FFECB3;color:#5D4037}
+.badge-valide{background:#66BB6A;color:white}
+.badge-refuse{background:#FFCDD2;color:#7A1A1A}
+.ar{color:#C9A227;font-weight:700}
+.menu-scroll{display:flex;gap:8px;overflow-x:auto;white-space:nowrap;padding:10px 4px 12px 4px}
+.menu-scroll::-webkit-scrollbar{display:none}
+.ens-tab{flex:0 0 auto;background:#F1F8E9;border:1px solid #C8E6C9;color:#1B5E20;padding:10px 16px;border-radius:20px;font-weight:700;font-size:14px;cursor:pointer}
+.ens-tab.active{background:#0F3D2E!important;color:white!important}
+.note-input{width:70px!important;text-align:center;font-weight:800}
+.matiere-chip{display:inline-block;background:#F1F8E9;border:1px solid #66BB6A;color:#1B5E20;padding:6px 10px;border-radius:20px;font-size:12px;font-weight:700;margin:3px}
+.check-matiere{display:inline-block;background:#F1F8E9;border:1px solid #C8E6C9;border-radius:10px;padding:8px 10px;margin:4px;font-size:13px;font-weight:700;cursor:pointer}
+.check-matiere input{width:auto;margin-right:6px}
+@media(max-width:800px){.kpi{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<div class="topbar"><b>☪️ INSTITUT NOUROUL IYMANE - ENSEIGNANT <span class="ar">/ المعلم</span></b><a href="index.html">Site / الموقع</a></div>
+<div class="page">
+<div class="carte" id="loginCardEns">
+<h2>🔐 Connexion Enseignant <span class="ar">/ دخول المعلم</span></h2>
+<p class="centre muted">Choisis ton nom + ton numéro, comme tu es enregistré par le Sous-Directeur.<br><span class="ar">اختر اسمك + رقمك.</span><br>Tu peux avoir plusieurs matières. Tu envoies seulement TES matières, sans écraser les autres.</p>
+<label>👨‍🏫 Ton nom * <span class="ar">/ اسمك</span></label>
+<select id="ensLoginNom"><option value="">— Chargement des enseignants... —</option></select>
+<label>📱 Ton numéro * <span class="ar">/ رقمك</span></label>
+<input id="ensLoginTel" placeholder="Ex: 697919116" inputmode="numeric">
+<button onclick="seConnecterEnseignant()" id="btnConnexionEns" class="btn-noir" style="margin-top:12px">Se connecter <span class="ar">/ دخول</span></button>
+<p id="msgEns" style="color:red;text-align:center"></p>
+</div>
+<div id="enseignantPanel" style="display:none">
+<div class="carte centre"><small>Assalamou Aleykoum - <b id="ensNomAffiche"></b> - <span id="ensInfoAffiche"></span><br>Mes matières / موادّي : <b id="ensMesMatieresAffiche" style="color:#2E7D32"></b><br><button onclick="seDeconnecterEnseignant()" style="background:white;border:1px solid #ccc;padding:4px 10px;border-radius:20px;margin-top:6px">Déconnexion / خروج</button></small></div>
+<div class="menu-scroll">
+<button onclick="showTabEns('tabEnsDashboard',this)" class="ens-tab active">🏠 Tableau de Bord</button>
+<button onclick="showTabEns('tabEnsEleves',this)" class="ens-tab">👨‍🎓 Mes Élèves</button>
+<button onclick="showTabEns('tabEnsMatieres',this)" class="ens-tab">📚 Mes Matières</button>
+<button onclick="showTabEns('tabEnsNotes',this)" class="ens-tab">📝 Saisir les Notes</button>
+<button onclick="showTabEns('tabEnsListeNotes',this)" class="ens-tab">📋 Liste de mes Notes</button>
+<button onclick="showTabEns('tabEnsPresence',this)" class="ens-tab">✅ Présence</button>
+</div>
+<div id="tabEnsDashboard">
+<div class="carte"><h2>Tableau de Bord - <span id="ensEcoleNom">...</span></h2><p class="centre muted">Aujourd'hui : <span id="dateJourEns"></span> - Mes matières : <b id="ensMatiereAffiche">...</b> - Classe : <b id="ensClasseAffiche">...</b></p><p class="centre muted">⚠️ Tes notes + ta présence partent en <b style="color:#E65100">🟠 EN ATTENTE</b>. Le Sous-Directeur valide. Sans validation, ça ne compte pas.<br>Clé : <b>Élève + Trimestre + Matière + Ton Nom</b> → tu n'écrases jamais l'autre enseignant.</p><div class="kpi"><div><b id="statEnsEleves">0</b><small>Mes Élèves</small></div><div><b id="statEnsNotes">0</b><small>Mes notes envoyées</small></div><div><b id="statEnsAttente">0</b><small>Notes en attente</small></div><div><b id="statEnsPresents">0</b><small>Présents aujourd'hui</small></div></div><div class="kpi"><div><b id="statEnsPresAttente">0</b><small>Présence en attente</small></div><div><b id="statEnsPresValide">0</b><small>Présence validée</small></div><div><b id="statEnsNotesValide">0</b><small>Notes validées</small></div><div><b id="statEnsNotesRefuse">0</b><small>Notes refusées</small></div></div></div>
+<div class="carte"><h3>📚 Mes Matières - Celles que le Sous-Directeur m'a données</h3><div id="matieresDashboardEns" class="centre"></div><p class="centre muted">Tu ne vois que TES matières. Si il en manque, dis au Sous-Directeur de les cocher pour toi : Ex : Coran, Arabe</p></div>
+<div class="carte"><h3>⚠️ À faire</h3><div id="alertesEns"></div></div>
+<div class="carte"><h3>🆕 Dernières notes envoyées - TABLE UNIQUE</h3><div id="derniersBulletinsEns"></div></div>
+</div>
+<div id="tabEnsEleves" style="display:none">
+<div class="carte"><h3>👨‍🎓 Mes Élèves</h3><p class="centre muted">Tu ne vois que tes élèves : ta classe + ton école.</p><label>Filtrer par niveau</label><select id="filtreNiveauEns" onchange="afficherElevesEnseignant()"><option value="">— Tous les niveaux —</option></select><div style="margin-top:10px"><input type="text" id="rechercheEleveEns" placeholder="🔍 Rechercher un élève..." oninput="afficherElevesEnseignant()"></div><div id="listeElevesEns"></div></div>
+</div>
+<div id="tabEnsMatieres" style="display:none">
+<div class="carte"><h3>📚 Mes Matières - Fixées par le Sous-Directeur</h3><p class="centre muted">Ces matières viennent de <b>Sous-Directeur → Enseignants</b> (ton profil) + <b>Gestion → Matières</b> (Directeur).<br>Tu peux avoir plusieurs matières. Tu coches celles que tu veux envoyer aujourd'hui.<br>Composition : <b>Oral /10 + Écrit /10 = Total /20</b></p><div id="listeMatieresFixeesEns" class="centre" style="margin-top:10px"></div><div id="detailMatieresFixeesEns"></div><p class="centre muted" style="margin-top:10px">Exemple : Si tu as Coran, Arabe → tu envoies Coran + Arabe. L'autre enseignant qui a aussi Arabe, sa note reste à côté, elle n'est pas écrasée.</p></div>
+</div>
+<div id="tabEnsNotes" style="display:none">
+<div class="carte"><h3>📝 Saisir les Notes - MES MATIÈRES SEULEMENT</h3><p class="centre muted">Mes matières : <b id="affichageMatieresEns"></b><br>⚠️ Tes notes partent en <b>🟠 EN ATTENTE</b>. Le Sous-Directeur valide. Une note 🟢 Validée ne redescend plus en attente.</p><button onclick="chargerNotesEnseignant()" class="btn-noir" style="margin-bottom:8px">🔄 Actualiser</button><label>Filtrer par école / groupe *</label><select id="filtreEcoleEnsNotes" onchange="filtrerElevesNotesEns()"><option value="">— Toutes mes écoles —</option></select><p id="infoFiltreNotesEns" class="centre muted" style="font-size:12px"></p><label>Choisir l'élève *</label><select id="notesEleveEns" onchange="chargerNotesExistantesEns()"></select><label>Trimestre *</label><select id="notesTrimestreEns" onchange="chargerNotesExistantesEns()"><option value="Trimestre 1">Trimestre 1</option><option value="Trimestre 2">Trimestre 2</option><option value="Trimestre 3">Trimestre 3</option></select><label>Année</label><input id="notesAnneeEns" value="2026-2027"><label>✅ Coche les matières à envoyer aujourd'hui (tu peux en avoir plusieurs)</label><div id="choixMatieresEnvoiEns" style="margin-top:6px"></div><div id="formNotesEns" style="margin-top:12px"></div><button onclick="envoyerNotesEnseignant()" class="btn-noir" style="margin-top:12px">📤 Envoyer MES matières au Sous-Directeur - Sans écraser les autres</button><p id="msgNotesEns" class="centre" style="color:green;font-weight:700"></p></div>
+</div>
+<div id="tabEnsListeNotes" style="display:none">
+<div class="carte"><h3>📋 Liste de mes Notes - TABLE UNIQUE - 1 ligne = 1 élève</h3><p class="centre muted">🟠 En attente = ne compte pas. 🟢 Validée = compte. 🔴 Refusée = corrige et renvoie.<br>Chaque matière sur la même ligne : <b>Oral + Écrit = Total</b> - Ex : Coran 8+7=15<br>Tu ne vois que TES notes, avec TON nom.</p><label>🔍 Chercher un élève</label><input id="rechercheEleveNotesEns" placeholder="Tape le nom..." oninput="afficherListeNotesEnseignant()"><label>Filtrer - Statut</label><select id="filtreStatutNotesEns" onchange="afficherListeNotesEnseignant()"><option value="">— Tous les statuts —</option><option value="en_attente">🟠 En attente</option><option value="valide">🟢 Validée</option><option value="refuse">🔴 Refusée</option></select><label>Filtrer - Trimestre</label><select id="filtreTrimestreNotesEns" onchange="afficherListeNotesEnseignant()"><option value="">— Tous les trimestres —</option><option>Trimestre 1</option><option>Trimestre 2</option><option>Trimestre 3</option></select><div style="overflow-x:auto"><table class="table-blanc"><thead id="theadListeNotesEns"></thead><tbody id="tbodyListeNotesEns"></tbody></table></div></div>
+</div>
+<div id="tabEnsPresence" style="display:none">
+<div class="carte"><h3>✅ Présence - Appel du jour - TABLE UNIQUE</h3><p class="centre muted"><span id="titreEcolePresenceEns"></span> - <span id="titreDatePresenceEns"></span><br>⚠️ Ta présence part en <b>🟠 EN ATTENTE</b>. Le Sous-Directeur valide. Clé : <b>Date + Ton Nom + Classe</b> → tu n'écrases pas l'appel de l'autre enseignant.</p><label>Date *</label><input type="date" id="datePresenceEns" onchange="chargerPresenceEnseignant()"><label>Filtrer par école / groupe</label><select id="filtreEcolePresenceEns" onchange="chargerPresenceEnseignant()"><option value="">— Toutes mes écoles —</option></select><label>Filtrer par niveau</label><select id="filtreNiveauPresenceEns" onchange="chargerPresenceEnseignant()"><option value="">— Tous les niveaux —</option></select><button onclick="chargerPresenceEnseignant()" class="btn-noir" style="margin-top:10px">🔄 Actualiser</button><div id="listePresenceEns" style="margin-top:10px"></div><button onclick="enregistrerPresenceEnseignant()" class="btn-noir" style="margin-top:10px;background:#0F3D2E">📤 Envoyer MA présence au Sous-Directeur</button><p id="msgPresenceEns" class="centre" style="color:green;font-weight:700"></p></div>
+<div class="carte"><h3>📋 Mes Présences Envoyées - Statut</h3><p class="centre muted">🟠 En attente = pas encore validée. 🟢 Validée = compte. 🔴 Refusée = refais l'appel.</p><label>📅 Filtrer par Date</label><input type="date" id="filtreDatePresenceEnvoyeeEns" onchange="afficherPresenceEnvoyeeEns()"><div style="overflow-x:auto"><table class="table-blanc"><thead><tr><th>Date</th><th>École</th><th>Présents</th><th>Absents</th><th>Liste P / A</th><th>Statut</th><th>Motif</th></tr></thead><tbody id="tbodyPresenceEnvoyeeEns"></tbody></table></div></div>
+</div>
+</div>
+</div>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="firebase.js"></script>
+<script>
+function showTabEns(id, btn){
+  ['tabEnsDashboard','tabEnsEleves','tabEnsMatieres','tabEnsNotes','tabEnsListeNotes','tabEnsPresence'].forEach(t=>{ let el=document.getElementById(t); if(el) el.style.display='none'; });
+  let c=document.getElementById(id); if(c) c.style.display='block';
+  document.querySelectorAll('.ens-tab').forEach(b=>b.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  if(id==='tabEnsEleves') afficherElevesEnseignant();
+  if(id==='tabEnsMatieres') afficherMatieresFixeesEns();
+  if(id==='tabEnsNotes') chargerNotesEnseignant();
+  if(id==='tabEnsListeNotes') afficherListeNotesEnseignant();
+  if(id==='tabEnsPresence'){ chargerPresenceEnseignant(); afficherPresenceEnvoyeeEns(); }
+}
+function nettoyerTelEns(t){ return String(t||"").replace(/[^0-9]/g,"").replace(/^237/,""); }
+function normaliserEns(t){ return String(t||"").trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,""); }
+function decouperMatieresEns(val){
+  if(!val) return [];
+  if(Array.isArray(val)) return val.map(v=> String(v||"").trim()).filter(Boolean);
+  return String(val).split(/[,;\/|]+/).map(v=> v.trim()).filter(Boolean);
+}
+let ENS_CONNECTE = null;
+let TOUS_ELEVES_ENS = [];
+let TOUS_BULLETINS_ENS = [];
+let TOUTES_PRESENCES_ENS = [];
+let MATIERES_ENS = [];
+let MATIERES_DIRECTEUR_ENS = [];
+let MATIERES_COCHEES_ENS = [];
+const MATIERES_AR_ENS = {"Coran":"القرآن","Hadith":"الحديث","Aquida":"العقيدة","Fiqh":"الفقه","Langue Arabe":"اللغة العربية","Arabe":"اللغة العربية","Sirah":"السيرة","Tawhid":"التوحيد","Adhab":"الآداب","Mémorisation":"الحفظ","Lecture":"القراءة","Écriture":"الكتابة","Mathématiques":"الرياضيات","Français":"الفرنسية"};
+function arEns(fr){ return MATIERES_AR_ENS[fr] || ""; }
+async function chargerListeEnseignantsLogin(){
+  let sel = document.getElementById('ensLoginNom');
+  if(!sel) return;
+  try{
+    let snap = await db.collection("enseignants").get();
+    let liste = [];
+    snap.forEach(d=>{ let e=d.data();
+      let matieres = decouperMatieresEns(e.matieresListe || e.matieres || e.matiere || e.matieresEnseignees || "");
+      liste.push({id:d.id, nom:e.nom||e.nomEnseignant||"", tel:e.tel||e.telephone||"", matiere:e.matiere||"", matieres:matieres, matieresTexte:matieres.join(", "), classe:e.classe||e.niveau||"", niveau:e.niveau||e.classe||"", ecole:e.ecole||e.ecoleNom||"", ecoleId:e.ecoleId||e.groupeId||""});
+    });
+    try{ let s2 = await db.collection("utilisateurs").where("role","==","enseignant").get(); s2.forEach(d=>{ let e=d.data(); if(!liste.find(x=>normaliserEns(x.nom)===normaliserEns(e.nom||e.email))) { let m=decouperMatieresEns(e.matieresListe||e.matieres||e.matiere||""); liste.push({id:d.id, nom:e.nom||e.email||"", tel:e.tel||e.telephone||"", matiere:e.matiere||"", matieres:m, matieresTexte:m.join(", "), classe:e.classe||e.niveau||"", niveau:e.niveau||e.classe||"", ecole:e.ecoleNom||"", ecoleId:e.ecoleId||""}); } }); }catch(e){}
+    liste.sort((a,b)=>a.nom.localeCompare(b.nom));
+    if(!liste.length){ sel.innerHTML = '<option value="">— Aucun enseignant trouvé —</option>'; return; }
+    sel.innerHTML = '<option value="">— Choisis ton nom —</option>' + liste.map((e,i)=>`<option value="${i}">${e.nom} - ${e.matieresTexte||e.matiere||""} - ${e.classe||""}</option>`).join("");
+    sel.dataset.liste = JSON.stringify(liste);
+  }catch(e){ sel.innerHTML = '<option value="">— Erreur —</option>'; }
+}
+async function seConnecterEnseignant(){
+  let sel = document.getElementById('ensLoginNom');
+  let idx = sel.value;
+  let telSaisi = nettoyerTelEns(document.getElementById('ensLoginTel').value);
+  let msg = document.getElementById('msgEns');
+  if(idx==="" || !telSaisi){ msg.textContent="❌ Choisis ton nom + ton numéro"; return; }
+  let liste = JSON.parse(sel.dataset.liste||"[]");
+  let ens = liste[Number(idx)];
+  if(!ens){ msg.textContent="❌ Enseignant introuvable"; return; }
+  let telBdd = nettoyerTelEns(ens.tel);
+  if(telBdd && telBdd !== telSaisi){ msg.textContent="❌ Numéro incorrect pour "+ens.nom; return; }
+  ENS_CONNECTE = ens;
+  localStorage.setItem("enseignantConnecte", JSON.stringify(ens));
+  document.getElementById('loginCardEns').style.display="none";
+  document.getElementById('enseignantPanel').style.display="block";
+  document.getElementById('ensNomAffiche').textContent = ens.nom;
+  document.getElementById('ensInfoAffiche').textContent = (ens.matieresTexte||ens.matiere||"") + " - " + (ens.classe||"") + " - " + (ens.ecole||"");
+  document.getElementById('ensMesMatieresAffiche').textContent = ens.matieresTexte||ens.matiere||"";
+  document.getElementById('ensMatiereAffiche').textContent = ens.matieresTexte||ens.matiere||"Toutes";
+  document.getElementById('ensClasseAffiche').textContent = ens.classe||"Toutes";
+  document.getElementById('dateJourEns').textContent = new Date().toLocaleDateString('fr-FR');
+  await chargerDonneesEnseignant();
+}
+function seDeconnecterEnseignant(){ localStorage.removeItem("enseignantConnecte"); location.reload(); }
+window.addEventListener('load', async ()=>{
+  await chargerListeEnseignantsLogin();
+  let sauve = localStorage.getItem("enseignantConnecte");
+  if(sauve){
+    try{
+      ENS_CONNECTE = JSON.parse(sauve);
+      if(!ENS_CONNECTE.matieres) ENS_CONNECTE.matieres = decouperMatieresEns(ENS_CONNECTE.matiere||"");
+      if(!ENS_CONNECTE.matieresTexte) ENS_CONNECTE.matieresTexte = ENS_CONNECTE.matieres.join(", ");
+      document.getElementById('loginCardEns').style.display="none";
+      document.getElementById('enseignantPanel').style.display="block";
+      document.getElementById('ensNomAffiche').textContent = ENS_CONNECTE.nom;
+      document.getElementById('ensInfoAffiche').textContent = (ENS_CONNECTE.matieresTexte||ENS_CONNECTE.matiere||"") + " - " + (ENS_CONNECTE.classe||"") + " - " + (ENS_CONNECTE.ecole||"");
+      document.getElementById('ensMesMatieresAffiche').textContent = ENS_CONNECTE.matieresTexte||ENS_CONNECTE.matiere||"";
+      document.getElementById('ensMatiereAffiche').textContent = ENS_CONNECTE.matieresTexte||ENS_CONNECTE.matiere||"Toutes";
+      document.getElementById('ensClasseAffiche').textContent = ENS_CONNECTE.classe||"Toutes";
+      document.getElementById('dateJourEns').textContent = new Date().toLocaleDateString('fr-FR');
+      await chargerDonneesEnseignant();
+    }catch(e){}
+  }
+});
+async function chargerDonneesEnseignant(){
+  try{
+    let doc = await db.collection("matieres_publiees").doc("AN_NOUROU_IMAN").get();
+    if(doc.exists){
+      let d=doc.data();
+      if(d.matieresDetail && d.matieresDetail.length) MATIERES_DIRECTEUR_ENS = d.matieresDetail.map(m=>({fr:m.fr||m.nom||"", ar:m.ar||arEns(m.fr||m.nom||"")})).filter(m=>m.fr);
+      else if(d.matieresNoms && d.matieresNoms.length) MATIERES_DIRECTEUR_ENS = d.matieresNoms.map(n=>({fr:n, ar:arEns(n)}));
+      else if(d.matieres && d.matieres.length) MATIERES_DIRECTEUR_ENS = d.matieres.map(x=> typeof x==="string" ? {fr:x, ar:arEns(x)} : {fr:x.fr||x.nom||"", ar:x.ar||""}).filter(m=>m.fr);
+    }
+  }catch(e){}
+  if(!MATIERES_DIRECTEUR_ENS.length) MATIERES_DIRECTEUR_ENS = [{fr:"Coran", ar:"القرآن"},{fr:"Hadith", ar:"الحديث"},{fr:"Aquida", ar:"العقيدة"},{fr:"Fiqh", ar:"الفقه"},{fr:"Langue Arabe", ar:"اللغة العربية"}];
+  let mesMatieresBrutes = decouperMatieresEns(ENS_CONNECTE?.matieres || ENS_CONNECTE?.matiere || "");
+  if(!mesMatieresBrutes.length){
+    MATIERES_ENS = [...MATIERES_DIRECTEUR_ENS];
+  } else {
+    MATIERES_ENS = [];
+    mesMatieresBrutes.forEach(mm=>{
+      let trouve = MATIERES_DIRECTEUR_ENS.find(d=> normaliserEns(d.fr)===normaliserEns(mm) || normaliserEns(d.fr)===normaliserEns(mm.replace("Arabe","Langue Arabe")));
+      if(trouve) MATIERES_ENS.push(trouve);
+      else MATIERES_ENS.push({fr:mm, ar:arEns(mm)});
+    });
+  }
+  MATIERES_COCHEES_ENS = MATIERES_ENS.map(m=>m.fr);
+  document.getElementById('affichageMatieresEns').textContent = MATIERES_ENS.map(m=>m.fr).join(" • ");
+  try{
+    let snap = await db.collection("inscriptions").get();
+    TOUS_ELEVES_ENS = [];
+    snap.forEach(d=>{ let e={id:d.id, ...d.data()}; TOUS_ELEVES_ENS.push(e); });
+    if(ENS_CONNECTE && ENS_CONNECTE.classe && ENS_CONNECTE.classe!=="Toutes les classes" && ENS_CONNECTE.classe!=="Toutes" && ENS_CONNECTE.classe!=="Tous"){
+      let classeEns = normaliserEns(ENS_CONNECTE.classe);
+      let filtres = TOUS_ELEVES_ENS.filter(e=> normaliserEns(e.niveau||e.classe||"")===classeEns);
+      if(filtres.length) TOUS_ELEVES_ENS = filtres;
+    }
+    if(ENS_CONNECTE && ENS_CONNECTE.ecole){
+      let ecoleEns = normaliserEns(ENS_CONNECTE.ecole);
+      let filtres = TOUS_ELEVES_ENS.filter(e=> normaliserEns(e.ecole||e.ecoleNom||e.groupe||e.groupeNom||"")===ecoleEns);
+      if(filtres.length) TOUS_ELEVES_ENS = filtres;
+    }
+  }catch(e){}
+  try{
+    let snap = await db.collection("bulletins").get();
+    TOUS_BULLETINS_ENS = [];
+    snap.forEach(d=>{ let b={id:d.id, ...d.data()};
+      if(normaliserEns(b.enseignant||b.enseignantNom||"")===normaliserEns(ENS_CONNECTE.nom)) TOUS_BULLETINS_ENS.push(b);
+    });
+  }catch(e){}
+  // CORRIGÉ : on ne lit QUE "presences" (pluriel) - plus de mélange avec l'ancienne "presence"
+  try{
+    let snapP = await db.collection("presences").get();
+    TOUTES_PRESENCES_ENS = [];
+    snapP.forEach(d=>{ let p={id:d.id, ...d.data()}; if(normaliserEns(p.enseignant||p.enseignantNom||p.envoyePar||"")===normaliserEns(ENS_CONNECTE.nom)) TOUTES_PRESENCES_ENS.push(p); });
+  }catch(e){}
+  let niveaux = [...new Set(TOUS_ELEVES_ENS.map(e=> e.niveau||e.classe||"").filter(Boolean))].sort();
+  let selNiv = document.getElementById('filtreNiveauEns'); if(selNiv) selNiv.innerHTML = '<option value="">— Tous les niveaux —</option>' + niveaux.map(n=>`<option value="${n}">${n}</option>`).join("");
+  let selNivP = document.getElementById('filtreNiveauPresenceEns'); if(selNivP) selNivP.innerHTML = '<option value="">— Tous les niveaux —</option>' + niveaux.map(n=>`<option value="${n}">${n}</option>`).join("");
+  let ecoles = [...new Set(TOUS_ELEVES_ENS.map(e=> String(e.ecole||e.ecoleNom||e.groupe||e.groupeNom||"").trim()).filter(Boolean))].sort();
+  let selEcNotes = document.getElementById('filtreEcoleEnsNotes'); if(selEcNotes) selEcNotes.innerHTML = '<option value="">— Toutes mes écoles —</option>' + ecoles.map(e=>`<option value="${e}">${e}</option>`).join("");
+  let selEcPres = document.getElementById('filtreEcolePresenceEns'); if(selEcPres) selEcPres.innerHTML = '<option value="">— Toutes mes écoles —</option>' + ecoles.map(e=>`<option value="${e}">${e}</option>`).join("");
+  let d = document.getElementById('datePresenceEns'); if(d && !d.value) d.value = new Date().toISOString().slice(0,10);
+  document.getElementById('titreDatePresenceEns').textContent = new Date().toLocaleDateString('fr-FR');
+  document.getElementById('ensEcoleNom').textContent = ecoles.join(" • ") || (ENS_CONNECTE?.ecole||"Mon école");
+  afficherElevesEnseignant();
+  afficherMatieresFixeesEns();
+  afficherListeNotesEnseignant();
+  chargerPresenceEnseignant();
+  afficherPresenceEnvoyeeEns();
+  document.getElementById('statEnsEleves').textContent = TOUS_ELEVES_ENS.length;
+  document.getElementById('statEnsNotes').textContent = TOUS_BULLETINS_ENS.length;
+  document.getElementById('statEnsAttente').textContent = TOUS_BULLETINS_ENS.filter(b=> (b.statut||"en_attente")==="en_attente").length;
+  document.getElementById('statEnsNotesValide').textContent = TOUS_BULLETINS_ENS.filter(b=> (b.statut||"")==="valide").length;
+  document.getElementById('statEnsNotesRefuse').textContent = TOUS_BULLETINS_ENS.filter(b=> (b.statut||"")==="refuse").length;
+  document.getElementById('statEnsPresAttente').textContent = TOUTES_PRESENCES_ENS.filter(p=> (p.statut||"en_attente")==="en_attente").length;
+  document.getElementById('statEnsPresValide').textContent = TOUTES_PRESENCES_ENS.filter(p=> (p.statut||"")==="valide").length;
+  let aujFR = new Date().toLocaleDateString('fr-FR');
+  let aujISO = new Date().toISOString().slice(0,10);
+  let presentsAuj = TOUTES_PRESENCES_ENS.filter(p=> (String(p.date||"")===aujFR || String(p.dateISO||"")===aujISO) && String(p.presence||"")==="present").length;
+  document.getElementById('statEnsPresents').textContent = presentsAuj;
+  let alertBox = document.getElementById('alertesEns');
+  if(alertBox){
+    let attN = TOUS_BULLETINS_ENS.filter(b=> (b.statut||"en_attente")==="en_attente").length;
+    let attP = TOUTES_PRESENCES_ENS.filter(p=> (p.statut||"en_attente")==="en_attente").length;
+    if(!TOUS_ELEVES_ENS.length) alertBox.innerHTML = '<p class="centre muted">Aucun élève pour ta classe.</p>';
+    else if(attN || attP) alertBox.innerHTML = `<p class="centre">⚠️ Tu as <b>${attN}</b> note(s) et <b>${attP}</b> présence(s) en <b>🟠 EN ATTENTE</b>. Le Sous-Directeur doit valider.</p>`;
+    else alertBox.innerHTML = `<p class="centre">✅ Tu as <b>${TOUS_ELEVES_ENS.length}</b> élève(s). Mes matières : <b>${MATIERES_ENS.map(m=>m.fr).join(", ")}</b>. Saisis leurs notes, fais l'appel.</p>`;
+  }
+  let der = document.getElementById('derniersBulletinsEns');
+  if(der){
+    let groupes={};
+    TOUS_BULLETINS_ENS.forEach(b=>{ let k=(b.eleve||"")+"||"+(b.trimestre||""); if(!groupes[k]) groupes[k]={eleve:b.eleve, trimestre:b.trimestre, lignes:[]}; groupes[k].lignes.push(b); });
+    let cles = Object.keys(groupes).slice(-3).reverse();
+    if(!cles.length) der.innerHTML = '<p class="centre muted">Aucune note envoyée pour l\'instant.</p>';
+    else{
+      let h = '<div style="overflow-x:auto"><table class="table-blanc"><thead><tr><th>Élève</th><th>Trimestre</th>' + MATIERES_ENS.map(m=>`<th>${m.fr}<br><small>O+E=Total</small></th>`).join("") + '<th>Statut</th></tr></thead><tbody>';
+      cles.forEach(k=>{
+        let g=groupes[k];
+        let cellules = MATIERES_ENS.map(m=>{
+          let n=g.lignes.find(x=> normaliserEns(x.matiere||"")===normaliserEns(m.fr));
+          if(!n) return `<td>—</td>`;
+          return `<td>${n.oral||0}+${n.ecrit||0}=<b>${n.moyenne||0}</b></td>`;
+        }).join("");
+        let st = g.lignes[0].statut||"en_attente";
+        let badge = st==="valide" ? '<span class="badge badge-valide">🟢 Validée</span>' : st==="refuse" ? '<span class="badge badge-refuse">🔴 Refusée</span>' : '<span class="badge badge-attente">🟠 En attente</span>';
+        h+=`<tr><td class="td-nom"><b>${g.eleve}</b></td><td>${g.trimestre}</td>${cellules}<td>${badge}</td></tr>`;
+      });
+      h+='</tbody></table></div>';
+      der.innerHTML = h;
+    }
+  }
+}
+function afficherMatieresFixeesEns(){
+  let box = document.getElementById('listeMatieresFixeesEns');
+  let box2 = document.getElementById('detailMatieresFixeesEns');
+  let boxDash = document.getElementById('matieresDashboardEns');
+  let chips = MATIERES_ENS.map(m=>`<span class="matiere-chip">${m.fr} <span class="ar">${m.ar||""}</span></span>`).join("");
+  if(box) box.innerHTML = chips || '<p class="muted">Aucune matière. Dis au Sous-Directeur de te mettre des matières.</p>';
+  if(boxDash) boxDash.innerHTML = chips || '<p class="muted">Aucune matière.</p>';
+  if(box2){
+    let h = '<table class="table-blanc"><thead><tr><th>Matière</th><th>Oral</th><th>Écrit</th><th>Total</th></tr></thead><tbody>';
+    MATIERES_ENS.forEach(m=>{ h += `<tr><td><b>${m.fr}</b> <span class="ar">${m.ar||""}</span></td><td>/10</td><td>/10</td><td><b>/20</b></td></tr>`; });
+    h += '</tbody></table>';
+    box2.innerHTML = h;
+  }
+}
+function afficherElevesEnseignant(){
+  let box = document.getElementById('listeElevesEns'); if(!box) return;
+  let q = (document.getElementById('rechercheEleveEns')?.value||"").toLowerCase();
+  let niv = document.getElementById('filtreNiveauEns')?.value || "";
+  let liste = TOUS_ELEVES_ENS.filter(e=>{
+    if(niv && String(e.niveau||e.classe||"")!==niv) return false;
+    if(q && !JSON.stringify(e).toLowerCase().includes(q)) return false;
+    return true;
+  });
+  if(!liste.length){ box.innerHTML = '<p class="centre muted">Aucun élève.</p>'; return; }
+  let h = '<div style="overflow-x:auto"><table class="table-blanc"><thead><tr><th>Élève</th><th>Parent</th><th>Tél</th><th>Niveau</th><th>École</th></tr></thead><tbody>';
+  liste.forEach(e=>{ h += `<tr><td class="td-nom"><b>${e.enfant||e.nomEnfant||e.nom||"—"}</b></td><td>${e.parent||"—"}</td><td>${e.tel||e.telephone||"—"}</td><td>${e.niveau||e.classe||"—"}</td><td>${e.ecole||e.ecoleNom||e.groupe||e.groupeNom||"—"}</td></tr>`; });
+  h += '</tbody></table></div>';
+  box.innerHTML = h;
+}
+function filtrerElevesNotesEns(){
+  let ecole = document.getElementById('filtreEcoleEnsNotes')?.value || "";
+  let sel = document.getElementById('notesEleveEns'); if(!sel) return;
+  let liste = TOUS_ELEVES_ENS.filter(e=>{ if(!ecole) return true; return normaliserEns(e.ecole||e.ecoleNom||e.groupe||e.groupeNom||"")===normaliserEns(ecole); });
+  sel.innerHTML = '<option value="">— Choisis l\'élève —</option>' + liste.map(e=>`<option value="${e.enfant||e.nomEnfant||e.nom||""}">${e.enfant||e.nomEnfant||e.nom||""} - ${e.niveau||e.classe||""}</option>`).join("");
+  document.getElementById('infoFiltreNotesEns').textContent = liste.length + " élève(s) pour cette école";
+  chargerNotesExistantesEns();
+}
+function chargerNotesEnseignant(){ filtrerElevesNotesEns(); }
+function toggleMatiereEnvoiEns(matiere, checkbox){
+  if(checkbox.checked){ if(!MATIERES_COCHEES_ENS.includes(matiere)) MATIERES_COCHEES_ENS.push(matiere); }
+  else { MATIERES_COCHEES_ENS = MATIERES_COCHEES_ENS.filter(m=> m!==matiere); }
+  chargerNotesExistantesEns();
+}
+function chargerNotesExistantesEns(){
+  let eleve = document.getElementById('notesEleveEns')?.value || "";
+  let tri = document.getElementById('notesTrimestreEns')?.value || "Trimestre 1";
+  let boxChoix = document.getElementById('choixMatieresEnvoiEns');
+  if(boxChoix){
+    boxChoix.innerHTML = MATIERES_ENS.map(m=>{
+      let coche = MATIERES_COCHEES_ENS.includes(m.fr) ? "checked" : "";
+      return `<label class="check-matiere"><input type="checkbox" ${coche} onchange="toggleMatiereEnvoiEns('${m.fr}', this)"> ${m.fr} <span class="ar">${m.ar||""}</span></label>`;
+    }).join("");
+  }
+  let box = document.getElementById('formNotesEns'); if(!box) return;
+  if(!eleve){ box.innerHTML = '<p class="centre muted">Choisis d\'abord l\'élève.</p>'; return; }
+  let matieresAffichees = MATIERES_ENS.filter(m=> MATIERES_COCHEES_ENS.includes(m.fr));
+  if(!matieresAffichees.length){ box.innerHTML = '<p class="centre muted">Coche au moins 1 matière à envoyer.</p>'; return; }
+  let h = '<table class="table-blanc"><thead><tr><th>Matière - MES MATIÈRES SEULEMENT</th><th>Oral /10</th><th>Écrit /10</th><th>Statut</th></tr></thead><tbody>';
+  matieresAffichees.forEach((m,i)=>{
+    let exist = TOUS_BULLETINS_ENS.find(b=> normaliserEns(b.eleve||"")===normaliserEns(eleve) && b.trimestre===tri && normaliserEns(b.matiere||"")===normaliserEns(m.fr) && normaliserEns(b.enseignant||b.enseignantNom||"")===normaliserEns(ENS_CONNECTE.nom));
+    let st = exist ? (exist.statut||"en_attente") : "nouveau";
+    let badge = st==="valide" ? '<span class="badge badge-valide">🟢 Validée</span>' : st==="refuse" ? '<span class="badge badge-refuse">🔴 Refusée - corrige et renvoie</span>' : st==="en_attente" ? '<span class="badge badge-attente">🟠 En attente</span>' : '<span class="muted">Nouveau</span>';
+    let motif = exist && exist.motifRefus ? `<br><small style="color:red">${exist.motifRefus}</small>` : "";
+    let lectureSeule = st==="valide" ? 'readonly style="background:#E8F5E9"' : '';
+    h += `<tr><td class="td-nom"><b>${m.fr}</b> <span class="ar">${m.ar||""}</span></td><td><input type="number" min="0" max="10" step="0.5" class="note-input" id="oral_${i}" data-matiere="${m.fr}" value="${exist? (exist.oral||0) : ""}" placeholder="0-10" ${lectureSeule}></td><td><input type="number" min="0" max="10" step="0.5" class="note-input" id="ecrit_${i}" data-matiere="${m.fr}" value="${exist? (exist.ecrit||0) : ""}" placeholder="0-10" ${lectureSeule}></td><td>${badge}${motif}</td></tr>`;
+  });
+  h += '</tbody></table>';
+  box.innerHTML = h;
+}
+async function envoyerNotesEnseignant(){
+  let eleve = document.getElementById('notesEleveEns')?.value || "";
+  let tri = document.getElementById('notesTrimestreEns')?.value || "Trimestre 1";
+  let annee = document.getElementById('notesAnneeEns')?.value || "2026-2027";
+  let msg = document.getElementById('msgNotesEns');
+  if(!eleve){ msg.style.color="red"; msg.textContent="❌ Choisis l'élève"; return; }
+  let matieresAffichees = MATIERES_ENS.filter(m=> MATIERES_COCHEES_ENS.includes(m.fr));
+  if(!matieresAffichees.length){ msg.style.color="red"; msg.textContent="❌ Coche au moins 1 matière"; return; }
+  let eleveObj = TOUS_ELEVES_ENS.find(e=> normaliserEns(e.enfant||e.nomEnfant||e.nom||"")===normaliserEns(eleve)) || {};
+  let ecoleEleve = eleveObj.ecole||eleveObj.ecoleNom||eleveObj.groupe||eleveObj.groupeNom||ENS_CONNECTE?.ecole||"";
+  try{
+    let n=0; let bloques=0;
+    for(let i=0;i<matieresAffichees.length;i++){
+      let m = matieresAffichees[i];
+      let oralEl = document.querySelector(`#oral_${i}[data-matiere="${m.fr}"]`) || document.getElementById('oral_'+i);
+      let ecritEl = document.querySelector(`#ecrit_${i}[data-matiere="${m.fr}"]`) || document.getElementById('ecrit_'+i);
+      let oral = Number(oralEl?.value || 0);
+      let ecrit = Number(ecritEl?.value || 0);
+      if(oral>10) oral=10; if(ecrit>10) ecrit=10; if(oral<0) oral=0; if(ecrit<0) ecrit=0;
+      let moyenne = oral + ecrit;
+      let exist = TOUS_BULLETINS_ENS.find(b=> normaliserEns(b.eleve||"")===normaliserEns(eleve) && b.trimestre===tri && normaliserEns(b.matiere||"")===normaliserEns(m.fr) && normaliserEns(b.enseignant||b.enseignantNom||"")===normaliserEns(ENS_CONNECTE.nom));
+      // CORRIGÉ VALIDATION : si déjà validée, on ne l'écrase PAS, on la saute
+      if(exist && (exist.statut==="valide" || exist.statutNote==="valide")){ bloques++; continue; }
+      // Si refusée, elle repart en attente avec motif effacé. Sinon, nouvelle = en attente.
+      let nouveauStatut = "en_attente";
+      let cleUnique = normaliserEns(eleve)+"||"+tri+"||"+normaliserEns(m.fr)+"||"+normaliserEns(ENS_CONNECTE.nom);
+      let data = { eleve:eleve, enfant:eleve, trimestre:tri, annee:annee, matiere:m.fr, matiereAr:m.ar||"", oral:oral, ecrit:ecrit, moyenne:moyenne, note:moyenne, ecole:ecoleEleve, ecoleNom:ecoleEleve, ecoleId:eleveObj.ecoleId||eleveObj.groupeId||ENS_CONNECTE?.ecoleId||"", niveau:eleveObj.niveau||eleveObj.classe||"", enseignant:ENS_CONNECTE?.nom||"", enseignantNom:ENS_CONNECTE?.nom||"", cleUnique:cleUnique, statut:nouveauStatut, statutNote:nouveauStatut, motifRefus:"", validePar:exist?.validePar||"", dateEnvoi:new Date(), createdAt:exist?.createdAt||new Date(), updatedAt:new Date() };
+      if(exist && exist.id){ await db.collection("bulletins").doc(exist.id).update(data); }
+      else { let ref = await db.collection("bulletins").add(data); data.id = ref.id; TOUS_BULLETINS_ENS.push(data); }
+      n++;
+    }
+    if(n===0 && bloques>0){ msg.style.color="#2E7D32"; msg.textContent=`ℹ️ ${bloques} matière(s) déjà 🟢 Validée(s) - on ne les touche pas. Elles restent validées.`; }
+    else { msg.style.color="green"; msg.textContent = `✅ ${n} matière(s) envoyée(s) pour ${eleve} - ${tri} - 🟠 EN ATTENTE.` + (bloques? ` (${bloques} déjà validée(s) gardée(s))` : ""); }
+    await chargerDonneesEnseignant();
+  }catch(e){ msg.style.color="red"; msg.textContent="❌ "+e.message; }
+}
+function afficherListeNotesEnseignant(){
+  let thead = document.getElementById('theadListeNotesEns');
+  let tbody = document.getElementById('tbodyListeNotesEns');
+  if(!thead || !tbody) return;
+  let q = (document.getElementById('rechercheEleveNotesEns')?.value||"").toLowerCase();
+  let filtreStatut = document.getElementById('filtreStatutNotesEns')?.value || "";
+  let filtreTri = document.getElementById('filtreTrimestreNotesEns')?.value || "";
+  let hHead = `<tr><th>Élève</th><th>Trimestre</th>` + MATIERES_ENS.map(m=>`<th>${m.fr}<br><small>O+E=Total</small></th>`).join("") + `<th>Moyenne (mes matières)</th><th>Statut</th><th>Motif</th></tr>`;
+  thead.innerHTML = hHead;
+  let groupes = {};
+  TOUS_BULLETINS_ENS.forEach(b=>{
+    if(filtreTri && b.trimestre!==filtreTri) return;
+    if(filtreStatut && (b.statut||"en_attente")!==filtreStatut) return;
+    if(q && !String(b.eleve||"").toLowerCase().includes(q)) return;
+    let k = (b.eleve||"") + "||" + (b.trimestre||"");
+    if(!groupes[k]) groupes[k] = {eleve:b.eleve, trimestre:b.trimestre, lignes:[]};
+    groupes[k].lignes.push(b);
+  });
+  if(!Object.keys(groupes).length){ tbody.innerHTML = `<tr><td colspan="${2+MATIERES_ENS.length+3}" style="text-align:center">Aucune note envoyée.</td></tr>`; return; }
+  let html = "";
+  Object.keys(groupes).sort().forEach(k=>{
+    let g = groupes[k];
+    let total=0;
+    let cellules = MATIERES_ENS.map(m=>{
+      let n = g.lignes.find(x=> normaliserEns(x.matiere||"")===normaliserEns(m.fr));
+      if(!n) return `<td>—</td>`;
+      total += Number(n.moyenne||0);
+      let couleur = (n.statut||"")==="valide" ? "color:#2E7D32" : (n.statut||"")==="refuse" ? "color:#C62828" : "color:#8D6E00";
+      return `<td style="${couleur};font-weight:700">${n.oral||0}+${n.ecrit||0}=<b>${n.moyenne||0}</b></td>`;
+    }).join("");
+    let moy = MATIERES_ENS.length ? (total / MATIERES_ENS.length).toFixed(2) : "0.00";
+    let nbAtt = g.lignes.filter(x=> (x.statut||"en_attente")==="en_attente").length;
+    let badge = nbAtt===0 && g.lignes.every(x=> (x.statut||"")==="valide") ? '<span class="badge badge-valide">🟢 Validée</span>' : g.lignes.every(x=> (x.statut||"")==="refuse") ? '<span class="badge badge-refuse">🔴 Refusée</span>' : '<span class="badge badge-attente">🟠 '+nbAtt+' en attente</span>';
+    let motif = g.lignes.find(x=> x.motifRefus) ? g.lignes.find(x=> x.motifRefus).motifRefus : "—";
+    html += `<tr><td class="td-nom"><b>${g.eleve}</b></td><td>${g.trimestre}</td>${cellules}<td><b>${moy}</b></td><td>${badge}</td><td style="max-width:140px;white-space:normal">${motif}</td></tr>`;
+  });
+  tbody.innerHTML = html;
+}
+async function chargerPresenceEnseignant(){
+  let box = document.getElementById('listePresenceEns'); if(!box) return;
+  let ecoleFiltre = document.getElementById('filtreEcolePresenceEns')?.value || "";
+  let nivFiltre = document.getElementById('filtreNiveauPresenceEns')?.value || "";
+  let date = document.getElementById('datePresenceEns')?.value || new Date().toISOString().slice(0,10);
+  let liste = TOUS_ELEVES_ENS.filter(e=>{
+    if(ecoleFiltre && normaliserEns(e.ecole||e.ecoleNom||e.groupe||e.groupeNom||"")!==normaliserEns(ecoleFiltre)) return false;
+    if(nivFiltre && String(e.niveau||e.classe||"")!==nivFiltre) return false;
+    return true;
+  });
+  if(!liste.length){ box.innerHTML = '<p class="centre muted">Aucun élève pour ce filtre.</p>'; return; }
+  let dateFR = new Date(date+"T12:00:00").toLocaleDateString('fr-FR');
+  let presenceDeja = {};
+  TOUTES_PRESENCES_ENS.forEach(p=>{
+    if(String(p.date||"")===date || String(p.date||"")===dateFR || String(p.dateISO||"")===date){
+      presenceDeja[normaliserEns(p.eleve||p.enfant||"")] = p.presence||p.statutPresence||"present";
+    }
+  });
+  let h = '<div style="overflow-x:auto"><table class="table-blanc"><thead><tr><th>Élève</th><th>Niveau</th><th>Présent ?</th><th>Statut</th></tr></thead><tbody>';
+  liste.forEach((e,i)=>{
+    let nom = e.enfant||e.nomEnfant||e.nom||"";
+    let st = presenceDeja[normaliserEns(nom)] || "present";
+    let deja = TOUTES_PRESENCES_ENS.find(p=> normaliserEns(p.eleve||p.enfant||"")===normaliserEns(nom) && (String(p.date||"")===date || String(p.date||"")===dateFR || String(p.dateISO||"")===date));
+    let badge = deja ? ((deja.statut||"")==="valide" ? '<span class="badge badge-valide">🟢 Validée</span>' : (deja.statut||"")==="refuse" ? '<span class="badge badge-refuse">🔴 Refusée</span>' : '<span class="badge badge-attente">🟠 En attente</span>') : '<span class="muted">Nouveau</span>';
+    h += `<tr><td class="td-nom"><b>${nom}</b></td><td>${e.niveau||e.classe||"—"}</td><td><select id="pres_${i}" data-nom="${nom}"><option value="present" ${st==="present"?"selected":""}>✅ Présent</option><option value="absent" ${st==="absent"?"selected":""}>❌ Absent</option><option value="retard" ${st==="retard"?"selected":""}>⏰ Retard</option></select></td><td>${badge}</td></tr>`;
+  });
+  h += '</tbody></table></div>';
+  box.innerHTML = h;
+}
+async function enregistrerPresenceEnseignant(){
+  let dateInput = document.getElementById('datePresenceEns')?.value || new Date().toISOString().slice(0,10);
+  let dateFR = new Date(dateInput+"T12:00:00").toLocaleDateString('fr-FR');
+  let msg = document.getElementById('msgPresenceEns');
+  let box = document.getElementById('listePresenceEns');
+  if(!box) return;
+  let selects = box.querySelectorAll('select[id^="pres_"]');
+  if(!selects.length){ msg.style.color="red"; msg.textContent="❌ Aucun élève"; return; }
+  try{
+    let n=0; let bloques=0;
+    for(let s of selects){
+      let nom = s.dataset.nom;
+      let presenceVal = s.value;
+      let eleveObj = TOUS_ELEVES_ENS.find(e=> normaliserEns(e.enfant||e.nomEnfant||e.nom||"")===normaliserEns(nom)) || {};
+      let ecoleEleve = eleveObj.ecole||eleveObj.ecoleNom||eleveObj.groupe||eleveObj.groupeNom||ENS_CONNECTE?.ecole||"";
+      let exist = TOUTES_PRESENCES_ENS.find(p=> normaliserEns(p.eleve||p.enfant||"")===normaliserEns(nom) && (String(p.date||"")===dateFR || String(p.dateISO||"")===dateInput) && normaliserEns(p.enseignant||p.enseignantNom||"")===normaliserEns(ENS_CONNECTE.nom));
+      // CORRIGÉ : si présence déjà validée, on ne l'écrase pas
+      if(exist && exist.statut==="valide"){ bloques++; continue; }
+      let cleUniquePres = normaliserEns(nom)+"||"+dateFR+"||"+normaliserEns(ENS_CONNECTE.nom);
+      let data = { eleve:nom, enfant:nom, date:dateFR, dateISO:dateInput, presence:presenceVal, statutPresence:presenceVal, statut:"en_attente", motifRefus:"", validePar:exist?.validePar||"", ecole:ecoleEleve, ecoleNom:ecoleEleve, ecoleId:eleveObj.ecoleId||eleveObj.groupeId||ENS_CONNECTE?.ecoleId||"", niveau:eleveObj.niveau||eleveObj.classe||"", enseignant:ENS_CONNECTE?.nom||"", enseignantNom:ENS_CONNECTE?.nom||"", cleUnique:cleUniquePres, createdAt:exist?.createdAt||new Date(), updatedAt:new Date() };
+      if(exist && exist.id){
+        try{ await db.collection("presences").doc(exist.id).update(data); }
+        catch(err){ let ref = await db.collection("presences").add(data); data.id = ref.id; let idx = TOUTES_PRESENCES_ENS.findIndex(x=>x.id===exist.id); if(idx>=0) TOUTES_PRESENCES_ENS[idx]=data; else TOUTES_PRESENCES_ENS.push(data); }
+      }
+      else { let ref = await db.collection("presences").add(data); data.id = ref.id; TOUTES_PRESENCES_ENS.push(data); }
+      n++;
+    }
+    if(n===0 && bloques>0){ msg.style.color="#2E7D32"; msg.textContent=`ℹ️ Présence déjà 🟢 Validée - on ne la touche pas.`; }
+    else { msg.style.color="green"; msg.textContent = `✅ Présence envoyée pour ${n} élève(s) - ${dateFR} - 🟠 EN ATTENTE.` + (bloques? ` (${bloques} déjà validée(s) gardée(s))` : ""); }
+    await chargerDonneesEnseignant();
+  }catch(e){ msg.style.color="red"; msg.textContent="❌ "+e.message; }
+}
+function afficherPresenceEnvoyeeEns(){
+  let tbody = document.getElementById('tbodyPresenceEnvoyeeEns'); if(!tbody) return;
+  let filtreDate = document.getElementById('filtreDatePresenceEnvoyeeEns')?.value || "";
+  let groupes = {};
+  TOUTES_PRESENCES_ENS.forEach(p=>{
+    if(filtreDate){
+      let dateFR = p.date||"";
+      let dateISO = p.dateISO||"";
+      if(dateISO!==filtreDate && dateFR!==new Date(filtreDate+"T12:00:00").toLocaleDateString('fr-FR')) return;
+    }
+    let k = (p.date||"")+"||"+(p.ecole||p.ecoleNom||"");
+    if(!groupes[k]) groupes[k]={date:p.date, ecole:p.ecole||p.ecoleNom||"", lignes:[]};
+    groupes[k].lignes.push(p);
+  });
+  if(!Object.keys(groupes).length){ tbody.innerHTML = `<tr><td colspan="7" style="text-align:center">Aucune présence envoyée.</td></tr>`; return; }
+  let html="";
+  Object.keys(groupes).sort().reverse().forEach(k=>{
+    let g=groupes[k];
+    let presents = g.lignes.filter(x=> String(x.presence||"")==="present").length;
+    let absents = g.lignes.filter(x=> String(x.presence||"")==="absent").length;
+    let listeCourte = g.lignes.map(x=> `<b>${x.eleve||""}</b> : ${String(x.presence||"")==="present" ? "✅ P" : String(x.presence||"")==="absent" ? "❌ A" : "⏰ R"}`).join(" • ");
+    let nbAtt = g.lignes.filter(x=> (x.statut||"en_attente")==="en_attente").length;
+    let badge = nbAtt===0 && g.lignes.every(x=> (x.statut||"")==="valide") ? '<span class="badge badge-valide">🟢 Validée</span>' : g.lignes.every(x=> (x.statut||"")==="refuse") ? '<span class="badge badge-refuse">🔴 Refusée</span>' : '<span class="badge badge-attente">🟠 '+nbAtt+' en attente</span>';
+    let motif = g.lignes.find(x=> x.motifRefus) ? g.lignes.find(x=> x.motifRefus).motifRefus : "—";
+    html+=`<tr><td>${g.date}</td><td>${g.ecole}</td><td><b>${presents}</b></td><td><b style="color:red">${absents}</b></td><td style="max-width:260px;white-space:normal;text-align:left">${listeCourte}</td><td>${badge}</td><td style="max-width:120px;white-space:normal">${motif}</td></tr>`;
+  });
+  tbody.innerHTML = html;
+}
+</script>
+</body></html>
+

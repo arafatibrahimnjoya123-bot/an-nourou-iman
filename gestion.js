@@ -1,4 +1,4 @@
-// GESTION - Institut Nouroul Iymane - VERSION FINALE CORRIGEE - LISIBLE
+// GESTION - Institut Nouroul Iymane - VERSION FINALE CORRIGEE
 let monEcoleId = "";
 let monEcoleNom = "";
 let monEcoleData = null;
@@ -90,10 +90,46 @@ function getNbMatieresFixees() {
   let n = getMatieresActives().length;
   return n > 0 ? n : 1;
 }
+
+// ===== CORRIGÉ : Oral dans Oral, Écrit dans Écrit =====
+function totalVraiNoteGestionJS(n){
+  if(!n) return 0;
+  let oral = Number(n.oral ?? n.noteOral ?? 0);
+  let ecrit = Number(n.ecrit ?? n.noteEcrit ?? 0);
+  let devoir = Number(n.devoir ?? n.noteDevoir ?? 0);
+  let compo = Number(n.composition ?? n.noteComposition ?? n.examen ?? 0);
+  let unique = Number(n.moyenne ?? n.note ?? n.total ?? n.noteUnique ?? 0);
+  let mode = String(typeComposition || "Oral + Écrit").toLowerCase();
+  if(mode.includes("devoir")){
+    if(devoir>0 || compo>0) return Math.min(20, devoir + compo);
+    if(unique>0) return Math.min(20, unique);
+  }
+  if(mode.includes("composition") && !mode.includes("devoir")){
+    if(compo>0) return Math.min(20, compo);
+    if(unique>0) return Math.min(20, unique);
+    if(oral>0 || ecrit>0) return Math.min(20, oral + ecrit);
+  }
+  if(oral>0 || ecrit>0) return Math.min(20, oral + ecrit);
+  return Math.min(20, unique);
+}
+function detailNoteGestionJS(n){
+  if(!n) return "0 + 0";
+  let oral = Number(n.oral ?? 0);
+  let ecrit = Number(n.ecrit ?? 0);
+  let devoir = Number(n.devoir ?? 0);
+  let compo = Number(n.composition ?? 0);
+  let mode = String(typeComposition || "Oral + Écrit").toLowerCase();
+  if(mode.includes("devoir") && (devoir>0 || compo>0)) return devoir + " + " + compo;
+  if(mode.includes("composition") && !mode.includes("devoir") && compo>0) return "" + compo;
+  if(oral>0 || ecrit>0) return oral + " + " + ecrit;
+  return "" + totalVraiNoteGestionJS(n);
+}
+// ===== CORRIGÉ : Moyenne trimestre = total / nb matières notées =====
 function calculerMoyenneTrimestre(lignes) {
+  if(!lignes || !lignes.length) return 0;
   let total = 0;
-  lignes.forEach(function(l) { total += Number(l.moyenne || 0); });
-  return total / getNbMatieresFixees();
+  lignes.forEach(function(l) { total += totalVraiNoteGestionJS(l); });
+  return total / lignes.length;
 }
 function showTabGestion(id, btn) {
   ['tabDashboard','tabEleves','tabPaiements','tabEnseignants','tabBulletins','tabPresence','tabAnnuel','tabParametres','tabActivites'].forEach(function(x) {
@@ -378,6 +414,8 @@ async function definirFraisTotal() {
   majTitresFeuilles();
   alert("✅ Frais défini : " + v + " FCFA");
 }
+// ===== FIN PARTIE 1 =====
+
 // ===== PARTIE 2 - ELEVES / PAIEMENTS / ENSEIGNANTS / BULLETINS / PRESENCE =====
 async function chargerElevesGestion() {
   let box = document.getElementById('listeElevesGestion');
@@ -412,7 +450,6 @@ function soldeEleve(nom) {
   let statut = totalDu > 0 && totalPaye >= totalDu ? "paye" : totalPaye > 0 ? "avance" : "nonpaye";
   return { totalPaye: totalPaye, reste: reste, statut: statut, totalDu: totalDu, total: totalDu };
 }
-// ===== CORRIGÉ : Encaissé = même règle que Liaison =====
 function calculerEncaisseOfficiel() {
   let encaisse = 0;
   TOUS_PAIEMENTS_GESTION.forEach(function(p) {
@@ -763,9 +800,9 @@ async function chargerNotesExistantes() {
   let html = '<h3 style="text-align:center">Notes - ' + eleve + ' - ' + tri + '</h3><table class="table-blanc"><thead><tr><th>' + (isEn ? "Subject / المادة" : "Matière / المادة") + '</th><th>Oral /10</th><th>' + (isEn ? "Written /10" : "Écrit /10") + '</th><th>Total /20</th></tr></thead><tbody>';
   actifs.forEach(function(m) {
     let exist = TOUS_BULLETINS.find(function(b) { return b.trimestre === tri && normaliser(b.matiere) === normaliser(m.fr) && normaliser(b.eleve) === normaliser(eleve); });
-    let oral = exist ? exist.oral || 0 : 0;
-    let ecrit = exist ? exist.ecrit || 0 : 0;
-    html += '<tr><td><b>' + nomMatiereBulletinSelonLangue(m.fr) + '</b></td><td><input type="number" min="0" max="10" step="0.5" data-matiere="' + m.fr + '" data-type="oral" value="' + oral + '" oninput="calculerTotalLigne(this)"></td><td><input type="number" min="0" max="10" step="0.5" data-matiere="' + m.fr + '" data-type="ecrit" value="' + ecrit + '" oninput="calculerTotalLigne(this)"></td><td><b class="total-ligne" data-matiere="' + m.fr + '">' + (Number(oral) + Number(ecrit)).toFixed(1) + '</b></td></tr>';
+    let oral = exist ? Number(exist.oral || 0) : 0;
+    let ecrit = exist ? Number(exist.ecrit || 0) : 0;
+    html += '<tr><td><b>' + nomMatiereBulletinSelonLangue(m.fr) + '</b></td><td><input type="number" min="0" max="10" step="0.5" data-matiere="' + m.fr + '" data-type="oral" value="' + oral + '" oninput="calculerTotalLigne(this)"></td><td><input type="number" min="0" max="10" step="0.5" data-matiere="' + m.fr + '" data-type="ecrit" value="' + ecrit + '" oninput="calculerTotalLigne(this)"></td><td><b class="total-ligne" data-matiere="' + m.fr + '">' + (oral + ecrit).toFixed(1) + '</b></td></tr>';
   });
   html += '</tbody></table>';
   form.innerHTML = html;
@@ -777,6 +814,7 @@ function calculerTotalLigne(input) {
   let el = document.querySelector('.total-ligne[data-matiere="' + mat + '"]');
   if (el) el.textContent = (oral + ecrit).toFixed(1);
 }
+// ===== CORRIGÉ PRINCIPAL : 1 seule sauvegarde par matière =====
 async function enregistrerBulletinComplet() {
   let eleve = document.getElementById('bulEleve').value;
   let tri = document.getElementById('bulTrimestre').value;
@@ -787,20 +825,25 @@ async function enregistrerBulletinComplet() {
   let inputs = [...document.querySelectorAll('#formNotes input[data-matiere]')];
   if (!inputs.length) { msg.style.color = "red"; msg.textContent = "❌ Aucune matière active"; return; }
   let ecoleEleve = ecoleDeEleveBulletin(eleve) || monEcoleNom;
+  let parMatiere = {};
+  inputs.forEach(function(inp){
+    let mat = inp.dataset.matiere;
+    if(!parMatiere[mat]) parMatiere[mat] = { oral: 0, ecrit: 0 };
+    parMatiere[mat][inp.dataset.type] = Number(inp.value || 0);
+  });
   try {
-    for (let inp of inputs) {
-      let mat = inp.dataset.matiere;
-      let type = inp.dataset.type;
-      let val = Number(inp.value || 0);
+    for (let mat of Object.keys(parMatiere)) {
+      let oral = parMatiere[mat].oral;
+      let ecrit = parMatiere[mat].ecrit;
+      let total = oral + ecrit;
       let exist = TOUS_BULLETINS.find(function(b) { return normaliser(b.eleve) === normaliser(eleve) && b.trimestre === tri && normaliser(b.matiere) === normaliser(mat); });
       if (exist && exist.source === "bulletins" && exist.realDocId) {
-        let upd = {};
-        upd[type] = val;
-        upd.moyenne = (type === "oral" ? val + Number(exist.ecrit || 0) : Number(exist.oral || 0) + val);
-        upd.ecole = ecoleEleve;
-        await db.collection("bulletins").doc(exist.realDocId).update(upd);
+        await db.collection("bulletins").doc(exist.realDocId).update({ oral: oral, ecrit: ecrit, moyenne: total, appreciation: app, ecole: ecoleEleve });
+      } else if (exist && exist.realDocId) {
+        try { await db.collection(exist.source).doc(exist.realDocId).update({ oral: oral, ecrit: ecrit, moyenne: total, appreciation: app, ecole: ecoleEleve }); }
+        catch(e){ await db.collection("bulletins").add({ eleve: eleve, trimestre: tri, annee: annee, matiere: mat, oral: oral, ecrit: ecrit, moyenne: total, appreciation: app, ecole: ecoleEleve, ecoleId: monEcoleId, createdAt: new Date() }); }
       } else {
-        await db.collection("bulletins").add({ eleve: eleve, trimestre: tri, annee: annee, matiere: mat, oral: type === "oral" ? val : 0, ecrit: type === "ecrit" ? val : 0, moyenne: val, appreciation: app, ecole: ecoleEleve, ecoleId: monEcoleId, createdAt: new Date() });
+        await db.collection("bulletins").add({ eleve: eleve, trimestre: tri, annee: annee, matiere: mat, oral: oral, ecrit: ecrit, moyenne: total, appreciation: app, ecole: ecoleEleve, ecoleId: monEcoleId, createdAt: new Date() });
       }
     }
     msg.style.color = "green";
@@ -834,6 +877,8 @@ async function chargerBulletins() {
         let oral = Number(v.oral ?? 0);
         let ecrit = Number(v.ecrit ?? 0);
         let moyenne = Number(v.moyenne ?? (oral + ecrit));
+        if (oral === 0 && ecrit === 0 && moyenne > 0) { }
+        else { moyenne = oral + ecrit; }
         if (!eleve || !matiere) return;
         tous.push({ id: source + "_" + docId + "_" + normaliser(eleve) + "_" + normaliser(matiere), realDocId: docId, source: source, eleve: eleve, trimestre: v.trimestre || "Trimestre 1", annee: v.annee || "2026-2027", matiere: matiere, oral: oral, ecrit: ecrit, moyenne: moyenne, appreciation: v.appreciation || "", ecole: v.ecole || v.ecoleNom || "", ecoleId: v.ecoleId || "" });
       });
@@ -857,6 +902,7 @@ async function chargerBulletins() {
     let map = {};
     filtres.forEach(function(b) {
       let k = normaliser(b.eleve) + "||" + b.trimestre + "||" + normaliser(b.matiere);
+      if(map[k] && (map[k].oral + map[k].ecrit) > 0 && (b.oral + b.ecrit) === 0) return;
       map[k] = b;
     });
     TOUS_BULLETINS = Object.values(map);
@@ -881,13 +927,13 @@ function afficherBulletins() {
     if (fTri && b.trimestre !== fTri) return;
     let k = b.eleve + "||" + b.trimestre;
     if (!parEleve[k]) parEleve[k] = { eleve: b.eleve, trimestre: b.trimestre, total: 0, nb: 0 };
-    parEleve[k].total += Number(b.moyenne || 0);
+    parEleve[k].total += totalVraiNoteGestionJS(b);
     parEleve[k].nb++;
   });
   if (!Object.keys(parEleve).length) { box.innerHTML = '<p class="centre muted">Aucun bulletin pour "' + q + '".</p>'; return; }
   let html = '<table class="table-blanc"><thead><tr><th>Élève</th><th>École</th><th>Trimestre</th><th>Composé / Fixé</th><th>Moyenne</th><th>Action</th></tr></thead><tbody>';
   Object.values(parEleve).forEach(function(g) {
-    let moy = (g.total / nbFixe).toFixed(2);
+    let moy = (g.total / (g.nb || 1)).toFixed(2);
     let ex = TOUS_BULLETINS.find(function(b) { return b.eleve === g.eleve; });
     let ecoleAff = (ex && ex.ecole) || ecoleDeEleveBulletin(g.eleve) || "";
     html += '<tr><td><b>' + g.eleve + '</b></td><td><b style="color:#1B5E20">' + ecoleAff + '</b></td><td>' + g.trimestre + '</td><td>' + g.nb + ' / ' + nbFixe + '</td><td><b>' + moy + ' / 20</b></td><td><button class="lien-action" onclick="voirBulletinDetail(\'' + g.eleve + '\',\'' + g.trimestre + '\')">👁️ Voir</button></td></tr>';
@@ -898,7 +944,6 @@ function afficherBulletins() {
 function filtrerBulletins() { afficherBulletins(); }
 function voirBulletinDetail(eleve, tri) {
   let lignes = TOUS_BULLETINS.filter(function(b) { return b.eleve === eleve && b.trimestre === tri; });
-  let nbFixe = getNbMatieresFixees();
   let moy = calculerMoyenneTrimestre(lignes).toFixed(2);
   let ecoleSpecifique = (lignes[0] && lignes[0].ecole) || ecoleDeEleveBulletin(eleve) || monEcoleNom;
   let eleveObj = TOUS_ELEVES_GESTION.find(function(e) { return normaliser(e.enfant || e.nomEnfant || "") === normaliser(eleve); }) || {};
@@ -910,15 +955,10 @@ function voirBulletinDetail(eleve, tri) {
   html += '<div style="display:flex;gap:16px;justify-content:space-between;margin:12px 0;line-height:1.8"><div><b>Élève</b><br>' + eleve + '<br><small>Parent : ' + parentNom + ' - ' + telParent + '</small><br><small>Niveau : ' + niveauEleve + '</small></div><div><b>École</b><br>' + ecoleSpecifique + '</div><div><b>Moyenne</b><br>' + moy + ' / 20</div></div>';
   html += '<table><thead><tr><th>Matière</th><th>Oral /10</th><th>Écrit /10</th><th>Total /20</th></tr></thead><tbody>';
   lignes.forEach(function(l) {
-    html += '<tr><td>' + nomMatiereBulletinSelonLangue(l.matiere) + '</td><td>' + (l.oral || 0) + '</td><td>' + (l.ecrit || 0) + '</td><td><b>' + (l.moyenne || 0) + '</b></td></tr>';
-  });
-  getMatieresActives().forEach(function(m) {
-    if (!lignes.find(function(l) { return normaliser(l.matiere) === normaliser(m.fr); })) {
-      html += '<tr><td>' + nomMatiereBulletinSelonLangue(m.fr) + ' <small style="color:red">(Absent)</small></td><td>0</td><td>0</td><td><b style="color:red">0</b></td></tr>';
-    }
+    html += '<tr><td>' + nomMatiereBulletinSelonLangue(l.matiere) + '</td><td>' + (Number(l.oral || 0)) + '</td><td>' + (Number(l.ecrit || 0)) + '</td><td><b>' + totalVraiNoteGestionJS(l) + '</b></td></tr>';
   });
   html += '</tbody></table>';
-  html += '<div style="background:#FFF9C4;padding:12px;border-radius:10px;margin-top:12px;text-align:center"><b>MOYENNE GÉNÉRALE (Somme / ' + nbFixe + ' matières) : ' + moy + ' / 20</b></div>';
+  html += '<div style="background:#FFF9C4;padding:12px;border-radius:10px;margin-top:12px;text-align:center"><b>MOYENNE GÉNÉRALE (Somme / ' + lignes.length + ' matières notées) : ' + moy + ' / 20</b></div>';
   html += '<div style="margin-top:12px;background:#E8F5E9;padding:10px;border-radius:10px"><b>💬 Appréciation :</b><br><br><div style="border-bottom:1px solid #999;height:14px"></div><div style="border-bottom:1px solid #999;height:14px;margin-top:6px"></div></div>';
   html += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:28px;text-align:center"><div style="border-top:1px solid #333;padding-top:8px"><b>Le Directeur</b><br><br><br><span style="font-size:12px;color:#666">Signature + Cachet</span></div><div style="border-top:1px solid #333;padding-top:8px"><b>Le Parent</b><br><br><br><span style="font-size:12px;color:#666">Vu et signé</span></div></div>';
   html += '<p style="text-align:center;font-size:11px;color:#666;margin-top:16px">INSTITUT NOUROUL IYMANE - ' + ecoleSpecifique + ' - ' + new Date().toLocaleDateString('fr-FR') + '</p></div>';
@@ -981,15 +1021,15 @@ function calculerBilanAnnuel() {
   if (!TOUS_BULLETINS.length) { box.innerHTML = '<p class="centre muted">Aucun bulletin.</p>'; return; }
   let qEcole = (document.getElementById('rechercheEcoleAnnuel')?.value || "").trim();
   let qEleve = (document.getElementById('rechercheEleveAnnuel')?.value || "").trim();
-  let nbFixe = getNbMatieresFixees();
   let parEleveTri = {};
   TOUS_BULLETINS.forEach(function(b) {
     let ecoleB = b.ecole || ecoleDeEleveBulletin(b.eleve) || "";
     if (qEcole && !normaliser(ecoleB).includes(normaliser(qEcole))) return;
     if (qEleve && !normaliser(b.eleve).includes(normaliser(qEleve))) return;
     let k = b.eleve + "||" + b.trimestre;
-    if (!parEleveTri[k]) parEleveTri[k] = { eleve: b.eleve, trimestre: b.trimestre, total: 0 };
-    parEleveTri[k].total += Number(b.moyenne || 0);
+    if (!parEleveTri[k]) parEleveTri[k] = { eleve: b.eleve, trimestre: b.trimestre, total: 0, nb: 0 };
+    parEleveTri[k].total += totalVraiNoteGestionJS(b);
+    parEleveTri[k].nb++;
   });
   if (!Object.keys(parEleveTri).length) {
     box.innerHTML = '<p class="centre muted">Aucun bulletin pour ce filtre.</p>';
@@ -999,7 +1039,7 @@ function calculerBilanAnnuel() {
   }
   let parEleve = {};
   Object.values(parEleveTri).forEach(function(g) {
-    let moyTri = g.total / nbFixe;
+    let moyTri = g.total / (g.nb || 1);
     if (!parEleve[g.eleve]) parEleve[g.eleve] = { totalTri: 0, nbTri: 0 };
     parEleve[g.eleve].totalTri += moyTri;
     parEleve[g.eleve].nbTri++;
@@ -1022,12 +1062,11 @@ function calculerBulletinAnnuelEleve() {
   if (!box) return;
   if (!nom) { box.innerHTML = '<p class="centre muted">Choisis l\'élève.</p>'; return; }
   let tris = ["Trimestre 1", "Trimestre 2", "Trimestre 3"];
-  let nbFixe = getNbMatieresFixees();
   let total = 0;
   let html = '<h3 style="text-align:center">' + nom + ' - Bulletin Annuel</h3><table class="table-blanc"><tr><th>Trimestre</th><th>Moyenne</th></tr>';
   tris.forEach(function(t) {
     let lignes = TOUS_BULLETINS.filter(function(b) { return normaliser(b.eleve) === normaliser(nom) && b.trimestre === t; });
-    let moy = lignes.length ? (lignes.reduce(function(s, x) { return s + Number(x.moyenne || 0); }, 0) / nbFixe).toFixed(2) : "0.00";
+    let moy = lignes.length ? (lignes.reduce(function(s, x) { return s + totalVraiNoteGestionJS(x); }, 0) / lignes.length).toFixed(2) : "0.00";
     total += Number(moy);
     html += '<tr><td><b>' + t + '</b></td><td><b>' + moy + ' / 20</b></td></tr>';
   });
@@ -1037,448 +1076,448 @@ function calculerBulletinAnnuelEleve() {
   let btns = document.getElementById('btnsBulletinAnnuel');
   if (btns) btns.style.display = "block";
 }
-function calculerReleveTrimestre() {
-  let nom = document.getElementById('releveEleve')?.value || "";
-  let tri = document.getElementById('releveTrimestre')?.value || "Trimestre 1";
-  let box = document.getElementById('releveTrimestreEleve');
-  if (!box) return;
-  if (!nom) { box.innerHTML = '<p class="centre muted">Choisis l\'élève.</p>'; return; }
-  let lignes = TOUS_BULLETINS.filter(function(b) { return normaliser(b.eleve) === normaliser(nom) && b.trimestre === tri; });
-  if (!lignes.length) { box.innerHTML = '<p class="centre muted">Aucune note pour ' + nom + ' - ' + tri + '</p>'; return; }
-  let nbFixe = getNbMatieresFixees();
-  let moy = calculerMoyenneTrimestre(lignes).toFixed(2);
-  let html = '<h3 style="text-align:center">Relevé - ' + nom + ' - ' + tri + '</h3><table class="table-blanc"><tr><th>Matière</th><th>Oral</th><th>Écrit</th><th>Total</th></tr>';
-  lignes.forEach(function(l) { html += '<tr><td>' + l.matiere + '</td><td>' + (l.oral || 0) + '</td><td>' + (l.ecrit || 0) + '</td><td><b>' + (l.moyenne || 0) + '</b></td></tr>'; });
-  html += '</table><p style="text-align:center"><b>Moyenne : ' + moy + ' / 20</b></p>';
-  box.innerHTML = html;
-  let btns = document.getElementById('btnsReleve');
-  if (btns) btns.style.display = "block";
-}
-function telechargerBulletinTrimestrePDF() { window.print(); }
-function envoyerBulletinTrimestreWhatsApp() {
-  let n = document.getElementById('bulEleve')?.value || "";
-  window.open("https://wa.me/?text=" + encodeURIComponent("Bulletin - " + n), "_blank");
-}
-function envoyerBulletinTrimestreMail() { alert("Utilise le PDF."); }
-function telechargerBulletinAnnuelPDF() { window.print(); }
-function partagerBulletinAnnuelWhatsApp() { window.open("https://wa.me/?text=" + encodeURIComponent("Bulletin annuel"), "_blank"); }
-function envoyerBulletinAnnuelMail() { alert("Utilise le PDF."); }
-function telechargerReleveTrimestrePDF() { window.print(); }
-function partagerReleveTrimestreWhatsApp() { window.open("https://wa.me/?text=" + encodeURIComponent("Relevé trimestre"), "_blank"); }
-function envoyerReleveTrimestreMail() { alert("Utilise le PDF."); }
-async function publierDivers() {
-  let titre = document.getElementById('diversTitre').value.trim();
-  let texte = document.getElementById('diversTexte').value.trim();
-  let duree = Number(document.getElementById('diversDuree') ? document.getElementById('diversDuree').value : 7);
-  if (!titre || !texte) { alert("Mets Titre et Message"); return; }
-  let exp = new Date();
-  exp.setDate(exp.getDate() + duree);
+// ===== AJOUTÉ UNE SEULE FOIS À LA FIN DE LA PARTIE 2 =====
+async function deblocquerBulletinEleve() {
+  let eleve = document.getElementById('bulEleve').value;
+  let tri = document.getElementById('bulTrimestre').value;
+  if (!eleve) { alert("Choisis d'abord l'élève"); return; }
+  if (!confirm("Débloquer " + eleve + " - " + tri + " ?\nL'ancien bulletin cassé sera effacé pour que tu puisses re-taper Oral + Écrit.")) return;
   try {
-    await db.collection("divers").add({ titre: titre, texte: texte, ecole: monEcoleNom, ecoleId: monEcoleId, date: new Date().toLocaleDateString('fr-FR'), expireLe: exp.toISOString(), dureeJours: duree, createdAt: new Date() });
-    document.getElementById('diversTitre').value = "";
-    document.getElementById('diversTexte').value = "";
-    alert("✅ Divers publié.");
-    chargerDivers();
-  } catch (e) { alert("❌ " + e.message); }
+    let aSupprimer = TOUS_BULLETINS.filter(function(b){
+      return normaliser(b.eleve) === normaliser(eleve) && b.trimestre === tri;
+    });
+    for (let b of aSupprimer) {
+      if (b.source === "bulletins" && b.realDocId) {
+        await db.collection("bulletins").doc(b.realDocId).delete();
+      } else if (b.realDocId) {
+        try { await db.collection(b.source).doc(b.realDocId).delete(); } catch(e){}
+      }
+    }
+    await chargerBulletins();
+    await chargerNotesExistantes();
+    alert("✅ Débloqué ! Maintenant re-tape Oral + Écrit et clique Enregistrer.");
+  } catch(e){ alert("❌ " + e.message); }
 }
-async function chargerDivers() {
-  let box = document.getElementById('listeDivers');
-  if (!box) return;
+// ===== FIN PARTIE 2 =====
+// ===== PARTIE 3 - PRIX / REMISES / RELEVES / TOTAUX PAR ECOLE / DIVERS =====
+
+// ===== PRIX PAR ECOLE =====
+function prixPourEleve(eleveObj) {
+  if (!eleveObj) return Number(prixSecoursGlobal || fraisTotalEcole || fraisTotal || 0);
+  let nomEcole = nomEcoleDeEleveSimple(eleveObj);
+  let cle = cleEcolePrix(nomEcole);
+  if (prixParEcole[cle] && Number(prixParEcole[cle]) > 0) return Number(prixParEcole[cle]);
+  if (eleveObj.prix && Number(eleveObj.prix) > 0) return Number(eleveObj.prix);
+  if (eleveObj.frais && Number(eleveObj.frais) > 0) return Number(eleveObj.frais);
+  if (eleveObj.montantTotal && Number(eleveObj.montantTotal) > 0) return Number(eleveObj.montantTotal);
+  return Number(prixSecoursGlobal || fraisTotalEcole || fraisTotal || 0);
+}
+async function chargerToutLeNouveau() {
+  try { await chargerPrixParEcole(); } catch (e) {}
+  try { await chargerRemises(); } catch (e) {}
+  try { await chargerDivers(); } catch (e) {}
+}
+async function chargerPrixParEcole() {
   try {
-    let snap = await db.collection("divers").limit(20).get();
-    let h = "";
+    let snap = await db.collection("prix_ecoles").limit(100).get();
+    prixParEcole = {};
     snap.forEach(function(doc) {
       let d = doc.data();
-      if (!estAMoiGestion(d)) return;
-      h += '<p style="font-size:13px"><b>' + (d.titre || "") + '</b> - ' + (d.texte || "") + ' <button class="lien-action" onclick="supprimerDivers(\'' + doc.id + '\')">🗑️</button></p>';
+      let nom = d.ecole || d.ecoleNom || d.nom || doc.id;
+      let cle = cleEcolePrix(nom);
+      prixParEcole[cle] = Number(d.prix || d.frais || d.montant || 0);
+      if (!prixSecoursGlobal && prixParEcole[cle] > 0) prixSecoursGlobal = prixParEcole[cle];
     });
-    box.innerHTML = h || "<p class='muted centre'>Aucun divers.</p>";
-  } catch (e) { box.innerHTML = "❌ " + e.message; }
+  } catch (e) {}
+  try {
+    let snap2 = await db.collection("ecoles").limit(100).get();
+    snap2.forEach(function(doc) {
+      let d = doc.data();
+      let nom = d.nom || "";
+      let cle = cleEcolePrix(nom);
+      let p = Number(d.frais || d.prix || d.fraisTotal || 0);
+      if (p > 0 && !prixParEcole[cle]) prixParEcole[cle] = p;
+    });
+  } catch (e) {}
+  if (fraisTotal > 0 && !prixSecoursGlobal) prixSecoursGlobal = fraisTotal;
+}
+async function definirPrixEcole() {
+  let ecole = document.getElementById('prixEcoleNom')?.value.trim() || monEcoleNom;
+  let prix = Number(document.getElementById('prixEcoleMontant')?.value || 0);
+  if (!ecole || !prix) { alert("Mets l'école et le prix"); return; }
+  try {
+    await db.collection("prix_ecoles").doc(cleEcolePrix(ecole)).set({ ecole: ecole, ecoleNom: ecole, prix: prix, frais: prix, date: new Date().toISOString() });
+    prixParEcole[cleEcolePrix(ecole)] = prix;
+    prixSecoursGlobal = prix;
+    alert("✅ Prix enregistré : " + ecole + " = " + prix + " FCFA");
+    chargerElevesGestion();
+  } catch (e) { alert("❌ " + e.message); }
+}
+function afficherPrixParEcole() {
+  let box = document.getElementById('listePrixEcoles');
+  if (!box) return;
+  if (!Object.keys(prixParEcole).length) { box.innerHTML = '<p class="centre muted">Aucun prix défini. Utilise le prix global.</p>'; return; }
+  let h = '<table class="table-blanc"><tr><th>École</th><th>Prix</th></tr>';
+  Object.keys(prixParEcole).sort().forEach(function(k) {
+    h += '<tr><td><b>' + k.replace(/_/g, " ") + '</b></td><td><b>' + prixParEcole[k].toLocaleString('fr-FR') + ' FCFA</b></td></tr>';
+  });
+  h += '</table>';
+  box.innerHTML = h;
+}
+
+// ===== REMISES =====
+async function chargerRemises() {
+  try {
+    let snap = await db.collection("remises").limit(100).get();
+    mesRemises = [];
+    snap.forEach(function(doc) { mesRemises.push({ id: doc.id, ...doc.data() }); });
+  } catch (e) { mesRemises = []; }
+  afficherRemises();
+}
+function afficherRemises() {
+  let box = document.getElementById('listeRemises');
+  if (!box) return;
+  if (!mesRemises.length) { box.innerHTML = '<p class="centre muted">Aucune remise.</p>'; return; }
+  let h = '<table class="table-blanc"><tr><th>Élève</th><th>Montant remise</th><th>Motif</th></tr>';
+  mesRemises.forEach(function(r) {
+    h += '<tr><td><b>' + (r.eleve || r.enfant || "") + '</b></td><td><b>' + (r.montant || 0) + ' FCFA</b></td><td>' + (r.motif || "") + '</td></tr>';
+  });
+  h += '</table>';
+  box.innerHTML = h;
+}
+async function ajouterRemise() {
+  let eleve = document.getElementById('remiseEleve')?.value || "";
+  let montant = Number(document.getElementById('remiseMontant')?.value || 0);
+  let motif = document.getElementById('remiseMotif')?.value || "Remise";
+  if (!eleve || !montant) { alert("Choisis l'élève et le montant"); return; }
+  try {
+    await db.collection("remises").add({ eleve: eleve, enfant: eleve, montant: montant, motif: motif, ecole: monEcoleNom, date: new Date().toLocaleDateString('fr-FR'), createdAt: new Date() });
+    alert("✅ Remise ajoutée");
+    chargerRemises();
+  } catch (e) { alert("❌ " + e.message); }
+}
+
+// ===== RELEVES / TOTAUX PAR ECOLE =====
+function calculerReleveTrimestre() {
+  let tri = document.getElementById('releveTrimestre')?.value || "Trimestre 1";
+  let box = document.getElementById('zoneReleveTrimestre');
+  if (!box) return;
+  let lignes = TOUS_BULLETINS.filter(function(b) { return b.trimestre === tri; });
+  if (!lignes.length) { box.innerHTML = '<p class="centre muted">Aucun bulletin pour ' + tri + '.</p>'; return; }
+  let parEleve = {};
+  lignes.forEach(function(b) {
+    if (!parEleve[b.eleve]) parEleve[b.eleve] = { total: 0, nb: 0 };
+    parEleve[b.eleve].total += totalVraiNoteGestionJS(b);
+    parEleve[b.eleve].nb++;
+  });
+  let h = '<h3 style="text-align:center">Relevé ' + tri + '</h3><table class="table-blanc"><tr><th>Élève</th><th>École</th><th>Moyenne</th></tr>';
+  Object.keys(parEleve).sort().forEach(function(nom) {
+    let moy = (parEleve[nom].total / parEleve[nom].nb).toFixed(2);
+    h += '<tr><td><b>' + nom + '</b></td><td>' + (ecoleDeEleveBulletin(nom) || "") + '</td><td><b>' + moy + ' / 20</b></td></tr>';
+  });
+  h += '</table>';
+  box.innerHTML = h;
+}
+function calculerTotauxParEcole() {
+  let box = document.getElementById('totauxParEcole');
+  if (!box) return;
+  let par = {};
+  TOUS_ELEVES_GESTION.forEach(function(e) {
+    let nomEcole = nomEcoleDeEleveSimple(e) || "Sans école";
+    if (!par[nomEcole]) par[nomEcole] = { nb: 0, paye: 0, reste: 0, du: 0 };
+    let s = soldeEleve(e.enfant || e.nomEnfant || "");
+    par[nomEcole].nb++;
+    par[nomEcole].paye += s.totalPaye;
+    par[nomEcole].reste += s.reste;
+    par[nomEcole].du += s.totalDu;
+  });
+  if (!Object.keys(par).length) { box.innerHTML = '<p class="centre muted">Aucun élève.</p>'; return; }
+  let h = '<table class="table-blanc"><tr><th>École</th><th>Élèves</th><th>Encaissé validé</th><th>Reste</th><th>Total dû</th></tr>';
+  Object.keys(par).sort().forEach(function(n) {
+    h += '<tr><td><b>' + n + '</b></td><td><b>' + par[n].nb + '</b></td><td><b>' + par[n].paye.toLocaleString('fr-FR') + ' FCFA</b></td><td><b style="color:red">' + par[n].reste.toLocaleString('fr-FR') + ' FCFA</b></td><td><b>' + par[n].du.toLocaleString('fr-FR') + ' FCFA</b></td></tr>';
+  });
+  h += '</table>';
+  box.innerHTML = h;
+}
+function remplirFiltresEcole() {
+  let noms = [...new Set(TOUS_ELEVES_GESTION.map(function(e) { return nomEcoleDeEleveSimple(e); }).filter(Boolean))].sort();
+  ["filtreEcoleEleves","filtreEcoleBulletin","filtreActEcole","filtreDepEcole","prixEcoleNom","actEcole","depEcole"].forEach(function(id) {
+    let sel = document.getElementById(id);
+    if (!sel) return;
+    let cur = sel.value;
+    if (sel.tagName === "SELECT") {
+      let isFiltre = id.startsWith("filtre");
+      sel.innerHTML = (isFiltre ? '<option value="">— Toutes les écoles —</option>' : '<option value="">— Choisis —</option>') + noms.map(function(n) { return '<option value="' + n + '">' + n + '</option>'; }).join('');
+      if (cur && noms.includes(cur)) sel.value = cur;
+    }
+  });
+  if (typeof afficherPrixParEcole === "function") afficherPrixParEcole();
+  calculerTotauxParEcole();
+}
+function remplirDatalistsRecherche() {
+  let nomsEleves = TOUS_ELEVES_GESTION.map(function(e) { return e.enfant || e.nomEnfant || ""; });
+  let nomsEcoles = [...new Set(TOUS_ELEVES_GESTION.map(function(e) { return nomEcoleDeEleveSimple(e); }))];
+  let dl1 = document.getElementById('datalistEleves');
+  if (dl1) dl1.innerHTML = nomsEleves.map(function(n) { return '<option value="' + n + '">'; }).join('');
+  let dl2 = document.getElementById('datalistEcoles');
+  if (dl2) dl2.innerHTML = nomsEcoles.map(function(n) { return '<option value="' + n + '">'; }).join('');
+  let dl3 = document.getElementById('datalistEnseignants');
+  if (dl3) dl3.innerHTML = TOUS_ENSEIGNANTS.map(function(e) { return '<option value="' + e.nom + '">'; }).join('');
+}
+
+// ===== DIVERS / ACTIVITES DANS PARAMETRES =====
+async function chargerDivers() {
+  try {
+    let snap = await db.collection("divers").limit(50).get();
+    let box = document.getElementById('listeDivers');
+    if (box) {
+      let h = "";
+      snap.forEach(function(doc) {
+        let d = doc.data();
+        if (!modeToutesEcoles && !estAMoiGestion(d)) return;
+        h += '<p style="font-size:13px"><b>' + (d.titre || "") + '</b> - ' + (d.texte || "") + '</p>';
+      });
+      box.innerHTML = h || "<p class='muted centre'>Aucune info.</p>";
+    }
+  } catch (e) {}
+  calculerTotauxParEcole();
+}
+async function ajouterDivers() {
+  let titre = document.getElementById('diversTitre')?.value.trim() || "";
+  let texte = document.getElementById('diversTexte')?.value.trim() || "";
+  if (!titre) { alert("Mets le titre"); return; }
+  try {
+    await db.collection("divers").add({ titre: titre, texte: texte, ecole: monEcoleNom, ecoleNom: monEcoleNom, date: new Date().toLocaleDateString('fr-FR'), createdAt: new Date() });
+    alert("✅ Ajouté");
+    chargerDivers();
+  } catch (e) { alert("❌ " + e.message); }
 }
 async function supprimerDivers(id) {
   if (!confirm("Supprimer ?")) return;
   try { await db.collection("divers").doc(id).delete(); chargerDivers(); } catch (e) { alert("❌ " + e.message); }
 }
-async function effacerToutHistorique() {
-  let code = prompt("Écris EFFACER pour valider");
-  if (code !== "EFFACER") { alert("Annulé"); return; }
-  try {
-    for (let b of TOUS_BULLETINS.filter(function(x) { return x.source === "bulletins" && x.realDocId; })) {
-      await db.collection("bulletins").doc(b.realDocId).delete();
-    }
-    for (let p of TOUS_PRESENCES) await db.collection("presences").doc(p.id).delete();
-    alert("✅ Tout effacé");
-    chargerElevesGestion(); chargerBulletins(); chargerPresence();
-  } catch (e) { alert(e.message); }
+function exporterBulletinsPDF() { window.print(); }
+function exporterBulletinsWhatsApp() {
+  let txt = "Bulletins - " + monEcoleNom + "\n";
+  TOUS_BULLETINS.slice(0, 20).forEach(function(b) {
+    txt += '- ' + b.eleve + ' - ' + b.matiere + ' : ' + b.oral + ' + ' + b.ecrit + ' = ' + totalVraiNoteGestionJS(b) + '\n';
+  });
+  window.open("https://wa.me/?text=" + encodeURIComponent(txt), "_blank");
 }
-// ===== PARTIE 3 - PRIX / REMISES / TOTAUX / ACTIVITES & DEPENSES VALIDATION LIAISON / EVOLUTION + SOLDE NET =====
-function nomEcoleDeEleve(e) { return e.ecoleNom || e.ecole || e.groupeNom || e.groupe || monEcoleNom || ""; }
-function nomEleveDe(e) { return e.enfant || e.nomEnfant || e.nom || ""; }
-function nomEnfantPaiement(p) { return p.enfantNom || p.enfant || p.nom || ""; }
-function getRemisePour(nomEnfant) {
-  return mesRemises.find(function(r) { return normaliser(r.enfant) === normaliser(nomEnfant); }) || null;
-}
-function prixPourEleveSansRemise(eleveObj) {
+function filtrerBulletinsAnnuels() { calculerBilanAnnuel(); }
+function voirBulletinAnnuelEleveDetail() { calculerBulletinAnnuelEleve(); }
+
+// ===== FIN PARTIE 3 =====
+// ===== PARTIE 3 - PRIX / REMISES / RELEVES / TOTAUX PAR ECOLE / DIVERS =====
+
+// ===== PRIX PAR ECOLE =====
+function prixPourEleve(eleveObj) {
   if (!eleveObj) return Number(prixSecoursGlobal || fraisTotalEcole || fraisTotal || 0);
-  let nomEcole = nomEcoleDeEleve(eleveObj);
+  let nomEcole = nomEcoleDeEleveSimple(eleveObj);
   let cle = cleEcolePrix(nomEcole);
   if (prixParEcole[cle] && Number(prixParEcole[cle]) > 0) return Number(prixParEcole[cle]);
+  if (eleveObj.prix && Number(eleveObj.prix) > 0) return Number(eleveObj.prix);
+  if (eleveObj.frais && Number(eleveObj.frais) > 0) return Number(eleveObj.frais);
+  if (eleveObj.montantTotal && Number(eleveObj.montantTotal) > 0) return Number(eleveObj.montantTotal);
   return Number(prixSecoursGlobal || fraisTotalEcole || fraisTotal || 0);
 }
-function prixPourEleve(eleveObj) {
-  if (!eleveObj) return prixSecoursGlobal || fraisTotalEcole || fraisTotal || 0;
-  let remise = getRemisePour(nomEleveDe(eleveObj));
-  if (remise && remise.nouveauPrix > 0) return Number(remise.nouveauPrix);
-  return prixPourEleveSansRemise(eleveObj);
-}
-async function chargerListeEcolesGroupes() {
-  let set = new Set();
-  try {
-    let s1 = await db.collection("ecoles").get();
-    s1.forEach(function(d) { let v = d.data(); if (v.nom) set.add(v.nom); });
-  } catch (e) {}
-  try {
-    let s2 = await db.collection("groupes").get();
-    s2.forEach(function(d) { let v = d.data(); if (v.nom) set.add(v.nom); });
-  } catch (e) {}
-  mesEleves.forEach(function(e) {
-    if (e.ecole) set.add(e.ecole);
-    if (e.ecoleNom) set.add(e.ecoleNom);
-    if (e.groupe) set.add(e.groupe);
-  });
-  Object.keys(prixParEcole).forEach(function(k) {
-    if (!k.endsWith("_nom")) set.add(prixParEcole[k + "_nom"] || k);
-  });
-  TOUTES_ECOLES_GROUPES = [...set].sort();
-  return TOUTES_ECOLES_GROUPES;
-}
-function remplirSelectPrixEcole() {
-  let sel = document.getElementById('selectNomEcolePrix');
-  if (!sel) return;
-  let v = sel.value;
-  sel.innerHTML = '<option value="">— Choisis l\'école / le groupe —</option>' + TOUTES_ECOLES_GROUPES.map(function(n) { return '<option value="' + n + '">' + n + '</option>'; }).join('');
-  if (v) sel.value = v;
-  sel.onchange = function() {
-    let inp = document.getElementById('inputNomEcolePrix');
-    if (inp) inp.value = sel.value;
-  };
+async function chargerToutLeNouveau() {
+  try { await chargerPrixParEcole(); } catch (e) {}
+  try { await chargerRemises(); } catch (e) {}
+  try { await chargerDivers(); } catch (e) {}
 }
 async function chargerPrixParEcole() {
   try {
-    for (let docId of ["global", monEcoleId || "global", "TOUTES"]) {
-      try {
-        let doc = await db.collection("configPrixEcoles").doc(docId).get();
-        if (doc.exists && doc.data().prix) {
-          let p = doc.data().prix || {};
-          Object.keys(p).forEach(function(k) { prixParEcole[k] = p[k]; });
-        }
-      } catch (e) {}
-    }
-    try {
-      let d2 = await db.collection("configFrais").doc(monEcoleId || "global").get();
-      if (d2.exists && d2.data().montant) { prixSecoursGlobal = Number(d2.data().montant); fraisTotalEcole = prixSecoursGlobal; fraisTotal = prixSecoursGlobal; }
-    } catch (e) {}
-    try {
-      let d3 = await db.collection("configFrais").doc("global").get();
-      if (d3.exists && d3.data().montant && !prixSecoursGlobal) { prixSecoursGlobal = Number(d3.data().montant); fraisTotalEcole = prixSecoursGlobal; fraisTotal = prixSecoursGlobal; }
-    } catch (e) {}
-    if (!prixSecoursGlobal) prixSecoursGlobal = Number(fraisTotalEcole || fraisTotal || 0);
+    let snap = await db.collection("prix_ecoles").limit(100).get();
+    prixParEcole = {};
+    snap.forEach(function(doc) {
+      let d = doc.data();
+      let nom = d.ecole || d.ecoleNom || d.nom || doc.id;
+      let cle = cleEcolePrix(nom);
+      prixParEcole[cle] = Number(d.prix || d.frais || d.montant || 0);
+      if (!prixSecoursGlobal && prixParEcole[cle] > 0) prixSecoursGlobal = prixParEcole[cle];
+    });
   } catch (e) {}
-  await chargerListeEcolesGroupes();
-  remplirSelectPrixEcole();
-  afficherPrixParEcoleDansPaiements();
-  remplirFiltresEcole();
-  calculerTotauxParEcole();
+  try {
+    let snap2 = await db.collection("ecoles").limit(100).get();
+    snap2.forEach(function(doc) {
+      let d = doc.data();
+      let nom = d.nom || "";
+      let cle = cleEcolePrix(nom);
+      let p = Number(d.frais || d.prix || d.fraisTotal || 0);
+      if (p > 0 && !prixParEcole[cle]) prixParEcole[cle] = p;
+    });
+  } catch (e) {}
+  if (fraisTotal > 0 && !prixSecoursGlobal) prixSecoursGlobal = fraisTotal;
 }
-function afficherPrixParEcoleDansPaiements() {
-  let el = document.getElementById('listePrixParEcolePaiements');
-  if (!el) return;
-  let keys = Object.keys(prixParEcole).filter(function(k) { return !k.endsWith("_nom"); });
-  if (!keys.length) {
-    el.innerHTML = 'Prix secours (global) : <b>' + (prixSecoursGlobal || fraisTotalEcole || 0).toLocaleString('fr-FR') + ' FCFA</b>';
-    return;
-  }
-  let txt = keys.map(function(k) { return (prixParEcole[k + "_nom"] || k) + ' : <b>' + Number(prixParEcole[k]).toLocaleString('fr-FR') + ' FCFA</b>'; }).join(" | ");
-  el.innerHTML = 'Prix par ecole : ' + txt + ' | Secours : <b>' + (prixSecoursGlobal || fraisTotalEcole || 0).toLocaleString('fr-FR') + ' FCFA</b>';
-  let dash = document.getElementById('affichagePrixParEcoleDashboard');
-  if (dash) dash.textContent = txt + ' | Secours ' + (prixSecoursGlobal || fraisTotalEcole) + ' FCFA';
+async function definirPrixEcole() {
+  let ecole = document.getElementById('prixEcoleNom')?.value.trim() || monEcoleNom;
+  let prix = Number(document.getElementById('prixEcoleMontant')?.value || 0);
+  if (!ecole || !prix) { alert("Mets l'école et le prix"); return; }
+  try {
+    await db.collection("prix_ecoles").doc(cleEcolePrix(ecole)).set({ ecole: ecole, ecoleNom: ecole, prix: prix, frais: prix, date: new Date().toISOString() });
+    prixParEcole[cleEcolePrix(ecole)] = prix;
+    prixSecoursGlobal = prix;
+    alert("✅ Prix enregistré : " + ecole + " = " + prix + " FCFA");
+    chargerElevesGestion();
+  } catch (e) { alert("❌ " + e.message); }
 }
-function remplirDatalistsRecherche() {
-  let eleves = mesEleves.map(function(e) { return nomEleveDe(e); }).filter(Boolean).sort();
-  let ecoles = [...new Set([...TOUTES_ECOLES_GROUPES, ...mesEleves.map(function(e) { return nomEcoleDeEleve(e); })])].filter(Boolean).sort();
-  let htmlEleves = eleves.map(function(n) { return '<option value="' + n + '">'; }).join('');
-  let htmlEcoles = ecoles.map(function(n) { return '<option value="' + n + '">'; }).join('');
-  ['listeElevesBulletin','listeElevesAnnuel'].forEach(function(id) {
-    let d = document.getElementById(id);
-    if (d) d.innerHTML = htmlEleves;
+function afficherPrixParEcole() {
+  let box = document.getElementById('listePrixEcoles');
+  if (!box) return;
+  if (!Object.keys(prixParEcole).length) { box.innerHTML = '<p class="centre muted">Aucun prix défini. Utilise le prix global.</p>'; return; }
+  let h = '<table class="table-blanc"><tr><th>École</th><th>Prix</th></tr>';
+  Object.keys(prixParEcole).sort().forEach(function(k) {
+    h += '<tr><td><b>' + k.replace(/_/g, " ") + '</b></td><td><b>' + prixParEcole[k].toLocaleString('fr-FR') + ' FCFA</b></td></tr>';
   });
-  ['listeEcolesAnnuel','listeEcolesAct','listeEcolesDep'].forEach(function(id) {
-    let d = document.getElementById(id);
-    if (d) d.innerHTML = htmlEcoles;
-  });
-  ['actEcole','depEcole'].forEach(function(id) {
-    let s = document.getElementById(id);
-    if (s) {
-      let v = s.value;
-      s.innerHTML = '<option value="">— Choisis l\'école —</option>' + ecoles.map(function(n) { return '<option value="' + n + '">' + n + '</option>'; }).join('');
-      if (v) s.value = v;
-    }
-  });
+  h += '</table>';
+  box.innerHTML = h;
 }
-function remplirFiltresEcole() {
-  syncMesListes();
-  let ecoles = new Set(TOUTES_ECOLES_GROUPES);
-  mesEleves.forEach(function(e) { let n = nomEcoleDeEleve(e); if (n) ecoles.add(n); });
-  Object.keys(prixParEcole).forEach(function(k) { if (!k.endsWith("_nom")) ecoles.add(prixParEcole[k + "_nom"] || k); });
-  if (monEcoleNom && monEcoleNom !== "TOUTES LES ÉCOLES") ecoles.add(monEcoleNom);
-  let opts = '<option value="">— Toutes les ecoles —</option>' + [...ecoles].sort().map(function(n) { return '<option value="' + n + '">' + n + '</option>'; }).join('');
-  ['filtreEcoleEleves','relanceEcole','filtreEcolePresence','filtreEcoleBulletin'].forEach(function(id) {
-    let s = document.getElementById(id);
-    if (s) {
-      let v = s.value;
-      if (id === 'filtreEcoleEleves' && filtreEcoleEleveActuel) v = filtreEcoleEleveActuel;
-      s.innerHTML = opts;
-      if (v) s.value = v;
-    }
-  });
-  let selR = document.getElementById('remiseEleve');
-  if (selR) {
-    let v = selR.value;
-    selR.innerHTML = '<option value="">— Choisis l\'eleve —</option>' + mesEleves.map(function(e) { return '<option value="' + nomEleveDe(e) + '">' + nomEleveDe(e) + ' - ' + (e.niveau || '') + ' - ' + nomEcoleDeEleve(e) + '</option>'; }).join('');
-    if (v) selR.value = v;
-  }
-  let selH = document.getElementById('historiqueEleveSelect');
-  if (selH) {
-    let v = selH.value;
-    selH.innerHTML = '<option value="">— Choisis l\'eleve —</option>' + mesEleves.map(function(e) { return '<option value="' + nomEleveDe(e) + '">' + nomEleveDe(e) + ' - ' + (e.niveau || '') + '</option>'; }).join('');
-    if (v) selH.value = v;
-  }
-  let selAnn = document.getElementById('bilanAnnuelEleve');
-  if (selAnn) {
-    let v = selAnn.value;
-    selAnn.innerHTML = '<option value="">— Choisis l\'élève —</option>' + mesEleves.map(function(e) { return '<option value="' + nomEleveDe(e) + '">' + nomEleveDe(e) + ' - ' + nomEcoleDeEleve(e) + '</option>'; }).join('');
-    if (v) selAnn.value = v;
-  }
-  let selRel = document.getElementById('releveEleve');
-  if (selRel) {
-    let v = selRel.value;
-    selRel.innerHTML = '<option value="">— Choisis l\'élève —</option>' + mesEleves.map(function(e) { return '<option value="' + nomEleveDe(e) + '">' + nomEleveDe(e) + '</option>'; }).join('');
-    if (v) selRel.value = v;
-  }
-  remplirSelectPrixEcole();
-  remplirFiltreNiveauEleves();
-  remplirDatalistsRecherche();
-}
+
+// ===== REMISES =====
 async function chargerRemises() {
   try {
-    let snap = await db.collection("remisesEleves").where("ecoleNom", "==", monEcoleNom).get();
+    let snap = await db.collection("remises").limit(100).get();
     mesRemises = [];
-    snap.forEach(function(d) { mesRemises.push({ id: d.id, ...d.data() }); });
-  } catch (e) {}
-  afficherListeRemises();
-  remplirFiltresEcole();
+    snap.forEach(function(doc) { mesRemises.push({ id: doc.id, ...doc.data() }); });
+  } catch (e) { mesRemises = []; }
+  afficherRemises();
 }
-function afficherListeRemises() {
-  let el = document.getElementById('listeRemises');
-  if (!el) return;
-  if (!mesRemises.length) { el.innerHTML = '<p class="centre muted">Aucune remise.</p>'; return; }
-  let h = '<table class="table-blanc"><tr><th>Eleve</th><th>Nouveau prix</th><th>Motif</th><th>Action</th></tr>';
+function afficherRemises() {
+  let box = document.getElementById('listeRemises');
+  if (!box) return;
+  if (!mesRemises.length) { box.innerHTML = '<p class="centre muted">Aucune remise.</p>'; return; }
+  let h = '<table class="table-blanc"><tr><th>Élève</th><th>Montant remise</th><th>Motif</th></tr>';
   mesRemises.forEach(function(r) {
-    h += '<tr><td><b>' + r.enfant + '</b></td><td><b>' + Number(r.nouveauPrix).toLocaleString('fr-FR') + ' FCFA</b></td><td>' + (r.motif || '') + '</td><td><button class="lien-action" onclick="supprimerRemise(\'' + r.id + '\',\'' + r.enfant + '\')">Supprimer</button></td></tr>';
+    h += '<tr><td><b>' + (r.eleve || r.enfant || "") + '</b></td><td><b>' + (r.montant || 0) + ' FCFA</b></td><td>' + (r.motif || "") + '</td></tr>';
   });
   h += '</table>';
-  el.innerHTML = h;
+  box.innerHTML = h;
 }
-async function enregistrerRemise() {
-  let nom = document.getElementById('remiseEleve').value;
-  let prix = Number(document.getElementById('remiseMontant').value);
-  let motif = document.getElementById('remiseMotif').value.trim();
-  if (!nom) return alert("1. Choisis l'eleve.");
-  if (!prix || prix <= 0) return alert("Mets le nouveau prix.");
-  let elObj = mesEleves.find(function(e) { return nomEleveDe(e) === nom; });
-  let ancienPrix = elObj ? prixPourEleveSansRemise(elObj) : (fraisTotalEcole || 0);
-  if (!confirm('Remise pour ' + nom + ' ?\nAncien : ' + ancienPrix + ' FCFA\nNouveau : ' + prix + ' FCFA')) return;
-  let snap = await db.collection("remisesEleves").where("ecoleNom", "==", monEcoleNom).get();
-  for (let doc of snap.docs) {
-    if (normaliser(doc.data().enfant) === normaliser(nom)) await db.collection("remisesEleves").doc(doc.id).delete();
-  }
-  await db.collection("remisesEleves").add({ ecoleNom: monEcoleNom, enfant: nom, nouveauPrix: prix, motif: motif, date: new Date().toISOString() });
-  document.getElementById('msgRemise').textContent = 'Remise enregistrée ! ' + nom + ' doit maintenant ' + prix + ' FCFA au lieu de ' + ancienPrix + ' FCFA.';
-  document.getElementById('remiseMontant').value = "";
-  document.getElementById('remiseMotif').value = "";
-  await chargerRemises();
-  chargerElevesGestion(); chargerPaiementsGestion(); calculerTotauxParEcole();
+async function ajouterRemise() {
+  let eleve = document.getElementById('remiseEleve')?.value || "";
+  let montant = Number(document.getElementById('remiseMontant')?.value || 0);
+  let motif = document.getElementById('remiseMotif')?.value || "Remise";
+  if (!eleve || !montant) { alert("Choisis l'élève et le montant"); return; }
+  try {
+    await db.collection("remises").add({ eleve: eleve, enfant: eleve, montant: montant, motif: motif, ecole: monEcoleNom, date: new Date().toLocaleDateString('fr-FR'), createdAt: new Date() });
+    alert("✅ Remise ajoutée");
+    chargerRemises();
+  } catch (e) { alert("❌ " + e.message); }
 }
-async function supprimerRemise(id, nom) {
-  if (!confirm("Supprimer la remise de " + nom + " ?")) return;
-  await db.collection("remisesEleves").doc(id).delete();
-  await chargerRemises();
-  chargerElevesGestion(); chargerPaiementsGestion(); calculerTotauxParEcole();
+
+// ===== RELEVES / TOTAUX PAR ECOLE =====
+function calculerReleveTrimestre() {
+  let tri = document.getElementById('releveTrimestre')?.value || "Trimestre 1";
+  let box = document.getElementById('zoneReleveTrimestre');
+  if (!box) return;
+  let lignes = TOUS_BULLETINS.filter(function(b) { return b.trimestre === tri; });
+  if (!lignes.length) { box.innerHTML = '<p class="centre muted">Aucun bulletin pour ' + tri + '.</p>'; return; }
+  let parEleve = {};
+  lignes.forEach(function(b) {
+    if (!parEleve[b.eleve]) parEleve[b.eleve] = { total: 0, nb: 0 };
+    parEleve[b.eleve].total += totalVraiNoteGestionJS(b);
+    parEleve[b.eleve].nb++;
+  });
+  let h = '<h3 style="text-align:center">Relevé ' + tri + '</h3><table class="table-blanc"><tr><th>Élève</th><th>École</th><th>Moyenne</th></tr>';
+  Object.keys(parEleve).sort().forEach(function(nom) {
+    let moy = (parEleve[nom].total / parEleve[nom].nb).toFixed(2);
+    h += '<tr><td><b>' + nom + '</b></td><td>' + (ecoleDeEleveBulletin(nom) || "") + '</td><td><b>' + moy + ' / 20</b></td></tr>';
+  });
+  h += '</table>';
+  box.innerHTML = h;
 }
 function calculerTotauxParEcole() {
-  syncMesListes();
-  let liste = TOUS_ELEVES_GESTION.length ? TOUS_ELEVES_GESTION : mesEleves;
-  let el = document.getElementById('totauxParEcole');
-  if (!el) return;
-  let parEcole = {};
-  liste.forEach(function(e) {
-    let nomEcole = nomEcoleDeEleve(e) || "Sans ecole";
-    if (!parEcole[nomEcole]) parEcole[nomEcole] = { nom: nomEcole, eleves: [] };
-    parEcole[nomEcole].eleves.push(e);
+  let box = document.getElementById('totauxParEcole');
+  if (!box) return;
+  let par = {};
+  TOUS_ELEVES_GESTION.forEach(function(e) {
+    let nomEcole = nomEcoleDeEleveSimple(e) || "Sans école";
+    if (!par[nomEcole]) par[nomEcole] = { nb: 0, paye: 0, reste: 0, du: 0 };
+    let s = soldeEleve(e.enfant || e.nomEnfant || "");
+    par[nomEcole].nb++;
+    par[nomEcole].paye += s.totalPaye;
+    par[nomEcole].reste += s.reste;
+    par[nomEcole].du += s.totalDu;
   });
-  if (!Object.keys(parEcole).length) { el.innerHTML = '<p class="centre muted">Aucun eleve.</p>'; return; }
-  let h = '<table class="table-blanc"><tr><th>Ecole</th><th>Prix</th><th>Eleves</th><th>Attendu</th><th>Encaisse</th><th>Reste</th></tr>';
-  let totAtt = 0, totEnc = 0, totReste = 0;
-  Object.values(parEcole).forEach(function(g) {
-    let attendu = 0, encaisse = 0;
-    g.eleves.forEach(function(e) {
-      let s = soldeEleve(nomEleveDe(e));
-      attendu += s.totalDu; encaisse += s.totalPaye;
-    });
-    let reste = Math.max(0, attendu - encaisse);
-    totAtt += attendu; totEnc += encaisse; totReste += reste;
-    let prixEx = g.eleves.length ? prixPourEleveSansRemise(g.eleves[0]) : 0;
-    h += '<tr><td><b>' + g.nom + '</b></td><td>' + prixEx.toLocaleString('fr-FR') + ' FCFA</td><td>' + g.eleves.length + '</td><td><b>' + attendu.toLocaleString('fr-FR') + '</b></td><td><b>' + encaisse.toLocaleString('fr-FR') + '</b></td><td><b>' + reste.toLocaleString('fr-FR') + ' FCFA</b></td></tr>';
-  });
-  h += '<tr><td><b>TOTAL</b></td><td>-</td><td><b>' + liste.length + '</b></td><td><b>' + totAtt.toLocaleString('fr-FR') + '</b></td><td><b>' + totEnc.toLocaleString('fr-FR') + '</b></td><td><b>' + totReste.toLocaleString('fr-FR') + ' FCFA</b></td></tr></table>';
-  el.innerHTML = h;
-}
-function partagerTotauxParEcoleWhatsApp() {
-  let parEcole = {};
-  mesEleves.forEach(function(e) {
-    let nomEcole = nomEcoleDeEleve(e) || "Sans ecole";
-    if (!parEcole[nomEcole]) parEcole[nomEcole] = [];
-    parEcole[nomEcole].push(e);
-  });
-  let t = 'TOTAL PAR ECOLE - ' + monEcoleNom + '\n\n';
-  Object.values(parEcole).forEach(function(g) {
-    let attendu = 0, encaisse = 0;
-    g.forEach(function(e) {
-      let s = soldeEleve(nomEleveDe(e));
-      attendu += s.totalDu; encaisse += s.totalPaye;
-    });
-    t += nomEcoleDeEleve(g[0]) + ' : Attendu ' + attendu + ' - Encaisse ' + encaisse + ' - Reste ' + Math.max(0, attendu - encaisse) + ' FCFA\n';
-  });
-  window.open('https://wa.me/?text=' + encodeURIComponent(t), '_blank');
-}
-function afficherHistoriqueUnEleve() {
-  let nom = document.getElementById('historiqueEleveSelect').value;
-  let el = document.getElementById('historiqueUnEleve');
-  if (!el) return;
-  if (!nom) { el.innerHTML = ""; return; }
-  let elObj = mesEleves.find(function(e) { return nomEleveDe(e) === nom; });
-  let s = soldeEleve(nom);
-  let prixSansRemise = elObj ? prixPourEleveSansRemise(elObj) : s.totalDu;
-  let hist = mesPaiements.filter(function(p) { return normaliser(nomEnfantPaiement(p)) === normaliser(nom); });
-  let h = '<div style="background:#F1F8E9;border:1px solid #C8E6C9;border-radius:10px;padding:10px"><b>' + nom + ' - ' + (elObj ? elObj.niveau : '') + ' - ' + (elObj ? nomEcoleDeEleve(elObj) : '') + '</b><br>Prix ecole : <b>' + prixSansRemise.toLocaleString('fr-FR') + ' FCFA</b><br>Total : <b>' + s.totalDu.toLocaleString('fr-FR') + ' FCFA</b> - Déjà payé : <b>' + s.totalPaye.toLocaleString('fr-FR') + ' FCFA</b> - Reste : <b>' + s.reste.toLocaleString('fr-FR') + ' FCFA</b></div>';
-  if (hist.length) {
-    h += '<table class="table-blanc"><tr><th>Date</th><th>Montant</th><th>Motif</th></tr>';
-    hist.forEach(function(p) { h += '<tr><td>' + (p.date || '') + '</td><td><b>' + Number(p.montant).toLocaleString('fr-FR') + ' FCFA</b></td><td>' + (p.motif || '') + '</td></tr>'; });
-    h += '</table>';
-  }
-  el.innerHTML = h;
-}
-function relancerImpayesParEcole() {
-  let ecoleChoisie = document.getElementById('relanceEcole').value;
-  let imp = mesEleves.filter(function(e) {
-    if (ecoleChoisie && nomEcoleDeEleve(e) !== ecoleChoisie) return false;
-    let s = soldeEleve(nomEleveDe(e));
-    return s.reste > 0;
-  });
-  if (!imp.length) return alert("Personne ne doit !");
-  let t = 'RAPPEL PAIEMENT - ' + monEcoleNom + '\n\n';
-  imp.forEach(function(e) {
-    let s = soldeEleve(nomEleveDe(e));
-    t += nomEleveDe(e) + ' : Reste ' + s.reste + ' FCFA\n';
-  });
-  window.open('https://wa.me/?text=' + encodeURIComponent(t), '_blank');
-}
-async function chargerToutLeNouveau() {
-  await chargerPrixParEcole();
-  await chargerRemises();
-  remplirFiltresEcole();
-  calculerTotauxParEcole();
-  afficherPrixParEcoleDansPaiements();
-}
-async function enregistrerPrixParEcole() {
-  let sel = document.getElementById('selectNomEcolePrix');
-  let nom = (sel && sel.value ? sel.value : "").trim() || (document.getElementById('inputNomEcolePrix') ? document.getElementById('inputNomEcolePrix').value.trim() : "");
-  let prix = Number(document.getElementById('inputPrixEcole').value);
-  if (!nom) return alert("Choisis l'école.");
-  if (!prix || prix <= 0) return alert("Mets le prix. Ex : 15000");
-  let cle = cleEcolePrix(nom);
-  prixParEcole[cle] = prix;
-  prixParEcole[cle + "_nom"] = nom;
-  await db.collection("configPrixEcoles").doc(monEcoleId || "global").set({ ecoleNom: monEcoleNom, prix: prixParEcole, date: new Date().toISOString() });
-  await db.collection("configPrixEcoles").doc("global").set({ ecoleNom: monEcoleNom, prix: prixParEcole, date: new Date().toISOString() });
-  let msgEl = document.getElementById('msgPrixEcole');
-  if (msgEl) msgEl.textContent = nom + ' = ' + prix + ' FCFA enregistré !';
-  if (document.getElementById('inputNomEcolePrix')) document.getElementById('inputNomEcolePrix').value = "";
-  document.getElementById('inputPrixEcole').value = "";
-  afficherListePrixParEcole();
-  afficherPrixParEcoleDansPaiements();
-  remplirFiltresEcole();
-  chargerElevesGestion(); chargerPaiementsGestion(); calculerTotauxParEcole();
-}
-function afficherListePrixParEcole() {
-  let el = document.getElementById('listePrixParEcole');
-  if (!el) return;
-  let keys = Object.keys(prixParEcole).filter(function(k) { return !k.endsWith("_nom"); });
-  if (!keys.length) { el.innerHTML = '<p class="centre muted">Aucun prix par ecole.</p>'; return; }
-  let h = '<table class="table-blanc"><tr><th>Ecole / Groupe</th><th>Prix</th><th>Action</th></tr>';
-  keys.forEach(function(k) {
-    let nomAff = prixParEcole[k + "_nom"] || k;
-    h += '<tr><td><b>' + nomAff + '</b></td><td><b>' + Number(prixParEcole[k]).toLocaleString('fr-FR') + ' FCFA</b></td><td><button class="lien-action" onclick="supprimerPrixParEcole(\'' + k + '\')">Supprimer</button></td></tr>';
+  if (!Object.keys(par).length) { box.innerHTML = '<p class="centre muted">Aucun élève.</p>'; return; }
+  let h = '<table class="table-blanc"><tr><th>École</th><th>Élèves</th><th>Encaissé validé</th><th>Reste</th><th>Total dû</th></tr>';
+  Object.keys(par).sort().forEach(function(n) {
+    h += '<tr><td><b>' + n + '</b></td><td><b>' + par[n].nb + '</b></td><td><b>' + par[n].paye.toLocaleString('fr-FR') + ' FCFA</b></td><td><b style="color:red">' + par[n].reste.toLocaleString('fr-FR') + ' FCFA</b></td><td><b>' + par[n].du.toLocaleString('fr-FR') + ' FCFA</b></td></tr>';
   });
   h += '</table>';
-  el.innerHTML = h;
+  box.innerHTML = h;
 }
-async function supprimerPrixParEcole(cle) {
-  if (!confirm("Supprimer le prix pour " + cle + " ?")) return;
-  delete prixParEcole[cle];
-  delete prixParEcole[cle + "_nom"];
-  await db.collection("configPrixEcoles").doc(monEcoleId || "global").set({ ecoleNom: monEcoleNom, prix: prixParEcole, date: new Date().toISOString() });
-  await db.collection("configPrixEcoles").doc("global").set({ ecoleNom: monEcoleNom, prix: prixParEcole, date: new Date().toISOString() });
-  afficherListePrixParEcole();
-  afficherPrixParEcoleDansPaiements();
-  chargerElevesGestion(); chargerPaiementsGestion(); calculerTotauxParEcole();
+function remplirFiltresEcole() {
+  let noms = [...new Set(TOUS_ELEVES_GESTION.map(function(e) { return nomEcoleDeEleveSimple(e); }).filter(Boolean))].sort();
+  ["filtreEcoleEleves","filtreEcoleBulletin","filtreActEcole","filtreDepEcole","prixEcoleNom","actEcole","depEcole"].forEach(function(id) {
+    let sel = document.getElementById(id);
+    if (!sel) return;
+    let cur = sel.value;
+    if (sel.tagName === "SELECT") {
+      let isFiltre = id.startsWith("filtre");
+      sel.innerHTML = (isFiltre ? '<option value="">— Toutes les écoles —</option>' : '<option value="">— Choisis —</option>') + noms.map(function(n) { return '<option value="' + n + '">' + n + '</option>'; }).join('');
+      if (cur && noms.includes(cur)) sel.value = cur;
+    }
+  });
+  if (typeof afficherPrixParEcole === "function") afficherPrixParEcole();
+  calculerTotauxParEcole();
 }
-async function enregistrerPrixSecours() {
-  let prix = Number(document.getElementById('inputPrixSecours').value);
-  if (!prix || prix <= 0) return alert("Mets le prix secours.");
-  if (!confirm('Prix secours = ' + prix + ' FCFA ?')) return;
-  await db.collection("configFrais").doc(monEcoleId || "global").set({ ecoleNom: monEcoleNom, montant: prix, date: new Date().toISOString() });
-  await db.collection("configFrais").doc("global").set({ ecoleNom: monEcoleNom, montant: prix, date: new Date().toISOString() });
-  fraisTotalEcole = prix; prixSecoursGlobal = prix; fraisTotal = prix;
-  alert("Prix secours enregistré : " + prix + " FCFA");
-  afficherListePrixParEcole();
-  afficherPrixParEcoleDansPaiements();
-  chargerElevesGestion(); chargerPaiementsGestion(); calculerTotauxParEcole();
+function remplirDatalistsRecherche() {
+  let nomsEleves = TOUS_ELEVES_GESTION.map(function(e) { return e.enfant || e.nomEnfant || ""; });
+  let nomsEcoles = [...new Set(TOUS_ELEVES_GESTION.map(function(e) { return nomEcoleDeEleveSimple(e); }))];
+  let dl1 = document.getElementById('datalistEleves');
+  if (dl1) dl1.innerHTML = nomsEleves.map(function(n) { return '<option value="' + n + '">'; }).join('');
+  let dl2 = document.getElementById('datalistEcoles');
+  if (dl2) dl2.innerHTML = nomsEcoles.map(function(n) { return '<option value="' + n + '">'; }).join('');
+  let dl3 = document.getElementById('datalistEnseignants');
+  if (dl3) dl3.innerHTML = TOUS_ENSEIGNANTS.map(function(e) { return '<option value="' + e.nom + '">'; }).join('');
 }
-async function nettoyerBulletinsCasses() {
-  if (!confirm("Nettoyer les bulletins cassés ?")) return;
-  let supprimes = 0;
-  let cols = ["bulletins","notes","notes_eleves","bulletins_enseignants","notes_trimestre","resultats","notesEleves","compositions"];
-  let vraisNoms = TOUS_ELEVES_GESTION.map(function(e) { return normaliser(e.enfant || e.nomEnfant || ""); });
-  for (let col of cols) {
-    try {
-      let snap = await db.collection(col).limit(500).get();
-      for (let doc of snap.docs) {
+
+// ===== DIVERS / ACTIVITES DANS PARAMETRES =====
+async function chargerDivers() {
+  try {
+    let snap = await db.collection("divers").limit(50).get();
+    let box = document.getElementById('listeDivers');
+    if (box) {
+      let h = "";
+      snap.forEach(function(doc) {
         let d = doc.data();
-        let eleve = String(d.eleve || d.enfant || "").trim();
-        let n = normaliser(eleve);
-        let estCasse = (n === "man du camp" || n === "du camp" || n.includes("du camp"));
-        if (eleve && estCasse && !vraisNoms.includes(n)) {
-          await db.collection(col).doc(doc.id).delete();
-          supprimes++;
-        }
-      }
-    } catch (e) {}
-  }
-  alert("✅ Nettoyage fini. Supprimés : " + supprimes);
-  await chargerBulletins();
+        if (!modeToutesEcoles && !estAMoiGestion(d)) return;
+        h += '<p style="font-size:13px"><b>' + (d.titre || "") + '</b> - ' + (d.texte || "") + '</p>';
+      });
+      box.innerHTML = h || "<p class='muted centre'>Aucune info.</p>";
+    }
+  } catch (e) {}
+  calculerTotauxParEcole();
 }
-// ===== ACTIVITES & DEPENSES - VALIDATION DANS LIAISON SEULEMENT =====
+async function ajouterDivers() {
+  let titre = document.getElementById('diversTitre')?.value.trim() || "";
+  let texte = document.getElementById('diversTexte')?.value.trim() || "";
+  if (!titre) { alert("Mets le titre"); return; }
+  try {
+    await db.collection("divers").add({ titre: titre, texte: texte, ecole: monEcoleNom, ecoleNom: monEcoleNom, date: new Date().toLocaleDateString('fr-FR'), createdAt: new Date() });
+    alert("✅ Ajouté");
+    chargerDivers();
+  } catch (e) { alert("❌ " + e.message); }
+}
+async function supprimerDivers(id) {
+  if (!confirm("Supprimer ?")) return;
+  try { await db.collection("divers").doc(id).delete(); chargerDivers(); } catch (e) { alert("❌ " + e.message); }
+}
+function exporterBulletinsPDF() { window.print(); }
+function exporterBulletinsWhatsApp() {
+  let txt = "Bulletins - " + monEcoleNom + "\n";
+  TOUS_BULLETINS.slice(0, 20).forEach(function(b) {
+    txt += '- ' + b.eleve + ' - ' + b.matiere + ' : ' + b.oral + ' + ' + b.ecrit + ' = ' + totalVraiNoteGestionJS(b) + '\n';
+  });
+  window.open("https://wa.me/?text=" + encodeURIComponent(txt), "_blank");
+}
+function filtrerBulletinsAnnuels() { calculerBilanAnnuel(); }
+function voirBulletinAnnuelEleveDetail() { calculerBulletinAnnuelEleve(); }
+
+// ===== FIN PARTIE 3 =====
+// ===== PARTIE 4 - ACTIVITES & DEPENSES / EVOLUTION PAYES / SOLDE NET =====
 async function chargerActivitesDepenses() {
   remplirDatalistsRecherche();
   let fAct = (document.getElementById('filtreActEcole')?.value || "").trim();
@@ -1563,7 +1602,6 @@ function calculerTotauxDepensesParEcole() {
 function filtrerDepenses() { chargerActivitesDepenses(); }
 function partagerDepensesWhatsApp() { window.open("https://wa.me/?text=" + encodeURIComponent("Dépenses - " + monEcoleNom), "_blank"); }
 function envoyerDepensesMail() { alert("Utilise le PDF."); }
-// ===== ÉVOLUTION PAYES - NE COMPTE QUE LES VALIDÉS =====
 function remplirFiltreEvolutionEnseignants() {
   var sel = document.getElementById('evolutionEnseignantSelect');
   if (!sel) return;
@@ -1624,7 +1662,6 @@ async function payerEnseignant(nom, salaire) {
     calculerSoldeNetEnseignants();
   } catch (e) { alert("❌ " + e.message); }
 }
-// ===== SOLDE NET - NE COMPTE QUE LES VALIDÉS - MÊME RÈGLE QUE LIAISON =====
 async function calculerSoldeNetEnseignants() {
   var box = document.getElementById('soldeNetEnseignants');
   if (!box) return;
@@ -1672,5 +1709,7 @@ window.addEventListener('load', function() {
     try { let j = JSON.parse(s); chargerMonEcoleGestion(j.email); } catch (e) {}
   }
 });
+// ===== FIN PARTIE 4 - FIN DU FICHIER gestion.js =====
+
 
 
