@@ -225,7 +225,7 @@ input,select,textarea{width:100%;padding:10px;border:1px solid #C8E6C9;border-ra
 <input id="rechercheEleveAnnuel" placeholder="Tape le nom de l'élève..." list="listeElevesAnnuel" oninput="calculerBilanAnnuel()">
 <datalist id="listeElevesAnnuel"></datalist>
 <div id="zoneBilanEcole"></div><div id="bilanPayesActivites" style="margin-top:12px"></div><button onclick="calculerBilanAnnuel()" class="btn-noir" style="margin-top:10px">Voir / Calculer le bilan</button></div>
-<div class="carte" id="carteAnnBulletin"><div class="titre-ligne"><h3>Bulletin Annuel + Rang <span class="ar">/ الكشف السنوي + الترتيب</span></h3></div><p class="centre muted">Règle : (T1+T2+T3)/3. Si un trimestre manque, on met 0. Ex : (12+0+0)/3 = 4,00</p><label>1. Filtrer par école *</label><select id="filtreEcoleBulletinAnnuel" onchange="filtrerElevesAnnuelParEcole()"><option value="">— Toutes les écoles —</option></select><label>2. Choisir l'élève *</label><select id="bilanAnnuelEleve"><option value="">— Choisis d'abord l'école —</option></select><label>Année</label><input id="bilanAnnuelAnnee" value="2026-2027"><button onclick="calculerBulletinAnnuelEleve()" class="btn-noir" style="margin-top:10px">📋 Voir Bulletin Annuel + Rang</button><p id="msgBulletinAnnuel" class="centre" style="color:green;font-weight:700"></p><div id="bulletinAnnuelEleve" style="margin-top:10px"></div><div class="btn-row no-print" id="btnsBulletinAnnuel" style="display:none"><button onclick="telechargerBulletinAnnuelPDF()" class="btn-noir">⬇️ PDF</button><button onclick="partagerBulletinAnnuelWhatsApp()" class="btn-noir" style="background:#25D366">💬 WhatsApp</button><button onclick="envoyerBulletinAnnuelMail()" class="btn-noir" style="background:#1976D2">✉️ Mail</button><button onclick="cacherBulletinAnnuel()" style="background:#EF5350;color:white;border:none;padding:10px;border-radius:10px;font-weight:800;cursor:pointer;flex:1">🙈 Cacher</button></div></div>
+<div class="carte" id="carteAnnBulletin"><div class="titre-ligne"><h3>Bulletin Annuel + Rang <span class="ar">/ الكشف السنوي + الترتيب</span></h3></div><p class="centre muted">Règle : (T1+T2+T3)/3. Si un trimestre manque, on met 0. Ex : (12+0+0)/3 = 4,00</p><label>1. Filtrer par école *</label><select id="filtreEcoleBulletinAnnuel" onchange="filtrerElevesAnnuelParEcole()"><option value="">— Toutes les écoles —</option></select><p id="msgFiltreAnnuel" class="centre muted" style="font-size:11px">Si la liste est vide, attends 3 sec puis rouvre l'onglet.</p><label>2. Choisir l'élève *</label><select id="bilanAnnuelEleve"><option value="">— Choisis d'abord l'école —</option></select><label>Année</label><input id="bilanAnnuelAnnee" value="2026-2027"><button onclick="calculerBulletinAnnuelEleve()" class="btn-noir" style="margin-top:10px">📋 Voir Bulletin Annuel + Rang</button><p id="msgBulletinAnnuel" class="centre" style="color:green;font-weight:700"></p><div id="bulletinAnnuelEleve" style="margin-top:10px"></div><div class="btn-row no-print" id="btnsBulletinAnnuel" style="display:none"><button onclick="telechargerBulletinAnnuelPDF()" class="btn-noir">⬇️ PDF</button><button onclick="partagerBulletinAnnuelWhatsApp()" class="btn-noir" style="background:#25D366">💬 WhatsApp</button><button onclick="envoyerBulletinAnnuelMail()" class="btn-noir" style="background:#1976D2">✉️ Mail</button><button onclick="cacherBulletinAnnuel()" style="background:#EF5350;color:white;border:none;padding:10px;border-radius:10px;font-weight:800;cursor:pointer;flex:1">🙈 Cacher</button></div></div>
 <div class="carte" id="carteAnnReleve"><div class="titre-ligne"><h3>Relevé par Trimestre <span class="ar">/ كشف النقاط لكل فصل</span></h3></div><label>1. Filtrer par école *</label><select id="filtreEcoleReleve" onchange="filtrerElevesReleveParEcole()"><option value="">— Toutes les écoles —</option></select><label>2. Choisir l'élève *</label><select id="releveEleve"><option value="">— Choisis d'abord l'école —</option></select><label>Trimestre *</label><select id="releveTrimestre"><option value="Trimestre 1">Trimestre 1 - الفصل الأول</option><option value="Trimestre 2">Trimestre 2 - الفصل الثاني</option><option value="Trimestre 3">Trimestre 3 - الفصل الثالث</option></select><label>Année</label><input id="releveAnnee" value="2026-2027"><button onclick="calculerReleveTrimestre()" class="btn-noir" style="margin-top:10px">📄 Voir le relevé</button><p id="msgReleve" class="centre" style="color:green;font-weight:700"></p><div id="releveTrimestreEleve" style="margin-top:10px"></div><div class="btn-row no-print" id="btnsReleve" style="display:none"><button onclick="telechargerReleveTrimestrePDF()" class="btn-noir">⬇️ PDF</button><button onclick="partagerReleveTrimestreWhatsApp()" class="btn-noir" style="background:#25D366">💬 WhatsApp</button><button onclick="envoyerReleveTrimestreMail()" class="btn-noir" style="background:#1976D2">✉️ Mail</button><button onclick="cacherReleve()" style="background:#EF5350;color:white;border:none;padding:10px;border-radius:10px;font-weight:800;cursor:pointer;flex:1">🙈 Cacher</button></div></div>
 <div class="carte" id="carteAnn2"><div class="titre-ligne"><h3>Liste Annuelle - Rang / Décision</h3></div><div id="listeBulletinsAnnuels"></div></div>
 </div>
@@ -319,29 +319,82 @@ function appreciationAuto(moy){
   if(moy >= 8) return "Insuffisant, redouble d'efforts. / غير كاف، ضاعف جهودك";
   return "Faible, il faut beaucoup travailler. / ضعيف، يجب أن تعمل كثيرا";
 }
-// ===== FILTRE BULLETIN ANNUEL + RELEVÉ PAR ÉCOLE =====
+// ===== FILTRE BULLETIN ANNUEL + RELEVÉ PAR ÉCOLE - VERSION ROBUSTE =====
+function getEcoleDunEleve(nomEleve, objEleve){
+  if(objEleve){
+    let c = objEleve.ecole || objEleve.ecoleNom || objEleve.nomEcole || objEleve.groupe || objEleve.school || objEleve.classeEcole || objEleve.ecoleGroupe || "";
+    if(c && String(c).trim()) return String(c).trim();
+  }
+  try{
+    if(typeof ecoleDeEleveBulletin==="function"){
+      let ec = ecoleDeEleveBulletin(nomEleve||"");
+      if(ec && String(ec).trim()) return String(ec).trim();
+    }
+  }catch(e){}
+  if(typeof TOUS_BULLETINS!=="undefined"){
+    let b = TOUS_BULLETINS.find(function(x){ return normaliser(x.eleve||"")===normaliser(nomEleve||"") && x.ecole; });
+    if(b && b.ecole) return String(b.ecole).trim();
+  }
+  return "";
+}
+function getToutesLesEcolesAnnuel(){
+  let set = new Set();
+  if(typeof TOUS_ELEVES_GESTION!=="undefined"){
+    TOUS_ELEVES_GESTION.forEach(function(e){
+      let nom = e.enfant || e.nomEnfant || "";
+      let ec = getEcoleDunEleve(nom, e);
+      if(ec) set.add(ec);
+    });
+  }
+  if(typeof TOUS_BULLETINS!=="undefined"){
+    TOUS_BULLETINS.forEach(function(b){ if(b.ecole) set.add(String(b.ecole).trim()); });
+  }
+  ["filtreEcoleBulletin","filtreEcoleEleves","filtreEcolePresence","selectNomEcolePrix"].forEach(function(id){
+    let s = document.getElementById(id);
+    if(s){
+      Array.from(s.options||[]).forEach(function(o){
+        let v = (o.value||o.text||"").trim();
+        if(v && v.indexOf("Toutes")<0 && v.indexOf("Choisis")<0) set.add(v);
+      });
+    }
+  });
+  return [...set].sort();
+}
 function remplirFiltresEcoleAnnuel(){
-  if(typeof TOUS_ELEVES_GESTION === "undefined" || !TOUS_ELEVES_GESTION.length) return;
-  let ecoles = [...new Set(TOUS_ELEVES_GESTION.map(function(e){ return (e.ecole || e.ecoleNom || e.groupe || (typeof ecoleDeEleveBulletin==="function" ? ecoleDeEleveBulletin(e.enfant||e.nomEnfant||"") : "") || "").trim(); }).filter(Boolean))].sort();
+  let ecoles = getToutesLesEcolesAnnuel();
+  if(!ecoles.length) return false;
   ["filtreEcoleBulletinAnnuel","filtreEcoleReleve"].forEach(function(id){
     let s = document.getElementById(id);
     if(!s) return;
     let actuel = s.value;
     s.innerHTML = '<option value="">— Toutes les écoles —</option>' + ecoles.map(function(ec){ return '<option value="'+ec+'">'+ec+'</option>'; }).join("");
-    s.value = actuel;
+    if(actuel) s.value = actuel;
   });
+  return true;
 }
 function filtrerElevesAnnuelParEcole(){
   remplirFiltresEcoleAnnuel();
   let ecole = document.getElementById('filtreEcoleBulletinAnnuel')?.value || "";
   let sel = document.getElementById('bilanAnnuelEleve');
   if(!sel) return;
-  let liste = TOUS_ELEVES_GESTION.filter(function(e){
-    if(!ecole) return true;
-    let ec = (e.ecole || e.ecoleNom || e.groupe || (typeof ecoleDeEleveBulletin==="function" ? ecoleDeEleveBulletin(e.enfant||e.nomEnfant||"") : "") || "");
-    return normaliser(ec) === normaliser(ecole);
-  });
-  sel.innerHTML = '<option value="">— Choisis l\'élève —</option>' + liste.map(function(e){
+  let liste = [];
+  if(typeof TOUS_ELEVES_GESTION!=="undefined"){
+    liste = TOUS_ELEVES_GESTION.filter(function(e){
+      if(!ecole) return true;
+      let nom = e.enfant || e.nomEnfant || "";
+      let ec = getEcoleDunEleve(nom, e);
+      return normaliser(ec) === normaliser(ecole);
+    });
+  }
+  if(!liste.length && typeof TOUS_BULLETINS!=="undefined"){
+    let noms = [...new Set(TOUS_BULLETINS.map(function(b){ return b.eleve; }))];
+    liste = noms.filter(function(nom){
+      if(!ecole) return true;
+      let ec = getEcoleDunEleve(nom, null);
+      return normaliser(ec) === normaliser(ecole);
+    }).map(function(nom){ return { enfant: nom, niveau: "" }; });
+  }
+  sel.innerHTML = '<option value="">— Choisis l\'élève ('+liste.length+') —</option>' + liste.map(function(e){
     let nom = e.enfant || e.nomEnfant || "";
     return '<option value="'+nom+'">'+nom+' - '+(e.niveau||"")+'</option>';
   }).join("");
@@ -351,19 +404,34 @@ function filtrerElevesReleveParEcole(){
   let ecole = document.getElementById('filtreEcoleReleve')?.value || "";
   let sel = document.getElementById('releveEleve');
   if(!sel) return;
-  let liste = TOUS_ELEVES_GESTION.filter(function(e){
-    if(!ecole) return true;
-    let ec = (e.ecole || e.ecoleNom || e.groupe || (typeof ecoleDeEleveBulletin==="function" ? ecoleDeEleveBulletin(e.enfant||e.nomEnfant||"") : "") || "");
-    return normaliser(ec) === normaliser(ecole);
-  });
-  sel.innerHTML = '<option value="">— Choisis l\'élève —</option>' + liste.map(function(e){
+  let liste = [];
+  if(typeof TOUS_ELEVES_GESTION!=="undefined"){
+    liste = TOUS_ELEVES_GESTION.filter(function(e){
+      if(!ecole) return true;
+      let nom = e.enfant || e.nomEnfant || "";
+      let ec = getEcoleDunEleve(nom, e);
+      return normaliser(ec) === normaliser(ecole);
+    });
+  }
+  if(!liste.length && typeof TOUS_BULLETINS!=="undefined"){
+    let noms = [...new Set(TOUS_BULLETINS.map(function(b){ return b.eleve; }))];
+    liste = noms.filter(function(nom){
+      if(!ecole) return true;
+      let ec = getEcoleDunEleve(nom, null);
+      return normaliser(ec) === normaliser(ecole);
+    }).map(function(nom){ return { enfant: nom, niveau: "" }; });
+  }
+  sel.innerHTML = '<option value="">— Choisis l\'élève ('+liste.length+') —</option>' + liste.map(function(e){
     let nom = e.enfant || e.nomEnfant || "";
     return '<option value="'+nom+'">'+nom+' - '+(e.niveau||"")+'</option>';
   }).join("");
 }
-setTimeout(remplirFiltresEcoleAnnuel, 1500);
-setTimeout(remplirFiltresEcoleAnnuel, 3000);
-setTimeout(remplirFiltresEcoleAnnuel, 5000);
+let _tentativesFiltreAnnuel = 0;
+let _timerFiltreAnnuel = setInterval(function(){
+  _tentativesFiltreAnnuel++;
+  let ok = remplirFiltresEcoleAnnuel();
+  if(ok || _tentativesFiltreAnnuel > 20) clearInterval(_timerFiltreAnnuel);
+}, 1000);
 // ===== RANG PAR ÉCOLE + PAR NIVEAU =====
 function calculerRangBulletin(eleve, tri, moyEleve){
   let eleveCible = TOUS_ELEVES_GESTION.find(function(e){ return normaliser(e.enfant||e.nomEnfant||"")===normaliser(eleve); }) || {};
@@ -523,5 +591,4 @@ setTimeout(function(){ if(typeof afficherBulletins==="function") afficherBulleti
 </div></div>
 </body>
 </html>
-
 
