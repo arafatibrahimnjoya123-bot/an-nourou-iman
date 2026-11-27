@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Admin - An Nourou Iman</title><link rel="stylesheet" href="style.css">
+<html lang="fr"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Admin - An Nourou Iman / الإدارة</title><link rel="stylesheet" href="style.css">
 <style>
 .menu-scroll{display:flex;gap:8px;overflow-x:auto;white-space:nowrap;padding:10px 4px 12px 4px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
 .menu-scroll::-webkit-scrollbar{display:none}
@@ -53,109 +53,111 @@
 <button onclick="showTabAdmin('tabUtilisateurs',this)" class="admin-tab">👑 Utilisateurs <span class="ar">/ المستخدمون</span></button>
 </div>
 <div id="tabDashboard">
-<div style="display:flex;justify-content:space-between;align-items:center"><h3 style="margin:0">🏠 Tableau de Bord - Directeur Général</h3><div class="menu3" id="menuDashboard"><button class="btn3" onclick="toggleMenu3('menuDashboard',event)">⋮</button><div class="menu3-content"><button onclick="cacherAfficherListe('wrapDashboardListes','btnDash');fermerMenus3()">👁️ Cacher / Afficher les listes</button><button onclick="chargerDashboardDG();fermerMenus3()">🔄 Actualiser</button><button onclick="telechargerPaiementsCSV();fermerMenus3()">⬇️ Télécharger Paiements</button><button class="btn-danger" onclick="supprimerAnciensPaiements();fermerMenus3()">🗑️ Supprimer anciens paiements</button></div></div></div>
+<div style="display:flex;justify-content:space-between;align-items:center"><h3 style="margin:0">🏠 Tableau de Bord - Directeur Général <span class="ar">/ لوحة التحكم</span></h3><div class="menu3" id="menuDashboard"><button class="btn3" onclick="toggleMenu3('menuDashboard',event)">⋮</button><div class="menu3-content"><button onclick="cacherAfficherListe('wrapDashboardListes','btnDash');fermerMenus3()">👁️ Cacher / Afficher les listes / إخفاء / إظهار</button><button onclick="chargerDashboardDG();fermerMenus3()">🔄 Actualiser / تحديث</button><button onclick="telechargerPaiementsCSV();fermerMenus3()">⬇️ Télécharger Paiements / تحميل المدفوعات</button><button class="btn-danger" onclick="supprimerAnciensPaiements();fermerMenus3()">🗑️ Supprimer anciens paiements / حذف المدفوعات القديمة</button></div></div></div>
 <div id="alertesDG" style="margin:10px 0"></div>
 <div id="wrapDashboardListes">
 <div id="statsDG" style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0"></div>
 <div id="parEcoleDG"></div>
 <div id="parGroupeDG"></div>
-<h3>🆕 Dernières inscriptions en attente</h3><div id="attenteDG"></div>
-<h3>💰 Derniers paiements</h3><div id="derniersPaiementsDG"></div>
-<h3>🏆 Meilleurs élèves</h3><div id="meilleursDG"></div>
+<h3>🆕 Dernières inscriptions en attente <span class="ar">/ آخر التسجيلات في الانتظار</span></h3><div id="attenteDG"></div>
+<h3>💰 Derniers paiements <span class="ar">/ آخر المدفوعات</span></h3><div id="derniersPaiementsDG"></div>
+<h3>🏆 Meilleurs élèves <span class="ar">/ أفضل التلاميذ</span></h3><div id="meilleursDG"></div>
 </div>
-<button id="btnDash" onclick="cacherAfficherListe('wrapDashboardListes','btnDash')" style="width:100%;background:#333;color:white;border:none;padding:10px;border-radius:12px;font-weight:800;margin-top:10px;display:none">👁️ Afficher les listes</button>
+<button id="btnDash" onclick="cacherAfficherListe('wrapDashboardListes','btnDash')" style="width:100%;background:#333;color:white;border:none;padding:10px;border-radius:12px;font-weight:800;margin-top:10px;display:none">👁️ Afficher les listes / إظهار القوائم</button>
 </div>
 <div id="tabEcoles" style="display:none">
-<h3>🏫 Créer une école</h3>
-<label class="label">🏫 Nom *</label><input id="ecNom" placeholder="Ex: École An Nourou Iman">
-<label class="label">📍 Quartier *</label><input id="ecQuartier" placeholder="Ex: Efoulan">
-<label class="label">👤 Responsable</label><input id="ecResponsable" placeholder="Ex: Oustaz Ibrahim">
-<label class="label">📱 WhatsApp</label><input id="ecWhatsapp" placeholder="697919116">
-<label class="label">👤 Email du Sous-Directeur</label><input id="ecSousDirecteur" placeholder="Ex: ibrahim@ecole.com">
-<label class="label">📱 Numéro du Sous-Directeur</label><input id="ecSousDirecteurTel" placeholder="Ex: 697919116">
-<label class="label">💰 Frais inscription</label><input id="ecFraisIns" type="number" placeholder="5000">
-<label class="label">💰 Frais mensuel</label><input id="ecFraisMens" type="number" placeholder="3000">
-<label class="label">🕐 Horaires</label><input id="ecHoraires" placeholder="Lun - Ven : 14h - 18h">
-<label class="label">📝 Description</label><input id="ecDesc" placeholder="École coranique...">
-<label class="label">📷 Photo</label><input type="file" id="ecPhoto" accept="image/*"><input id="ecPhotoUrl" placeholder="Ou lien https://..."><img id="previewEcole" style="display:none;width:100%;height:150px;object-fit:cover;border-radius:12px;margin-top:8px">
+<h3>🏫 Créer une école <span class="ar">/ إنشاء مدرسة</span></h3>
+<label class="label">🏫 Nom * <span class="ar">/ الاسم</span></label><input id="ecNom" placeholder="Ex: École An Nourou Iman">
+<label class="label">📍 Quartier * <span class="ar">/ الحي</span></label><input id="ecQuartier" placeholder="Ex: Efoulan">
+<label class="label">👤 Responsable <span class="ar">/ المسؤول</span></label><input id="ecResponsable" placeholder="Ex: Oustaz Ibrahim">
+<label class="label">📱 WhatsApp <span class="ar">/ واتساب</span></label><input id="ecWhatsapp" placeholder="697919116">
+<label class="label">👤 Email du Sous-Directeur <span class="ar">/ بريد نائب المدير</span></label><input id="ecSousDirecteur" placeholder="Ex: ibrahim@ecole.com">
+<label class="label">📱 Numéro du Sous-Directeur <span class="ar">/ رقم نائب المدير</span></label><input id="ecSousDirecteurTel" placeholder="Ex: 697919116">
+<label class="label">💰 Frais inscription <span class="ar">/ رسوم التسجيل</span></label><input id="ecFraisIns" type="number" placeholder="5000">
+<label class="label">💰 Frais mensuel <span class="ar">/ الرسوم الشهرية</span></label><input id="ecFraisMens" type="number" placeholder="3000">
+<label class="label">🕐 Horaires <span class="ar">/ الأوقات</span></label><input id="ecHoraires" placeholder="Lun - Ven : 14h - 18h">
+<label class="label">📝 Description <span class="ar">/ الوصف</span></label><input id="ecDesc" placeholder="École coranique...">
+<label class="label">📷 Photo <span class="ar">/ صورة</span></label><input type="file" id="ecPhoto" accept="image/*"><input id="ecPhotoUrl" placeholder="Ou lien https://..."><img id="previewEcole" style="display:none;width:100%;height:150px;object-fit:cover;border-radius:12px;margin-top:8px">
 <input type="hidden" id="ecEditId" value="">
-<button onclick="sauvegarderEcole()" style="width:100%;background:#0F3D2E;color:white;border:none;padding:14px;border-radius:12px;font-weight:800;margin-top:10px">➕ Créer / Modifier l'école</button>
+<button onclick="sauvegarderEcole()" style="width:100%;background:#0F3D2E;color:white;border:none;padding:14px;border-radius:12px;font-weight:800;margin-top:10px">➕ Créer / Modifier l'école / إنشاء / تعديل المدرسة</button>
 <p id="msgEcole" style="text-align:center;font-weight:700;color:green"></p>
-<h3>🏫 Mes écoles</h3><div id="listeEcolesAdmin"></div>
+<h3>🏫 Mes écoles <span class="ar">/ مدارس</span></h3><div id="listeEcolesAdmin"></div>
 </div>
 <div id="tabGroupes" style="display:none">
-<h3>👥 Créer un Groupe d'Études</h3>
-<label class="label">👥 Nom du groupe *</label><input id="grNom" placeholder="Ex: Groupe Douala - Samedi">
-<label class="label">📍 Ville *</label><input id="grVille" placeholder="Ex: Douala">
-<label class="label">📍 Quartier</label><input id="grQuartier" placeholder="Ex: Deïdo">
-<label class="label">📚 Niveau *</label><select id="grNiveau" class="select-cat"><option value="Niveau 1">Niveau 1 - Fondation</option><option value="Niveau 2">Niveau 2 - Lecture</option><option value="Niveau 3">Niveau 3 - Approfondissement</option><option value="Niveau 4">Niveau 4 - Maîtrise</option><option value="Niveau 5">Niveau 5 - Excellence</option></select>
-<label class="label">🕐 Disponibilité *</label><select id="grDispo" class="select-cat"><option value="Samedi 14h - 17h">Samedi 14h - 17h</option><option value="Dimanche 9h - 12h">Dimanche 9h - 12h</option><option value="Samedi + Dimanche">Samedi + Dimanche</option><option value="Mercredi 15h">Mercredi 15h</option><option value="Soir">Soir</option></select>
-<label class="label">👨‍🏫 Nom de l'enseignant *</label><input id="grEnseignant" placeholder="Ex: Oustaz Ibrahim">
-<label class="label">📱 WhatsApp enseignant</label><input id="grEnseignantTel" placeholder="Ex: 697919116">
-<label class="label">👤 Email du Sous-Directeur / Enseignant</label><input id="grSousDirecteur" placeholder="Ex: moussa@groupe.com">
-<label class="label">📱 Numéro du Sous-Directeur / Enseignant</label><input id="grSousDirecteurTel" placeholder="Ex: 697919116">
-<label class="label">💰 Frais mensuel</label><input id="grFrais" type="number" placeholder="Ex: 3000">
-<label class="label">👥 Nombre max d'élèves</label><input id="grMax" type="number" placeholder="Ex: 8">
-<label class="label">📝 Description</label><input id="grDesc" placeholder="Ex: Groupe pour enfants de Douala...">
+<h3>👥 Créer un Groupe d'Études <span class="ar">/ إنشاء مجموعة دراسية</span></h3>
+<label class="label">👥 Nom du groupe * <span class="ar">/ اسم المجموعة</span></label><input id="grNom" placeholder="Ex: Groupe Douala - Samedi">
+<label class="label">📍 Ville * <span class="ar">/ المدينة</span></label><input id="grVille" placeholder="Ex: Douala">
+<label class="label">📍 Quartier <span class="ar">/ الحي</span></label><input id="grQuartier" placeholder="Ex: Deïdo">
+<label class="label">📚 Niveau * <span class="ar">/ المستوى</span></label><select id="grNiveau" class="select-cat"><option value="Niveau 1">Niveau 1 - Fondation / المستوى 1</option><option value="Niveau 2">Niveau 2 - Lecture / المستوى 2</option><option value="Niveau 3">Niveau 3 - Approfondissement / المستوى 3</option><option value="Niveau 4">Niveau 4 - Maîtrise / المستوى 4</option><option value="Niveau 5">Niveau 5 - Excellence / المستوى 5</option></select>
+<label class="label">🕐 Disponibilité * <span class="ar">/ التوفر</span></label><select id="grDispo" class="select-cat"><option value="Samedi 14h - 17h">Samedi 14h - 17h / السبت</option><option value="Dimanche 9h - 12h">Dimanche 9h - 12h / الأحد</option><option value="Samedi + Dimanche">Samedi + Dimanche / السبت + الأحد</option><option value="Mercredi 15h">Mercredi 15h / الأربعاء</option><option value="Soir">Soir / المساء</option></select>
+<label class="label">👨‍🏫 Nom de l'enseignant * <span class="ar">/ اسم المعلم</span></label><input id="grEnseignant" placeholder="Ex: Oustaz Ibrahim">
+<label class="label">📱 WhatsApp enseignant <span class="ar">/ واتساب المعلم</span></label><input id="grEnseignantTel" placeholder="Ex: 697919116">
+<label class="label">👤 Email du Sous-Directeur / Enseignant <span class="ar">/ بريد نائب المدير</span></label><input id="grSousDirecteur" placeholder="Ex: moussa@groupe.com">
+<label class="label">📱 Numéro du Sous-Directeur / Enseignant <span class="ar">/ رقم نائب المدير</span></label><input id="grSousDirecteurTel" placeholder="Ex: 697919116">
+<label class="label">💰 Frais mensuel <span class="ar">/ الرسوم الشهرية</span></label><input id="grFrais" type="number" placeholder="Ex: 3000">
+<label class="label">👥 Nombre max d'élèves <span class="ar">/ العدد الأقصى</span></label><input id="grMax" type="number" placeholder="Ex: 8">
+<label class="label">📝 Description <span class="ar">/ الوصف</span></label><input id="grDesc" placeholder="Ex: Groupe pour enfants de Douala...">
 <input type="hidden" id="grEditId" value="">
-<button onclick="sauvegarderGroupe()" style="width:100%;background:#0F3D2E;color:white;border:none;padding:14px;border-radius:12px;font-weight:800;margin-top:10px">➕ Créer / Modifier le groupe</button>
+<button onclick="sauvegarderGroupe()" style="width:100%;background:#0F3D2E;color:white;border:none;padding:14px;border-radius:12px;font-weight:800;margin-top:10px">➕ Créer / Modifier le groupe / إنشاء / تعديل المجموعة</button>
 <p id="msgGroupe" style="text-align:center;font-weight:700;color:green"></p>
-<h3>👥 Mes groupes</h3><div id="listeGroupesAdmin"></div>
+<h3>👥 Mes groupes <span class="ar">/ مجموعاتي</span></h3><div id="listeGroupesAdmin"></div>
 </div>
 <div id="tabInscriptions" style="display:none">
-<div style="display:flex;justify-content:space-between;align-items:center"><h3 style="margin:0">📝 Inscriptions reçues</h3><div class="menu3" id="menuIns"><button class="btn3" onclick="toggleMenu3('menuIns',event)">⋮</button><div class="menu3-content"><button onclick="chargerInscriptions();fermerMenus3()">🔄 Actualiser</button><button onclick="telechargerInscriptionsCSV();fermerMenus3()">⬇️ Télécharger Excel / CSV</button><button onclick="window.print();fermerMenus3()">🖨️ Imprimer / PDF</button><button onclick="partagerInscriptionsWhatsApp();fermerMenus3()">💬 Partager WhatsApp</button><button onclick="cacherAfficherListe('wrapIns','btnCacherIns');fermerMenus3()">👁️ Cacher / Afficher</button></div></div></div>
+<div style="display:flex;justify-content:space-between;align-items:center"><h3 style="margin:0">📝 Inscriptions reçues <span class="ar">/ التسجيلات الواردة</span></h3><div class="menu3" id="menuIns"><button class="btn3" onclick="toggleMenu3('menuIns',event)">⋮</button><div class="menu3-content"><button onclick="chargerInscriptions();fermerMenus3()">🔄 Actualiser / تحديث</button><button onclick="telechargerInscriptionsCSV();fermerMenus3()">⬇️ Télécharger Excel / CSV / تحميل</button><button onclick="window.print();fermerMenus3()">🖨️ Imprimer / PDF / طباعة</button><button onclick="partagerInscriptionsWhatsApp();fermerMenus3()">💬 Partager WhatsApp / مشاركة واتساب</button><button onclick="cacherAfficherListe('wrapIns','btnCacherIns');fermerMenus3()">👁️ Cacher / Afficher / إخفاء / إظهار</button></div></div></div>
 <p class="compteur" id="compteurIns">...</p>
-<div style="display:flex;gap:6px;flex-wrap:wrap"><button onclick="filtrerIns('Toutes')" style="background:#0F3D2E;color:white;border:none;padding:8px 12px;border-radius:20px">Toutes</button><button onclick="filtrerIns('Ecole')" style="background:#E8F5E9;border:none;padding:8px 12px;border-radius:20px">🏫 Écoles</button><button onclick="filtrerIns('Groupe')" style="background:#E8F5E9;border:none;padding:8px 12px;border-radius:20px">👥 Groupes</button></div>
-<input id="rechercheIns" placeholder="Chercher Aïcha, Douala..." oninput="chargerInscriptions()" style="margin-top:10px">
-<div id="wrapIns"><div id="listeInscriptions"></div><div class="pagination" id="pagIns"><button onclick="changerPageIns(-1)" id="btnPrevIns">← Précédent</button><span id="txtPageIns">Page 1 / 1</span><button onclick="changerPageIns(1)" id="btnNextIns">Suivant →</button></div></div>
-<button class="btn-cacher" id="btnCacherIns" onclick="cacherAfficherListe('wrapIns','btnCacherIns')" style="display:none">Afficher</button>
+<div style="display:flex;gap:6px;flex-wrap:wrap"><button onclick="filtrerIns('Toutes')" style="background:#0F3D2E;color:white;border:none;padding:8px 12px;border-radius:20px">Toutes / الكل</button><button onclick="filtrerIns('Ecole')" style="background:#E8F5E9;border:none;padding:8px 12px;border-radius:20px">🏫 Écoles / المدارس</button><button onclick="filtrerIns('Groupe')" style="background:#E8F5E9;border:none;padding:8px 12px;border-radius:20px">👥 Groupes / المجموعات</button></div>
+<input id="rechercheIns" placeholder="Chercher Aïcha, Douala... / ابحث..." oninput="chargerInscriptions()" style="margin-top:10px">
+<div id="wrapIns"><div id="listeInscriptions"></div><div class="pagination" id="pagIns"><button onclick="changerPageIns(-1)" id="btnPrevIns">← Précédent / السابق</button><span id="txtPageIns">Page 1 / 1</span><button onclick="changerPageIns(1)" id="btnNextIns">Suivant / التالي →</button></div></div>
+<button class="btn-cacher" id="btnCacherIns" onclick="cacherAfficherListe('wrapIns','btnCacherIns')" style="display:none">Afficher / إظهار</button>
 </div>
 <div id="tabPaiements" style="display:none">
-<div style="display:flex;justify-content:space-between;align-items:center"><h3 style="margin:0">⏳ Paiements en attente - À VALIDER</h3><div class="menu3" id="menuPai"><button class="btn3" onclick="toggleMenu3('menuPai',event)">⋮</button><div class="menu3-content"><button onclick="chargerPaiements();fermerMenus3()">🔄 Actualiser</button><button onclick="telechargerPaiementsCSV();fermerMenus3()">⬇️ Télécharger</button><button onclick="cacherAfficherListe('wrapPaiAtt','btnCacherPaiAtt');fermerMenus3()">👁️ Cacher / Afficher</button><button class="btn-danger" onclick="supprimerAnciensPaiements();fermerMenus3()">🗑️ Supprimer anciens paiements</button></div></div></div>
+<div style="display:flex;justify-content:space-between;align-items:center"><h3 style="margin:0">⏳ Paiements en attente - À VALIDER <span class="ar">/ المدفوعات في الانتظار</span></h3><div class="menu3" id="menuPai"><button class="btn3" onclick="toggleMenu3('menuPai',event)">⋮</button><div class="menu3-content"><button onclick="chargerPaiements();fermerMenus3()">🔄 Actualiser / تحديث</button><button onclick="telechargerPaiementsCSV();fermerMenus3()">⬇️ Télécharger / تحميل</button><button onclick="cacherAfficherListe('wrapPaiAtt','btnCacherPaiAtt');fermerMenus3()">👁️ Cacher / Afficher / إخفاء / إظهار</button><button class="btn-danger" onclick="supprimerAnciensPaiements();fermerMenus3()">🗑️ Supprimer anciens paiements / حذف القديمة</button></div></div></div>
 <div id="wrapPaiAtt"><div id="listePaiements"></div></div>
-<button id="btnCacherPaiAtt" onclick="cacherAfficherListe('wrapPaiAtt','btnCacherPaiAtt')" style="display:none">Afficher</button>
+<button id="btnCacherPaiAtt" onclick="cacherAfficherListe('wrapPaiAtt','btnCacherPaiAtt')" style="display:none">Afficher / إظهار</button>
 <hr>
-<h3>💰 Tous les paiements</h3>
+<h3>💰 Tous les paiements <span class="ar">/ كل المدفوعات</span></h3>
 <p class="compteur" id="compteurPai">...</p>
-<div id="resumePaiementsAdmin" style="background:#E8F5E9;padding:12px;border-radius:12px;text-align:center;font-weight:800;margin-bottom:10px">Chargement...</div>
-<div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px"><button class="btn-filtre actif" onclick="filtrerPaiementsAdmin('tous',this)">Tous</button><button class="btn-filtre" onclick="filtrerPaiementsAdmin('paye',this)">✓ Payés</button><button class="btn-filtre" onclick="filtrerPaiementsAdmin('avance',this)">◐ Avances</button><button class="btn-filtre" onclick="filtrerPaiementsAdmin('nonpaye',this)">✗ Non payés</button></div>
-<input id="recherchePaiementAdmin" placeholder="Chercher un élève, une école..." oninput="chargerPaiementsAdmin()" style="margin-bottom:10px">
-<div id="wrapPai"><div id="listePaiementsAdmin"></div><div class="pagination" id="pagPai"><button onclick="changerPagePai(-1)" id="btnPrevPai">← Précédent</button><span id="txtPagePai">Page 1 / 1</span><button onclick="changerPagePai(1)" id="btnNextPai">Suivant →</button></div></div>
-<h3>📜 Historique des paiements</h3><div id="wrapHistPai"><div id="historiquePaiementsAdmin"></div></div>
+<div id="resumePaiementsAdmin" style="background:#E8F5E9;padding:12px;border-radius:12px;text-align:center;font-weight:800;margin-bottom:10px">Chargement... / تحميل...</div>
+<div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px"><button class="btn-filtre actif" onclick="filtrerPaiementsAdmin('tous',this)">Tous / الكل</button><button class="btn-filtre" onclick="filtrerPaiementsAdmin('paye',this)">✓ Payés / مدفوع</button><button class="btn-filtre" onclick="filtrerPaiementsAdmin('avance',this)">◐ Avances / مقدم</button><button class="btn-filtre" onclick="filtrerPaiementsAdmin('nonpaye',this)">✗ Non payés / غير مدفوع</button></div>
+<input id="recherchePaiementAdmin" placeholder="Chercher un élève, une école... / ابحث..." oninput="chargerPaiementsAdmin()" style="margin-bottom:10px">
+<div id="wrapPai"><div id="listePaiementsAdmin"></div><div class="pagination" id="pagPai"><button onclick="changerPagePai(-1)" id="btnPrevPai">← Précédent / السابق</button><span id="txtPagePai">Page 1 / 1</span><button onclick="changerPagePai(1)" id="btnNextPai">Suivant / التالي →</button></div></div>
+<h3>📜 Historique des paiements <span class="ar">/ سجل المدفوعات</span></h3><div id="wrapHistPai"><div id="historiquePaiementsAdmin"></div></div>
 </div>
 <div id="tabBulletins" style="display:none">
-<div style="display:flex;justify-content:space-between;align-items:center"><h3 style="margin:0">📋 Bulletins - Notes par matière</h3><div class="menu3" id="menuBul"><button class="btn3" onclick="toggleMenu3('menuBul',event)">⋮</button><div class="menu3-content"><button onclick="chargerBulletinsTableAdmin();fermerMenus3()">🔄 Actualiser</button><button onclick="telechargerBulletinsCSV();fermerMenus3()">⬇️ Télécharger Excel</button><button onclick="window.print();fermerMenus3()">🖨️ Imprimer / PDF</button><button onclick="cacherAfficherListe('wrapBul','btnCacherBul');fermerMenus3()">👁️ Cacher / Afficher</button></div></div></div>
-<p style="font-size:12px;color:#666;text-align:center">Matières fixées par la Gestion dans <b>matieres_publiees / configMatieres</b>. 1 élève + 1 trimestre = 1 ligne. Avec arabe.</p>
-<div style="display:flex;gap:6px;flex-wrap:wrap;margin:8px 0"><select id="filtreTrimestreBulletin" class="select-cat" onchange="afficherBulletinsTableAdmin()" style="flex:1"><option value="">— Tous les trimestres —</option><option value="Trimestre 1">Trimestre 1</option><option value="Trimestre 2">Trimestre 2</option><option value="Trimestre 3">Trimestre 3</option></select><select id="filtreEcoleBulletin" class="select-cat" onchange="afficherBulletinsTableAdmin()" style="flex:1"><option value="">— Toutes les écoles —</option></select></div>
-<input id="rechercheBulletin" placeholder="Chercher un élève..." oninput="afficherBulletinsTableAdmin()" style="margin:10px 0">
+<div style="display:flex;justify-content:space-between;align-items:center"><h3 style="margin:0">📋 Bulletins - Notes par matière <span class="ar">/ الكشوف - النقاط حسب المادة</span></h3><div class="menu3" id="menuBul"><button class="btn3" onclick="toggleMenu3('menuBul',event)">⋮</button><div class="menu3-content"><button onclick="chargerBulletinsTableAdmin();fermerMenus3()">🔄 Actualiser / تحديث</button><button onclick="telechargerBulletinsCSV();fermerMenus3()">⬇️ Télécharger Excel / تحميل</button><button onclick="window.print();fermerMenus3()">🖨️ Imprimer / PDF / طباعة</button><button onclick="cacherAfficherListe('wrapBul','btnCacherBul');fermerMenus3()">👁️ Cacher / Afficher / إخفاء / إظهار</button></div></div></div>
+<p style="font-size:12px;color:#666;text-align:center">Matières fixées par la Gestion dans <b>matieres_publiees / configMatieres</b>. 1 élève + 1 trimestre = 1 ligne. Avec arabe. <span class="ar">/ المواد المثبتة من الإدارة</span></p>
+<div style="display:flex;gap:6px;flex-wrap:wrap;margin:8px 0"><select id="filtreTrimestreBulletin" class="select-cat" onchange="afficherBulletinsTableAdmin()" style="flex:1"><option value="">— Tous les trimestres / كل الفصول —</option><option value="Trimestre 1">Trimestre 1 / الفصل الأول</option><option value="Trimestre 2">Trimestre 2 / الفصل الثاني</option><option value="Trimestre 3">Trimestre 3 / الفصل الثالث</option></select><select id="filtreEcoleBulletin" class="select-cat" onchange="afficherBulletinsTableAdmin()" style="flex:1"><option value="">— Toutes les écoles / كل المدارس —</option></select></div>
+<input id="rechercheBulletin" placeholder="Chercher un élève... / ابحث عن تلميذ..." oninput="afficherBulletinsTableAdmin()" style="margin:10px 0">
 <div id="wrapBul"><div id="listeBulletinsAdmin"></div></div>
-<button id="btnCacherBul" onclick="cacherAfficherListe('wrapBul','btnCacherBul')" style="display:none">Afficher</button>
+<button id="btnCacherBul" onclick="cacherAfficherListe('wrapBul','btnCacherBul')" style="display:none">Afficher / إظهار</button>
 </div>
 <div id="tabDivers" style="display:none">
-<h3>📢 Divers - Annonces pour l'Accueil</h3>
-<label class="label">📢 Titre *</label><input id="divTitre" placeholder="Ex: Pas cours demain">
-<label class="label">📝 Message *</label><input id="divMessage" placeholder="Ex: Demain à 10h, fête à l'école...">
-<label class="label">🏷️ Type</label><select id="divType" class="select-cat"><option value="Annonce">📢 Annonce</option><option value="Note">📝 Note / Info</option><option value="Evenement">🎉 Événement</option><option value="Resultat">🏆 Résultat</option></select>
-<label class="label">🏫 Pour quelle école / groupe ? (vide = pour tout le monde)</label><input id="divEcole" placeholder="Ex: École Yaoundé - ou laisse vide">
-<label class="label">⏰ Combien de jours à l'accueil ?</label><select id="divDuree" class="select-cat"><option value="1">1 jour</option><option value="3">3 jours</option><option value="7" selected>7 jours</option><option value="14">14 jours</option><option value="30">30 jours</option></select>
-<button onclick="publierDiversCorrige()" style="width:100%;background:#0F3D2E;color:white;border:none;padding:14px;border-radius:12px;font-weight:800;margin-top:10px">📢 Publier sur l'Accueil</button>
+<h3>📢 Divers - Annonces pour l'Accueil <span class="ar">/ متنوعات - إعلانات الاستقبال</span></h3>
+<label class="label">📢 Titre * <span class="ar">/ العنوان</span></label><input id="divTitre" placeholder="Ex: Pas cours demain">
+<label class="label">📝 Message * <span class="ar">/ الرسالة</span></label><input id="divMessage" placeholder="Ex: Demain à 10h, fête à l'école...">
+<label class="label">🏷️ Type <span class="ar">/ النوع</span></label><select id="divType" class="select-cat"><option value="Annonce">📢 Annonce / إعلان</option><option value="Note">📝 Note / Info / ملاحظة</option><option value="Evenement">🎉 Événement / حدث</option><option value="Resultat">🏆 Résultat / نتيجة</option></select>
+<label class="label">🏫 Pour quelle école / groupe ? (vide = pour tout le monde) <span class="ar">/ لأي مدرسة؟</span></label><input id="divEcole" placeholder="Ex: École Yaoundé - ou laisse vide">
+<label class="label">⏰ Combien de jours à l'accueil ? <span class="ar">/ كم يوما؟</span></label><select id="divDuree" class="select-cat"><option value="1">1 jour / يوم</option><option value="3">3 jours / أيام</option><option value="7" selected>7 jours / أيام</option><option value="14">14 jours / أيام</option><option value="30">30 jours / أيام</option></select>
+<button onclick="publierDiversCorrige()" style="width:100%;background:#0F3D2E;color:white;border:none;padding:14px;border-radius:12px;font-weight:800;margin-top:10px">📢 Publier sur l'Accueil / نشر في الاستقبال</button>
 <p id="msgDivers" style="text-align:center;font-weight:700;color:green"></p>
-<h3>📢 Divers déjà publiés</h3><div id="listeDiversAdmin"></div>
+<h3>📢 Divers déjà publiés <span class="ar">/ المتنوعات المنشورة</span></h3><div id="listeDiversAdmin"></div>
 </div>
 <div id="tabUtilisateurs" style="display:none">
-<h3>👑 Créer Secrétaire / Directeur</h3>
-<label class="label">📧 Email de la personne *</label><input id="nouvelUtilisateurEmail" type="email" placeholder="Ex: faousia@secretaire.com">
-<label class="label">📱 Numéro de la personne *</label><input id="nouvelUtilisateurTel" placeholder="Ex: 697919116">
-<label class="label">🔑 Mot de passe *</label><input id="nouvelUtilisateurPassword" placeholder="Ex: 123456">
-<label class="label">👤 Nom complet</label><input id="nouvelUtilisateurNom" placeholder="Ex: Faousia">
-<label class="label">🎭 Rôle *</label><select id="nouvelUtilisateurRole" class="select-cat"><option value="secretaire">📝 Secrétaire - Gère gestion.html</option><option value="directeur">👑 Directeur - Gère gestion.html</option></select>
-<label class="label">🏫 École</label><select id="nouvelUtilisateurEcole" class="select-cat"><option value="">— Laisse vide —</option></select>
-<button onclick="creerUtilisateurDirection()" style="width:100%;background:#0F3D2E;color:white;border:none;padding:14px;border-radius:12px;font-weight:800;margin-top:10px">✅ Créer la personne</button>
+<h3>👑 Créer Secrétaire / Directeur <span class="ar">/ إنشاء سكرتيرة / مدير</span></h3>
+<input type="hidden" id="editUtilisateurId" value="">
+<div id="bandeModifUtilisateur" style="display:none;background:#FFF9C4;border:1px solid #FFE082;padding:10px;border-radius:12px;text-align:center;font-weight:800;margin-bottom:10px">✏️ Mode MODIFICATION / وضع التعديل - <span id="nomModifUtilisateur"></span> <button onclick="annulerModificationUtilisateur()" style="background:#333;color:white;border:none;padding:6px 12px;border-radius:20px;margin-left:8px">Annuler / إلغاء</button></div>
+<label class="label">📧 Email de la personne * <span class="ar">/ بريد الشخص</span></label><input id="nouvelUtilisateurEmail" type="email" placeholder="Ex: faousia@secretaire.com">
+<label class="label">📱 Numéro de la personne * <span class="ar">/ رقم الشخص</span></label><input id="nouvelUtilisateurTel" placeholder="Ex: 697919116">
+<label class="label">🔑 Mot de passe * <span class="ar">/ كلمة السر</span></label><input id="nouvelUtilisateurPassword" placeholder="Ex: 123456">
+<label class="label">👤 Nom complet <span class="ar">/ الاسم الكامل</span></label><input id="nouvelUtilisateurNom" placeholder="Ex: Faousia">
+<label class="label">🎭 Rôle * <span class="ar">/ الدور</span></label><select id="nouvelUtilisateurRole" class="select-cat"><option value="secretaire">📝 Secrétaire - Gère gestion.html / السكرتيرة</option><option value="directeur">👑 Directeur - Gère gestion.html / المدير</option></select>
+<label class="label">🏫 École <span class="ar">/ المدرسة</span></label><select id="nouvelUtilisateurEcole" class="select-cat"><option value="">— Laisse vide / اتركه فارغا —</option></select>
+<button id="btnCreerUtilisateur" onclick="creerUtilisateurDirection()" style="width:100%;background:#0F3D2E;color:white;border:none;padding:14px;border-radius:12px;font-weight:800;margin-top:10px">✅ Créer la personne / إنشاء الشخص</button>
 <p id="msgUtilisateur" style="text-align:center;font-weight:700;color:green"></p>
-<hr><h3>📋 Personnes créées</h3><div id="listeUtilisateursDirection"></div>
-<button onclick="chargerEcolesPourUtilisateur()" style="width:100%;background:#E8F5E9;border:none;padding:12px;border-radius:12px;font-weight:800;margin-top:10px">🔄 Actualiser la liste</button>
+<hr><h3>📋 Personnes créées <span class="ar">/ الأشخاص المنشؤون</span></h3><div id="listeUtilisateursDirection"></div>
+<button onclick="chargerEcolesPourUtilisateur()" style="width:100%;background:#E8F5E9;border:none;padding:12px;border-radius:12px;font-weight:800;margin-top:10px">🔄 Actualiser la liste / تحديث القائمة</button>
 </div>
-<button onclick="seDeconnecter()" style="width:100%;background:#333;color:white;border:none;padding:12px;border-radius:12px;margin-top:12px">Déconnexion</button>
+<button onclick="seDeconnecter()" style="width:100%;background:#333;color:white;border:none;padding:12px;border-radius:12px;margin-top:12px">Déconnexion / خروج</button>
 </div>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
@@ -180,7 +182,7 @@ function cacherAfficherListe(idWrap, idBtn){
   let el=document.getElementById(idWrap); let btn=document.getElementById(idBtn);
   if(!el) return;
   if(el.style.display==="none"){ el.style.display="block"; if(btn) btn.style.display="none"; }
-  else { el.style.display="none"; if(btn){ btn.style.display="block"; btn.textContent="👁️ Afficher la liste"; } }
+  else { el.style.display="none"; if(btn){ btn.style.display="block"; btn.textContent="👁️ Afficher la liste / إظهار القائمة"; } }
 }
 function toggleMenu3(id, ev){
   if(ev) ev.stopPropagation();
@@ -211,35 +213,94 @@ function changerPageIns(d){ pageIns+=d; if(typeof chargerInscriptions==='functio
 function changerPagePai(d){ pagePai+=d; appliquerPaginationPai(); }
 async function publierDiversCorrige(){
   let titre=document.getElementById('divTitre').value.trim(); let message=document.getElementById('divMessage').value.trim(); let type=document.getElementById('divType').value; let ecole=document.getElementById('divEcole').value.trim(); let duree=Number(document.getElementById('divDuree') ? document.getElementById('divDuree').value : 7); let msg=document.getElementById('msgDivers');
-  if(!titre || !message){ if(msg){ msg.style.color="red"; msg.textContent="❌ Mets Titre + Message"; } return; }
+  if(!titre || !message){ if(msg){ msg.style.color="red"; msg.textContent="❌ Mets Titre + Message / ضع العنوان + الرسالة"; } return; }
   let expire=new Date(); expire.setDate(expire.getDate()+duree);
   let data={titre:titre, message:message, texte:message, type:type, ecole:ecole, ecoleNom:ecole, duree:duree, date:new Date(), createdAt:new Date(), expireAt:expire, actif:true, visible:true, pourAccueil:true};
   try{ await db.collection("divers").add(data); try{ await db.collection("annonces").add(data); }catch(e){} try{ await db.collection("diversAccueil").doc("dernier").set(data); }catch(e){} try{ await db.collection("configDivers").doc("accueil").set(data); }catch(e){}
-    if(msg){ msg.style.color="green"; msg.textContent="✅ Publié ! Va voir l'accueil."; } alert("✅ Divers publié !"); document.getElementById('divTitre').value=""; document.getElementById('divMessage').value=""; if(typeof chargerDiversAdmin === 'function') chargerDiversAdmin();
+    if(msg){ msg.style.color="green"; msg.textContent="✅ Publié ! Va voir l'accueil. / تم النشر!"; } alert("✅ Divers publié ! / تم نشر المتنوعات!"); document.getElementById('divTitre').value=""; document.getElementById('divMessage').value=""; if(typeof chargerDiversAdmin === 'function') chargerDiversAdmin();
   }catch(e){ if(msg){ msg.style.color="red"; msg.textContent="❌ "+e.message; } }
 }
 async function chargerEcolesPourUtilisateur(){
-  let sel=document.getElementById('nouvelUtilisateurEcole'); let box=document.getElementById('listeUtilisateursDirection'); if(box) box.innerHTML="<p class='centre'>⏳ Chargement...</p>"; if(!sel) return;
-  try{ let snap=await db.collection("ecoles").get(); sel.innerHTML=`<option value="">— Laisse vide —</option>`; snap.forEach(doc=>{ let d=doc.data(); sel.innerHTML+=`<option value="${doc.id}||${d.nom||""}">${d.nom||doc.id}</option>`; }); }catch(e){ if(box) box.innerHTML="❌ "+e.message; } chargerListeUtilisateursDirection();
+  let sel=document.getElementById('nouvelUtilisateurEcole'); let box=document.getElementById('listeUtilisateursDirection'); if(box) box.innerHTML="<p class='centre'>⏳ Chargement... / تحميل...</p>"; if(!sel) return;
+  try{ let snap=await db.collection("ecoles").get(); sel.innerHTML=`<option value="">— Laisse vide / اتركه فارغا —</option>`; snap.forEach(doc=>{ let d=doc.data(); sel.innerHTML+=`<option value="${doc.id}||${d.nom||""}">${d.nom||doc.id}</option>`; }); }catch(e){ if(box) box.innerHTML="❌ "+e.message; } chargerListeUtilisateursDirection();
+}
+// ===== CORRECTIF 1 - MODIFIER UTILISATEURS =====
+function annulerModificationUtilisateur(){
+  document.getElementById('editUtilisateurId').value = "";
+  document.getElementById('bandeModifUtilisateur').style.display = "none";
+  document.getElementById('nouvelUtilisateurEmail').value = "";
+  document.getElementById('nouvelUtilisateurTel').value = "";
+  document.getElementById('nouvelUtilisateurPassword').value = "";
+  document.getElementById('nouvelUtilisateurNom').value = "";
+  document.getElementById('nouvelUtilisateurRole').value = "secretaire";
+  document.getElementById('nouvelUtilisateurEcole').value = "";
+  let b = document.getElementById('btnCreerUtilisateur');
+  if(b) b.textContent = "✅ Créer la personne / إنشاء الشخص";
+}
+async function modifierUtilisateurDirection(id){
+  try{
+    let doc = await db.collection("utilisateurs").doc(id).get();
+    if(!doc.exists){ alert("Utilisateur introuvable / المستخدم غير موجود"); return; }
+    let d = doc.data();
+    document.getElementById('editUtilisateurId').value = id;
+    document.getElementById('nouvelUtilisateurEmail').value = d.email || id || "";
+    document.getElementById('nouvelUtilisateurTel').value = d.tel || d.telephone || "";
+    document.getElementById('nouvelUtilisateurPassword').value = "";
+    document.getElementById('nouvelUtilisateurNom').value = d.nom || "";
+    document.getElementById('nouvelUtilisateurRole').value = d.role || "secretaire";
+    let sel = document.getElementById('nouvelUtilisateurEcole');
+    if(sel && (d.ecoleId || d.ecoleNom)){
+      for(let o of sel.options){ if(o.value.startsWith((d.ecoleId||"")+"||") || o.text===d.ecoleNom){ sel.value = o.value; break; } }
+    }
+    document.getElementById('bandeModifUtilisateur').style.display = "block";
+    document.getElementById('nomModifUtilisateur').textContent = (d.email||"") + " - " + (d.nom||"");
+    let b = document.getElementById('btnCreerUtilisateur');
+    if(b) b.textContent = "💾 Enregistrer la modification / حفظ التعديل";
+    document.getElementById('tabUtilisateurs').scrollIntoView({behavior:"smooth"});
+    alert("✏️ Modifie maintenant les champs, puis clique sur Enregistrer la modification.\nLaisse le mot de passe vide si tu ne veux pas le changer.");
+  }catch(e){ alert("❌ "+e.message); }
 }
 async function chargerListeUtilisateursDirection(){
   let box=document.getElementById('listeUtilisateursDirection'); if(!box) return;
-  try{ let snap=await db.collection("utilisateurs").limit(50).get(); let h=""; snap.forEach(doc=>{ let d=doc.data(); h+=`<p style="font-size:13px">• <b>${d.email||""}</b> - 📱 ${d.tel||d.telephone||"❌ PAS DE NUMÉRO"} - ${d.role||""} - ${d.nom||""} <span class="lien-action" onclick="supprimerUtilisateurDirection('${doc.id}')">🗑️ Supprimer</span></p>`; }); box.innerHTML=h||"<p class='muted centre'>Aucune personne créée.</p>"; }catch(e){ box.innerHTML="❌ "+e.message; }
+  try{ let snap=await db.collection("utilisateurs").limit(50).get(); let h=""; snap.forEach(doc=>{ let d=doc.data(); h+=`<div style="background:#F1F8E9;border:1px solid #C8E6C9;border-radius:12px;padding:10px;margin-bottom:8px;font-size:13px">• <b>${d.email||""}</b> - 📱 ${d.tel||d.telephone||"❌ PAS DE NUMÉRO"} - ${d.role||""} - ${d.nom||""} - 🏫 ${d.ecoleNom||"—"}<br><div style="display:flex;gap:6px;margin-top:6px"><button onclick="modifierUtilisateurDirection('${doc.id}')" style="flex:1;background:#1976D2;color:white;border:none;padding:8px;border-radius:20px;font-weight:800">✏️ Modifier / تعديل</button><button onclick="supprimerUtilisateurDirection('${doc.id}')" style="flex:1;background:#FFCDD2;color:#7A1A1A;border:none;padding:8px;border-radius:20px;font-weight:800">🗑️ Supprimer / حذف</button></div></div>`; }); box.innerHTML=h||"<p class='muted centre'>Aucune personne créée. / لا يوجد شخص منشأ.</p>"; }catch(e){ box.innerHTML="❌ "+e.message; }
 }
 function nettoyerTelAdmin(t){ return String(t||"").replace(/[^0-9]/g,"").replace(/^237/,""); }
 async function creerUtilisateurDirection(){
+  let editId = document.getElementById('editUtilisateurId')?.value || "";
   let email=document.getElementById('nouvelUtilisateurEmail').value.toLowerCase().trim(); let tel=nettoyerTelAdmin(document.getElementById('nouvelUtilisateurTel').value); let password=document.getElementById('nouvelUtilisateurPassword').value.trim(); let nom=document.getElementById('nouvelUtilisateurNom').value.trim(); let role=document.getElementById('nouvelUtilisateurRole').value; let ecoleVal=document.getElementById('nouvelUtilisateurEcole').value; let msg=document.getElementById('msgUtilisateur');
-  if(!email){ msg.style.color="red"; msg.textContent="❌ Mets l'Email"; return; } if(!password || password.length < 6){ msg.style.color="red"; msg.textContent="❌ Mets un Mot de passe de 6 chiffres minimum"; return; } if(!tel){ msg.style.color="red"; msg.textContent="❌ Mets le NUMÉRO"; return; }
+  if(!email){ msg.style.color="red"; msg.textContent="❌ Mets l'Email / ضع البريد"; return; }
+  if(!tel){ msg.style.color="red"; msg.textContent="❌ Mets le NUMÉRO / ضع الرقم"; return; }
   let ecoleId="", ecoleNom=""; if(ecoleVal){ let p=ecoleVal.split("||"); ecoleId=p[0]; ecoleNom=p[1]||""; }
+  // === MODE MODIFICATION ===
+  if(editId){
+    if(!password || password.length<6){
+      // On garde l'ancien mot de passe, on ne change que les autres champs
+      try{
+        await db.collection("utilisateurs").doc(editId).update({ email:email, tel:tel, telephone:tel, nom:nom, role:role, ecoleId:ecoleId, ecoleNom:ecoleNom, modifieLe:new Date() });
+        msg.style.color="green"; msg.textContent="✅ Modifié : "+email;
+        annulerModificationUtilisateur(); chargerListeUtilisateursDirection();
+      }catch(e){ msg.style.color="red"; msg.textContent="❌ "+e.message; }
+      return;
+    }
+    // Si mot de passe fourni, on le met à jour aussi dans le doc (Auth reste avec l'ancien, l'utilisateur utilisera l'ancien ou on le recrée)
+    try{
+      await db.collection("utilisateurs").doc(editId).update({ email:email, tel:tel, telephone:tel, nom:nom, role:role, ecoleId:ecoleId, ecoleNom:ecoleNom, modifieLe:new Date() });
+      msg.style.color="green"; msg.textContent="✅ Modifié : "+email+" (mot de passe inchangé dans Auth, utilise l'ancien)";
+      annulerModificationUtilisateur(); chargerListeUtilisateursDirection();
+    }catch(e){ msg.style.color="red"; msg.textContent="❌ "+e.message; }
+    return;
+  }
+  // === MODE CRÉATION ===
+  if(!password || password.length < 6){ msg.style.color="red"; msg.textContent="❌ Mets un Mot de passe de 6 chiffres minimum / ضع كلمة سر 6 أرقام"; return; }
   try{ let secondary = firebase.apps.find(a=>a.name==="secondary") || firebase.initializeApp(firebase.app().options, "secondary"); try{ await secondary.auth().createUserWithEmailAndPassword(email, password); }catch(e){ if(e.code !== "auth/email-already-in-use") throw e; } await secondary.auth().signOut(); await db.collection("utilisateurs").doc(email).set({ email:email, tel:tel, telephone:tel, nom:nom, role:role, ecoleId:ecoleId, ecoleNom:ecoleNom, date:new Date().toLocaleDateString('fr-FR'), createdAt:new Date() });
     if(role==="directeur" || role==="secretaire"){ let snap=await db.collection("ecoles").get(); for(let doc of snap.docs){ let upd={}; if(role==="directeur"){ upd.directeurEmail=email; upd.directeurTel=tel; } if(role==="secretaire"){ upd.secretaireEmail=email; upd.secretaireTel=tel; } await db.collection("ecoles").doc(doc.id).update(upd); } }
     msg.style.color="green"; msg.textContent="✅ "+email+" créée."; document.getElementById('nouvelUtilisateurEmail').value=""; document.getElementById('nouvelUtilisateurTel').value=""; document.getElementById('nouvelUtilisateurPassword').value=""; document.getElementById('nouvelUtilisateurNom').value=""; chargerListeUtilisateursDirection();
   }catch(e){ msg.style.color="red"; msg.textContent="❌ "+e.message; }
 }
-async function supprimerUtilisateurDirection(id){ if(!confirm("Supprimer cette personne ?")) return; await db.collection("utilisateurs").doc(id).delete(); chargerListeUtilisateursDirection(); }
+async function supprimerUtilisateurDirection(id){ if(!confirm("Supprimer cette personne ? / حذف هذا الشخص ؟")) return; await db.collection("utilisateurs").doc(id).delete(); chargerListeUtilisateursDirection(); }
 </script>
 <script>
-// ===== BLOC UNIQUE - 3 POINTS + DASHBOARD + INSCRIPTIONS + BULLETIN DEPUIS TA GESTION + ARABE =====
+// ===== BLOC UNIQUE - DASHBOARD + INSCRIPTIONS + BULLETIN + ARABE =====
 function valPropre(v){
   if(v===undefined || v===null || v==="" || v==="undefined") return "—";
   if(v && typeof v.toDate === 'function'){ try{ return v.toDate().toLocaleDateString('fr-FR'); }catch(e){ return "—"; } }
@@ -248,7 +309,6 @@ function valPropre(v){
   return String(v);
 }
 function champPropre(p, ...noms){ for(let n of noms){ if(p[n]!==undefined && p[n]!==null && p[n]!=="" && p[n]!=="undefined") return p[n]; } return "—"; }
-// ✅ ARABE : même tableau que MATIERES_AR dans gestion.js
 const MATIERES_AR_ADMIN = {
   "Coran":"القرآن","Hadith":"الحديث","Aquida":"العقيدة","Fiqh":"الفقه",
   "Langue Arabe":"اللغة العربية","Arabe":"اللغة العربية",
@@ -257,6 +317,11 @@ const MATIERES_AR_ADMIN = {
   "Mathématiques":"الرياضيات","Français":"الفرنسية"
 };
 function arPourMatiereAdmin(fr, arDeja){ if(arDeja) return arDeja; return MATIERES_AR_ADMIN[fr] || ""; }
+function normaliserTexteAdmin(t){ return String(t||"").trim().toLowerCase().replace(/\s+/g," "); }
+function estInscriptionValide(e){
+  let st = String(e.statut||e.status||e.statutInscription||e.etat||"").toLowerCase().trim();
+  return (st==="valide" || st==="validé" || st==="validee" || st==="accepte" || st==="accepté" || st==="acceptee" || e.accepte===true || e.valide===true || e.accepteDG===true);
+}
 async function majDashboardSimpleDG(){
   try{
     let snapAll = await db.collection("paiements").get();
@@ -266,7 +331,7 @@ async function majDashboardSimpleDG(){
     let al = document.getElementById('alertesDG');
     if(al){
       let div = document.createElement('div'); div.id = 'bandeAttenteDG';
-      if(nbAttente===0){ div.innerHTML = `<div style="background:#C8E6C9;padding:12px;border-radius:12px;font-weight:800;text-align:center">✅ Aucun paiement en attente</div><div style="background:#0F3D2E;color:white;padding:12px;border-radius:12px;font-weight:800;text-align:center;margin-top:8px">💰 Encaissé validé : ${valide.toLocaleString()} FCFA</div>`; }
+      if(nbAttente===0){ div.innerHTML = `<div style="background:#C8E6C9;padding:12px;border-radius:12px;font-weight:800;text-align:center">✅ Aucun paiement en attente / لا يوجد دفع في الانتظار</div><div style="background:#0F3D2E;color:white;padding:12px;border-radius:12px;font-weight:800;text-align:center;margin-top:8px">💰 Encaissé validé : ${valide.toLocaleString()} FCFA</div>`; }
       else { div.innerHTML = `<div onclick="showTabAdmin('tabPaiements',document.querySelectorAll('.admin-tab')[4])" style="background:#FF9800;color:white;padding:14px;border-radius:12px;font-weight:800;cursor:pointer;text-align:center">⏳ ${nbAttente} PAIEMENT(S) EN ATTENTE - CLIQUE ICI POUR VALIDER - ${attente.toLocaleString()} FCFA</div><div style="background:#0F3D2E;color:white;padding:12px;border-radius:12px;font-weight:800;text-align:center;margin-top:8px">💰 Encaissé validé : ${valide.toLocaleString()} FCFA</div>`; }
       al.prepend(div);
     }
@@ -279,8 +344,8 @@ async function corrigerDerniersPaiementsDG(){
     liste.sort((a,b)=> (b.createdAt?.seconds||0) - (a.createdAt?.seconds||0));
     let box = document.getElementById('derniersPaiementsDG'); if(!box) return;
     let derniers = liste.slice(0, 8);
-    if(!derniers.length){ box.innerHTML = "<p style='text-align:center'>Aucun paiement.</p>"; return; }
-    let h = `<div style="overflow-x:auto"><table class="table-blanc"><thead><tr><th>Élève</th><th>Montant</th><th>Motif</th><th>École</th><th>Date</th><th>Statut</th><th>⋮</th></tr></thead><tbody>`;
+    if(!derniers.length){ box.innerHTML = "<p style='text-align:center'>Aucun paiement. / لا يوجد دفع.</p>"; return; }
+    let h = `<div style="overflow-x:auto"><table class="table-blanc"><thead><tr><th>Élève / التلميذ</th><th>Montant / المبلغ</th><th>Motif / السبب</th><th>École / المدرسة</th><th>Date / التاريخ</th><th>Statut / الحالة</th><th>⋮</th></tr></thead><tbody>`;
     derniers.forEach((p, idx)=>{
       let eleve = valPropre(champPropre(p, "enfant","eleve","nomEnfant","enfantNom","nom"));
       let montant = Number(p.montant||0).toLocaleString();
@@ -288,11 +353,11 @@ async function corrigerDerniersPaiementsDG(){
       let ecole = valPropre(champPropre(p, "ecole","ecoleNom","groupe","groupeNom"));
       let date = valPropre(champPropre(p, "date","datePaiement","createdAt"));
       let st = String(p.statut||p.statutPaiement||"valide").toLowerCase();
-      let badge = st==="valide" ? `<span class="badge badge-paye">✅ VALIDÉ</span>` : st==="en_attente" ? `<span class="badge badge-attente">⏳ EN ATTENTE</span>` : `<span class="badge">❌ REFUSÉ</span>`;
+      let badge = st==="valide" ? `<span class="badge badge-paye">✅ VALIDÉ / تم</span>` : st==="en_attente" ? `<span class="badge badge-attente">⏳ EN ATTENTE / في الانتظار</span>` : `<span class="badge">❌ REFUSÉ / مرفوض</span>`;
       let menu = menuLigne3('mPaiDash'+idx, [
-        {label:'✅ Valider', onclick:`validerPaiementAdmin('${p.id}')`},
-        {label:'❌ Refuser', onclick:`refuserPaiementAdmin('${p.id}')`},
-        {label:'🗑️ Supprimer ce paiement', onclick:`supprimerPaiementAdmin('${p.id}','${eleve}')`, danger:true}
+        {label:'✅ Valider / قبول', onclick:`validerPaiementAdmin('${p.id}')`},
+        {label:'❌ Refuser / رفض', onclick:`refuserPaiementAdmin('${p.id}')`},
+        {label:'🗑️ Supprimer ce paiement / حذف', onclick:`supprimerPaiementAdmin('${p.id}','${eleve}')`, danger:true}
       ]);
       h += `<tr><td><b>${eleve}</b></td><td><b>${montant} FCFA</b></td><td>${motif}</td><td>${ecole}</td><td>${date}</td><td>${badge}</td><td>${menu}</td></tr>`;
     });
@@ -303,7 +368,7 @@ async function corrigerDerniersPaiementsDG(){
 async function supprimerPaiementAdmin(id, nom){
   if(!confirm("Supprimer ce paiement de "+(nom||"")+" ? Cette action est définitive.")) return;
   await db.collection("paiements").doc(id).delete();
-  alert("🗑️ Paiement supprimé.");
+  alert("🗑️ Paiement supprimé. / تم حذف الدفع.");
   chargerPaiementsEnAttenteAdmin(); corrigerDerniersPaiementsDG(); majDashboardSimpleDG();
 }
 async function supprimerAnciensPaiements(){
@@ -327,12 +392,13 @@ async function supprimerAnciensPaiements(){
     chargerPaiementsEnAttenteAdmin(); corrigerDerniersPaiementsDG(); majDashboardSimpleDG();
   }catch(e){ alert("❌ "+e.message); }
 }
+// ===== INSCRIPTIONS - STATUT QUI RESTE =====
 let TOUTES_INSCRIPTIONS_ADMIN = [];
 let filtreInsAdmin = 'Toutes';
 window.filtrerIns = function(type){ filtreInsAdmin = type; afficherInscriptionsTableAdmin(); };
 async function chargerInscriptionsTableAdmin(){
   let box = document.getElementById('listeInscriptions'); if(!box) return;
-  box.innerHTML = "⏳ Chargement...";
+  box.innerHTML = "⏳ Chargement... / تحميل...";
   try{
     let snap = await db.collection("inscriptions").get();
     TOUTES_INSCRIPTIONS_ADMIN = []; snap.forEach(d=> TOUTES_INSCRIPTIONS_ADMIN.push({id:d.id, ...d.data()}));
@@ -343,11 +409,23 @@ async function chargerInscriptionsTableAdmin(){
 function afficherInscriptionsTableAdmin(){
   let box = document.getElementById('listeInscriptions'); if(!box) return;
   let q = (document.getElementById('rechercheIns')?.value||"").toLowerCase();
-  let liste = TOUTES_INSCRIPTIONS_ADMIN.filter(e=>{ if(!q) return true; return JSON.stringify(e).toLowerCase().includes(q); });
-  let compteur = document.getElementById('compteurIns'); if(compteur) compteur.textContent = `Total : ${liste.length} inscriptions`;
+  let liste = TOUTES_INSCRIPTIONS_ADMIN.filter(e=>{
+    if(q && !JSON.stringify(e).toLowerCase().includes(q)) return false;
+    if(filtreInsAdmin==='Ecole'){
+      let aEcole = !!(e.ecole || e.ecoleNom);
+      let aGroupe = !!(e.groupe || e.groupeNom) && !aEcole;
+      if(aGroupe) return false;
+    }
+    if(filtreInsAdmin==='Groupe'){
+      let aGroupe = !!(e.groupe || e.groupeNom);
+      if(!aGroupe) return false;
+    }
+    return true;
+  });
+  let compteur = document.getElementById('compteurIns'); if(compteur) compteur.textContent = `Total : ${liste.length} inscriptions / التسجيلات`;
   let txt = document.getElementById('txtPageIns'); if(txt) txt.textContent = `Page 1 / 1 - ${liste.length} inscriptions`;
-  if(!liste.length){ box.innerHTML = "<p style='text-align:center'>Aucune inscription.</p>"; return; }
-  let h = `<div style="overflow-x:auto"><table class="table-blanc"><thead><tr><th>Enfant</th><th>Parent</th><th>Tél</th><th>Niveau</th><th>École / Groupe</th><th>Naiss.</th><th>Sexe</th><th>Date</th><th>Statut</th><th>⋮</th></tr></thead><tbody>`;
+  if(!liste.length){ box.innerHTML = "<p style='text-align:center'>Aucune inscription. / لا يوجد تسجيل.</p>"; return; }
+  let h = `<div style="overflow-x:auto"><table class="table-blanc"><thead><tr><th>Enfant / الطفل</th><th>Parent / الولي</th><th>Tél / الهاتف</th><th>Niveau / المستوى</th><th>École / Groupe / المدرسة</th><th>Naiss. / الميلاد</th><th>Sexe / الجنس</th><th>Date / التاريخ</th><th>Statut / الحالة</th><th>⋮</th></tr></thead><tbody>`;
   liste.forEach((e, idx)=>{
     let enfant = valPropre(champPropre(e, "enfant","nomEnfant","enfantNom","nom","eleve"));
     let parent = valPropre(champPropre(e, "parent","nomParent","pere","mere","tuteur"));
@@ -357,22 +435,33 @@ function afficherInscriptionsTableAdmin(){
     let naiss = valPropre(champPropre(e, "dateNaissance","naissance","date_naissance","age"));
     let sexe = valPropre(champPropre(e, "sexe","genre"));
     let dateIns = valPropre(champPropre(e, "date","dateInscription","createdAt"));
-    let st = String(e.statut||e.status||"").toLowerCase();
-    let badge = (st==="valide"||st==="validé") ? `<span class="badge badge-accepte">ACCEPTÉ</span>` : `<span class="badge badge-attente">EN ATTENTE</span>`;
+    let estValide = estInscriptionValide(e);
+    let badge = estValide ? `<span class="badge badge-accepte">ACCEPTÉ / مقبول</span>` : `<span class="badge badge-attente">EN ATTENTE / في الانتظار</span>`;
     let menu = menuLigne3('mIns'+idx, [
-      {label:'✅ Valider inscription', onclick:`validerEleveAdmin('${e.id}')`},
-      {label:'💬 WhatsApp parent', onclick:`window.open('https://wa.me/237${String(tel).replace(/[^0-9]/g,'').replace(/^237/,'')}','_blank')`},
-      {label:'🗑️ Supprimer', onclick:`supprimerInscriptionAdmin('${e.id}')`, danger:true}
+      {label:'✅ Valider inscription / قبول التسجيل', onclick:`validerEleveAdmin('${e.id}')`},
+      {label:'💬 WhatsApp parent / واتساب الولي', onclick:`window.open('https://wa.me/237${String(tel).replace(/[^0-9]/g,'').replace(/^237/,'')}','_blank')`},
+      {label:'🗑️ Supprimer / حذف', onclick:`supprimerInscriptionAdmin('${e.id}')`, danger:true}
     ]);
     h += `<tr><td><b>${enfant}</b></td><td>${parent}</td><td>${tel}</td><td><b>${niveau}</b></td><td><b style="color:#1B5E20">${ecole}</b></td><td>${naiss}</td><td>${sexe}</td><td>${dateIns}</td><td>${badge}</td><td>${menu}</td></tr>`;
   });
   h += `</tbody></table></div>`;
   box.innerHTML = h;
 }
-async function validerEleveAdmin(id){ await db.collection("inscriptions").doc(id).update({statut:"valide"}); alert("✅ Inscription validée"); chargerInscriptionsTableAdmin(); }
-async function supprimerInscriptionAdmin(id){ if(!confirm("Supprimer cette inscription ?")) return; await db.collection("inscriptions").doc(id).delete(); chargerInscriptionsTableAdmin(); }
+// ===== CORRECTIF STATUT : ON ÉCRIT TOUS LES CHAMPS, IL RESTE VALIDÉ =====
+async function validerEleveAdmin(id){
+  try{
+    await db.collection("inscriptions").doc(id).set({
+      statut:"valide", status:"valide", statutInscription:"valide", etat:"valide",
+      accepte:true, accepteDG:true, valide:true,
+      validePar:"Directeur", dateValidation:new Date()
+    }, {merge:true});
+    alert("✅ Inscription validée - Elle restera validée même après reconnexion. / تم قبول التسجيل");
+    chargerInscriptionsTableAdmin();
+  }catch(e){ alert("❌ "+e.message); }
+}
+async function supprimerInscriptionAdmin(id){ if(!confirm("Supprimer cette inscription ? / حذف هذا التسجيل ؟")) return; await db.collection("inscriptions").doc(id).delete(); chargerInscriptionsTableAdmin(); }
 function telechargerInscriptionsCSV(){
-  if(!TOUTES_INSCRIPTIONS_ADMIN.length){ alert("Aucune inscription"); return; }
+  if(!TOUTES_INSCRIPTIONS_ADMIN.length){ alert("Aucune inscription / لا يوجد تسجيل"); return; }
   let entete = ["Enfant","Parent","Tel Parent","Niveau","Ecole / Groupe","Date Naissance","Sexe","Date Inscription","Statut"];
   let lignes = TOUTES_INSCRIPTIONS_ADMIN.map(e=>{
     let r = [valPropre(champPropre(e,"enfant","nomEnfant","enfantNom","nom","eleve")), valPropre(champPropre(e,"parent","nomParent","pere","mere","tuteur")), valPropre(champPropre(e,"tel","telephone","telParent","phone")), valPropre(champPropre(e,"niveau","classe","level")), valPropre(champPropre(e,"ecole","ecoleNom","groupe","groupeNom")), valPropre(champPropre(e,"dateNaissance","naissance","date_naissance","age")), valPropre(champPropre(e,"sexe","genre")), valPropre(champPropre(e,"date","dateInscription","createdAt")), String(e.statut||"")];
@@ -386,11 +475,7 @@ function partagerInscriptionsWhatsApp(){
   TOUTES_INSCRIPTIONS_ADMIN.slice(0,30).forEach(e=>{ txt += `- ${valPropre(champPropre(e,"enfant","nomEnfant","nom"))} - ${valPropre(champPropre(e,"niveau","classe"))} - ${valPropre(champPropre(e,"ecole","ecoleNom","groupe"))}\n`; });
   window.open("https://wa.me/?text="+encodeURIComponent(txt),"_blank");
 }
-// ===== BULLETIN CORRIGÉ - MATIÈRES DEPUIS TA GESTION =====
-// Ta Gestion : publierMatieresPourSousDirecteur() écrit dans :
-// - matieres_publiees / AN_NOUROU_IMAN { matieres: ["coran"...], matieresDetail: [{id, fr, ar}], matieresNoms: [...] }
-// - matieres_publiees / [ecoleId] + configMatieres / [ecoleId]
-// Bulletins : 1 doc par matière par élève par trimestre { eleve, trimestre, matiere:"Coran", oral, ecrit, moyenne, ecole }
+// ===== BULLETIN - MATIÈRES DEPUIS TA GESTION + FILTRE TOUTES ÉCOLES + GROUPES =====
 const MATIERES_GESTION_BASE = [
   {id:"coran", fr:"Coran", ar:"القرآن"}, {id:"hadith", fr:"Hadith", ar:"الحديث"}, {id:"aqida", fr:"Aquida", ar:"العقيدة"},
   {id:"fiqh", fr:"Fiqh", ar:"الفقه"}, {id:"arabe", fr:"Langue Arabe", ar:"اللغة العربية"}, {id:"sira", fr:"Sirah", ar:"السيرة"},
@@ -398,8 +483,8 @@ const MATIERES_GESTION_BASE = [
   {id:"lecture", fr:"Lecture", ar:"القراءة"}, {id:"ecriture", fr:"Écriture", ar:"الكتابة"}, {id:"maths", fr:"Mathématiques", ar:"الرياضيات"},
   {id:"francais", fr:"Français", ar:"الفرنسية"}
 ];
-let MATIERES_DE_LA_GESTION = []; // [{id, fr, ar}]
-let BULLETINS_GROUPES_ADMIN = []; // [{eleve, ecole, trimestre, notes:{Coran:17}, moyenneGenerale, ids:[]}]
+let MATIERES_DE_LA_GESTION = [];
+let BULLETINS_GROUPES_ADMIN = [];
 function frDepuisIdGestion(id){ let f = MATIERES_GESTION_BASE.find(m=> m.id===String(id||"").toLowerCase()); return f ? f.fr : id; }
 async function chargerMatieresDepuisGestion(){
   try{
@@ -452,7 +537,7 @@ async function chargerMatieresDepuisGestion(){
 }
 async function chargerBulletinsTableAdmin(){
   let box = document.getElementById('listeBulletinsAdmin'); if(!box) return;
-  box.innerHTML = "⏳ Chargement des bulletins depuis la Gestion...";
+  box.innerHTML = "⏳ Chargement des bulletins depuis la Gestion... / تحميل الكشوف...";
   await chargerMatieresDepuisGestion();
   try{
     let snap = await db.collection("bulletins").get();
@@ -467,7 +552,7 @@ async function chargerBulletinsTableAdmin(){
       let eleve = String(b.eleve||b.enfant||b.nomEnfant||"").trim();
       if(!eleve) return;
       let tri = String(b.trimestre||b.periode||"Trimestre 1");
-      let ecole = String(b.ecole||b.ecoleEleve||b.ecoleNom||"");
+      let ecole = String(b.ecole||b.ecoleEleve||b.ecoleNom||b.groupe||b.groupeNom||"");
       let cle = eleve.toLowerCase() + "||" + tri + "||" + ecole.toLowerCase();
       if(!map.has(cle)) map.set(cle, {eleve, ecole, trimestre:tri, annee:b.annee||"", notes:{}, ids:[], total:0, nb:0, appreciation:b.appreciation||""});
       let g = map.get(cle);
@@ -483,11 +568,16 @@ async function chargerBulletinsTableAdmin(){
       return g;
     });
     BULLETINS_GROUPES_ADMIN.sort((a,b)=> (a.ecole||"").localeCompare(b.ecole||"") || a.eleve.localeCompare(b.eleve));
+    // ===== FILTRE CORRIGÉ : Écoles + Groupes + Bulletins + Inscriptions, même sans bulletin =====
     let selEcole = document.getElementById('filtreEcoleBulletin');
     if(selEcole){
-      let ecoles = [...new Set(BULLETINS_GROUPES_ADMIN.map(g=>g.ecole).filter(Boolean))].sort();
       let garde = selEcole.value;
-      selEcole.innerHTML = `<option value="">— Toutes les écoles —</option>` + ecoles.map(e=>`<option value="${e}">${e}</option>`).join('');
+      let setEcoles = new Set(BULLETINS_GROUPES_ADMIN.map(g=>String(g.ecole||"").trim()).filter(Boolean));
+      try{ let sE = await db.collection("ecoles").get(); sE.forEach(d=>{ let n=String(d.data().nom||"").trim(); if(n) setEcoles.add(n); }); }catch(e){}
+      try{ let sG = await db.collection("groupes").get(); sG.forEach(d=>{ let n=String(d.data().nom||"").trim(); if(n) setEcoles.add(n); }); }catch(e){}
+      try{ let sI = await db.collection("inscriptions").limit(500).get(); sI.forEach(d=>{ let n=String(d.data().ecole||d.data().ecoleNom||d.data().groupe||d.data().groupeNom||"").trim(); if(n) setEcoles.add(n); }); }catch(e){}
+      let ecoles = [...setEcoles].sort();
+      selEcole.innerHTML = `<option value="">— Toutes les écoles / كل المدارس —</option>` + ecoles.map(e=>`<option value="${e}">${e}</option>`).join('');
       if(garde && ecoles.includes(garde)) selEcole.value = garde;
     }
     afficherBulletinsTableAdmin();
@@ -499,27 +589,27 @@ function afficherBulletinsTableAdmin(){
   let filtreTri = document.getElementById('filtreTrimestreBulletin')?.value || "";
   let filtreEcole = document.getElementById('filtreEcoleBulletin')?.value || "";
   if(!MATIERES_DE_LA_GESTION.length){
-    box.innerHTML = `<div style="background:#FFF9C4;padding:14px;border-radius:12px;text-align:center;font-weight:700">⚠️ Aucune matière trouvée dans la Gestion.<br><small>Va dans <b>gestion.html → Paramètres → Matières</b>, coche tes matières, clique sur <b>Enregistrer</b> (ça publie dans matieres_publiees), puis reviens ici et clique sur 🔄 Actualiser.</small><br><br><button onclick="chargerBulletinsTableAdmin()" style="background:#0F3D2E;color:white;border:none;padding:10px 14px;border-radius:10px;font-weight:800">🔄 Actualiser</button></div>`;
+    box.innerHTML = `<div style="background:#FFF9C4;padding:14px;border-radius:12px;text-align:center;font-weight:700">⚠️ Aucune matière trouvée dans la Gestion.<br><small>Va dans <b>gestion.html → Paramètres → Matières</b>, coche tes matières, clique sur <b>Enregistrer</b> (ça publie dans matieres_publiees), puis reviens ici et clique sur 🔄 Actualiser.</small><br><br><button onclick="chargerBulletinsTableAdmin()" style="background:#0F3D2E;color:white;border:none;padding:10px 14px;border-radius:10px;font-weight:800">🔄 Actualiser / تحديث</button></div>`;
     return;
   }
   let liste = BULLETINS_GROUPES_ADMIN.filter(g=>{
     if(filtreTri && g.trimestre!==filtreTri) return false;
-    if(filtreEcole && g.ecole!==filtreEcole) return false;
+    if(filtreEcole && normaliserTexteAdmin(g.ecole) !== normaliserTexteAdmin(filtreEcole)) return false;
     if(q && !JSON.stringify(g).toLowerCase().includes(q)) return false;
     return true;
   });
-  if(!liste.length){ box.innerHTML = "<p style='text-align:center'>Aucun bulletin pour ce filtre. Les bulletins créés dans gestion.html vont s'afficher ici.</p>"; return; }
+  if(!liste.length){ box.innerHTML = "<p style='text-align:center'>Aucun bulletin pour ce filtre. Les bulletins créés dans gestion.html vont s'afficher ici. / لا يوجد كشف لهذا التصفية.</p>"; return; }
   let h = `<div style="background:#E8F5E9;padding:8px;border-radius:10px;text-align:center;font-size:12px;margin-bottom:8px">📚 Matières fixées par la Gestion (<b>matieres_publiees</b>) : <b>${MATIERES_DE_LA_GESTION.map(m=> m.fr + (m.ar ? " - " + m.ar : "")).join(" • ")}</b> - ${liste.length} bulletin(s)</div>`;
-  h += `<div style="overflow-x:auto"><table class="table-blanc"><thead><tr><th>Élève</th><th>École</th><th>Trimestre</th>`;
+  h += `<div style="overflow-x:auto"><table class="table-blanc"><thead><tr><th>Élève / التلميذ</th><th>École / المدرسة</th><th>Trimestre / الفصل</th>`;
   MATIERES_DE_LA_GESTION.forEach(m=>{
     let ar = arPourMatiereAdmin(m.fr, m.ar);
     h += `<th>${m.fr}${ar ? `<br><small dir="rtl" style="color:#C9A227">${ar}</small>` : ""}</th>`;
   });
-  h += `<th>Moyenne /20</th><th>⋮</th></tr></thead><tbody>`;
+  h += `<th>Moyenne /20 / المعدل</th><th>⋮</th></tr></thead><tbody>`;
   liste.forEach((g, idx)=>{
     let menu = menuLigne3('mBul'+idx, [
-      {label:'🖨️ Imprimer ce bulletin', onclick:`window.print()`},
-      {label:'🗑️ Supprimer ce bulletin (toutes les matières)', onclick:`supprimerBulletinGroupeAdmin('${g.eleve}','${g.trimestre}')`, danger:true}
+      {label:'🖨️ Imprimer ce bulletin / طباعة', onclick:`window.print()`},
+      {label:'🗑️ Supprimer ce bulletin (toutes les matières) / حذف', onclick:`supprimerBulletinGroupeAdmin('${g.eleve}','${g.trimestre}')`, danger:true}
     ]);
     h += `<tr><td><b>${g.eleve}</b></td><td>${g.ecole||"—"}</td><td>${g.trimestre}</td>`;
     MATIERES_DE_LA_GESTION.forEach(m=>{
@@ -532,7 +622,7 @@ function afficherBulletinsTableAdmin(){
     });
     h += `<td style="text-align:center;font-weight:800;background:#E8F5E9">${g.moyenneGenerale}/20</td><td>${menu}</td></tr>`;
   });
-  h += `</tbody></table></div><p style="text-align:center;font-size:12px;color:#666">1 élève + 1 trimestre = 1 ligne. Les matières viennent de la Gestion.</p>`;
+  h += `</tbody></table></div><p style="text-align:center;font-size:12px;color:#666">1 élève + 1 trimestre = 1 ligne. Les matières viennent de la Gestion. / تلميذ واحد + فصل واحد = سطر واحد.</p>`;
   box.innerHTML = h;
 }
 async function supprimerBulletinGroupeAdmin(eleve, trimestre){
@@ -548,9 +638,9 @@ async function supprimerBulletinGroupeAdmin(eleve, trimestre){
     chargerBulletinsTableAdmin();
   }catch(e){ alert("❌ "+e.message); }
 }
-async function supprimerBulletinAdmin(id){ if(!confirm("Supprimer ce bulletin ?")) return; try{ await db.collection("bulletins").doc(id).delete(); }catch(e){} chargerBulletinsTableAdmin(); }
+async function supprimerBulletinAdmin(id){ if(!confirm("Supprimer ce bulletin ? / حذف هذا الكشف ؟")) return; try{ await db.collection("bulletins").doc(id).delete(); }catch(e){} chargerBulletinsTableAdmin(); }
 function telechargerBulletinsCSV(){
-  if(!BULLETINS_GROUPES_ADMIN.length){ alert("Aucun bulletin"); return; }
+  if(!BULLETINS_GROUPES_ADMIN.length){ alert("Aucun bulletin / لا يوجد كشف"); return; }
   let entete = ["Eleve","Ecole","Trimestre", ...MATIERES_DE_LA_GESTION.map(m=>m.fr), "Moyenne"];
   let lignes = BULLETINS_GROUPES_ADMIN.map(g=>{
     let r = [g.eleve, g.ecole, g.trimestre, ...MATIERES_DE_LA_GESTION.map(m=>{
@@ -563,13 +653,13 @@ function telechargerBulletinsCSV(){
   let csv = "\uFEFF" + entete.join(";") + "\n" + lignes.join("\n");
   let blob = new Blob([csv], {type:"text/csv;charset=utf-8;"}); let a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = "bulletins-an-nourou-iman.csv"; a.click();
 }
-// --- PAIEMENTS EN ATTENTE + 3 POINTS ---
+// --- PAIEMENTS EN ATTENTE ---
 async function chargerPaiementsEnAttenteAdmin(){
   let box = document.getElementById('listePaiements'); if(!box) return;
-  box.innerHTML = "⏳ Chargement...";
+  box.innerHTML = "⏳ Chargement... / تحميل...";
   try{
     let snap = await db.collection("paiements").where("statut","==","en_attente").get();
-    if(snap.empty){ box.innerHTML = "<p style='text-align:center;color:green;font-weight:800;padding:14px'>✅ Aucun paiement en attente.</p>"; }
+    if(snap.empty){ box.innerHTML = "<p style='text-align:center;color:green;font-weight:800;padding:14px'>✅ Aucun paiement en attente. / لا يوجد دفع في الانتظار.</p>"; }
     else{
       let h = ""; let total = 0; let idx=0;
       snap.forEach(doc=>{
@@ -577,9 +667,9 @@ async function chargerPaiementsEnAttenteAdmin(){
         let ecole = valPropre(champPropre(d, "ecole","ecoleNom","groupe","groupeNom"));
         let eleve = valPropre(champPropre(d, "enfant","eleve","nomEnfant","nom"));
         let menu = menuLigne3('mPaiAtt'+(idx++), [
-          {label:'✅ Valider', onclick:`validerPaiementAdmin('${doc.id}')`},
-          {label:'❌ Refuser', onclick:`refuserPaiementAdmin('${doc.id}')`},
-          {label:'🗑️ Supprimer', onclick:`supprimerPaiementAdmin('${doc.id}','${eleve}')`, danger:true}
+          {label:'✅ Valider / قبول', onclick:`validerPaiementAdmin('${doc.id}')`},
+          {label:'❌ Refuser / رفض', onclick:`refuserPaiementAdmin('${doc.id}')`},
+          {label:'🗑️ Supprimer / حذف', onclick:`supprimerPaiementAdmin('${doc.id}','${eleve}')`, danger:true}
         ]);
         h += `<div style="background:#FFF3E0;border:2px solid #FF9800;padding:12px;border-radius:12px;margin-bottom:10px;display:flex;justify-content:space-between;align-items:flex-start"><div><b>👧 ${eleve}</b> - <b>${Number(d.montant||0).toLocaleString()} FCFA</b><br>🏫 ${ecole} | 📝 ${valPropre(d.motif)} | 📅 ${valPropre(champPropre(d,"date","datePaiement","createdAt"))}</div><div>${menu}</div></div>`;
       });
@@ -588,9 +678,9 @@ async function chargerPaiementsEnAttenteAdmin(){
   }catch(e){ box.innerHTML = "❌ "+e.message; }
   await majDashboardSimpleDG();
 }
-async function validerPaiementAdmin(id){ if(!confirm("Valider ce paiement ?")) return; await db.collection("paiements").doc(id).update({ statut:"valide", statutPaiement:"valide", validePar:"directeur", dateValidation:new Date(), updatedAt:new Date() }); alert("✅ Paiement VALIDÉ !"); chargerPaiementsEnAttenteAdmin(); if(typeof chargerPaiementsAdmin==="function") chargerPaiementsAdmin(); if(typeof chargerDashboardDG==="function") chargerDashboardDG(); }
-async function refuserPaiementAdmin(id){ if(!confirm("Refuser ce paiement ?")) return; await db.collection("paiements").doc(id).update({ statut:"refuse", statutPaiement:"refuse", validePar:"directeur", dateValidation:new Date() }); alert("❌ Paiement refusé."); chargerPaiementsEnAttenteAdmin(); }
-function telechargerPaiementsCSV(){ alert("Va dans Paiements → ⋮ → Télécharger."); }
+async function validerPaiementAdmin(id){ if(!confirm("Valider ce paiement ? / قبول هذا الدفع ؟")) return; await db.collection("paiements").doc(id).update({ statut:"valide", statutPaiement:"valide", validePar:"directeur", dateValidation:new Date(), updatedAt:new Date() }); alert("✅ Paiement VALIDÉ ! / تم قبول الدفع!"); chargerPaiementsEnAttenteAdmin(); if(typeof chargerPaiementsAdmin==="function") chargerPaiementsAdmin(); if(typeof chargerDashboardDG==="function") chargerDashboardDG(); }
+async function refuserPaiementAdmin(id){ if(!confirm("Refuser ce paiement ? / رفض هذا الدفع ؟")) return; await db.collection("paiements").doc(id).update({ statut:"refuse", statutPaiement:"refuse", validePar:"directeur", dateValidation:new Date() }); alert("❌ Paiement refusé. / تم رفض الدفع."); chargerPaiementsEnAttenteAdmin(); }
+function telechargerPaiementsCSV(){ alert("Va dans Paiements → ⋮ → Télécharger. / اذهب إلى المدفوعات"); }
 window.chargerPaiements = chargerPaiementsEnAttenteAdmin;
 window.chargerInscriptions = chargerInscriptionsTableAdmin;
 let _oldDashboardDG = null;
@@ -605,3 +695,4 @@ setInterval(()=>{ if(document.getElementById('tabDashboard')?.style.display!=="n
 let _rechIns2 = document.getElementById('rechercheIns'); if(_rechIns2){ _rechIns2.oninput = ()=> afficherInscriptionsTableAdmin(); }
 </script>
 </body></html>
+
