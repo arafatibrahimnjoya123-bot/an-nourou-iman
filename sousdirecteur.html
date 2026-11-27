@@ -135,22 +135,21 @@ tr:nth-child(even){background:#F9F9F9}
 <div class="titre-ligne"><h3>🏠 Tableau de Bord <span class="ar">لوحة القيادة</span></h3>
 <div class="menu3"><button type="button" class="btn3" onclick="toggleMenu3('menuDashboard',event)">⋮</button><div class="menu3-drop" id="menuDashboard"><button type="button" onclick="fermerMenus3();chargerInscriptionsSD()">🔄 Actualiser</button><button type="button" onclick="fermerMenus3();showTabSD('tabEleves',null)">👶 Voir Élèves</button><button type="button" onclick="fermerMenus3();showTabSD('tabPresence',null)">✅ Faire l'Appel</button></div></div></div>
 <p style="color:#666;font-size:13px;text-align:center;">Voici ta situation en un coup d'œil. <span class="ar">وضعك بنظرة واحدة</span></p>
-<!-- ✅ CORRIGÉ : PLUS DE DOUBLON ENCAISSÉ EN HAUT. L'Encaissé est SEULEMENT dans la carte par école en bas. -->
 <div class="stat">
 <div>👶<br><b id="stEleves">0</b><small>Élèves <span class="ar">التلاميذ</span></small></div>
 <div>🏫<br><b id="stNbEcoles">0</b><small>Mes Écoles / Groupes</small></div>
 <div>⏳<br><b id="stAttente">0</b><small>En attente <span class="ar">قيد الانتظار</span></small></div>
 <div>🔴<br><b id="stRetard" style="color:red">0</b><small>Retard <span class="ar">متأخر</span></small></div>
 </div>
-<div style="background:#FFF9C4;border:2px solid #FFE082;border-radius:12px;padding:12px;margin-top:10px;text-align:center"><b>💰 PRIX FIXÉ POUR MON ÉCOLE <span class="ar">السعر المحدد لمدرستي</span></b><br><b id="prixEcoleAffiche" style="font-size:22px;color:#0F3D2E">—</b><br><small id="prixEcoleDetail" class="muted">Fixé par le Directeur dans Gestion → Paramètres → Prix par École</small></div>
 <div id="dashboardParEcoleSD" style="margin-top:10px"></div>
 <div id="dashboardParGroupeSD" style="margin-top:10px"></div>
+<div id="dashboardTotalSD" style="margin-top:10px"></div>
 </div>
 <div class="card" id="carteDashEvol">
-<h3>📈 Évolution financière - Mon École / Groupe <span class="ar">التطور المالي</span></h3>
-<p style="font-size:12px;text-align:center">Encaissé - Dépenses = Solde. Mois par mois.</p>
+<h3>📈 Évolution financière <span class="ar">التطور المالي</span></h3>
+<p style="font-size:12px;text-align:center">Mois par mois.</p>
 <div id="evolutionFinanciereSD"></div>
-<button type="button" class="btn btnVert" style="width:100%;margin-top:8px" onclick="calculerEvolutionFinanciereSD()">🔄 Actualiser l'évolution</button>
+<button type="button" class="btn btnVert" style="width:100%;margin-top:8px" onclick="calculerEvolutionFinanciereSD()">🔄 Actualiser</button>
 </div>
 <div class="card" id="carteDashDanger" style="border:2px solid #C62828">
 <h3 style="text-align:center;color:#C62828">🗑️ ZONE DANGEREUSE <span class="ar">منطقة خطرة</span></h3>
@@ -173,6 +172,7 @@ tr:nth-child(even){background:#F9F9F9}
 <div class="card" id="carteElevesListe">
 <div class="titre-ligne"><h3>👶 Mes Élèves <span class="ar">تلاميذي</span></h3>
 <div class="menu3"><button type="button" class="btn3" onclick="toggleMenu3('menuEleves',event)">⋮</button><div class="menu3-drop" id="menuEleves"><button type="button" onclick="fermerMenus3();chargerInscriptionsSD()">🔄 Actualiser</button><button type="button" onclick="fermerMenus3();telechargerPDF('tableEleves','LISTE ELEVES')">⬇️ Télécharger en PDF</button></div></div></div>
+<label>🎯 Filtrer par mon École / Groupe - pour ne pas mélanger 2 écoles</label><select id="filtreEcoleElevesSD" onchange="filtrerEleves()"><option value="">Toutes mes écoles / groupes</option></select>
 <input id="rechercheEleve" placeholder="🔍 Tape le nom..." oninput="filtrerEleves()">
 <div class="tableWrap"><table id="tableEleves"><thead><tr><th>Enfant</th><th>Parent / WhatsApp</th><th>Niveau / École</th><th>Prix / Payé / Reste</th><th>Statut</th><th>Actions</th></tr></thead><tbody id="tbodyEleves"></tbody></table></div>
 </div>
@@ -211,7 +211,7 @@ tr:nth-child(even){background:#F9F9F9}
 <div id="tabNotes" style="display:none">
 <div class="card" id="carteNotesForm">
 <h3>📝 Notes <span class="ar">العلامات</span></h3>
-<div style="background:#FFF9C4;padding:10px;border-radius:10px;text-align:center"><small>⚠️ <b>Matières fixées par le Directeur.</b><br>Tu choisis l'élève + le trimestre, tu mets toutes les notes d'un coup.<br><b>Mode : <span id="modeCompositionSD">Oral + Écrit</span></b></small></div>
+<div style="background:#FFF9C4;padding:10px;border-radius:10px;text-align:center"><small>⚠️ <b>Matières fixées par le Directeur.</b><br>Tu choisis l'élève + le trimestre, tu mets toutes les notes d'un coup.<br><b>Mode : <span id="modeCompositionSD">Oral + Écrit</span></b><br><small style="color:#C62828;font-weight:800">⚠️ Oral et Écrit sont sur 10 max. Jamais plus que 10.</small></small></div>
 <div style="background:#E8F5E9;padding:12px;border-radius:12px;margin-top:8px">
 <label>👶 Choisir l'élève</label><select id="noteEleve" onchange="genererFormNotes()"></select>
 <label>📅 Trimestre</label><select id="noteTrimestre" onchange="genererFormNotes()"><option>Trimestre 1</option><option>Trimestre 2</option><option>Trimestre 3</option></select>
@@ -226,7 +226,7 @@ tr:nth-child(even){background:#F9F9F9}
 <div id="tabMoyennes" style="display:none">
 <div class="card" id="carteMoyListe">
 <h3>📊 Moyennes <span class="ar">المعدلات</span></h3>
-<div style="background:#FFF9C4;padding:10px;border-radius:10px;text-align:center"><small>Formule du Directeur : <b>Moyenne = Somme des notes / Nombre de matières fixées</b><br>Matière non composée = <b>0</b>, elle compte quand même.</small></div>
+<div style="background:#FFF9C4;padding:10px;border-radius:10px;text-align:center"><small>Formule : <b>Moyenne = Somme des Totaux / Nombre de matières fixées</b><br>Matière non composée = <b>0</b>, elle compte quand même.</small></div>
 <label>📅 Filtrer par Trimestre</label><select id="filtreTrimestreMoy" onchange="chargerNotes()"><option value="">Tous les trimestres</option><option>Trimestre 1</option><option>Trimestre 2</option><option>Trimestre 3</option></select>
 <div class="tableWrap"><table id="tableMoyennes"><thead><tr><th>Élève</th><th>École</th><th>Composé / Fixé</th><th>Moyenne /20</th><th>Appréciation</th></tr></thead><tbody id="tbodyMoyennes"></tbody></table></div>
 </div>
@@ -301,11 +301,13 @@ tr:nth-child(even){background:#F9F9F9}
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <script src="firebase.js"></script>
 <script>
-let SD=null, TOUTES_INSCRIPTIONS=[], TOUS_PAIEMENTS=[], TOUTES_NOTES=[], TOUT_EMPLOI=[], MATIERES_DIRECTEUR=[], TOUS_ENSEIGNANTS=[];
+let SD=null, TOUTES_INSCRIPTIONS=[], TOUS_PAIEMENTS=[], TOUTES_NOTES=[], TOUT_EMPLOI=[], MATIERES_DIRECTEUR=[], TOUS_ENSEIGNANTS=[], TOUTES_DEPENSES_SD=[];
 let PRIX_PAR_ECOLE_SD={}, PRIX_SECOURS_SD=10000, FILTRE_PAIEMENT_SD='verifies', NOTE_EN_MODIF=null;
+let TYPE_COMPOSITION_SD="Oral + Écrit";
 function nettoyerTel(t){ if(!t) return ""; return String(t).replace(/[\s\-\+]/g,"").replace(/^237/,"").slice(-9); }
 function nettoyerEmail(e){ return String(e||"").toLowerCase().trim(); }
 function normaliserSD(t){ return (t||"").toString().trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,""); }
+function clePrixSD(nom){ return String(nom||"").trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9]+/g,"_"); }
 const NOM_MATIERE_SD = {coran:"Coran", hadith:"Hadith", aqida:"Aquida", fiqh:"Fiqh", adhab:"Adhab", arabe:"Langue Arabe", sira:"Sirah", sirah:"Sirah", tawhid:"Tawhid", memo:"Mémorisation"};
 function joliNomMatiere(idOuNom){ if(!idOuNom) return ""; let s=String(idOuNom).trim(); let cle=normaliserSD(s); if(NOM_MATIERE_SD[cle]) return NOM_MATIERE_SD[cle]; return s.charAt(0).toUpperCase()+s.slice(1); }
 function toggleMenu3(id,ev){ if(ev) ev.stopPropagation(); document.querySelectorAll('.menu3-drop').forEach(m=>{ if(m.id!==id) m.classList.remove('show'); }); let el=document.getElementById(id); if(el) el.classList.toggle('show'); }
@@ -340,6 +342,7 @@ async function seConnecterSD(){
     SD={email,tel,ecoles,groupes,nom:nomUtilisateur}; localStorage.setItem("sd_session", JSON.stringify(SD)); afficherSD();
   }catch(e){ msg.textContent="❌ "+e.message; }
 }
+function seDeconnecterSD(){ try{ localStorage.removeItem("sd_session"); }catch(e){} location.reload(); }
 function afficherSD(){
   document.getElementById('loginCard').style.display='none'; document.getElementById('sdPanel').style.display='block';
   document.getElementById('sdNom').textContent = SD.nom || SD.email;
@@ -347,155 +350,524 @@ function afficherSD(){
   let sel=document.getElementById('nEcole'); sel.innerHTML=""; SD.ecoles.forEach(e=>sel.innerHTML+=`<option value="${e.id}||${e.nom}">${e.nom} - École</option>`); SD.groupes.forEach(g=>sel.innerHTML+=`<option value="${g.id}||${g.nom}">${g.nom} - Groupe</option>`);
   let selEns=document.getElementById('ensEcole'); if(selEns){ selEns.innerHTML=""; SD.ecoles.forEach(e=>selEns.innerHTML+=`<option value="${e.id}||${e.nom}">${e.nom}</option>`); SD.groupes.forEach(g=>selEns.innerHTML+=`<option value="${g.id}||${g.nom}">${g.nom}</option>`); }
   let selEmploi=document.getElementById('emploiGroupeDest'); if(selEmploi){ selEmploi.innerHTML=`<option value="">— Mon école (par défaut) —</option>`; SD.ecoles.forEach(e=>selEmploi.innerHTML+=`<option value="${e.id}||${e.nom}">${e.nom}</option>`); SD.groupes.forEach(g=>selEmploi.innerHTML+=`<option value="${g.id}||${g.nom}">${g.nom}</option>`); }
+  let selFiltre=document.getElementById('filtreEcoleElevesSD'); if(selFiltre){ selFiltre.innerHTML=`<option value="">Toutes mes écoles / groupes</option>`; SD.ecoles.forEach(e=>selFiltre.innerHTML+=`<option value="${e.nom}">${e.nom} - École</option>`); SD.groupes.forEach(g=>selFiltre.innerHTML+=`<option value="${g.nom}">${g.nom} - Groupe</option>`); }
   let depEcole=document.getElementById('depEcoleSD'); if(depEcole) depEcole.value = SD.ecoles[0]?.nom || SD.groupes[0]?.nom || "";
   document.getElementById('datePresence').textContent=new Date().toLocaleDateString('fr-FR');
-  chargerPrixEcolesSD(); chargerMatieresDirecteur(); chargerInscriptionsSD(); chargerPaiementsSD(); chargerEnseignantsSD(); chargerElevesPayesParNiveau();
+  chargerPrixEcolesSD(); chargerMatieresDirecteur(); chargerInscriptionsSD(); chargerPaiementsSD(); chargerEnseignantsSD(); chargerElevesPayesParNiveau(); chargerMesDepensesSD();
 }
+// ===== FILTRE STRICT - NE MÉLANGE PLUS 2 ÉCOLES =====
+function nomEcoleDocSD(d){ return String(d.ecole||d.ecoleNom||d.groupe||d.groupeNom||"").trim(); }
+function idEcoleDocSD(d){ return String(d.ecoleId||d.groupeId||d.idEcole||d.idGroupe||""); }
 function estAMoi(d){
-  let ecoleIdIns = String(d.ecoleId||d.idEcole||""); let groupeIdIns = String(d.groupeId||d.idGroupe||"");
-  if(ecoleIdIns && SD.ecoles.some(e=> String(e.id)===ecoleIdIns)) return true;
-  if(groupeIdIns && SD.groupes.some(g=> String(g.id)===groupeIdIns)) return true;
-  let ecoleIns = (d.ecole||d.ecoleNom||"").toLowerCase(); let groupeIns = (d.groupe||d.groupeNom||"").toLowerCase();
-  return SD.ecoles.some(e=>{ let n=(e.nom||"").toLowerCase(); return n && (ecoleIns.includes(n)||n.includes(ecoleIns)); }) || SD.groupes.some(g=>{ let n=(g.nom||"").toLowerCase(); return n && (groupeIns.includes(n)||n.includes(groupeIns)); });
+  if(!SD) return false;
+  let idDoc=idEcoleDocSD(d);
+  if(idDoc){
+    if(SD.ecoles.some(e=> String(e.id)===idDoc)) return true;
+    if(SD.groupes.some(g=> String(g.id)===idDoc)) return true;
+    return false;
+  }
+  let nomDoc=normaliserSD(nomEcoleDocSD(d));
+  if(!nomDoc) return false;
+  if(SD.ecoles.some(e=> normaliserSD(e.nom||"")===nomDoc)) return true;
+  if(SD.groupes.some(g=> normaliserSD(g.nom||"")===nomDoc)) return true;
+  return false;
 }
-function estAMoiEcole(d, ecole){ if(d.ecoleId && String(d.ecoleId)===String(ecole.id)) return true; let ecoleIns=String(d.ecole||d.ecoleNom||"").toLowerCase(); let nomE=String(ecole.nom||"").toLowerCase(); return !!(nomE && ecoleIns && (ecoleIns.includes(nomE)||nomE.includes(ecoleIns))); }
-function estAMoiGroupe(d, groupe){ if(d.groupeId && String(d.groupeId)===String(groupe.id)) return true; let groupeIns=String(d.groupe||d.groupeNom||"").toLowerCase(); let nomG=String(groupe.nom||"").toLowerCase(); return !!(nomG && groupeIns && (groupeIns.includes(nomG)||nomG.includes(groupeIns))); }
+function estAMoiEcole(d, ecole){ if(idEcoleDocSD(d) && String(idEcoleDocSD(d))===String(ecole.id)) return true; if(idEcoleDocSD(d)) return false; return normaliserSD(nomEcoleDocSD(d))===normaliserSD(ecole.nom||""); }
+function estAMoiGroupe(d, groupe){ if(idEcoleDocSD(d) && String(idEcoleDocSD(d))===String(groupe.id)) return true; if(idEcoleDocSD(d)) return false; return normaliserSD(nomEcoleDocSD(d))===normaliserSD(groupe.nom||""); }
+function getPrixEcoleSD(nomEcole, ecoleId){
+  if(ecoleId && PRIX_PAR_ECOLE_SD["ecoleId:"+ecoleId]) return Number(PRIX_PAR_ECOLE_SD["ecoleId:"+ecoleId]);
+  if(ecoleId && PRIX_PAR_ECOLE_SD["id:"+ecoleId]) return Number(PRIX_PAR_ECOLE_SD["id:"+ecoleId]);
+  if(nomEcole && PRIX_PAR_ECOLE_SD[clePrixSD(nomEcole)]) return Number(PRIX_PAR_ECOLE_SD[clePrixSD(nomEcole)]);
+  if(nomEcole && PRIX_PAR_ECOLE_SD[normaliserSD(nomEcole)]) return Number(PRIX_PAR_ECOLE_SD[normaliserSD(nomEcole)]);
+  if(PRIX_SECOURS_SD>0) return Number(PRIX_SECOURS_SD);
+  return 0;
+}
+function getPrixPourEleveSD(eleveObj){
+  if(!eleveObj) return PRIX_SECOURS_SD||0;
+  return getPrixEcoleSD(eleveObj.ecole||eleveObj.ecoleNom||eleveObj.groupe||eleveObj.groupeNom||"", eleveObj.ecoleId||eleveObj.groupeId||"");
+}
 async function chargerPrixEcolesSD(){
   PRIX_PAR_ECOLE_SD={};
-  try{ let s=await db.collection("configMatieres").get(); s.forEach(d=>{ let v=d.data(); let prix=Number(v.fraisTotal||v.prix||v.frais||0); if(!prix) return; PRIX_PAR_ECOLE_SD["id:"+d.id]=prix; if(v.ecoleNom) PRIX_PAR_ECOLE_SD[normaliserSD(v.ecoleNom)]=prix; if(v.nom) PRIX_PAR_ECOLE_SD[normaliserSD(v.nom)]=prix; }); }catch(e){}
-  try{ let s1=await db.collection("prix_par_ecole").get(); s1.forEach(d=>{ let v=d.data(); if(v.nom||v.ecole) PRIX_PAR_ECOLE_SD[normaliserSD(v.nom||v.ecole)]=Number(v.prix||0); }); }catch(e){}
-  try{ let s2=await db.collection("ecoles").get(); s2.forEach(d=>{ let v=d.data(); if(v.nom && v.prix) PRIX_PAR_ECOLE_SD[normaliserSD(v.nom)]=Number(v.prix); if(v.nom && v.frais) PRIX_PAR_ECOLE_SD[normaliserSD(v.nom)]=Number(v.frais); }); }catch(e){}
-  SD.ecoles.forEach(e=>{ let p=PRIX_PAR_ECOLE_SD["id:"+e.id]; if(p) PRIX_PAR_ECOLE_SD["ecoleId:"+e.id]=p; });
-  SD.groupes.forEach(g=>{ let p=PRIX_PAR_ECOLE_SD["id:"+g.id]; if(p) PRIX_PAR_ECOLE_SD["groupeId:"+g.id]=p; });
-  let maEcole = SD.ecoles[0]?.nom || SD.groupes[0]?.nom || ""; let prix = getPrixEcoleSD(maEcole, SD.ecoles[0]?.id || SD.groupes[0]?.id || "");
-  let el=document.getElementById('prixEcoleAffiche'); if(el) el.textContent=prix.toLocaleString('fr-FR')+" FCFA - "+maEcole;
+  function setPrix(id, nom, prix){
+    if(!prix || prix<=0) return;
+    if(id){ PRIX_PAR_ECOLE_SD["ecoleId:"+id]=prix; PRIX_PAR_ECOLE_SD["id:"+id]=prix; }
+    if(nom){ PRIX_PAR_ECOLE_SD[normaliserSD(nom)]=prix; PRIX_PAR_ECOLE_SD[clePrixSD(nom)]=prix; }
+  }
+  try{
+    let s=await db.collection("configMatieres").get();
+    s.forEach(d=>{
+      let v=d.data();
+      let prix=Number(v.fraisTotal||v.fraisTotalInscription||0);
+      if(prix>0){
+        if(d.id==="global"){ if(SD){ SD.ecoles.forEach(e=> setPrix(e.id, e.nom, prix)); SD.groupes.forEach(g=> setPrix(g.id, g.nom, prix)); } }
+        else setPrix(d.id, v.ecoleNom||v.nom||"", prix);
+      }
+    });
+  }catch(e){}
+  try{
+    let d3=await db.collection("configFrais").doc("global").get();
+    if(d3.exists && d3.data().montant) PRIX_SECOURS_SD=Number(d3.data().montant);
+    if(SD){ for(let e of SD.ecoles){ try{ let dd=await db.collection("configFrais").doc(e.id).get(); if(dd.exists && dd.data().montant) setPrix(e.id, e.nom, Number(dd.data().montant)); }catch(e){} } }
+  }catch(e){}
+  try{
+    let docsALire=["global"];
+    if(SD){ SD.ecoles.forEach(e=>{ if(e.id) docsALire.push(e.id); }); SD.groupes.forEach(g=>{ if(g.id) docsALire.push(g.id); }); }
+    docsALire.push("TOUTES");
+    for(let docId of docsALire){
+      try{
+        let doc=await db.collection("configPrixEcoles").doc(docId).get();
+        if(doc.exists && doc.data().prix){
+          let mapPrix=doc.data().prix||{};
+          Object.keys(mapPrix).forEach(k=>{
+            if(k.endsWith("_nom")) return;
+            let prix=Number(mapPrix[k]);
+            if(prix>0){
+              PRIX_PAR_ECOLE_SD[k]=prix;
+              let nomStocke=mapPrix[k+"_nom"]||"";
+              if(nomStocke) setPrix("", nomStocke, prix);
+              if(SD){
+                SD.ecoles.forEach(e=>{ if(clePrixSD(e.nom)===k) setPrix(e.id, e.nom, prix); });
+                SD.groupes.forEach(g=>{ if(clePrixSD(g.nom)===k) setPrix(g.id, g.nom, prix); });
+              }
+            }
+          });
+        }
+      }catch(e){}
+    }
+  }catch(e){}
+  if(!SD) return;
+  let maEcole = SD.ecoles[0]?.nom || SD.groupes[0]?.nom || "";
+  let maId = SD.ecoles[0]?.id || SD.groupes[0]?.id || "";
+  let prix = getPrixEcoleSD(maEcole, maId);
   let el2=document.getElementById('prixInfo'); if(el2) el2.textContent="💰 Prix fixé pour "+maEcole+" : "+prix.toLocaleString('fr-FR')+" FCFA";
-  let el3=document.getElementById('prixEcoleAjout'); if(el3) el3.textContent=prix.toLocaleString('fr-FR')+" FCFA - "+maEcole;
-  let el4=document.getElementById('prixEcoleDetail'); if(el4) el4.textContent="Fixé par le Directeur dans Gestion → Paramètres - "+maEcole;
-  let tbody=document.getElementById('tbodyEcole'); if(tbody){ let html=""; SD.ecoles.forEach(e=>{ html+=`<tr><td>🏫 École</td><td><b>${e.nom||""}</b></td><td>${e.quartier||""}</td><td>${e.responsable||""}</td><td><b>${getPrixEcoleSD(e.nom||"", e.id).toLocaleString('fr-FR')} FCFA</b></td></tr>`; }); SD.groupes.forEach(g=>{ html+=`<tr><td>👥 Groupe</td><td><b>${g.nom||""}</b></td><td>${g.ville||""} - ${g.quartier||""}</td><td>${g.enseignant||""}</td><td><b>${getPrixEcoleSD(g.nom||"", g.id).toLocaleString('fr-FR')} FCFA</b></td></tr>`; }); tbody.innerHTML=html||`<tr><td colspan="5">Pas d'école.</td></tr>`; }
+  let el4=document.getElementById('prixEcoleAjout'); if(el4) el4.textContent=prix.toLocaleString('fr-FR')+" FCFA - "+maEcole;
+  let tbody=document.getElementById('tbodyEcole');
+  if(tbody){
+    let html="";
+    SD.ecoles.forEach(e=>{ html+=`<tr><td>🏫 École</td><td><b>${e.nom||""}</b></td><td>${e.quartier||""} ${e.ville||""}</td><td>${e.responsable||e.sousDirecteur||""}</td><td><b>${getPrixEcoleSD(e.nom||"", e.id).toLocaleString('fr-FR')} FCFA</b></td></tr>`; });
+    SD.groupes.forEach(g=>{ html+=`<tr><td>👥 Groupe</td><td><b>${g.nom||""}</b></td><td>${g.ville||""} - ${g.quartier||""}</td><td>${g.enseignant||""}</td><td><b>${getPrixEcoleSD(g.nom||"", g.id).toLocaleString('fr-FR')} FCFA</b></td></tr>`; });
+    tbody.innerHTML=html||`<tr><td colspan="5">Pas d'école.</td></tr>`;
+  }
   calculerDashboardEcolesSD();
 }
-function getPrixEcoleSD(nomEcole, ecoleId){
-  if(ecoleId && PRIX_PAR_ECOLE_SD["ecoleId:"+ecoleId]) return PRIX_PAR_ECOLE_SD["ecoleId:"+ecoleId];
-  if(ecoleId && PRIX_PAR_ECOLE_SD["groupeId:"+ecoleId]) return PRIX_PAR_ECOLE_SD["groupeId:"+ecoleId];
-  if(ecoleId && PRIX_PAR_ECOLE_SD["id:"+ecoleId]) return PRIX_PAR_ECOLE_SD["id:"+ecoleId];
-  if(!nomEcole) return PRIX_SECOURS_SD; let p=PRIX_PAR_ECOLE_SD[normaliserSD(nomEcole)]; if(p) return p;
-  let cle=Object.keys(PRIX_PAR_ECOLE_SD).find(k=>!k.startsWith("id:") && !k.startsWith("ecoleId:") && !k.startsWith("groupeId:") && (normaliserSD(nomEcole).includes(k)||k.includes(normaliserSD(nomEcole)))); if(cle) return PRIX_PAR_ECOLE_SD[cle]; return PRIX_SECOURS_SD;
+async function chargerMatieresDirecteur(){
+  let modeTrouve = "";
+  try{
+    let doc = await db.collection("matieres_publiees").doc("AN_NOUROU_IMAN").get();
+    if(doc.exists){
+      let v=doc.data();
+      if(v.matieresDetail && v.matieresDetail.length) MATIERES_DIRECTEUR=v.matieresDetail;
+      else if(v.matieresNoms) MATIERES_DIRECTEUR=v.matieresNoms.map(n=>({fr:n, nom:n}));
+      else if(v.matieres) MATIERES_DIRECTEUR=v.matieres.map(id=>({id:id, fr:joliNomMatiere(id)}));
+      if(v.typeComposition) modeTrouve = v.typeComposition;
+    }
+  }catch(e){}
+  if(!modeTrouve){
+    try{ let d3=await db.collection("configMatieres").doc("global").get(); if(d3.exists && d3.data().typeComposition) modeTrouve=d3.data().typeComposition; }catch(e){}
+  }
+  if(!modeTrouve && SD){
+    for(let e of SD.ecoles){
+      try{ let d2=await db.collection("configMatieres").doc(e.id).get(); if(d2.exists && d2.data().typeComposition){ modeTrouve=d2.data().typeComposition; break; } }catch(e){}
+    }
+  }
+  if(modeTrouve) TYPE_COMPOSITION_SD = modeTrouve;
+  if(!MATIERES_DIRECTEUR.length) MATIERES_DIRECTEUR=[{fr:"Coran"},{fr:"Hadith"},{fr:"Aquida"},{fr:"Fiqh"},{fr:"Langue Arabe"},{fr:"Sirah"},{fr:"Tawhid"},{fr:"Adhab"},{fr:"Mémorisation"},{fr:"Lecture"},{fr:"Écriture"},{fr:"Mathématiques"},{fr:"Français"}];
+  let elMode=document.getElementById('modeCompositionSD'); if(elMode) elMode.textContent=TYPE_COMPOSITION_SD;
+  let elInfo=document.getElementById('matieresInfo'); if(elInfo) elInfo.textContent="📚 Matières du Directeur : "+MATIERES_DIRECTEUR.map(m=>m.fr||m.nom).join(", ")+" | Mode : "+TYPE_COMPOSITION_SD;
+  let tbody=document.getElementById('tbodyMatieresDirecteur');
+  if(tbody){
+    let html="";
+    MATIERES_DIRECTEUR.forEach(m=>{ html+=`<tr><td><b>${joliNomMatiere(m.fr||m.nom||m.id)}</b></td><td>1</td><td>${SD?.ecoles[0]?.nom||""}</td></tr>`; });
+    tbody.innerHTML=html;
+  }
+  let selEns=document.getElementById('ensMatiere'); if(selEns){ selEns.innerHTML=""; MATIERES_DIRECTEUR.forEach(m=>{ selEns.innerHTML+=`<option value="${m.fr||m.nom}">${joliNomMatiere(m.fr||m.nom)}</option>`; }); }
+  let selEmploi=document.getElementById('emploiMatiere'); if(selEmploi){ selEmploi.innerHTML=""; MATIERES_DIRECTEUR.forEach(m=>{ selEmploi.innerHTML+=`<option value="${m.fr||m.nom}">${joliNomMatiere(m.fr||m.nom)}</option>`; }); }
 }
-function getPrixPourInscriptionSD(d){ let nomEcole=d.ecole||d.ecoleNom||d.groupe||d.groupeNom||""; let idEcole=d.ecoleId||d.groupeId||""; if(idEcole){ let ecoleTrouvee=SD.ecoles.find(e=> String(e.id)===String(idEcole)) || SD.groupes.find(g=> String(g.id)===String(idEcole)); if(ecoleTrouvee) return getPrixEcoleSD(ecoleTrouvee.nom||"", ecoleTrouvee.id); } return getPrixEcoleSD(nomEcole, idEcole); }
-function dejaPayeEleveSD(nomEleve){ let tot=0; TOUS_PAIEMENTS.forEach(p=>{ if((p.enfant||p.enfantNom||"").toLowerCase().trim()===String(nomEleve||"").toLowerCase().trim() && !["refuse","annule","annulé"].includes(String(p.statut||"").toLowerCase())) tot+=Number(p.montant||0); }); return tot; }
+function statutPaiementValideSD(p){ let st=String(p.statut||p.status||"").toLowerCase().trim(); return (st==="valide"||st==="validé"||st==="validee"||st==="paye"||st==="payé"||st==="payee"||st==="ok"||st==="confirme"||st==="confirmé"); }
+function statutDepenseValideSD(d){ let st=String(d.statut||"").toLowerCase().trim(); return !(st==="en_attente"||st==="refuse"||st==="refusé"||st==="annule"||st==="annulé"); }
+function badgeDepenseSD(st){ st=String(st||"").toLowerCase(); if(st==="en_attente") return `<span class="badge badgeJaune">⏳ EN ATTENTE</span>`; if(st==="refuse"||st==="refusé") return `<span class="badge badgeRouge">❌ REFUSÉ</span>`; return `<span class="badge badgeVert">✅ VALIDÉ</span>`; }
+function totalPayeEleve(nom){ let tp=0; TOUS_PAIEMENTS.forEach(p=>{ if(normaliserSD(p.enfant||p.enfantNom||"")===normaliserSD(nom) && statutPaiementValideSD(p)) tp+=Number(p.montant||0); }); return tp; }
+function soldeEleveSD(nom){
+  let el=TOUTES_INSCRIPTIONS.find(e=> normaliserSD(e.enfant||e.nomEnfant||"")===normaliserSD(nom));
+  let totalDu = el ? getPrixPourEleveSD(el) : PRIX_SECOURS_SD||0;
+  let tp=totalPayeEleve(nom);
+  let reste=Math.max(0, totalDu-tp);
+  let statut = totalDu>0 && tp>=totalDu ? "paye" : tp>0 ? "avance" : "nonpaye";
+  return {totalDu, totalPaye:tp, reste, statut};
+}
+async function chargerToutesDepensesSD(){
+  try{ let snap=await db.collection("depenses").limit(300).get(); TOUTES_DEPENSES_SD=[]; snap.forEach(doc=>{ let d={id:doc.id,...doc.data()}; if(estAMoi(d)) TOUTES_DEPENSES_SD.push(d); }); }catch(e){}
+}
+async function chargerInscriptionsSD(){
+  if(!SD) return;
+  try{
+    let snap=await db.collection("inscriptions").limit(400).get();
+    TOUTES_INSCRIPTIONS=[]; snap.forEach(doc=>{ let d={id:doc.id,...doc.data()}; if(estAMoi(d)) TOUTES_INSCRIPTIONS.push(d); });
+    await chargerPaiementsSD(true);
+    await chargerToutesDepensesSD();
+    afficherElevesSD(); calculerDashboardEcolesSD(); chargerElevesPayesParNiveau(); calculerEvolutionFinanciereSD();
+  }catch(e){ console.log(e.message); }
+}
 function calculerDashboardEcolesSD(){
+  if(!SD) return;
+  let total=TOUTES_INSCRIPTIONS.length;
+  let attente=TOUTES_INSCRIPTIONS.filter(e=> !(e.statut==="valide"||e.statut==="validé")).length;
+  let retard=TOUTES_INSCRIPTIONS.filter(e=> soldeEleveSD(e.enfant||e.nomEnfant||"").reste>0).length;
+  let el=(id,v)=>{ let e=document.getElementById(id); if(e) e.textContent=v; };
+  el('stEleves',total); el('stNbEcoles', SD.ecoles.length+SD.groupes.length); el('stAttente',attente); el('stRetard',retard);
+  let totEnc=0, totDep=0, totAtt=0;
   let boxE=document.getElementById('dashboardParEcoleSD');
-  if(boxE && SD.ecoles && SD.ecoles.length){
-    let html=`<h4 style="text-align:center;margin:8px 0">🏫 Mon Tableau de Bord par École</h4>`;
+  if(boxE){
+    let h="";
     SD.ecoles.forEach(ec=>{
-      let elevesE=TOUTES_INSCRIPTIONS.filter(d=> estAMoiEcole(d, ec)); let prix=getPrixEcoleSD(ec.nom||"", ec.id);
-      let encaisse=0, nbAttente=0, nbRetard=0;
-      elevesE.forEach(el=>{ let paye=dejaPayeEleveSD(el.enfant||""); encaisse+=paye; if(paye < prix) nbRetard++; });
-      TOUS_PAIEMENTS.forEach(p=>{ let pEcoleId=String(p.ecoleId||""); let pEcole=String(p.ecole||p.ecoleNom||"").toLowerCase(); let cEstMoi=(pEcoleId && pEcoleId===String(ec.id)) || (pEcole && String(ec.nom||"").toLowerCase() && pEcole.includes(String(ec.nom||"").toLowerCase())); if(cEstMoi && String(p.statut||"").toLowerCase()==="en_attente") nbAttente++; });
-      // ✅ 1 SEUL Encaissé ici, par école. Pas d'autre Encaissé en haut ni en bas.
-      html+=`<div style="background:#E8F5E9;border:1px solid #C8E6C9;border-radius:12px;padding:12px;margin-bottom:8px"><b>🏫 ${ec.nom||"École"} ${ec.quartier ? "- "+ec.quartier : ""}</b><br><small>💰 Prix fixé par le Directeur : <b>${prix.toLocaleString('fr-FR')} FCFA</b></small><div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:6px;margin-top:8px;text-align:center"><div style="background:white;border-radius:10px;padding:8px"><b style="font-size:18px">${elevesE.length}</b><br><small>Élèves</small></div><div style="background:white;border-radius:10px;padding:8px"><b style="font-size:16px">${encaisse.toLocaleString('fr-FR')}</b><br><small>Encaissé FCFA</small></div><div style="background:white;border-radius:10px;padding:8px"><b style="font-size:18px">${nbAttente}</b><br><small>En attente</small></div><div style="background:white;border-radius:10px;padding:8px"><b style="font-size:18px;color:red">${nbRetard}</b><br><small>En retard</small></div></div></div>`;
-    }); boxE.innerHTML=html;
+      let eleves=TOUTES_INSCRIPTIONS.filter(e=> estAMoiEcole(e, ec));
+      let attendu=0, encaisse=0;
+      eleves.forEach(e=>{ let s=soldeEleveSD(e.enfant||""); attendu+=s.totalDu; encaisse+=s.totalPaye; });
+      let depValide=TOUTES_DEPENSES_SD.filter(d=> estAMoiEcole(d, ec) && statutDepenseValideSD(d)).reduce((s,x)=>s+Number(x.montant||0),0);
+      let depAttente=TOUTES_DEPENSES_SD.filter(d=> estAMoiEcole(d, ec) && String(d.statut||"")==="en_attente").reduce((s,x)=>s+Number(x.montant||0),0);
+      let soldeNet=encaisse-depValide;
+      totEnc+=encaisse; totDep+=depValide; totAtt+=depAttente;
+      h+=`<div style="background:#F1F8E9;border:1px solid #C8E6C9;border-radius:10px;padding:10px;margin-bottom:6px">🏫 <b>${ec.nom}</b> - ${eleves.length} élève(s)<br>Encaissé : <b>${encaisse.toLocaleString('fr-FR')} FCFA</b> - Dépenses : <b>${depValide.toLocaleString('fr-FR')} FCFA</b> - ⏳ En attente : <b>${depAttente.toLocaleString('fr-FR')} FCFA</b><br>💰 <b>Solde = ${soldeNet.toLocaleString('fr-FR')} FCFA</b></div>`;
+    });
+    boxE.innerHTML=h;
   }
   let boxG=document.getElementById('dashboardParGroupeSD');
-  if(boxG && SD.groupes && SD.groupes.length){
-    let html=`<h4 style="text-align:center;margin:8px 0">👥 Mon Tableau de Bord par Groupe</h4>`;
+  if(boxG){
+    let h="";
     SD.groupes.forEach(gr=>{
-      let elevesG=TOUTES_INSCRIPTIONS.filter(d=> estAMoiGroupe(d, gr)); let prix=getPrixEcoleSD(gr.nom||"", gr.id); let encaisse=0, nbRetard=0;
-      elevesG.forEach(el=>{ let paye=dejaPayeEleveSD(el.enfant||""); encaisse+=paye; if(paye < prix) nbRetard++; });
-      html+=`<div style="background:#E3F2FD;border:1px solid #BBDEFB;border-radius:12px;padding:12px;margin-bottom:8px"><b>👥 ${gr.nom||"Groupe"} ${gr.ville ? "- "+gr.ville : ""}</b><br><small>💰 Prix : <b>${prix.toLocaleString('fr-FR')} FCFA</b></small><div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-top:8px;text-align:center"><div style="background:white;border-radius:10px;padding:8px"><b>${elevesG.length}</b><br><small>Élèves</small></div><div style="background:white;border-radius:10px;padding:8px"><b>${encaisse.toLocaleString('fr-FR')}</b><br><small>Encaissé</small></div><div style="background:white;border-radius:10px;padding:8px"><b style="color:red">${nbRetard}</b><br><small>En retard</small></div></div></div>`;
-    }); boxG.innerHTML=html;
+      let eleves=TOUTES_INSCRIPTIONS.filter(e=> estAMoiGroupe(e, gr));
+      let attendu=0, encaisse=0;
+      eleves.forEach(e=>{ let s=soldeEleveSD(e.enfant||""); attendu+=s.totalDu; encaisse+=s.totalPaye; });
+      let depValide=TOUTES_DEPENSES_SD.filter(d=> estAMoiGroupe(d, gr) && statutDepenseValideSD(d)).reduce((s,x)=>s+Number(x.montant||0),0);
+      let depAttente=TOUTES_DEPENSES_SD.filter(d=> estAMoiGroupe(d, gr) && String(d.statut||"")==="en_attente").reduce((s,x)=>s+Number(x.montant||0),0);
+      let soldeNet=encaisse-depValide;
+      totEnc+=encaisse; totDep+=depValide; totAtt+=depAttente;
+      h+=`<div style="background:#FFF8E1;border:1px solid #FFE082;border-radius:10px;padding:10px;margin-bottom:6px">👥 <b>${gr.nom}</b> - ${eleves.length} élève(s)<br>Encaissé : <b>${encaisse.toLocaleString('fr-FR')} FCFA</b> - Dépenses : <b>${depValide.toLocaleString('fr-FR')} FCFA</b> - ⏳ En attente : <b>${depAttente.toLocaleString('fr-FR')} FCFA</b><br>💰 <b>Solde = ${soldeNet.toLocaleString('fr-FR')} FCFA</b></div>`;
+    });
+    boxG.innerHTML=h;
   }
-  let mesEleves=TOUTES_INSCRIPTIONS.filter(d=> estAMoi(d));
-  let elEleves=document.getElementById('stEleves'); if(elEleves) elEleves.textContent=mesEleves.length;
-  // ✅ Plus de stEncaisse en haut - on met le nombre d'écoles à la place
-  let elNb=document.getElementById('stNbEcoles'); if(elNb) elNb.textContent=(SD.ecoles.length + SD.groupes.length);
-  let nbAtt=TOUS_PAIEMENTS.filter(p=> String(p.statut||"").toLowerCase()==="en_attente" && estAMoi(p)).length; let elAtt=document.getElementById('stAttente'); if(elAtt) elAtt.textContent=nbAtt;
-  let nbRet=0; mesEleves.forEach(el=>{ let prix=getPrixPourInscriptionSD(el); if(dejaPayeEleveSD(el.enfant||"") < prix) nbRet++; }); let elRet=document.getElementById('stRetard'); if(elRet) elRet.textContent=nbRet;
+  let boxT=document.getElementById('dashboardTotalSD');
+  if(boxT){ boxT.innerHTML=`<div style="background:#0F3D2E;color:white;border-radius:12px;padding:12px;text-align:center"><b>SOLDE TOTAL : ${(totEnc-totDep).toLocaleString('fr-FR')} FCFA</b></div>`; }
 }
-async function chargerMatieresDirecteur(){
-  MATIERES_DIRECTEUR=[];
-  try{ let docPub=await db.collection("matieres_publiees").doc("AN_NOUROU_IMAN").get(); if(docPub.exists){ let d=docPub.data(); if(d.matieresDetail && d.matieresDetail.length) MATIERES_DIRECTEUR=d.matieresDetail.map(m=>({fr:m.fr||m.nom||"", ar:m.ar||"", coef:1})); else if(d.matieresNoms && d.matieresNoms.length) MATIERES_DIRECTEUR=d.matieresNoms.map(n=>({fr:n, ar:"", coef:1})); if(d.typeComposition){ let el=document.getElementById('modeCompositionSD'); if(el) el.textContent=d.typeComposition; } } }catch(e){}
-  if(!MATIERES_DIRECTEUR.length){ try{ for(let ec of SD.ecoles){ let doc=await db.collection("configMatieres").doc(ec.id).get(); if(doc.exists && doc.data().matieres && doc.data().matieres.length){ MATIERES_DIRECTEUR=doc.data().matieres.map(x=> typeof x==="string" ? {fr:joliNomMatiere(x), ar:"", coef:1} : {fr:x.fr||x.nom||"", ar:x.ar||"", coef:1}); break; } } }catch(e){} }
-  let info=document.getElementById('matieresInfo'); if(info) info.textContent=MATIERES_DIRECTEUR.length ? "📚 Matières : "+MATIERES_DIRECTEUR.map(m=>m.fr).join(" • ") : "";
-  let tbody=document.getElementById('tbodyMatieresDirecteur'); if(tbody) tbody.innerHTML=MATIERES_DIRECTEUR.length ? MATIERES_DIRECTEUR.map(m=>`<tr><td><b>${m.fr}</b></td><td>1</td><td>${SD.ecoles[0]?.nom||""}</td></tr>`).join('') : `<tr><td colspan="3">Pas de matières fixées par le Directeur.</td></tr>`;
-  let selM=document.getElementById('ensMatiere'); if(selM){ selM.innerHTML=""; MATIERES_DIRECTEUR.forEach(m=> selM.innerHTML+=`<option>${m.fr}</option>`); if(!MATIERES_DIRECTEUR.length) selM.innerHTML=`<option>Coran</option><option>Langue Arabe</option><option>Fiqh</option>`; }
-  let selEmploiM=document.getElementById('emploiMatiere'); if(selEmploiM){ selEmploiM.innerHTML=""; MATIERES_DIRECTEUR.forEach(m=> selEmploiM.innerHTML+=`<option>${m.fr}</option>`); if(!MATIERES_DIRECTEUR.length) selEmploiM.innerHTML=`<option>Coran</option><option>Langue Arabe</option>`; }
-  genererFormNotes();
-}
-async function chargerInscriptionsSD(){ try{ let snap=await db.collection("inscriptions").get(); TOUTES_INSCRIPTIONS=[]; snap.forEach(d=> TOUTES_INSCRIPTIONS.push({id:d.id, ...d.data()})); afficherElevesSD(); chargerPaiementsSD(); calculerDashboardEcolesSD(); }catch(e){} }
 function afficherElevesSD(){
-  let tbody=document.getElementById('tbodyEleves'); if(!tbody) return; let q=(document.getElementById('rechercheEleve')?.value||"").toLowerCase(); let liste=TOUTES_INSCRIPTIONS.filter(d=> estAMoi(d)); if(q) liste=liste.filter(d=> JSON.stringify(d).toLowerCase().includes(q));
-  if(!liste.length){ tbody.innerHTML=`<tr><td colspan="6" style="text-align:center">Aucun élève pour ton école / groupe.</td></tr>`; return; }
-  tbody.innerHTML=liste.map(d=>{ let nomEcole=d.ecole||d.ecoleNom||d.groupe||d.groupeNom||""; let prix=getPrixPourInscriptionSD(d); let paye=dejaPayeEleveSD(d.enfant||""); let reste=Math.max(0,prix-paye); let badge=String(d.statut||"").toLowerCase()==="valide" ? `<span class="badge badgeVert">✅ VALIDÉ</span>` : `<span class="badge badgeJaune">⏳ EN ATTENTE</span>`; return `<tr><td><b>${d.enfant||""}</b><br><small>${d.sexe||""} - ${d.dateNaissance||""}</small></td><td>${d.parent||""}<br>📱 ${d.tel||""}<br><a class="btnPetit btnWA" href="https://wa.me/237${String(d.tel||"").replace(/[^0-9]/g,"").replace(/^237/,"")}" target="_blank">💬 WhatsApp</a></td><td>${d.niveau||""}<br><b>${nomEcole}</b></td><td>Prix: ${prix.toLocaleString('fr-FR')}<br>Payé: <b>${paye.toLocaleString('fr-FR')}</b><br>Reste: <b style="color:red">${reste.toLocaleString('fr-FR')}</b></td><td>${badge}</td><td><button class="btnPetit btnRecu" onclick="imprimerRecu('${d.id}')">🧾 Reçu</button></td></tr>`; }).join('');
-  let selPay=document.getElementById('payEleve'); if(selPay){ let cur=selPay.value; selPay.innerHTML=`<option value="">-- Choisis l'élève --</option>`; liste.forEach(d=> selPay.innerHTML+=`<option value="${d.id}">${d.enfant} - ${d.ecole||d.ecoleNom||d.groupe||""}</option>`); if(cur) selPay.value=cur; }
-  let selNote=document.getElementById('noteEleve'); if(selNote){ let cur=selNote.value; selNote.innerHTML=`<option value="">-- Choisis l'élève --</option>`; liste.forEach(d=> selNote.innerHTML+=`<option value="${d.id}">${d.enfant}</option>`); if(cur) selNote.value=cur; }
+  let tbody=document.getElementById('tbodyEleves'); if(!tbody) return;
+  let q=normaliserSD(document.getElementById('rechercheEleve')?.value||"");
+  let filtreEcole=document.getElementById('filtreEcoleElevesSD')?.value||"";
+  let liste=TOUTES_INSCRIPTIONS.filter(e=>{ if(filtreEcole && normaliserSD(nomEcoleDocSD(e))!==normaliserSD(filtreEcole)) return false; if(q && !normaliserSD(JSON.stringify(e)).includes(q)) return false; return true; });
+  if(!liste.length){ tbody.innerHTML=`<tr><td colspan="6" style="text-align:center">Aucun élève.</td></tr>`; return; }
+  let html="";
+  liste.forEach(e=>{
+    let nom=e.enfant||e.nomEnfant||""; let s=soldeEleveSD(nom);
+    let badge = s.statut==="paye" ? `<span class="badge badgeVert">✓ PAYÉ</span>` : s.statut==="avance" ? `<span class="badge badgeJaune">◐ AVANCE</span>` : `<span class="badge badgeRouge">✗ NON PAYÉ</span>`;
+    let badgeDG = (e.statut==="valide"||e.statut==="validé") ? `<span class="badge badgeVert">ACCEPTÉ DG</span>` : `<span class="badge badgeJaune">EN ATTENTE DG</span>`;
+    html+=`<tr><td><b>${nom}</b></td><td>${e.parent||""}<br><small>${e.tel||""}</small><br><a class="btnPetit btnWA" href="https://wa.me/237${nettoyerTel(e.tel||"")}" target="_blank">💬 WhatsApp</a></td><td><b>${e.niveau||""}</b><br><small>${e.ecole||e.ecoleNom||e.groupe||""}</small></td><td><b>${s.totalDu.toLocaleString('fr-FR')}</b> / <b>${s.totalPaye.toLocaleString('fr-FR')}</b> / <b style="color:red">${s.reste.toLocaleString('fr-FR')}</b></td><td>${badge}<br>${badgeDG}</td><td><button class="btnPetit btnRecu" onclick="imprimerRecu('${e.id}')">🧾 Reçu</button><button class="btnPetit" style="background:#FFEBEE;color:#C62828" onclick="supprimerInscriptionSD('${e.id}','${nom}')">🗑️</button></td></tr>`;
+  });
+  tbody.innerHTML=html;
+  let selNote=document.getElementById('noteEleve'); if(selNote){ let cur=selNote.value; selNote.innerHTML=`<option value="">— Choisis l'élève —</option>`; TOUTES_INSCRIPTIONS.forEach(e=>{ let nom=e.enfant||""; selNote.innerHTML+=`<option value="${nom}">${nom} - ${e.niveau||""}</option>`; }); if(cur) selNote.value=cur; }
+  let selPay=document.getElementById('payEleve'); if(selPay){ let cur=selPay.value; selPay.innerHTML=`<option value="">— Choisis l'élève —</option>`; TOUTES_INSCRIPTIONS.forEach(e=>{ let nom=e.enfant||""; selPay.innerHTML+=`<option value="${nom}">${nom} - ${e.niveau||""}</option>`; }); if(cur) selPay.value=cur; }
 }
 function filtrerEleves(){ afficherElevesSD(); }
+async function supprimerInscriptionSD(id, nom){ if(!confirm("Supprimer "+nom+" ?")) return; try{ await db.collection("inscriptions").doc(id).delete(); chargerInscriptionsSD(); }catch(e){ alert("❌ "+e.message); } }
 async function chargerElevesPayesParNiveau(){
-  let tbody=document.getElementById('tbodyPayesParNiveau'); if(!tbody) return; let filtre=document.getElementById('filtreNiveauPayes')?.value||""; let liste=TOUTES_INSCRIPTIONS.filter(d=> estAMoi(d)); if(filtre) liste=liste.filter(d=> String(d.niveau||"")===filtre);
-  let payes=liste.filter(d=>{ let prix=getPrixPourInscriptionSD(d); return dejaPayeEleveSD(d.enfant||"") >= prix && prix>0; });
-  let resume=document.getElementById('resumePayesParNiveau'); if(resume) resume.innerHTML=`<div style="background:#E8F5E9;padding:10px;border-radius:10px;text-align:center"><b>${liste.length}</b><br><small>Mes élèves</small></div><div style="background:#C8E6C9;padding:10px;border-radius:10px;text-align:center"><b>${payes.length}</b><br><small>Déjà payés</small></div><div style="background:#FFEBEE;padding:10px;border-radius:10px;text-align:center"><b>${liste.length-payes.length}</b><br><small>Pas encore payés</small></div>`;
-  tbody.innerHTML=payes.length ? payes.map(d=>{ let prix=getPrixPourInscriptionSD(d); let paye=dejaPayeEleveSD(d.enfant||""); return `<tr><td><b>${d.enfant}</b></td><td>${d.parent||""}</td><td>${d.niveau||""}</td><td>${d.ecole||d.ecoleNom||d.groupe||""}</td><td>${prix.toLocaleString('fr-FR')} / <b>${paye.toLocaleString('fr-FR')}</b></td><td><button class="btnPetit btnRecu" onclick="imprimerRecu('${d.id}')">🧾 Reçu</button></td></tr>`; }).join('') : `<tr><td colspan="6" style="text-align:center">Aucun élève n'a encore payé tout le prix.</td></tr>`;
+  let tbody=document.getElementById('tbodyPayesParNiveau'); if(!tbody) return;
+  let filtre=document.getElementById('filtreNiveauPayes')?.value||"";
+  let liste=TOUTES_INSCRIPTIONS.filter(e=>{ let s=soldeEleveSD(e.enfant||""); if(s.statut!=="paye") return false; if(filtre && String(e.niveau||"")!==filtre) return false; return true; });
+  let box=document.getElementById('resumePayesParNiveau'); if(box){ box.innerHTML=`<div style="background:#E8F5E9;padding:10px;border-radius:10px;text-align:center"><b>${liste.length}</b><br><small>Payés</small></div><div style="background:#FFF9C4;padding:10px;border-radius:10px;text-align:center"><b>${TOUTES_INSCRIPTIONS.length}</b><br><small>Total élèves</small></div><div style="background:#E3F2FD;padding:10px;border-radius:10px;text-align:center"><b>${TOUTES_INSCRIPTIONS.length-liste.length}</b><br><small>Pas encore payés</small></div>`; }
+  if(!liste.length){ tbody.innerHTML=`<tr><td colspan="6" style="text-align:center">Aucun élève payé.</td></tr>`; return; }
+  let html=""; liste.forEach(e=>{ let s=soldeEleveSD(e.enfant||""); html+=`<tr><td><b>${e.enfant||""}</b></td><td>${e.parent||""}</td><td>${e.niveau||""}</td><td>${e.ecole||e.groupe||""}</td><td><b>${s.totalDu.toLocaleString('fr-FR')}</b> / <b>${s.totalPaye.toLocaleString('fr-FR')}</b></td><td><button class="btnPetit btnRecu" onclick="imprimerRecu('${e.id}')">🧾 Reçu</button></td></tr>`; });
+  tbody.innerHTML=html;
 }
-function verifierMontantInscriptionSD(){ let sel=document.getElementById('nEcole'); let inp=document.getElementById('nMontant'); let msg=document.getElementById('msgTropPayeInscriptionSD'); if(!sel||!inp||!msg) return; let parts=(sel.value||"").split("||"); let prix=getPrixEcoleSD(parts[1]||sel.value, parts[0]||""); let montant=Number(inp.value||0); if(montant>prix) msg.textContent=`❌ Tu ne peux pas payer ${montant} FCFA, le prix est ${prix} FCFA.`; else msg.textContent=""; }
 async function ajouterInscriptionSD(){
-  let enfant=document.getElementById('nEnfant').value.trim(); let parent=document.getElementById('nParent').value.trim(); let tel=nettoyerTel(document.getElementById('nTel').value); let niveau=document.getElementById('nNiveau').value; let ecoleVal=document.getElementById('nEcole').value||""; let sexe=document.getElementById('nSexe')?.value||""; let dateNaissance=document.getElementById('nDateNaissance')?.value||""; let montant=Number(document.getElementById('nMontant').value||0); let msg=document.getElementById('msgAjout');
-  if(!enfant||!parent||!tel||!ecoleVal){ msg.style.color="red"; msg.textContent="❌ Remplis Enfant, Parent, Téléphone, École."; return; }
-  let parts=ecoleVal.split("||"); let ecoleId=parts[0]||""; let ecoleNom=parts[1]||ecoleVal; let estGroupe=SD.groupes.some(g=> String(g.id)===String(ecoleId)); let prix=getPrixEcoleSD(ecoleNom, ecoleId); if(montant>prix){ msg.style.color="red"; msg.textContent=`❌ Montant trop grand. Prix ${ecoleNom} = ${prix} FCFA.`; return; }
-  try{ await db.collection("inscriptions").add({enfant:enfant, nomEnfant:enfant, parent:parent, tel:tel, telephone:tel, niveau:niveau, classe:niveau, sexe:sexe, genre:sexe, dateNaissance:dateNaissance, type: estGroupe ? "Groupe" : "Ecole", ecole: estGroupe ? "" : ecoleNom, ecoleNom: estGroupe ? "" : ecoleNom, ecoleId: estGroupe ? "" : ecoleId, groupe: estGroupe ? ecoleNom : "", groupeNom: estGroupe ? ecoleNom : "", groupeId: estGroupe ? ecoleId : "", statut:"valide", status:"valide", date:new Date().toLocaleDateString('fr-FR'), createdAt:new Date(), creePar:"sous-directeur"});
-    if(montant>0) await db.collection("paiements").add({enfant:enfant, enfantNom:enfant, parent:parent, tel:tel, montant:montant, motif:"Inscription", mode:"Espèces", statut:"en_attente", statutPaiement:"en_attente", ecole: estGroupe ? "" : ecoleNom, ecoleNom: estGroupe ? "" : ecoleNom, ecoleId: estGroupe ? "" : ecoleId, groupe: estGroupe ? ecoleNom : "", groupeNom: estGroupe ? ecoleNom : "", groupeId: estGroupe ? ecoleId : "", envoyePar:"sous-directeur", date:new Date().toLocaleDateString('fr-FR'), createdAt:new Date()});
-    msg.style.color="green"; msg.textContent="✅ "+enfant+" inscrit à "+ecoleNom+"."; document.getElementById('nEnfant').value=""; document.getElementById('nParent').value=""; document.getElementById('nTel').value=""; document.getElementById('nMontant').value=""; chargerInscriptionsSD();
+  let nom=document.getElementById('nEnfant').value.trim(); let parent=document.getElementById('nParent').value.trim(); let tel=nettoyerTel(document.getElementById('nTel').value); let niveau=document.getElementById('nNiveau').value; let ecoleVal=document.getElementById('nEcole').value; let sexe=document.getElementById('nSexe').value; let naissance=document.getElementById('nDateNaissance').value; let montant=Number(document.getElementById('nMontant').value||0);
+  let msg=document.getElementById('msgAjout');
+  if(!nom||!parent||!tel){ msg.style.color="red"; msg.textContent="❌ Mets Nom enfant + Parent + WhatsApp"; return; }
+  let parts=ecoleVal.split("||"); let ecoleId=parts[0]||""; let ecoleNom=parts[1]||"";
+  let prix=getPrixEcoleSD(ecoleNom, ecoleId);
+  if(montant>prix){ msg.style.color="red"; msg.textContent="❌ Trop payé ! Prix = "+prix+" FCFA, tu as mis "+montant; return; }
+  try{
+    let ref=await db.collection("inscriptions").add({enfant:nom, parent, tel, niveau, ecole:ecoleNom, ecoleNom:ecoleNom, ecoleId:ecoleId, groupe:ecoleNom, sexe, dateNaissance:naissance, statut:"en_attente", date:new Date().toLocaleDateString('fr-FR'), createdAt:new Date()});
+    if(montant>0){ await db.collection("paiements").add({enfant:nom, parent, tel, montant, motif:"Inscription", mode:"Espèces", statut:"en_attente", statutPaiement:"en_attente", ecole:ecoleNom, ecoleNom:ecoleNom, ecoleId:ecoleId, eleveId:ref.id, niveau, envoyePar:"sous-directeur", envoyeParEmail:SD.email, date:new Date().toLocaleDateString('fr-FR'), createdAt:new Date()}); }
+    msg.style.color="green"; msg.textContent="✅ "+nom+" inscrit ! Prix : "+prix+" FCFA";
+    document.getElementById('nEnfant').value=""; document.getElementById('nMontant').value="";
+    chargerInscriptionsSD(); chargerPaiementsSD();
   }catch(e){ msg.style.color="red"; msg.textContent="❌ "+e.message; }
 }
-async function chargerPaiementsSD(){ try{ let snap=await db.collection("paiements").get(); TOUS_PAIEMENTS=[]; snap.forEach(d=> TOUS_PAIEMENTS.push({id:d.id, ...d.data()})); afficherPaiementsSD(); calculerDashboardEcolesSD(); }catch(e){} }
-function setFiltrePaiementSD(f){ FILTRE_PAIEMENT_SD=f; afficherPaiementsSD(); }
-function afficherPaiementsSD(){
-  let tbody=document.getElementById('tbodyPaiements'); if(!tbody) return; let q=(document.getElementById('recherchePaiementSD')?.value||"").toLowerCase(); let liste=TOUS_PAIEMENTS.filter(p=> estAMoi(p));
-  let nomsMesEleves=TOUTES_INSCRIPTIONS.filter(d=> estAMoi(d)).map(d=> String(d.enfant||"").toLowerCase().trim());
-  let faux=liste.filter(p=> !nomsMesEleves.includes(String(p.enfant||p.enfantNom||"").toLowerCase().trim())); let elFaux=document.getElementById('nbFauxPaiements'); if(elFaux) elFaux.textContent=faux.length ? `(${faux.length} faux caché(s))` : "";
-  if(FILTRE_PAIEMENT_SD==='verifies') liste=liste.filter(p=> nomsMesEleves.includes(String(p.enfant||p.enfantNom||"").toLowerCase().trim())); if(q) liste=liste.filter(p=> JSON.stringify(p).toLowerCase().includes(q));
-  if(!liste.length){ tbody.innerHTML=`<tr><td colspan="7" style="text-align:center">Aucun paiement.</td></tr>`; return; }
-  tbody.innerHTML=liste.map(p=>{ let nomE=p.enfant||p.enfantNom||""; let ins=TOUTES_INSCRIPTIONS.find(d=> String(d.enfant||"").toLowerCase().trim()===String(nomE).toLowerCase().trim()); let prix=ins ? getPrixPourInscriptionSD(ins) : 0; let payeTotal=dejaPayeEleveSD(nomE); let reste=prix ? Math.max(0,prix-payeTotal) : 0; let badge=String(p.statut||"").toLowerCase()==="valide" ? `<span class="badge badgeVert">✅ VALIDÉ</span>` : String(p.statut||"").toLowerCase()==="en_attente" ? `<span class="badge badgeJaune">⏳ EN ATTENTE</span>` : `<span class="badge badgeRouge">${p.statut||""}</span>`; return `<tr><td><b>${nomE}</b></td><td><b>${Number(p.montant||0).toLocaleString('fr-FR')} FCFA</b></td><td>${p.motif||""} / ${p.mode||""}</td><td>${p.parent||""}<br>📱 ${p.tel||""}</td><td>Payé total: ${payeTotal.toLocaleString('fr-FR')}<br>Reste: ${reste.toLocaleString('fr-FR')}</td><td>${badge}</td><td><button class="btnPetit btnRecu" onclick="voirRecuPaiementSD('${p.id}')">🧾 Reçu</button> <button class="btnPetit" style="background:#FFEBEE" onclick="annulerPaiementSD('${p.id}')">❌ Annuler</button></td></tr>`; }).join('');
+function verifierMontantInscriptionSD(){
+  let montant=Number(document.getElementById('nMontant').value||0); let ecoleVal=document.getElementById('nEcole').value; let parts=ecoleVal.split("||"); let prix=getPrixEcoleSD(parts[1]||"", parts[0]||"");
+  let el=document.getElementById('msgTropPayeInscriptionSD');
+  if(montant>prix) el.textContent="❌ Trop ! Prix = "+prix+" FCFA, tu as mis "+montant; else el.textContent="";
 }
-function voirRecuPaiementSD(id){ let p=TOUS_PAIEMENTS.find(x=>x.id===id); if(!p) return; document.getElementById('contenuRecu').innerHTML=`<p><b>Enfant:</b> ${p.enfant||p.enfantNom||""}</p><p><b>Montant:</b> ${Number(p.montant||0).toLocaleString('fr-FR')} FCFA</p><p><b>Motif:</b> ${p.motif||""}</p><p><b>Mode:</b> ${p.mode||""}</p><p><b>Parent:</b> ${p.parent||""}</p><p><b>École:</b> ${p.ecole||p.ecoleNom||p.groupe||""}</p><p><b>Statut:</b> ${p.statut||""}</p><p><b>Date:</b> ${p.date||""}</p>`; document.getElementById('popupRecu').style.display="flex"; }
-async function annulerPaiementSD(id){ if(!confirm("Annuler ce paiement ?")) return; await db.collection("paiements").doc(id).update({statut:"annule", statutPaiement:"annule"}); chargerPaiementsSD(); }
-function verifierMontantTropPayeSD(){ let sel=document.getElementById('payEleve'); let inp=document.getElementById('payMontant'); let msg=document.getElementById('msgTropPayeSD'); if(!sel||!inp||!msg) return true; let ins=TOUTES_INSCRIPTIONS.find(d=> d.id===sel.value); if(!ins){ msg.textContent=""; return true; } let prix=getPrixPourInscriptionSD(ins); let deja=dejaPayeEleveSD(ins.enfant||""); let reste=Math.max(0,prix-deja); let montant=Number(inp.value||0); if(montant>reste){ msg.textContent=`❌ Tu ne peux pas payer ${montant} FCFA. Il ne reste que ${reste} FCFA pour ${ins.enfant}. Mets ${reste} maximum.`; return false; } msg.textContent=""; return true; }
-function actualiserRestePaiementSD(){ let sel=document.getElementById('payEleve'); let info=document.getElementById('infoRestePaiementSD'); if(!sel||!info) return; let ins=TOUTES_INSCRIPTIONS.find(d=> d.id===sel.value); if(!ins){ info.textContent=""; return; } let prix=getPrixPourInscriptionSD(ins); let deja=dejaPayeEleveSD(ins.enfant||""); let reste=Math.max(0,prix-deja); info.textContent=`${ins.enfant} - Prix : ${prix.toLocaleString('fr-FR')} FCFA | Déjà payé : ${deja.toLocaleString('fr-FR')} FCFA | Reste : ${reste.toLocaleString('fr-FR')} FCFA`; }
-async function ajouterPaiementSD(){ let sel=document.getElementById('payEleve'); let msg=document.getElementById('msgNouveauPaiementSD'); if(!sel||!sel.value){ msg.style.color="red"; msg.textContent="❌ Choisis l'élève."; return; } if(!verifierMontantTropPayeSD()) return; let ins=TOUTES_INSCRIPTIONS.find(d=> d.id===sel.value); if(!ins) return; let montant=Number(document.getElementById('payMontant').value||0); if(!montant){ msg.style.color="red"; msg.textContent="❌ Mets le montant."; return; } let motif=document.getElementById('payMotif').value; let mode=document.getElementById('payMode').value; try{ await db.collection("paiements").add({enfant:ins.enfant, enfantNom:ins.enfant, parent:ins.parent||"", tel:ins.tel||"", montant:montant, motif:motif, mode:mode, statut:"en_attente", statutPaiement:"en_attente", ecole:ins.ecole||ins.ecoleNom||"", ecoleNom:ins.ecole||ins.ecoleNom||"", ecoleId:ins.ecoleId||"", groupe:ins.groupe||ins.groupeNom||"", groupeNom:ins.groupe||ins.groupeNom||"", groupeId:ins.groupeId||"", envoyePar:"sous-directeur", date:new Date().toLocaleDateString('fr-FR'), createdAt:new Date()}); msg.style.color="green"; msg.textContent="✅ Paiement envoyé en attente : "+montant+" FCFA pour "+ins.enfant+". Le Directeur va le valider."; document.getElementById('payMontant').value=""; chargerPaiementsSD(); }catch(e){ msg.style.color="red"; msg.textContent="❌ "+e.message; } }
-function chargerRetard(){ let tbody=document.getElementById('tbodyRetard'); if(!tbody) return; let liste=TOUTES_INSCRIPTIONS.filter(d=> estAMoi(d)); let retards=liste.filter(d=> dejaPayeEleveSD(d.enfant||"") < getPrixPourInscriptionSD(d)); if(!retards.length){ tbody.innerHTML=`<tr><td colspan="5" style="text-align:center">✅ Personne en retard.</td></tr>`; return; } tbody.innerHTML=retards.map(d=>{ let prix=getPrixPourInscriptionSD(d); let paye=dejaPayeEleveSD(d.enfant||""); let reste=Math.max(0,prix-paye); return `<tr><td><b>${d.enfant}</b></td><td>${d.parent||""}<br>📱 ${d.tel||""}</td><td>${d.ecole||d.ecoleNom||d.groupe||""}</td><td>Prix: ${prix.toLocaleString('fr-FR')}<br>Payé: ${paye.toLocaleString('fr-FR')}<br>Reste: <b style="color:red">${reste.toLocaleString('fr-FR')}</b></td><td><a class="btnPetit btnWA" href="https://wa.me/237${String(d.tel||"").replace(/[^0-9]/g,"").replace(/^237/,"")}?text=${encodeURIComponent("Assalamou Aleykoum "+(d.parent||"")+", il reste "+reste+" FCFA pour "+(d.enfant||""))}" target="_blank">💬 Relancer</a></td></tr>`; }).join(''); }
-async function chargerPourPresence(){ let tbody=document.getElementById('tbodyPresence'); if(!tbody) return; let liste=TOUTES_INSCRIPTIONS.filter(d=> estAMoi(d)); tbody.innerHTML=liste.map(d=>`<tr><td><input type="checkbox" class="presence-check" data-nom="${d.enfant}" checked></td><td><b>${d.enfant}</b></td><td>${d.parent||""}</td><td>${d.ecole||d.ecoleNom||d.groupe||""}</td></tr>`).join('') || `<tr><td colspan="4">Aucun élève.</td></tr>`; chargerHistoriquePresence(); }
-async function enregistrerPresence(){ let checks=document.querySelectorAll('.presence-check'); let eleves=[]; let absents=[]; checks.forEach(c=>{ let nom=c.getAttribute('data-nom'); if(c.checked) eleves.push({nom:nom, statut:"Présent"}); else { eleves.push({nom:nom, statut:"Absent"}); absents.push(nom); } }); let dateStr=new Date().toLocaleDateString('fr-FR'); try{ await db.collection("presences").add({date:dateStr, ecole:SD.ecoles[0]?.nom||SD.groupes[0]?.nom||"", ecoleId:SD.ecoles[0]?.id||"", eleves:eleves, presents:eleves.filter(e=>e.statut==="Présent").length, absents:absents, createdAt:new Date(), creePar:SD.email}); document.getElementById('msgPresence').textContent="✅ Présence enregistrée."; chargerHistoriquePresence(); }catch(e){ document.getElementById('msgPresence').textContent="❌ "+e.message; } }
-async function chargerHistoriquePresence(){ let tbody=document.getElementById('tbodyHistPresence'); if(!tbody) return; try{ let snap=await db.collection("presences").get(); let liste=[]; snap.forEach(d=>{ if(estAMoi(d.data())) liste.push({id:d.id, ...d.data()}); }); liste.sort((a,b)=> (b.createdAt?.seconds||0)-(a.createdAt?.seconds||0)); tbody.innerHTML=liste.slice(0,20).map(p=>{ let eleves=p.eleves||[]; let abs=eleves.filter(e=> String(e.statut||"").toLowerCase().includes("absent")).map(e=>e.nom||""); return `<tr><td>${p.date||""}</td><td>${eleves.length-abs.length}</td><td>${abs.length}</td><td>${abs.join(", ")}</td><td><button class="btnPetit" style="background:#FFEBEE" onclick="supprimerPresenceSD('${p.id}')">🗑️</button></td></tr>`; }).join('') || `<tr><td colspan="5">Aucun historique.</td></tr>`; }catch(e){} }
-async function supprimerPresenceSD(id){ if(!confirm("Supprimer ?")) return; await db.collection("presences").doc(id).delete(); chargerHistoriquePresence(); }
-function genererFormNotes(){ let box=document.getElementById('formNotesToutes'); if(!box) return; let selEleve=document.getElementById('noteEleve'); if(!selEleve||!selEleve.value){ box.innerHTML=`<p style="text-align:center;color:#666">Choisis d'abord l'élève.</p>`; return; } let trim=document.getElementById('noteTrimestre')?.value||"Trimestre 1"; let ins=TOUTES_INSCRIPTIONS.find(d=> d.id===selEleve.value); let nomEleve=ins ? ins.enfant : ""; let existantes={}; TOUTES_NOTES.forEach(n=>{ if(String(n.eleve||"").toLowerCase().trim()===String(nomEleve||"").toLowerCase().trim() && String(n.trimestre||"")===trim) existantes[String(n.matiere||"")]=n; }); if(!MATIERES_DIRECTEUR.length){ box.innerHTML=`<p style="text-align:center;color:red">⚠️ Aucune matière fixée par le Directeur.</p>`; return; } box.innerHTML=`<div class="formNotesGrid">` + MATIERES_DIRECTEUR.map(m=>{ let ex=existantes[m.fr]||{}; return `<div class="carteMatiere"><b>${m.fr}</b><br><small>Oral /20</small><input type="number" min="0" max="20" step="0.5" id="oral_${m.fr}" value="${ex.oral??""}" placeholder="Oral"><small>Écrit /20</small><input type="number" min="0" max="20" step="0.5" id="ecrit_${m.fr}" value="${ex.ecrit??""}" placeholder="Écrit"></div>`; }).join('') + `</div>`; }
-async function chargerNotes(){ try{ let snap=await db.collection("bulletins").get(); TOUTES_NOTES=[]; snap.forEach(d=> TOUTES_NOTES.push({id:d.id, ...d.data()})); afficherNotesSD(); afficherMoyennesSD(); genererFormNotes(); }catch(e){} }
-function afficherNotesSD(){ let tbody=document.getElementById('tbodyNotes'); if(!tbody) return; let map=new Map(); TOUTES_NOTES.forEach(n=>{ if(!estAMoi(n)) return; let cle=String(n.eleve||"").toLowerCase()+"||"+String(n.trimestre||""); if(!map.has(cle)) map.set(cle, {eleve:n.eleve, trimestre:n.trimestre, notes:[]}); map.get(cle).notes.push(n); }); let liste=[...map.values()]; tbody.innerHTML=liste.length ? liste.map(g=>{ let total=g.notes.reduce((s,n)=> s+Number(n.moyenne||0),0); let diviseur=MATIERES_DIRECTEUR.length||g.notes.length||1; let moy=(total/diviseur).toFixed(2); return `<tr><td><b>${g.eleve}</b></td><td>${g.trimestre}</td><td><b>${moy} / 20</b></td><td><button class="btnPetit" style="background:#E3F2FD" onclick="modifierNotesSD('${g.eleve}','${g.trimestre}')">✏️ Modifier</button></td></tr>`; }).join('') : `<tr><td colspan="4" style="text-align:center">Aucune note.</td></tr>`; }
-function afficherMoyennesSD(){ let tbody=document.getElementById('tbodyMoyennes'); if(!tbody) return; let filtre=document.getElementById('filtreTrimestreMoy')?.value||""; let map=new Map(); TOUTES_NOTES.forEach(n=>{ if(!estAMoi(n)) return; if(filtre && String(n.trimestre||"")!==filtre) return; let cle=String(n.eleve||"").toLowerCase()+"||"+String(n.trimestre||""); if(!map.has(cle)) map.set(cle, {eleve:n.eleve, trimestre:n.trimestre, ecole:n.ecole||n.ecoleNom||"", notes:[]}); map.get(cle).notes.push(n); }); let liste=[...map.values()]; tbody.innerHTML=liste.length ? liste.map(g=>{ let total=g.notes.reduce((s,n)=> s+Number(n.moyenne||0),0); let diviseur=MATIERES_DIRECTEUR.length||g.notes.length||1; let moy=total/diviseur; let app=moy>=16 ? "Excellent" : moy>=14 ? "Très Bien" : moy>=12 ? "Bien" : moy>=10 ? "Passable" : "Efforts à fournir"; return `<tr><td><b>${g.eleve}</b><br><small>${g.trimestre}</small></td><td>${g.ecole||""}</td><td>${g.notes.length} / ${diviseur}</td><td><b>${moy.toFixed(2)} / 20</b></td><td>${app}</td></tr>`; }).join('') : `<tr><td colspan="5" style="text-align:center">Aucune moyenne.</td></tr>`; }
-function modifierNotesSD(eleve, trimestre){ let sel=document.getElementById('noteEleve'); let ins=TOUTES_INSCRIPTIONS.find(d=> String(d.enfant||"").toLowerCase().trim()===String(eleve||"").toLowerCase().trim()); if(sel && ins) sel.value=ins.id; document.getElementById('noteTrimestre').value=trimestre; showTabSD('tabNotes', null); genererFormNotes(); document.getElementById('msgModificationNote').textContent="✏️ Tu modifies les notes de "+eleve+" - "+trimestre; }
-function annulerModificationNotes(){ NOTE_EN_MODIF=null; document.getElementById('msgModificationNote').textContent=""; genererFormNotes(); }
-async function ajouterNotesEnUneFois(){ let sel=document.getElementById('noteEleve'); let msg=document.getElementById('msgNote'); if(!sel||!sel.value){ msg.textContent="❌ Choisis l'élève."; return; } let ins=TOUTES_INSCRIPTIONS.find(d=> d.id===sel.value); if(!ins) return; let trim=document.getElementById('noteTrimestre').value; let type=document.getElementById('noteType').value; let nomEcole=ins.ecole||ins.ecoleNom||ins.groupe||ins.groupeNom||""; try{ for(let m of MATIERES_DIRECTEUR){ let oral=Number(document.getElementById('oral_'+m.fr)?.value||0); let ecrit=Number(document.getElementById('ecrit_'+m.fr)?.value||0); if(oral<0||oral>20||ecrit<0||ecrit>20){ msg.textContent="❌ Notes entre 0 et 20 pour "+m.fr; return; } let moyenne=(oral+ecrit)/2; let snap=await db.collection("bulletins").where("eleve","==",ins.enfant).get(); for(let doc of snap.docs){ let b=doc.data(); if(String(b.trimestre||"")===trim && String(b.matiere||"")===m.fr) await db.collection("bulletins").doc(doc.id).delete(); } await db.collection("bulletins").add({eleve:ins.enfant, enfant:ins.enfant, trimestre:trim, matiere:m.fr, oral:oral, ecrit:ecrit, moyenne:moyenne, type:type, ecole:nomEcole, ecoleNom:nomEcole, ecoleId:ins.ecoleId||ins.groupeId||"", groupe:ins.groupe||"", creePar:SD.email, date:new Date().toLocaleDateString('fr-FR'), createdAt:new Date()}); } msg.style.color="green"; msg.textContent="✅ Toutes les notes enregistrées pour "+ins.enfant+" - "+trim; chargerNotes(); }catch(e){ msg.textContent="❌ "+e.message; } }
-async function chargerEnseignantsSD(){ try{ let snap=await db.collection("enseignants").get(); TOUS_ENSEIGNANTS=[]; snap.forEach(d=> TOUS_ENSEIGNANTS.push({id:d.id, ...d.data()})); let tbody=document.getElementById('tbodyEnseignants'); if(!tbody) return; let q=(document.getElementById('rechercheEnseignantSD')?.value||"").toLowerCase(); let liste=TOUS_ENSEIGNANTS.filter(e=> estAMoi(e)); if(q) liste=liste.filter(e=> JSON.stringify(e).toLowerCase().includes(q)); tbody.innerHTML=liste.length ? liste.map(e=>`<tr><td><b>${e.nom||""}</b><br>📱 ${e.tel||""}</td><td>${e.matiere||""}<br>${e.niveau||""}</td><td>${e.ecole||e.ecoleNom||""}</td><td>${Number(e.salaire||0).toLocaleString('fr-FR')} FCFA</td><td><span class="badge badgeVert">Actif</span></td><td><a class="btnPetit btnWA" href="https://wa.me/237${String(e.tel||"").replace(/[^0-9]/g,"").replace(/^237/,"")}" target="_blank">💬 WhatsApp</a> <button class="btnPetit" style="background:#FFEBEE" onclick="supprimerEnseignantSD('${e.id}')">🗑️</button></td></tr>`).join('') : `<tr><td colspan="6" style="text-align:center">Aucun enseignant.</td></tr>`; let selProf=document.getElementById('emploiProf'); if(selProf){ selProf.innerHTML=`<option value="">-- Choisis --</option>`; liste.forEach(e=> selProf.innerHTML+=`<option>${e.nom}</option>`); } }catch(e){} }
-async function ajouterEnseignantSD(){ let nom=document.getElementById('ensNom').value.trim(); let tel=nettoyerTel(document.getElementById('ensTel').value); let email=document.getElementById('ensEmail').value.trim(); let matiere=document.getElementById('ensMatiere').value; let niveau=document.getElementById('ensNiveau').value; let ecoleVal=document.getElementById('ensEcole').value||""; let salaire=Number(document.getElementById('ensSalaire').value||0); let date=document.getElementById('ensDate').value; let note=document.getElementById('ensNote').value.trim(); let msg=document.getElementById('msgEnseignantSD'); if(!nom||!tel){ msg.style.color="red"; msg.textContent="❌ Mets Nom + WhatsApp."; return; } let parts=ecoleVal.split("||"); let ecoleId=parts[0]||""; let ecoleNom=parts[1]||ecoleVal; try{ await db.collection("enseignants").add({nom:nom, tel:tel, email:email, matiere:matiere, niveau:niveau, ecole:ecoleNom, ecoleNom:ecoleNom, ecoleId:ecoleId, salaire:salaire, dateArrivee:date, note:note, statut:"Actif", creePar:SD.email, createdAt:new Date()}); msg.style.color="green"; msg.textContent="✅ Enseignant ajouté."; document.getElementById('ensNom').value=""; document.getElementById('ensTel').value=""; chargerEnseignantsSD(); }catch(e){ msg.style.color="red"; msg.textContent="❌ "+e.message; } }
-async function supprimerEnseignantSD(id){ if(!confirm("Supprimer ?")) return; await db.collection("enseignants").doc(id).delete(); chargerEnseignantsSD(); }
-async function chargerEmploi(){ try{ let snap=await db.collection("emploi_temps").get(); TOUT_EMPLOI=[]; snap.forEach(d=> TOUT_EMPLOI.push({id:d.id, ...d.data()})); let tbody=document.getElementById('tbodyEmploi'); if(!tbody) return; let liste=TOUT_EMPLOI.filter(e=> estAMoi(e) || !e.ecole); tbody.innerHTML=liste.length ? liste.map(e=>`<tr><td>${e.jour||""}</td><td>${e.heure||""}</td><td>${e.matiere||""}</td><td>${e.enseignant||e.prof||""}</td><td>${e.niveau||""}</td><td>${e.groupe||e.ecole||""}</td><td><button class="btnPetit btnWA">💬</button></td><td><button class="btnPetit" style="background:#FFEBEE" onclick="supprimerEmploiSD('${e.id}')">🗑️</button></td></tr>`).join('') : `<tr><td colspan="8" style="text-align:center">Aucun emploi.</td></tr>`; }catch(e){} }
-async function ajouterEmploi(){ let jour=document.getElementById('emploiJour').value; let heure=document.getElementById('emploiHeure').value.trim(); let matiere=document.getElementById('emploiMatiere').value; let prof=document.getElementById('emploiProf').value; let niveau=document.getElementById('emploiNiveau').value; let groupeDest=document.getElementById('emploiGroupeDest').value||""; let msg=document.getElementById('msgEmploi'); if(!heure){ msg.textContent="❌ Mets l'heure."; return; } let parts=groupeDest.split("||"); let destId=parts[0]||""; let destNom=parts[1]||groupeDest||SD.ecoles[0]?.nom||""; try{ await db.collection("emploi_temps").add({jour:jour, heure:heure, matiere:matiere, enseignant:prof, prof:prof, niveau:niveau, groupe:destNom, ecole:destNom, ecoleNom:destNom, ecoleId:destId, creePar:SD.email, createdAt:new Date()}); msg.style.color="green"; msg.textContent="✅ Ajouté au planning."; document.getElementById('emploiHeure').value=""; chargerEmploi(); }catch(e){ msg.textContent="❌ "+e.message; } }
-async function supprimerEmploiSD(id){ if(!confirm("Supprimer ?")) return; await db.collection("emploi_temps").doc(id).delete(); chargerEmploi(); }
-async function envoyerDepenseSD(){ let ecole=document.getElementById('depEcoleSD').value; let cat=document.getElementById('depCategorieSD').value; let motif=document.getElementById('depMotifSD').value.trim(); let montant=Number(document.getElementById('depMontantSD').value||0); let date=document.getElementById('depDateSD').value; let msg=document.getElementById('msgDepenseSD'); if(!motif||!montant||!date){ msg.style.color="red"; msg.textContent="❌ Remplis Motif, Montant, Date."; return; } try{ await db.collection("depenses").add({ecole:ecole, ecoleNom:ecole, ecoleId:SD.ecoles[0]?.id||"", categorie:cat, motif:motif, montant:montant, date:date, envoyePar:SD.email, statut:"Envoyée", createdAt:new Date()}); msg.style.color="green"; msg.textContent="✅ Dépense envoyée à la Gestion."; document.getElementById('depMotifSD').value=""; document.getElementById('depMontantSD').value=""; chargerMesDepensesSD(); }catch(e){ msg.style.color="red"; msg.textContent="❌ "+e.message; } }
-async function chargerMesDepensesSD(){ let box=document.getElementById('listeMesDepensesSD'); if(!box) return; try{ let snap=await db.collection("depenses").get(); let liste=[]; snap.forEach(d=>{ if(estAMoi(d.data())) liste.push({id:d.id, ...d.data()}); }); if(!liste.length){ box.innerHTML=`<p style="text-align:center">Aucune dépense envoyée.</p>`; return; } box.innerHTML=liste.map(p=>`<div style="background:#F9F9F9;border:1px solid #eee;border-radius:10px;padding:10px;margin-bottom:8px"><b>${p.motif||""}</b> - ${Number(p.montant||0).toLocaleString('fr-FR')} FCFA<br><small>${p.categorie||""} - ${p.date||""} - ${p.ecole||""}</small></div>`).join(''); }catch(e){} }
-async function calculerEvolutionFinanciereSD(){
-  let box=document.getElementById('evolutionFinanciereSD'); if(!box) return;
+async function chargerEnseignantsSD(){
+  if(!SD) return;
   try{
-    let snapD=await db.collection("depenses").get(); let depenses=[]; snapD.forEach(d=>{ if(estAMoi(d.data())) depenses.push(d.data()); });
-    let totalDep=depenses.reduce((s,p)=> s+Number(p.montant||0),0);
-    let mesEleves=TOUTES_INSCRIPTIONS.filter(d=> estAMoi(d)); let totalEnc=0; mesEleves.forEach(el=> totalEnc += dejaPayeEleveSD(el.enfant||""));
-    let solde=totalEnc-totalDep;
-    // ✅ CORRIGÉ : pas de 2ème carte Encaissé ici. Encaissé = seulement dans la carte par école. Ici Dépenses + Solde.
-    box.innerHTML=`<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;text-align:center"><div style="background:#FFEBEE;padding:12px;border-radius:10px"><b>${totalDep.toLocaleString('fr-FR')}</b><br><small>Dépenses FCFA</small></div><div style="background:#FFF9C4;padding:12px;border-radius:10px"><b>${solde.toLocaleString('fr-FR')}</b><br><small>Solde = Encaissé - Dépenses</small></div></div><p style="text-align:center;font-size:11px;color:#666;margin-top:6px">Encaissé total : ${totalEnc.toLocaleString('fr-FR')} FCFA (voir les cartes par école en haut)</p>`;
+    let snap=await db.collection("enseignants").limit(200).get();
+    TOUS_ENSEIGNANTS=[]; snap.forEach(doc=>{ let d={id:doc.id,...doc.data()}; if(estAMoi(d)) TOUS_ENSEIGNANTS.push(d); });
+    let q=normaliserSD(document.getElementById('rechercheEnseignantSD')?.value||"");
+    let liste=TOUS_ENSEIGNANTS.filter(e=>{ if(q && !normaliserSD(JSON.stringify(e)).includes(q)) return false; return true; });
+    let tbody=document.getElementById('tbodyEnseignants'); if(!tbody) return;
+    if(!liste.length){ tbody.innerHTML=`<tr><td colspan="6" style="text-align:center">Aucun enseignant.</td></tr>`; return; }
+    let html=""; liste.forEach(e=>{ html+=`<tr><td><b>${e.nom||""}</b><br><small>${e.tel||""}</small></td><td>${e.matiere||""} / ${e.niveau||e.classe||""}</td><td>${e.ecole||""}</td><td>${Number(e.salaire||0).toLocaleString('fr-FR')}</td><td>${e.statut||"Actif"}</td><td><button class="btnPetit" style="background:#FFEBEE;color:#C62828" onclick="supprimerEnseignantSD('${e.id}')">🗑️</button></td></tr>`; });
+    tbody.innerHTML=html;
+    let selProf=document.getElementById('emploiProf'); if(selProf){ selProf.innerHTML=`<option value="">— Choisis —</option>`; TOUS_ENSEIGNANTS.forEach(e=>{ selProf.innerHTML+=`<option value="${e.nom}">${e.nom}</option>`; }); }
+  }catch(e){ console.log(e.message); }
+}
+async function ajouterEnseignantSD(){
+  let nom=document.getElementById('ensNom').value.trim(); let tel=nettoyerTel(document.getElementById('ensTel').value); let email=document.getElementById('ensEmail').value.trim(); let matiere=document.getElementById('ensMatiere').value; let niveau=document.getElementById('ensNiveau').value; let ecoleVal=document.getElementById('ensEcole').value; let salaire=Number(document.getElementById('ensSalaire').value||0); let date=document.getElementById('ensDate').value; let note=document.getElementById('ensNote').value;
+  let msg=document.getElementById('msgEnseignantSD');
+  if(!nom||!tel){ msg.style.color="red"; msg.textContent="❌ Mets Nom + WhatsApp"; return; }
+  let parts=ecoleVal.split("||"); let ecoleId=parts[0]||""; let ecoleNom=parts[1]||"";
+  try{ await db.collection("enseignants").add({nom, tel, email, matiere, niveau, classe:niveau, ecole:ecoleNom, ecoleNom:ecoleNom, ecoleId:ecoleId, salaire, date, note, statut:"Actif", envoyePar:SD.email, createdAt:new Date()}); msg.style.color="green"; msg.textContent="✅ Enseignant ajouté !"; document.getElementById('ensNom').value=""; document.getElementById('ensTel').value=""; chargerEnseignantsSD(); }catch(e){ msg.style.color="red"; msg.textContent="❌ "+e.message; }
+}
+async function supprimerEnseignantSD(id){ if(!confirm("Supprimer cet enseignant ?")) return; try{ await db.collection("enseignants").doc(id).delete(); chargerEnseignantsSD(); }catch(e){ alert("❌ "+e.message); } }
+async function chargerPourPresence(){
+  if(!SD) return;
+  let tbody=document.getElementById('tbodyPresence'); if(!tbody) return;
+  let html=""; TOUTES_INSCRIPTIONS.forEach(e=>{ let nom=e.enfant||""; html+=`<tr><td><input type="checkbox" class="check-presence" value="${nom}" checked style="width:20px;height:20px"></td><td><b>${nom}</b></td><td>${e.parent||""}<br><small>${e.tel||""}</small></td><td>${e.ecole||e.groupe||""}</td></tr>`; });
+  tbody.innerHTML=html||`<tr><td colspan="4" style="text-align:center">Aucun élève.</td></tr>`;
+  try{
+    let snap=await db.collection("presences").limit(100).get();
+    let hist=[]; snap.forEach(doc=>{ let d={id:doc.id,...doc.data()}; if(estAMoi(d)) hist.push(d); });
+    let tbodyH=document.getElementById('tbodyHistPresence'); if(tbodyH){
+      if(!hist.length) tbodyH.innerHTML=`<tr><td colspan="5" style="text-align:center">Aucune présence.</td></tr>`;
+      else{
+        let h=""; hist.slice().reverse().forEach(p=>{ h+=`<tr><td>${p.date||""}</td><td>${p.presents??""}</td><td>${p.absents??""}</td><td>${(p.absentsNoms||[]).join(", ")}</td><td><button class="btnPetit" style="background:#FFEBEE;color:#C62828" onclick="supprimerPresenceSD('${p.id}')">🗑️</button></td></tr>`; });
+        tbodyH.innerHTML=h;
+      }
+    }
   }catch(e){}
 }
-function seDeconnecterSD(){ localStorage.removeItem("sd_session"); location.reload(); }
-try{ let saved=localStorage.getItem("sd_session"); if(saved){ SD=JSON.parse(saved); setTimeout(()=>{ try{ afficherSD(); }catch(e){} }, 500); } }catch(e){}
+async function enregistrerPresence(){
+  let presents=[...document.querySelectorAll('.check-presence:checked')].map(c=>c.value);
+  let absents=TOUTES_INSCRIPTIONS.map(e=>e.enfant||"").filter(n=> !presents.includes(n));
+  try{
+    await db.collection("presences").add({ecole:SD.ecoles[0]?.nom||"", ecoleNom:SD.ecoles[0]?.nom||"", ecoleId:SD.ecoles[0]?.id||"", date:new Date().toLocaleDateString('fr-FR'), presents:presents.length, absents:absents.length, absentsNoms:absents, eleves:TOUTES_INSCRIPTIONS.map(e=>({nom:e.enfant||"", present:presents.includes(e.enfant||"")})), createdAt:new Date()});
+    document.getElementById('msgPresence').textContent="✅ Présence enregistrée : "+presents.length+" présents, "+absents.length+" absents.";
+    chargerPourPresence();
+  }catch(e){ alert("❌ "+e.message); }
+}
+async function supprimerPresenceSD(id){ if(!confirm("Supprimer ?")) return; try{ await db.collection("presences").doc(id).delete(); chargerPourPresence(); }catch(e){ alert("❌ "+e.message); } }
+async function chargerNotes(){
+  try{
+    let snap=await db.collection("notes").limit(500).get();
+    TOUTES_NOTES=[]; snap.forEach(doc=>{ let d={id:doc.id,...doc.data()}; if(estAMoi(d)) TOUTES_NOTES.push(d); });
+    afficherNotesSD(); afficherMoyennesSD();
+  }catch(e){ console.log(e.message); }
+}
+function afficherNotesSD(){
+  let tbody=document.getElementById('tbodyNotes'); if(!tbody) return;
+  let parEleve={};
+  TOUTES_NOTES.forEach(n=>{ let k=(n.eleve||n.enfant||"")+"||"+(n.trimestre||""); if(!parEleve[k]) parEleve[k]={eleve:n.eleve||n.enfant||"", trimestre:n.trimestre||"", total:0, nb:0}; parEleve[k].total+=Math.min(20, Number(n.moyenne||n.note||n.total||0)); parEleve[k].nb++; });
+  if(!Object.keys(parEleve).length){ tbody.innerHTML=`<tr><td colspan="4" style="text-align:center">Aucune note.</td></tr>`; return; }
+  let nbFixe=MATIERES_DIRECTEUR.length||1;
+  let html=""; Object.values(parEleve).forEach(g=>{ let moy=Math.min(20,(g.total/nbFixe)).toFixed(2); html+=`<tr><td><b>${g.eleve}</b></td><td>${g.trimestre}</td><td><b>${moy} / 20</b></td><td><button class="btnPetit" style="background:#E3F2FD" onclick="modifierNotesEleve('${g.eleve}','${g.trimestre}')">✏️ Modifier</button></td></tr>`; });
+  tbody.innerHTML=html;
+}
+function afficherMoyennesSD(){
+  let tbody=document.getElementById('tbodyMoyennes'); if(!tbody) return;
+  let filtre=document.getElementById('filtreTrimestreMoy')?.value||"";
+  let parEleve={};
+  TOUTES_NOTES.forEach(n=>{ if(filtre && n.trimestre!==filtre) return; let k=n.eleve||n.enfant||""; if(!parEleve[k]) parEleve[k]={eleve:k, ecole:n.ecole||n.ecoleNom||"", total:0, nb:0}; parEleve[k].total+=Math.min(20, Number(n.moyenne||n.note||0)); parEleve[k].nb++; });
+  if(!Object.keys(parEleve).length){ tbody.innerHTML=`<tr><td colspan="5" style="text-align:center">Aucune moyenne.</td></tr>`; return; }
+  let nbFixe=MATIERES_DIRECTEUR.length||1;
+  let html=""; Object.values(parEleve).forEach(g=>{ let moy=Math.min(20,(g.total/nbFixe)).toFixed(2); let app = moy>=16?"🌟 Excellent":moy>=14?"👏 Très bien":moy>=12?"👍 Bien":moy>=10?"✅ Passable":"❌ Insuffisant"; html+=`<tr><td><b>${g.eleve}</b></td><td>${g.ecole}</td><td>${g.nb} / ${nbFixe}</td><td><b>${moy} / 20</b></td><td>${app}</td></tr>`; });
+  tbody.innerHTML=html;
+}
+function genererFormNotes(){
+  let eleve=document.getElementById('noteEleve').value; let tri=document.getElementById('noteTrimestre').value; let box=document.getElementById('formNotesToutes');
+  if(!eleve){ box.innerHTML=""; return; }
+  let mode=TYPE_COMPOSITION_SD||"Oral + Écrit";
+  let showOral = mode!=="Écrit seul";
+  let showEcrit = mode!=="Oral seul";
+  if(mode==="Note unique"){ showOral=true; showEcrit=false; }
+  let html=`<div class="formNotesGrid">`;
+  MATIERES_DIRECTEUR.forEach(m=>{
+    let nomM=m.fr||m.nom||"";
+    let exist=TOUTES_NOTES.find(n=> normaliserSD(n.eleve||n.enfant||"")===normaliserSD(eleve) && n.trimestre===tri && normaliserSD(n.matiere||"")===normaliserSD(nomM));
+    let oral=exist?Number(exist.oral||0):0, ecrit=exist?Number(exist.ecrit||0):0;
+    if(mode==="Oral seul") ecrit=0;
+    if(mode==="Écrit seul") oral=0;
+    if(mode==="Note unique") ecrit=0;
+    oral=Math.min(10,Math.max(0,oral)); ecrit=Math.min(10,Math.max(0,ecrit));
+    html+=`<div class="carteMatiere"><b>${joliNomMatiere(nomM)}</b><br><small>Mode : ${mode}</small>`;
+    if(showOral) html+=`<label>Oral /10</label><input type="number" min="0" max="10" step="0.5" class="note-input" data-matiere="${nomM}" data-type="oral" value="${oral}" oninput="calculerTotalNoteSD(this)">`;
+    if(showEcrit) html+=`<label>Écrit /10</label><input type="number" min="0" max="10" step="0.5" class="note-input" data-matiere="${nomM}" data-type="ecrit" value="${ecrit}" oninput="calculerTotalNoteSD(this)">`;
+    html+=`<div style="text-align:center;margin-top:6px">Total : <b class="total-ligne" data-matiere="${nomM}">${calculerTotalModeSD(oral, ecrit).toFixed(1)} / 20</b></div></div>`;
+  });
+  html+=`</div>`; box.innerHTML=html;
+  if(existNotesPour(eleve, tri)){ document.getElementById('msgModificationNote').textContent="✏️ Tu modifies les notes de "+eleve+" - "+tri; NOTE_EN_MODIF={eleve, trimestre:tri}; } else { document.getElementById('msgModificationNote').textContent=""; NOTE_EN_MODIF=null; }
+}
+function existNotesPour(eleve, tri){ return TOUTES_NOTES.some(n=> normaliserSD(n.eleve||n.enfant||"")===normaliserSD(eleve) && n.trimestre===tri); }
+function calculerTotalModeSD(oral, ecrit){
+  oral=Math.min(10,Math.max(0,Number(oral||0)));
+  ecrit=Math.min(10,Math.max(0,Number(ecrit||0)));
+  let mode=TYPE_COMPOSITION_SD||"Oral + Écrit";
+  if(mode==="Oral seul") return Math.min(20, oral*2);
+  if(mode==="Écrit seul") return Math.min(20, ecrit*2);
+  if(mode==="Note unique") return Math.min(20, oral*2);
+  return Math.min(20, oral+ecrit);
+}
+function calculerTotalNoteSD(input){
+  if(Number(input.value)>10){ input.value=10; alert("⚠️ C'est sur 10 maximum, pas plus."); }
+  if(Number(input.value)<0) input.value=0;
+  let mat=input.dataset.matiere;
+  let oral=Number(document.querySelector(`input[data-matiere="${mat}"][data-type="oral"]`)?.value||0);
+  let ecrit=Number(document.querySelector(`input[data-matiere="${mat}"][data-type="ecrit"]`)?.value||0);
+  let el=document.querySelector(`.total-ligne[data-matiere="${mat}"]`); if(el) el.textContent=calculerTotalModeSD(oral, ecrit).toFixed(1)+" / 20";
+}
+function modifierNotesEleve(eleve, tri){
+  showTabSD('tabNotes',null);
+  setTimeout(()=>{ document.getElementById('noteEleve').value=eleve; document.getElementById('noteTrimestre').value=tri; genererFormNotes(); },300);
+}
+function annulerModificationNotes(){ document.getElementById('formNotesToutes').innerHTML=""; document.getElementById('noteEleve').value=""; document.getElementById('msgModificationNote').textContent=""; NOTE_EN_MODIF=null; }
+async function ajouterNotesEnUneFois(){
+  let eleve=document.getElementById('noteEleve').value; let tri=document.getElementById('noteTrimestre').value; let type=document.getElementById('noteType').value; let msg=document.getElementById('msgNote');
+  if(!eleve){ msg.style.color="red"; msg.textContent="❌ Choisis l'élève"; return; }
+  let inputs=[...document.querySelectorAll('#formNotesToutes input[data-matiere]')];
+  if(!inputs.length){ msg.style.color="red"; msg.textContent="❌ Aucune matière"; return; }
+  let elObj=TOUTES_INSCRIPTIONS.find(e=> (e.enfant||"")===eleve) || {};
+  try{
+    let parMatiere={};
+    inputs.forEach(inp=>{ let mat=inp.dataset.matiere; if(!parMatiere[mat]) parMatiere[mat]={oral:0, ecrit:0}; parMatiere[mat][inp.dataset.type]=Math.min(10,Math.max(0,Number(inp.value||0))); });
+    for(let mat of Object.keys(parMatiere)){
+      let o=parMatiere[mat].oral||0, e=parMatiere[mat].ecrit||0;
+      if(TYPE_COMPOSITION_SD==="Oral seul") e=0;
+      if(TYPE_COMPOSITION_SD==="Écrit seul") o=0;
+      if(TYPE_COMPOSITION_SD==="Note unique") e=0;
+      let moyenne=calculerTotalModeSD(o, e);
+      let exist=TOUTES_NOTES.find(n=> normaliserSD(n.eleve||n.enfant||"")===normaliserSD(eleve) && n.trimestre===tri && normaliserSD(n.matiere||"")===normaliserSD(mat));
+      if(exist && exist.id){
+        await db.collection("notes").doc(exist.id).update({oral:o, ecrit:e, moyenne:moyenne, type:type, ecole:elObj.ecole||elObj.ecoleNom||SD.ecoles[0]?.nom||"", ecoleId:elObj.ecoleId||SD.ecoles[0]?.id||""});
+      } else {
+        await db.collection("notes").add({eleve, enfant:eleve, trimestre:tri, type:type, matiere:mat, oral:o, ecrit:e, moyenne:moyenne, note:moyenne, total:moyenne, ecole:elObj.ecole||elObj.ecoleNom||SD.ecoles[0]?.nom||"", ecoleNom:elObj.ecole||elObj.ecoleNom||SD.ecoles[0]?.nom||"", ecoleId:elObj.ecoleId||SD.ecoles[0]?.id||"", createdAt:new Date()});
+      }
+    }
+    msg.style.color="green"; msg.textContent="✅ Toutes les notes enregistrées pour "+eleve+" ("+TYPE_COMPOSITION_SD+") - "+tri;
+    await chargerNotes();
+    genererFormNotes();
+  }catch(e){ msg.style.color="red"; msg.textContent="❌ "+e.message; }
+}
+async function chargerEmploi(){
+  try{
+    let snap=await db.collection("emploi_temps").limit(200).get();
+    TOUT_EMPLOI=[]; snap.forEach(doc=>{ let d={id:doc.id,...doc.data()}; if(estAMoi(d)) TOUT_EMPLOI.push(d); });
+    let tbody=document.getElementById('tbodyEmploi'); if(!tbody) return;
+    if(!TOUT_EMPLOI.length){ tbody.innerHTML=`<tr><td colspan="8" style="text-align:center">Aucun emploi.</td></tr>`; return; }
+    let html=""; TOUT_EMPLOI.forEach(e=>{ html+=`<tr><td>${e.jour||""}</td><td>${e.heure||""}</td><td>${e.matiere||""}</td><td>${e.enseignant||e.prof||""}</td><td>${e.niveau||""}</td><td>${e.groupe||e.ecole||""}</td><td><button class="btnPetit btnWA" onclick="envoyerEmploiWhatsApp('${e.id}')">💬 Envoyer</button></td><td><button class="btnPetit" style="background:#FFEBEE;color:#C62828" onclick="supprimerEmploiSD('${e.id}')">🗑️</button></td></tr>`; });
+    tbody.innerHTML=html;
+  }catch(e){}
+}
+async function ajouterEmploi(){
+  let jour=document.getElementById('emploiJour').value; let heure=document.getElementById('emploiHeure').value.trim(); let matiere=document.getElementById('emploiMatiere').value; let prof=document.getElementById('emploiProf').value; let niveau=document.getElementById('emploiNiveau').value; let groupeVal=document.getElementById('emploiGroupeDest').value;
+  let msg=document.getElementById('msgEmploi');
+  if(!heure){ msg.textContent="❌ Mets l'heure"; return; }
+  let parts=groupeVal.split("||"); let groupeId=parts[0]||""; let groupeNom=parts[1]||SD.ecoles[0]?.nom||"";
+  try{ await db.collection("emploi_temps").add({jour, heure, matiere, enseignant:prof, prof, niveau, groupe:groupeNom, groupeNom:groupeNom, groupeId:groupeId, ecole:groupeNom, ecoleId:groupeId, envoyePar:SD.email, createdAt:new Date()}); msg.style.color="green"; msg.textContent="✅ Ajouté !"; document.getElementById('emploiHeure').value=""; chargerEmploi(); }catch(e){ msg.style.color="red"; msg.textContent="❌ "+e.message; }
+}
+function envoyerEmploiWhatsApp(id){ let e=TOUT_EMPLOI.find(x=>x.id===id); if(!e) return; let txt=`📅 Emploi du temps - ${e.jour} ${e.heure}\nMatière : ${e.matiere}\nEnseignant : ${e.enseignant||""}\nNiveau : ${e.niveau||""}\nGroupe : ${e.groupe||""}`; window.open("https://wa.me/?text="+encodeURIComponent(txt),"_blank"); }
+async function supprimerEmploiSD(id){ if(!confirm("Supprimer ?")) return; try{ await db.collection("emploi_temps").doc(id).delete(); chargerEmploi(); }catch(e){ alert("❌ "+e.message); } }
+async function chargerRetard(){
+  let tbody=document.getElementById('tbodyRetard'); if(!tbody) return;
+  let liste=TOUTES_INSCRIPTIONS.filter(e=> soldeEleveSD(e.enfant||"").reste>0);
+  if(!liste.length){ tbody.innerHTML=`<tr><td colspan="5" style="text-align:center">🎉 Tout le monde a payé !</td></tr>`; return; }
+  let html=""; liste.forEach(e=>{ let s=soldeEleveSD(e.enfant||""); html+=`<tr><td><b>${e.enfant||""}</b></td><td>${e.parent||""}<br><small>${e.tel||""}</small><br><a class="btnPetit btnWA" href="https://wa.me/237${nettoyerTel(e.tel||"")}?text=${encodeURIComponent("Salam "+(e.parent||"")+", il reste "+s.reste+" FCFA pour "+(e.enfant||""))}" target="_blank">💬 Relancer</a></td><td>${e.ecole||e.groupe||""}</td><td><b>${s.totalDu.toLocaleString('fr-FR')}</b> / ${s.totalPaye.toLocaleString('fr-FR')} / <b style="color:red">${s.reste.toLocaleString('fr-FR')}</b></td><td><button class="btnPetit btnRecu" onclick="imprimerRecu('${e.id}')">🧾 Reçu</button></td></tr>`; });
+  tbody.innerHTML=html;
+}
+function setFiltrePaiementSD(f){ FILTRE_PAIEMENT_SD=f; chargerPaiementsSD(); }
+async function chargerPaiementsSD(silent){
+  try{
+    let snap=await db.collection("paiements").limit(500).get();
+    TOUS_PAIEMENTS=[]; snap.forEach(doc=>{ let d={id:doc.id,...doc.data()}; if(!SD) { TOUS_PAIEMENTS.push(d); return; } if(estAMoi(d)) TOUS_PAIEMENTS.push(d); });
+    if(silent) return;
+    let q=normaliserSD(document.getElementById('recherchePaiementSD')?.value||"");
+    let tbody=document.getElementById('tbodyPaiements'); if(!tbody) return;
+    let faux=0;
+    let liste=TOUS_PAIEMENTS.filter(p=>{
+      if(FILTRE_PAIEMENT_SD==='verifies'){
+        let el=TOUTES_INSCRIPTIONS.find(e=> normaliserSD(e.enfant||"")===normaliserSD(p.enfant||""));
+        if(!el){ faux++; return false; }
+      }
+      if(q && !normaliserSD(JSON.stringify(p)).includes(q)) return false;
+      return true;
+    });
+    let elFaux=document.getElementById('nbFauxPaiements'); if(elFaux) elFaux.textContent = faux>0 ? `(${faux} faux caché(s))` : "";
+    if(!liste.length){ tbody.innerHTML=`<tr><td colspan="7" style="text-align:center">Aucun paiement.</td></tr>`; return; }
+    let html=""; liste.slice().reverse().forEach(p=>{
+      let s=soldeEleveSD(p.enfant||"");
+      html+=`<tr><td><b>${p.enfant||""}</b></td><td><b>${Number(p.montant||0).toLocaleString('fr-FR')}</b></td><td>${p.motif||""} / ${p.mode||""}</td><td>${p.parent||""}<br><small>${p.tel||""}</small></td><td>${s.totalPaye.toLocaleString('fr-FR')} / <b style="color:red">${s.reste.toLocaleString('fr-FR')}</b></td><td>${p.statut||""}</td><td><button class="btnPetit btnRecu" onclick="imprimerRecuPaiement('${p.id}')">🧾 Reçu</button></td></tr>`;
+    });
+    tbody.innerHTML=html;
+  }catch(e){ console.log(e.message); }
+}
+function imprimerRecuPaiement(id){ let p=TOUS_PAIEMENTS.find(x=>x.id===id); if(!p) return; let s=soldeEleveSD(p.enfant||""); document.getElementById('contenuRecu').innerHTML=`<p><b>Enfant:</b> ${p.enfant||""}</p><p><b>Montant payé:</b> ${Number(p.montant||0).toLocaleString('fr-FR')} FCFA</p><p><b>Motif:</b> ${p.motif||""} - ${p.mode||""}</p><p><b>Total payé:</b> ${s.totalPaye.toLocaleString('fr-FR')} FCFA</p><p><b>Reste:</b> ${s.reste.toLocaleString('fr-FR')} FCFA</p><p><b>Date:</b> ${p.date||new Date().toLocaleDateString('fr-FR')}</p>`; document.getElementById('popupRecu').style.display="flex"; }
+function actualiserRestePaiementSD(){
+  let nom=document.getElementById('payEleve').value; let el=document.getElementById('infoRestePaiementSD');
+  if(!nom){ el.textContent=""; return; }
+  let s=soldeEleveSD(nom); el.textContent=`${nom} - Prix : ${s.totalDu.toLocaleString('fr-FR')} - Déjà payé : ${s.totalPaye.toLocaleString('fr-FR')} - Reste : ${s.reste.toLocaleString('fr-FR')} FCFA`;
+  verifierMontantTropPayeSD();
+}
+function verifierMontantTropPayeSD(){
+  let nom=document.getElementById('payEleve').value; let montant=Number(document.getElementById('payMontant').value||0); let el=document.getElementById('msgTropPayeSD');
+  if(!nom||!montant){ el.textContent=""; return; }
+  let s=soldeEleveSD(nom);
+  if(montant>s.reste) el.textContent=`❌ Trop ! Il ne reste que ${s.reste} FCFA. Tu ne peux pas prendre ${montant}.`; else el.textContent="";
+}
+async function ajouterPaiementSD(){
+  let nom=document.getElementById('payEleve').value; let montant=Number(document.getElementById('payMontant').value||0); let motif=document.getElementById('payMotif').value; let mode=document.getElementById('payMode').value; let msg=document.getElementById('msgNouveauPaiementSD');
+  if(!nom||!montant){ msg.style.color="red"; msg.textContent="❌ Choisis l'élève et le montant"; return; }
+  let s=soldeEleveSD(nom);
+  if(montant>s.reste){ msg.style.color="red"; msg.textContent="❌ Trop ! Il ne reste que "+s.reste+" FCFA"; return; }
+  let elObj=TOUTES_INSCRIPTIONS.find(e=> (e.enfant||"")===nom) || {};
+  try{
+    await db.collection("paiements").add({enfant:nom, parent:elObj.parent||"", tel:elObj.tel||"", montant, motif, mode, statut:"en_attente", statutPaiement:"en_attente", ecole:elObj.ecole||elObj.ecoleNom||SD.ecoles[0]?.nom||"", ecoleNom:elObj.ecole||elObj.ecoleNom||SD.ecoles[0]?.nom||"", ecoleId:elObj.ecoleId||SD.ecoles[0]?.id||"", eleveId:elObj.id||"", niveau:elObj.niveau||"", envoyePar:"sous-directeur", envoyeParEmail:SD.email, date:new Date().toLocaleDateString('fr-FR'), createdAt:new Date()});
+    msg.style.color="green"; msg.textContent="✅ Paiement envoyé en attente : "+montant+" FCFA pour "+nom+" - Le Directeur va le valider.";
+    document.getElementById('payMontant').value=""; chargerPaiementsSD(); chargerInscriptionsSD();
+  }catch(e){ msg.style.color="red"; msg.textContent="❌ "+e.message; }
+}
+async function envoyerDepenseSD(){
+  let ecole=document.getElementById('depEcoleSD').value; let cat=document.getElementById('depCategorieSD').value; let motif=document.getElementById('depMotifSD').value.trim(); let montant=Number(document.getElementById('depMontantSD').value||0); let date=document.getElementById('depDateSD').value; let msg=document.getElementById('msgDepenseSD');
+  if(!motif||!montant){ msg.style.color="red"; msg.textContent="❌ Mets Motif + Montant"; return; }
+  try{ await db.collection("depenses").add({ecole, ecoleNom:ecole, ecoleId:SD.ecoles[0]?.id||SD.groupes[0]?.id||"", categorie:cat, motif, montant, date:date||new Date().toLocaleDateString('fr-FR'), envoyePar:SD.email, statut:"en_attente", createdAt:new Date()}); msg.style.color="green"; msg.textContent="✅ Dépense envoyée !"; document.getElementById('depMotifSD').value=""; document.getElementById('depMontantSD').value=""; chargerMesDepensesSD(); chargerInscriptionsSD(); }catch(e){ msg.style.color="red"; msg.textContent="❌ "+e.message; }
+}
+async function chargerMesDepensesSD(){
+  try{
+    let snap=await db.collection("depenses").limit(200).get();
+    let liste=[]; snap.forEach(doc=>{ let d={id:doc.id,...doc.data()}; if(estAMoi(d)) liste.push(d); });
+    TOUTES_DEPENSES_SD=liste;
+    let box=document.getElementById('listeMesDepensesSD'); if(!box) return;
+    if(!liste.length){ box.innerHTML=`<p style="text-align:center">Aucune dépense.</p>`; return; }
+    let totValide=liste.filter(d=>statutDepenseValideSD(d)).reduce((s,x)=>s+Number(x.montant||0),0);
+    let totAttente=liste.filter(d=>String(d.statut||"")==="en_attente").reduce((s,x)=>s+Number(x.montant||0),0);
+    let html=`<p style="text-align:center"><b>✅ Validées : ${totValide.toLocaleString('fr-FR')} FCFA</b> | ⏳ En attente : <b>${totAttente.toLocaleString('fr-FR')} FCFA</b></p><table><thead><tr><th>Date</th><th>Motif</th><th>Montant</th><th>Statut</th></tr></thead><tbody>`;
+    liste.slice().reverse().forEach(d=>{ html+=`<tr><td>${d.date||""}</td><td><b>${d.motif||""}</b><br><small>${d.categorie||""}</small></td><td><b>${Number(d.montant||0).toLocaleString('fr-FR')}</b></td><td>${badgeDepenseSD(d.statut)}</td></tr>`; });
+    html+=`</tbody></table>`; box.innerHTML=html;
+  }catch(e){}
+}
+function moisDeDateSD(d){
+  if(!d) return "Sans date";
+  d=String(d).trim();
+  if(d.includes("/")){ let p=d.split("/"); if(p.length===3) return p[2]+"-"+p[1].padStart(2,"0"); return d; }
+  return d.slice(0,7);
+}
+async function calculerEvolutionFinanciereSD(){
+  try{
+    await chargerToutesDepensesSD();
+    let parMois={};
+    TOUS_PAIEMENTS.forEach(p=>{ if(!statutPaiementValideSD(p)) return; let mois=moisDeDateSD(p.date); if(!parMois[mois]) parMois[mois]={encaisse:0, depenses:0}; parMois[mois].encaisse+=Number(p.montant||0); });
+    TOUTES_DEPENSES_SD.forEach(d=>{ if(!statutDepenseValideSD(d)) return; let mois=moisDeDateSD(d.date); if(!parMois[mois]) parMois[mois]={encaisse:0, depenses:0}; parMois[mois].depenses+=Number(d.montant||0); });
+    let box=document.getElementById('evolutionFinanciereSD'); if(!box) return;
+    if(!Object.keys(parMois).length){ box.innerHTML=`<p style="text-align:center">Aucune donnée.</p>`; return; }
+    let html=`<table><thead><tr><th>Mois</th><th>Encaissé</th><th>Dépenses</th><th>Solde</th></tr></thead><tbody>`;
+    Object.keys(parMois).sort().forEach(m=>{ let v=parMois[m]; let solde=v.encaisse-v.depenses; html+=`<tr><td><b>${m}</b></td><td>${v.encaisse.toLocaleString('fr-FR')}</td><td>${v.depenses.toLocaleString('fr-FR')}</td><td><b>${solde.toLocaleString('fr-FR')} FCFA</b></td></tr>`; });
+    html+=`</tbody></table>`; box.innerHTML=html;
+  }catch(e){ console.log(e.message); }
+}
+window.addEventListener('load', ()=>{
+  try{
+    let s=localStorage.getItem("sd_session");
+    if(s){ SD=JSON.parse(s); afficherSD(); }
+  }catch(e){}
+});
 </script>
 </body>
 </html>
+

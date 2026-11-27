@@ -34,13 +34,13 @@ tr:nth-child(even){background:#F9F9F9}
 <b>☪️ LIAISON GESTION - SOUS-DIRECTEURS<br><span class="ar">الربط بين الإدارة ونواب المدير</span></b>
 <a href="gestion.html" style="background:#C9A227;color:#0F3D2E;padding:8px 12px;border-radius:20px;text-decoration:none;font-weight:800">← Retour Gestion <span class="ar">العودة للإدارة</span></a>
 </div>
-<!-- ✅ SÉCURITÉ ENLEVÉE : plus de loginPont, on arrive direct, car gestion.html est déjà sécurisé -->
 <div id="pontPanel">
 <div style="background:#E8F5E9;padding:12px;border-radius:12px">👋 Salam <span class="ar">السلام عليكم</span> - Voici tout ce que les Sous-Directeurs ont envoyé. <span class="ar">كل ما أرسله نواب المدير</span></div>
-<div style="display:flex;gap:8px;margin:12px 0">
+<div style="display:flex;gap:8px;margin:12px 0;flex-wrap:wrap">
 <button class="ongletBtn actif" id="btnOngletEnseignants" onclick="showOngletPont('tabPontEnseignants',this)">👨‍🏫 Enseignants <span class="ar">المعلمون</span></button>
 <button class="ongletBtn" id="btnOngletPaiements" onclick="showOngletPont('tabPontPaiements',this)">💰 Paiements <span class="ar">المدفوعات</span></button>
 <button class="ongletBtn" id="btnOngletDepenses" onclick="showOngletPont('tabPontDepenses',this)">🧾 Dépenses <span class="ar">المصاريف</span></button>
+<button class="ongletBtn" id="btnOngletDepEcole" onclick="showOngletPont('tabPontDepEcole',this)">📊 Dépenses par École <span class="ar">المصاريف حسب المدرسة</span></button>
 <button class="ongletBtn" id="btnOngletDanger" onclick="showOngletPont('tabPontDanger',this)">🗑️ Danger <span class="ar">خطر</span></button>
 </div>
 <div id="tabPontEnseignants">
@@ -53,15 +53,18 @@ tr:nth-child(even){background:#F9F9F9}
 </div>
 <div id="tabPontPaiements" style="display:none">
 <div class="card">
-<h3>💰 Paiements - Calculs Officiels Gestion <span class="ar">المدفوعات - الحسابات الرسمية</span></h3>
-<div style="background:#FFF9C4;padding:10px;border-radius:10px;text-align:center;font-size:13px"><b>RÈGLE : <span class="ar">القاعدة</span></b><br>Encaissé = <b>VALIDÉ seulement</b> / المقبوض = الموثق فقط<br>Annulé + Refusé = <b>NE comptent JAMAIS</b> / الملغي + المرفوض = لا يُحسب أبداً</div>
+<h3>💰 Paiements <span class="ar">المدفوعات</span></h3>
 <div class="stat" style="margin-top:10px">
 <div>✅<br><b id="pontEncaisse">0</b><small>Encaissé Validé <span class="ar">المقبوض الموثق</span></small></div>
 <div>⏳<br><b id="pontAttente">0</b><small>En attente <span class="ar">قيد الانتظار</span></small></div>
-<div>❌<br><b id="pontAnnule" style="color:#C62828">0</b><small>Annulé (ne compte pas) <span class="ar">الملغي - لا يُحسب</span></small></div>
-<div>🧾<br><b id="pontDepenses">0</b><small>Dépenses <span class="ar">المصاريف</span></small></div>
+<div>❌<br><b id="pontAnnule" style="color:#C62828">0</b><small>Annulé <span class="ar">الملغي</span></small></div>
+<div>🧾<br><b id="pontDepenses">0</b><small>Dépenses Validées <span class="ar">المصاريف الموثقة</span></small></div>
 </div>
-<div style="background:#0F3D2E;color:white;border-radius:12px;padding:12px;text-align:center;margin-top:10px"><b>SOLDE OFFICIEL / الرصيد الرسمي : <span id="pontSolde">0</span> FCFA</b><br><small>Solde = Encaissé Validé - Dépenses</small></div>
+<div style="background:#0F3D2E;color:white;border-radius:12px;padding:12px;text-align:center;margin-top:10px"><b>SOLDE : <span id="pontSolde">0</span> FCFA</b></div>
+<div class="card" style="background:#F1F8E9;border:1px solid #C8E6C9">
+<h3 style="text-align:center;margin:0">📊 Tableau de bord par École</h3>
+<div id="dashboardParEcolePont"></div>
+</div>
 <label style="margin-top:12px">🎯 Filtrer par École <span class="ar">/ حسب المدرسة</span></label><select id="filtrePontEcole" onchange="chargerPontPaiements()"><option value="">Toutes les écoles <span class="ar">كل المدارس</span></option></select>
 <input id="recherchePontPaiement" placeholder="🔍 Cherche un élève... / ابحث عن تلميذ" oninput="chargerPontPaiements()">
 <div class="tableWrap"><table><thead><tr><th>Enfant <span class="ar">الطفل</span></th><th>Montant <span class="ar">المبلغ</span></th><th>École <span class="ar">المدرسة</span></th><th>Prix / Payé / Reste <span class="ar">السعر / المدفوع / الباقي</span></th><th>Statut <span class="ar">الحالة</span></th><th>Actions <span class="ar">إجراءات</span></th></tr></thead><tbody id="tbodyPontPaiements"></tbody></table></div>
@@ -70,8 +73,18 @@ tr:nth-child(even){background:#F9F9F9}
 <div id="tabPontDepenses" style="display:none">
 <div class="card">
 <h3>🧾 Dépenses envoyées par les Sous-Directeurs <span class="ar">المصاريف المرسلة من نواب المدير</span></h3>
+<p style="text-align:center;font-size:12px">C'est ici que tu valides. Dans Gestion, on voit juste le statut, sans bouton.</p>
 <label>🎯 Filtrer par École <span class="ar">/ حسب المدرسة</span></label><select id="filtrePontDepEcole" onchange="chargerPontDepenses()"><option value="">Toutes les écoles</option></select>
 <div id="listePontDepenses" style="margin-top:10px"></div>
+<div class="tableWrap"><table><thead><tr><th>Date</th><th>École</th><th>Motif</th><th>Montant</th><th>Statut</th><th>Actions</th></tr></thead><tbody id="tbodyPontDepenses"></tbody></table></div>
+</div>
+</div>
+<div id="tabPontDepEcole" style="display:none">
+<div class="card">
+<h3>📊 Dépenses par École / Groupe <span class="ar">المصاريف حسب المدرسة / المجموعة</span></h3>
+<label>🎯 Filtrer par École</label><select id="filtrePontDepEcoleTotal" onchange="calculerDepensesParEcolePont()"><option value="">Toutes les écoles</option></select>
+<div id="listeDepensesParEcolePont" style="margin-top:10px"></div>
+<div id="totalDepensesParEcolePont" style="margin-top:10px"></div>
 </div>
 </div>
 <div id="tabPontDanger" style="display:none">
@@ -93,23 +106,221 @@ let PONT_DIRECTEUR={email:"gestion"}, PONT_PAIEMENTS=[], PONT_DEPENSES=[], PONT_
 function nettoyerEmailPont(e){ return String(e||"").toLowerCase().trim(); }
 function nettoyerTelPont(t){ if(!t) return ""; return String(t).replace(/[\s\-\+]/g,"").replace(/^237/,""); }
 function normaliserPont(t){ return (t||"").toString().trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,""); }
-function showOngletPont(id,btn){ ['tabPontEnseignants','tabPontPaiements','tabPontDepenses','tabPontDanger'].forEach(x=>{ document.getElementById(x).style.display='none'; }); document.getElementById(id).style.display='block'; document.querySelectorAll('.ongletBtn').forEach(b=>b.classList.remove('actif')); if(btn) btn.classList.add('actif'); if(id==='tabPontEnseignants') chargerPontEnseignants(); if(id==='tabPontPaiements') chargerPontPaiements(); if(id==='tabPontDepenses') chargerPontDepenses(); }
-// ✅ PLUS DE seConnecterPont() - on ouvre direct
+function clePrixPont(nom){ return String(nom||"").trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9]+/g,"_"); }
+function statutValidePont(s){ let st=String(s||"").toLowerCase().trim(); return (st==="valide"||st==="validé"||st==="validee"||st==="paye"||st==="payé"||st==="payee"||st==="ok"||st==="confirme"||st==="confirmé"); }
+function statutEnAttentePont(s){ return String(s||"").toLowerCase().trim()==="en_attente"; }
+function statutRefusePont(s){ let st=String(s||"").toLowerCase().trim(); return (st==="refuse"||st==="refusé"||st==="refusee"||st==="annule"||st==="annulé"||st==="annulee"); }
+function showOngletPont(id,btn){ ['tabPontEnseignants','tabPontPaiements','tabPontDepenses','tabPontDepEcole','tabPontDanger'].forEach(x=>{ document.getElementById(x).style.display='none'; }); document.getElementById(id).style.display='block'; document.querySelectorAll('.ongletBtn').forEach(b=>b.classList.remove('actif')); if(btn) btn.classList.add('actif'); if(id==='tabPontEnseignants') chargerPontEnseignants(); if(id==='tabPontPaiements') chargerPontPaiements(); if(id==='tabPontDepenses') chargerPontDepenses(); if(id==='tabPontDepEcole') calculerDepensesParEcolePont(); }
 function afficherPont(){ chargerPontPrix(); chargerPontEnseignants(); chargerPontPaiements(); chargerPontDepenses(); }
 function seDeconnecterPont(){ window.location.href="gestion.html"; }
-async function chargerPontPrix(){ PONT_PRIX={}; try{ let s1=await db.collection("prix_par_ecole").get(); s1.forEach(d=>{ let v=d.data(); if(v.nom||v.ecole) PONT_PRIX[normaliserPont(v.nom||v.ecole)]=Number(v.prix||0); }); }catch(e){} try{ let s2=await db.collection("ecoles").get(); s2.forEach(d=>{ let v=d.data(); if(v.nom && v.prix) PONT_PRIX[normaliserPont(v.nom)]=Number(v.prix); if(v.nom && v.frais) PONT_PRIX[normaliserPont(v.nom)]=Number(v.frais); }); }catch(e){} try{ let s3=await db.collection("config_gestion").doc("global").get(); if(s3.exists){ let v=s3.data(); if(v.prixSecours) PONT_PRIX_SECOURS=Number(v.prixSecours); if(v.fraisTotal) PONT_PRIX_SECOURS=Number(v.fraisTotal); if(v.prixParEcole){ Object.keys(v.prixParEcole).forEach(k=>{ PONT_PRIX[normaliserPont(k)]=Number(v.prixParEcole[k]); }); } } }catch(e){} try{ let s4=await db.collection("configFrais").limit(100).get(); s4.forEach(d=>{ let v=d.data(); if(v.ecoleNom && v.prix) PONT_PRIX[normaliserPont(v.ecoleNom)]=Number(v.prix); }); }catch(e){} }
-function getPrixPont(nomEcole){ if(!nomEcole) return PONT_PRIX_SECOURS; let p=PONT_PRIX[normaliserPont(nomEcole)]; if(p) return p; let cle=Object.keys(PONT_PRIX).find(k=>normaliserPont(nomEcole).includes(k)||k.includes(normaliserPont(nomEcole))); if(cle) return PONT_PRIX[cle]; return PONT_PRIX_SECOURS; }
-function dejaPayePont(nomEleve){ let tot=0; PONT_PAIEMENTS.forEach(p=>{ if((p.enfant||"").toLowerCase().trim()===String(nomEleve||"").toLowerCase().trim() && p.statut!=="refuse" && p.statut!=="annule" && p.statut!=="annulé") tot+=Number(p.montant||0); }); return tot; }
+async function chargerPontPrix(){
+  PONT_PRIX={};
+  try{
+    let docs=["global","TOUTES"];
+    for(let docId of docs){
+      try{
+        let doc=await db.collection("configPrixEcoles").doc(docId).get();
+        if(doc.exists && doc.data().prix){
+          let mapPrix=doc.data().prix||{};
+          Object.keys(mapPrix).forEach(k=>{
+            if(k.endsWith("_nom")) return;
+            let prix=Number(mapPrix[k]);
+            if(prix>0){
+              PONT_PRIX[k]=prix;
+              let nomStocke=mapPrix[k+"_nom"]||"";
+              if(nomStocke){ PONT_PRIX[normaliserPont(nomStocke)]=prix; PONT_PRIX[clePrixPont(nomStocke)]=prix; }
+            }
+          });
+        }
+      }catch(e){}
+    }
+  }catch(e){}
+  try{
+    let d3=await db.collection("configFrais").doc("global").get();
+    if(d3.exists && d3.data().montant) PONT_PRIX_SECOURS=Number(d3.data().montant);
+  }catch(e){}
+  try{
+    let s=await db.collection("configMatieres").get();
+    s.forEach(d=>{
+      let v=d.data();
+      let prix=Number(v.fraisTotal||v.fraisTotalInscription||0);
+      if(prix>0 && v.ecoleNom) { PONT_PRIX[normaliserPont(v.ecoleNom)]=prix; PONT_PRIX[clePrixPont(v.ecoleNom)]=prix; }
+    });
+  }catch(e){}
+}
+function getPrixPont(nomEcole){
+  if(!nomEcole) return PONT_PRIX_SECOURS;
+  let cle=clePrixPont(nomEcole);
+  if(PONT_PRIX[cle]) return PONT_PRIX[cle];
+  let p=PONT_PRIX[normaliserPont(nomEcole)];
+  if(p) return p;
+  let trouve=Object.keys(PONT_PRIX).find(k=>normaliserPont(nomEcole).includes(k)||k.includes(normaliserPont(nomEcole)));
+  if(trouve) return PONT_PRIX[trouve];
+  return PONT_PRIX_SECOURS;
+}
+function dejaPayePont(nomEleve){
+  let tot=0;
+  PONT_PAIEMENTS.forEach(p=>{
+    if(normaliserPont(p.enfant||"")===normaliserPont(nomEleve||"") && statutValidePont(p.statut)) tot+=Number(p.montant||0);
+  });
+  return tot;
+}
+function eleveExistePont(nomEleve){
+  return PONT_INSCRIPTIONS.some(function(e){ return normaliserPont(e.enfant||e.nomEnfant||"")===normaliserPont(nomEleve||""); });
+}
 async function chargerPontEnseignants(){ let box=document.getElementById('tbodyPontEnseignants'); if(!box) return; let q=(document.getElementById('recherchePontEns')?document.getElementById('recherchePontEns').value.toLowerCase():""); try{ let snap=await db.collection("enseignants").limit(200).get(); PONT_ENSEIGNANTS=[]; snap.forEach(doc=>PONT_ENSEIGNANTS.push({id:doc.id,...doc.data()})); let liste=PONT_ENSEIGNANTS.filter(e=>!q||JSON.stringify(e).toLowerCase().includes(q)); let html=""; liste.forEach(e=>{ let tel=nettoyerTelPont(e.tel||""); let nomSafe=String(e.nom||"").replace(/'/g,"\\'"); html+=`<tr><td><b>👨‍🏫 ${e.nom||""}</b><br><small>${e.tel||""}<br>${e.email||""}</small></td><td><b>${e.matiere||""}</b><br><small>${e.niveau||""}</small></td><td>${e.ecole||e.groupe||""}<br><small>${e.dateArr||""}</small></td><td><b>${Number(e.salaire||0).toLocaleString('fr-FR')} FCFA</b><br><small>${e.note||""}</small></td><td><small>${e.envoyePar||"Directeur"}</small><br><span class="badge ${e.statut==="actif"?"badgeVert":"badgeRouge"}">${e.statut||"actif"}</span></td><td><a class="btnPetit btnWA" href="https://wa.me/237${tel}?text=${encodeURIComponent("Salam "+e.nom+", c'est le Directeur. Merci pour ton travail. - An Nourou Iman")}" target="_blank">💬 WhatsApp</a><button type="button" class="btnPetit" style="background:#FF7A3D;color:white" onclick="modifierSalairePont('${e.id}')">💰 Salaire</button><button type="button" class="btnPetit" style="background:#C62828;color:white" onclick="supprimerEnseignantPont('${e.id}','${nomSafe}')">🗑️ Supprimer</button></td></tr>`; }); box.innerHTML=html||`<tr><td colspan="6" style="text-align:center">Aucun enseignant envoyé. / لا معلم مرسل</td></tr>`; }catch(e){ box.innerHTML=`<tr><td colspan="6">❌ ${e.message}</td></tr>`; } }
 async function modifierSalairePont(id){ let e=PONT_ENSEIGNANTS.find(x=>x.id===id); if(!e) return; let nouveau=prompt("💰 Nouveau salaire pour "+e.nom+" (actuel : "+Number(e.salaire||0).toLocaleString('fr-FR')+" FCFA) :",""+(e.salaire||0)); if(nouveau===null||nouveau==="") return; try{ await db.collection("enseignants").doc(id).update({salaire:Number(nouveau)}); chargerPontEnseignants(); }catch(err){ alert("❌ "+err.message); } }
 async function supprimerEnseignantPont(id, nom){ if(!confirm("Supprimer l'enseignant "+nom+" ? / حذف المعلم "+nom+" ؟")) return; try{ await db.collection("enseignants").doc(id).delete(); chargerPontEnseignants(); }catch(e){ alert("❌ "+e.message); } }
-async function chargerPontPaiements(){ let box=document.getElementById('tbodyPontPaiements'); try{ let snapP=await db.collection("paiements").limit(500).get(); PONT_PAIEMENTS=[]; snapP.forEach(doc=>PONT_PAIEMENTS.push({id:doc.id,...doc.data()})); let snapI=await db.collection("inscriptions").limit(300).get(); PONT_INSCRIPTIONS=[]; snapI.forEach(doc=>PONT_INSCRIPTIONS.push({id:doc.id,...doc.data()})); let snapD=await db.collection("depenses").limit(300).get(); PONT_DEPENSES=[]; snapD.forEach(doc=>PONT_DEPENSES.push({id:doc.id,...doc.data()})); let encaisse=0, attente=0, annuleTotal=0; PONT_PAIEMENTS.forEach(p=>{ if(p.statut==="valide") encaisse+=Number(p.montant||0); if(p.statut==="annule"||p.statut==="annulé") annuleTotal+=Number(p.montant||0); if(p.statut==="en_attente") attente++; }); let totalDep=0; PONT_DEPENSES.forEach(d=>totalDep+=Number(d.montant||0)); let solde=encaisse-totalDep; document.getElementById('pontEncaisse').textContent=encaisse.toLocaleString('fr-FR')+" FCFA"; document.getElementById('pontAttente').textContent=attente; document.getElementById('pontAnnule').textContent=annuleTotal.toLocaleString('fr-FR')+" FCFA"; document.getElementById('pontDepenses').textContent=totalDep.toLocaleString('fr-FR')+" FCFA"; document.getElementById('pontSolde').textContent=solde.toLocaleString('fr-FR'); let sel=document.getElementById('filtrePontEcole'); if(sel && sel.options.length<=1){ let ecoles=[...new Set(PONT_PAIEMENTS.map(p=>p.ecole||p.groupe||"").filter(Boolean))]; ecoles.forEach(ec=>sel.innerHTML+=`<option>${ec}</option>`); } let filtreEcole=sel?sel.value:""; let q=(document.getElementById('recherchePontPaiement')?document.getElementById('recherchePontPaiement').value.toLowerCase():""); let liste=PONT_PAIEMENTS.filter(p=>{ if(filtreEcole && (p.ecole||p.groupe||"")!==filtreEcole) return false; if(q && !JSON.stringify(p).toLowerCase().includes(q)) return false; return true; }); liste.sort((a,b)=>String(b.date||"").localeCompare(String(a.date||""))); let html=""; liste.forEach(p=>{ let prix=getPrixPont(p.ecole||p.groupe||""); let deja=dejaPayePont(p.enfant||""); let reste=Math.max(0,prix-deja); let badge=p.statut==="valide"?`<span class="badge badgeVert">✅ VALIDÉ</span>`:p.statut==="refuse"?`<span class="badge badgeRouge">❌ REFUSÉ</span>`:p.statut==="annule"||p.statut==="annulé"?`<span class="badge badgeRouge">❌ ANNULÉ - NE COMPTE PAS</span>`:`<span class="badge badgeJaune">⏳ EN ATTENTE</span>`; let btnAction=p.statut==="en_attente"?`<button type="button" class="btnPetit" style="background:#0F3D2E;color:white" onclick="validerPaiementPont('${p.id}')">✅ Valider</button><button type="button" class="btnPetit" style="background:#C62828;color:white" onclick="refuserPaiementPont('${p.id}')">❌ Refuser</button>`:`<button type="button" class="btnPetit" style="background:#666;color:white" onclick="remettreEnAttentePont('${p.id}')">↩ Remettre en attente</button>`; html+=`<tr style="${(p.statut==="annule"||p.statut==="annulé")?'background:#FFEBEE':''}"><td><b>${p.enfant||""}</b><br><small>${p.parent||""}</small></td><td><b>${Number(p.montant||0).toLocaleString('fr-FR')} FCFA</b><br><small>${p.motif||""} - ${p.mode||""}</small></td><td>${p.ecole||p.groupe||""}<br><small>${p.date||""}</small></td><td><small>Prix ${prix.toLocaleString('fr-FR')} - Payé ${deja.toLocaleString('fr-FR')}<br>Reste <b style="color:#C62828">${reste.toLocaleString('fr-FR')}</b></small></td><td>${badge}</td><td>${btnAction}</td></tr>`; }); box.innerHTML=html||`<tr><td colspan="6">Aucun paiement. / لا مدفوعات</td></tr>`; }catch(e){ box.innerHTML=`<tr><td colspan="6">❌ ${e.message}</td></tr>`; } }
+function calculerDashboardParEcolePont(){
+  let box=document.getElementById('dashboardParEcolePont');
+  if(!box) return;
+  let parEcole={};
+  PONT_PAIEMENTS.forEach(p=>{
+    let nom=(p.ecole||p.groupe||p.ecoleNom||"Sans école");
+    if(!parEcole[nom]) parEcole[nom]={nom:nom, encaisse:0, depenses:0, nbPaiements:0, nbDepenses:0};
+    if(!statutValidePont(p.statut)) return;
+    if(!eleveExistePont(p.enfant||"")) return;
+    parEcole[nom].encaisse+=Number(p.montant||0); parEcole[nom].nbPaiements++;
+  });
+  PONT_DEPENSES.forEach(d=>{
+    let nom=(d.ecole||d.ecoleNom||d.groupe||"Sans école");
+    if(!parEcole[nom]) parEcole[nom]={nom:nom, encaisse:0, depenses:0, nbPaiements:0, nbDepenses:0};
+    if(statutEnAttentePont(d.statut)||statutRefusePont(d.statut)) return;
+    parEcole[nom].depenses+=Number(d.montant||0);
+    parEcole[nom].nbDepenses++;
+  });
+  let noms=Object.keys(parEcole).sort();
+  if(!noms.length){ box.innerHTML="<p style='text-align:center'>Aucune donnée.</p>"; return; }
+  let totEnc=0, totDep=0, totSolde=0;
+  let html='<div class="tableWrap"><table><thead><tr><th>École / Groupe</th><th>✅ Encaissé Validé</th><th>🧾 Dépenses Validées</th><th>💰 Solde</th></tr></thead><tbody>';
+  noms.forEach(n=>{
+    let g=parEcole[n];
+    let solde=g.encaisse-g.depenses;
+    totEnc+=g.encaisse; totDep+=g.depenses; totSolde+=solde;
+    let couleurSolde=solde>=0?"color:#0F3D2E":"color:#C62828";
+    html+=`<tr><td><b>${n}</b><br><small>${g.nbPaiements} paiements validés - ${g.nbDepenses} dépenses validées</small></td><td><b>${g.encaisse.toLocaleString('fr-FR')} FCFA</b></td><td><b>${g.depenses.toLocaleString('fr-FR')} FCFA</b></td><td><b style="${couleurSolde}">${solde.toLocaleString('fr-FR')} FCFA</b></td></tr>`;
+  });
+  html+=`<tr style="background:#0F3D2E;color:white"><td><b>TOTAL TOUTES ÉCOLES</b></td><td><b>${totEnc.toLocaleString('fr-FR')} FCFA</b></td><td><b>${totDep.toLocaleString('fr-FR')} FCFA</b></td><td><b>${totSolde.toLocaleString('fr-FR')} FCFA</b></td></tr>`;
+  html+='</tbody></table></div>';
+  box.innerHTML=html;
+}
+async function chargerPontPaiements(){
+  let box=document.getElementById('tbodyPontPaiements');
+  try{
+    let snapP=await db.collection("paiements").limit(500).get(); PONT_PAIEMENTS=[]; snapP.forEach(doc=>PONT_PAIEMENTS.push({id:doc.id,...doc.data()}));
+    let snapI=await db.collection("inscriptions").limit(300).get(); PONT_INSCRIPTIONS=[]; snapI.forEach(doc=>PONT_INSCRIPTIONS.push({id:doc.id,...doc.data()}));
+    let snapD=await db.collection("depenses").limit(300).get(); PONT_DEPENSES=[]; snapD.forEach(doc=>PONT_DEPENSES.push({id:doc.id,...doc.data()}));
+    let encaisse=0, attente=0, annuleTotal=0;
+    PONT_PAIEMENTS.forEach(p=>{
+      if(statutValidePont(p.statut) && eleveExistePont(p.enfant||"")) encaisse+=Number(p.montant||0);
+      if(statutRefusePont(p.statut)) annuleTotal+=Number(p.montant||0);
+      if(statutEnAttentePont(p.statut)) attente++;
+    });
+    let totalDep=0;
+    PONT_DEPENSES.forEach(d=>{ if(statutEnAttentePont(d.statut)||statutRefusePont(d.statut)) return; totalDep+=Number(d.montant||0); });
+    let solde=encaisse-totalDep;
+    document.getElementById('pontEncaisse').textContent=encaisse.toLocaleString('fr-FR')+" FCFA";
+    document.getElementById('pontAttente').textContent=attente;
+    document.getElementById('pontAnnule').textContent=annuleTotal.toLocaleString('fr-FR')+" FCFA";
+    document.getElementById('pontDepenses').textContent=totalDep.toLocaleString('fr-FR')+" FCFA";
+    document.getElementById('pontSolde').textContent=solde.toLocaleString('fr-FR');
+    calculerDashboardParEcolePont();
+    let sel=document.getElementById('filtrePontEcole');
+    if(sel && sel.options.length<=1){ let ecoles=[...new Set(PONT_PAIEMENTS.map(p=>p.ecole||p.groupe||"").filter(Boolean))]; ecoles.forEach(ec=>sel.innerHTML+=`<option>${ec}</option>`); }
+    let filtreEcole=sel?sel.value:"";
+    let q=(document.getElementById('recherchePontPaiement')?document.getElementById('recherchePontPaiement').value.toLowerCase():"");
+    let liste=PONT_PAIEMENTS.filter(p=>{ if(filtreEcole && (p.ecole||p.groupe||"")!==filtreEcole) return false; if(q && !JSON.stringify(p).toLowerCase().includes(q)) return false; return true; });
+    liste.sort((a,b)=>String(b.date||"").localeCompare(String(a.date||"")));
+    let html="";
+    liste.forEach(p=>{
+      let prix=getPrixPont(p.ecole||p.groupe||"");
+      let deja=dejaPayePont(p.enfant||"");
+      let reste=Math.max(0,prix-deja);
+      let badge=statutValidePont(p.statut)?`<span class="badge badgeVert">✅ VALIDÉ</span>`:statutRefusePont(p.statut)?`<span class="badge badgeRouge">❌ REFUSÉ</span>`:`<span class="badge badgeJaune">⏳ EN ATTENTE</span>`;
+      let btnAction=statutEnAttentePont(p.statut)?`<button type="button" class="btnPetit" style="background:#0F3D2E;color:white" onclick="validerPaiementPont('${p.id}')">✅ Valider</button><button type="button" class="btnPetit" style="background:#C62828;color:white" onclick="refuserPaiementPont('${p.id}')">❌ Refuser</button>`:`<button type="button" class="btnPetit" style="background:#666;color:white" onclick="remettreEnAttentePont('${p.id}')">↩ Remettre en attente</button>`;
+      let ligneRouge=statutRefusePont(p.statut)?'background:#FFEBEE':'';
+      html+=`<tr style="${ligneRouge}"><td><b>${p.enfant||""}</b><br><small>${p.parent||""}</small></td><td><b>${Number(p.montant||0).toLocaleString('fr-FR')} FCFA</b><br><small>${p.motif||""} - ${p.mode||""}</small></td><td>${p.ecole||p.groupe||""}<br><small>${p.date||""}</small></td><td><small>Prix ${prix.toLocaleString('fr-FR')} - Payé ${deja.toLocaleString('fr-FR')}<br>Reste <b style="color:#C62828">${reste.toLocaleString('fr-FR')}</b></small></td><td>${badge}</td><td>${btnAction}</td></tr>`;
+    });
+    box.innerHTML=html||`<tr><td colspan="6">Aucun paiement. / لا مدفوعات</td></tr>`;
+  }catch(e){ box.innerHTML=`<tr><td colspan="6">❌ ${e.message}</td></tr>`; }
+}
 async function validerPaiementPont(id){ try{ await db.collection("paiements").doc(id).update({statut:"valide", validePar:"gestion"}); chargerPontPaiements(); }catch(e){ alert("❌ "+e.message); } }
 async function refuserPaiementPont(id){ if(!confirm("Refuser ce paiement ? / رفض هذا الدفع؟")) return; try{ await db.collection("paiements").doc(id).update({statut:"refuse"}); chargerPontPaiements(); }catch(e){ alert("❌ "+e.message); } }
 async function remettreEnAttentePont(id){ try{ await db.collection("paiements").doc(id).update({statut:"en_attente"}); chargerPontPaiements(); }catch(e){ alert("❌ "+e.message); } }
-async function chargerPontDepenses(){ let box=document.getElementById('listePontDepenses'); if(!box) return; try{ if(!PONT_DEPENSES.length){ let snap=await db.collection("depenses").limit(200).get(); PONT_DEPENSES=[]; snap.forEach(doc=>PONT_DEPENSES.push({id:doc.id,...doc.data()})); } let sel=document.getElementById('filtrePontDepEcole'); if(sel && sel.options.length<=1){ let ecoles=[...new Set(PONT_DEPENSES.map(d=>d.ecole||"").filter(Boolean))]; ecoles.forEach(ec=>sel.innerHTML+=`<option>${ec}</option>`); } let filtre=sel?sel.value:""; let liste=PONT_DEPENSES.filter(d=>!filtre||d.ecole===filtre); liste.sort((a,b)=>String(b.date||"").localeCompare(String(a.date||""))); let total=liste.reduce((s,x)=>s+Number(x.montant||0),0); box.innerHTML="<p style='text-align:center'><b>Total Dépenses affichées / مجموع المصاريف : "+total.toLocaleString('fr-FR')+" FCFA</b></p>"+(liste.length?liste.map(d=>'<div style="background:#FFF9C4;border:1px solid #FFE082;border-radius:10px;padding:8px;margin:6px 0;font-size:13px"><b>'+(d.ecole||"")+' - '+(d.categorie||"")+' - '+(d.motif||"")+'</b><br>'+(d.date||"")+' - <b>'+Number(d.montant||0).toLocaleString('fr-FR')+' FCFA</b><br><small>'+(d.payeur||d.envoyePar||"Sous-Directeur")+'</small></div>').join(''):"<p style='text-align:center'>Aucune dépense. / لا مصاريف</p>"); }catch(e){ box.innerHTML="❌ "+e.message; } }
+async function validerDepenseLiaison(id){ if(!confirm("Valider cette dépense ?")) return; try{ await db.collection("depenses").doc(id).update({ statut:"valide", validePar:"directeur", dateValidation:new Date().toLocaleDateString('fr-FR') }); chargerPontDepenses(); chargerPontPaiements(); calculerDepensesParEcolePont(); }catch(e){ alert("❌ "+e.message); } }
+async function refuserDepenseLiaison(id){ if(!confirm("Refuser cette dépense ?")) return; try{ await db.collection("depenses").doc(id).update({ statut:"refuse" }); chargerPontDepenses(); chargerPontPaiements(); calculerDepensesParEcolePont(); }catch(e){ alert("❌ "+e.message); } }
+async function remettreEnAttenteDepenseLiaison(id){ try{ await db.collection("depenses").doc(id).update({ statut:"en_attente" }); chargerPontDepenses(); chargerPontPaiements(); calculerDepensesParEcolePont(); }catch(e){ alert("❌ "+e.message); } }
+async function chargerPontDepenses(){
+  let box=document.getElementById('listePontDepenses');
+  let tbody=document.getElementById('tbodyPontDepenses');
+  if(!tbody) return;
+  try{
+    let snap=await db.collection("depenses").limit(300).get();
+    PONT_DEPENSES=[]; snap.forEach(doc=>PONT_DEPENSES.push({id:doc.id,...doc.data()}));
+    let sel=document.getElementById('filtrePontDepEcole');
+    if(sel && sel.options.length<=1){
+      let ecoles=[...new Set(PONT_DEPENSES.map(d=>d.ecole||d.ecoleNom||d.groupe||"").filter(Boolean))];
+      ecoles.forEach(ec=>sel.innerHTML+=`<option>${ec}</option>`);
+    }
+    let filtre=sel?sel.value:"";
+    let liste=PONT_DEPENSES.filter(d=>!filtre||(d.ecole===filtre||d.ecoleNom===filtre||d.groupe===filtre));
+    liste.sort((a,b)=>String(b.date||"").localeCompare(String(a.date||"")));
+    let totalValide=liste.filter(d=>statutValidePont(d.statut)).reduce((s,x)=>s+Number(x.montant||0),0);
+    let totalAttente=liste.filter(d=>statutEnAttentePont(d.statut)).reduce((s,x)=>s+Number(x.montant||0),0);
+    if(box) box.innerHTML="<p style='text-align:center'><b>Validé : "+totalValide.toLocaleString('fr-FR')+" FCFA</b> | ⏳ En attente : <b>"+totalAttente.toLocaleString('fr-FR')+" FCFA</b></p>";
+    if(!liste.length){ tbody.innerHTML=`<tr><td colspan="6" style="text-align:center">Aucune dépense. / لا مصاريف</td></tr>`; return; }
+    let html="";
+    liste.forEach(d=>{
+      let badge=statutEnAttentePont(d.statut)?`<span class="badge badgeJaune">⏳ EN ATTENTE</span>`:statutRefusePont(d.statut)?`<span class="badge badgeRouge">❌ REFUSÉ</span>`:`<span class="badge badgeVert">✅ VALIDÉ</span>`;
+      let btns=statutEnAttentePont(d.statut)?`<button type="button" class="btnPetit" style="background:#0F3D2E;color:white" onclick="validerDepenseLiaison('${d.id}')">✅ Valider</button><button type="button" class="btnPetit" style="background:#C62828;color:white" onclick="refuserDepenseLiaison('${d.id}')">❌ Refuser</button>`:`<button type="button" class="btnPetit" style="background:#666;color:white" onclick="remettreEnAttenteDepenseLiaison('${d.id}')">↩ Remettre en attente</button>`;
+      html+=`<tr><td>${d.date||""}<br><small>${d.payeur||d.envoyePar||d.faitPar||"Sous-Directeur"} - ${d.faitParRole||""}</small></td><td><b>${d.ecole||d.ecoleNom||d.groupe||""}</b></td><td><b>${d.categorie||""}</b><br><small>${d.motif||""}</small></td><td><b>${Number(d.montant||0).toLocaleString('fr-FR')} FCFA</b></td><td>${badge}</td><td>${btns}</td></tr>`;
+    });
+    tbody.innerHTML=html;
+  }catch(e){ tbody.innerHTML=`<tr><td colspan="6">❌ ${e.message}</td></tr>`; }
+}
+async function calculerDepensesParEcolePont(){
+  let box=document.getElementById('listeDepensesParEcolePont');
+  let boxTotal=document.getElementById('totalDepensesParEcolePont');
+  if(!box) return;
+  try{
+    let snap=await db.collection("depenses").limit(500).get();
+    let toutes=[];
+    snap.forEach(doc=>toutes.push({id:doc.id,...doc.data()}));
+    let sel=document.getElementById('filtrePontDepEcoleTotal');
+    if(sel && sel.options.length<=1){
+      let ecoles=[...new Set(toutes.map(d=>d.ecole||d.ecoleNom||d.groupe||"").filter(Boolean))];
+      ecoles.forEach(ec=>sel.innerHTML+=`<option>${ec}</option>`);
+    }
+    let filtre=sel?sel.value:"";
+    let parEcole={};
+    toutes.forEach(d=>{
+      let nom=(d.ecole||d.ecoleNom||d.groupe||"Sans école");
+      if(filtre && nom!==filtre) return;
+      if(!parEcole[nom]) parEcole[nom]={nom:nom, valide:0, attente:0, refuse:0, nb:0, nbValide:0};
+      let m=Number(d.montant||0);
+      parEcole[nom].nb++;
+      if(statutEnAttentePont(d.statut)) parEcole[nom].attente+=m;
+      else if(statutRefusePont(d.statut)) parEcole[nom].refuse+=m;
+      else if(statutValidePont(d.statut)) { parEcole[nom].valide+=m; parEcole[nom].nbValide++; }
+    });
+    let noms=Object.keys(parEcole).sort();
+    if(!noms.length){ box.innerHTML="<p style='text-align:center'>Aucune dépense.</p>"; if(boxTotal) boxTotal.innerHTML=""; return; }
+    let totValide=0, totAttente=0, totRefuse=0;
+    let html='<div class="tableWrap"><table><thead><tr><th>École / Groupe</th><th>Nb Dépenses</th><th>✅ Validé</th><th>⏳ En attente</th><th>❌ Refusé</th></tr></thead><tbody>';
+    noms.forEach(n=>{
+      let g=parEcole[n];
+      totValide+=g.valide; totAttente+=g.attente; totRefuse+=g.refuse;
+      html+=`<tr><td><b>${n}</b></td><td>${g.nb} (${g.nbValide} validées)</td><td><b>${g.valide.toLocaleString('fr-FR')} FCFA</b></td><td><b style="color:#8D6E00">${g.attente.toLocaleString('fr-FR')} FCFA</b></td><td><b style="color:#C62828">${g.refuse.toLocaleString('fr-FR')} FCFA</b></td></tr>`;
+    });
+    html+='</tbody></table></div>';
+    box.innerHTML=html;
+    if(boxTotal) boxTotal.innerHTML=`<div style="background:#0F3D2E;color:white;border-radius:12px;padding:12px;text-align:center"><b>TOTAL VALIDÉ : ${totValide.toLocaleString('fr-FR')} FCFA</b> | ⏳ En attente : ${totAttente.toLocaleString('fr-FR')} FCFA | ❌ Refusé : ${totRefuse.toLocaleString('fr-FR')} FCFA</div>`;
+  }catch(e){ box.innerHTML="❌ "+e.message; }
+}
 async function confirmerSupprimerToutPont(){ let conf=document.getElementById('pontDeleteConfirm').value.trim(); let msg=document.getElementById('msgPontDanger'); if(conf!=="DELETE"){ msg.style.color="red"; msg.textContent="❌ Tape DELETE en majuscules / اكتب DELETE بأحرف كبيرة"; return; } if(!confirm("DERNIÈRE CONFIRMATION : Supprimer VRAIMENT TOUTES les données ? Irréversible !")) return; msg.style.color="#666"; msg.textContent="⏳ Suppression en cours... Ne ferme pas la page."; let collections=["notes","paiements","presences","bulletins","emploi_temps","depenses","enseignants","inscriptions","divers"]; for(let col of collections){ try{ let s=await db.collection(col).limit(400).get(); for(let doc of s.docs){ await db.collection(col).doc(doc.id).delete(); } }catch(e){ console.log(col,e.message); } } msg.style.color="green"; msg.textContent="✅ TOUTES les données supprimées. Rechargement..."; setTimeout(()=>location.reload(),1500); }
 window.onload=()=>{ afficherPont(); }
 </script>
 </body>
 </html>
+
+
