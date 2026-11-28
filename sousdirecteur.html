@@ -220,9 +220,10 @@ tr:nth-child(even){background:#F9F9F9}
 <button type="button" class="btn btnVert" style="width:100%;margin-top:10px" onclick="enregistrerPresence()">💾 Enregistrer Présence</button><p id="msgPresence"></p>
 </div>
 <div class="card" id="cartePresenceHist">
-<div class="titre-ligne"><h4>📋 Historique Présences</h4>
+<div class="titre-ligne"><h4>📋 Historique Présences - Enseignants + Moi</h4>
 <div class="menu3"><button type="button" class="btn3" onclick="toggleMenu3('menuPresHist',event)">⋮</button><div class="menu3-drop" id="menuPresHist"><button type="button" onclick="fermerMenus3();telechargerPDF('tableHistPresence','HISTORIQUE PRESENCES')">⬇️ Télécharger en PDF</button><button type="button" onclick="fermerMenus3();telechargerExcelSD('tableHistPresence','Historique_Presences')">⬇️ Télécharger en Excel</button><button type="button" onclick="fermerMenus3();cacherCarteSD('cartePresenceHist')">👁️ Cacher cette carte</button></div></div></div>
-<div class="tableWrap"><table id="tableHistPresence"><thead><tr><th>Date</th><th>Présents</th><th>Absents</th><th>Noms Absents</th><th>Action</th></tr></thead><tbody id="tbodyHistPresence"></tbody></table></div></div>
+<div style="background:#FFF9C4;padding:10px;border-radius:10px;text-align:center"><small>⚠️ <b>L'Enseignant envoie → 🟠 En attente → Toi tu valides ✅ ou tu refuses ❌.</b><br>Seule la présence <b>🟢 Validée</b> compte.</small></div>
+<div class="tableWrap"><table id="tableHistPresence"><thead><tr><th>Date</th><th>Présents</th><th>Absents</th><th>Noms Absents / Détail</th><th>Action</th></tr></thead><tbody id="tbodyHistPresence"></tbody></table></div></div>
 </div>
 <div id="tabNotes" style="display:none">
 <div class="card" id="carteNotesValidation">
@@ -416,11 +417,20 @@ function afficherSD(){
 }
 function nomEcoleDocSD(d){ return String(d.ecole||d.ecoleNom||d.groupe||d.groupeNom||"").trim(); }
 function idEcoleDocSD(d){ return String(d.ecoleId||d.groupeId||d.idEcole||d.idGroupe||""); }
+// ===== CORRIGÉ : estAMoi ne bloque plus si l'ID est différent mais le NOM est le même =====
 function estAMoi(d){
   if(!SD) return false;
   let idDoc=idEcoleDocSD(d);
-  if(idDoc){ if(SD.ecoles.some(e=> String(e.id)===idDoc)) return true; if(SD.groupes.some(g=> String(g.id)===idDoc)) return true; return false; }
   let nomDoc=normaliserSD(nomEcoleDocSD(d));
+  if(idDoc){
+    if(SD.ecoles.some(e=> String(e.id)===idDoc)) return true;
+    if(SD.groupes.some(g=> String(g.id)===idDoc)) return true;
+    if(nomDoc){
+      if(SD.ecoles.some(e=> normaliserSD(e.nom||"")===nomDoc)) return true;
+      if(SD.groupes.some(g=> normaliserSD(g.nom||"")===nomDoc)) return true;
+    }
+    return false;
+  }
   if(!nomDoc) return false;
   if(SD.ecoles.some(e=> normaliserSD(e.nom||"")===nomDoc)) return true;
   if(SD.groupes.some(g=> normaliserSD(g.nom||"")===nomDoc)) return true;
@@ -575,17 +585,49 @@ async function ajouterEnseignantSD(){
 async function supprimerEnseignantSD(id){ if(!confirm("Supprimer cet enseignant ?")) return; try{ await db.collection("enseignants").doc(id).delete(); chargerEnseignantsSD(); }catch(e){ alert("❌ "+e.message); } }
 async function supprimerTousEnseignantsSD(){ try{ for(let e of TOUS_ENSEIGNANTS){ await db.collection("enseignants").doc(e.id).delete(); } chargerEnseignantsSD(); }catch(e){ alert("❌ "+e.message); } }
 async function supprimerToutEmploiSD(){ try{ let snap=await db.collection("emploi_temps").get(); for(let doc of snap.docs){ if(estAMoi(doc.data())) await db.collection("emploi_temps").doc(doc.id).delete(); } chargerEmploi(); }catch(e){ alert("❌ "+e.message); } }
+// ===== CORRIGÉ : PRÉSENCE ENSEIGNANT → SOUS-DIRECTEUR =====
 async function chargerPourPresence(){
   if(!SD) return;
   let tbody=document.getElementById('tbodyPresence'); if(!tbody) return;
   let html=""; TOUTES_INSCRIPTIONS.forEach(e=>{ let nom=e.enfant||""; html+=`<tr><td><input type="checkbox" class="check-presence" value="${nom}" checked style="width:20px;height:20px"></td><td><b>${nom}</b></td><td>${e.parent||""}<br><small>${e.tel||""}</small></td><td>${e.ecole||e.groupe||""}</td></tr>`; });
   tbody.innerHTML=html||`<tr><td colspan="4" style="text-align:center">Aucun élève.</td></tr>`;
   try{
-    let snap=await db.collection("presences").limit(100).get();
+    let snap=await db.collection("presences").limit(500).get();
     let hist=[]; snap.forEach(doc=>{ let d={id:doc.id,...doc.data()}; if(estAMoi(d)) hist.push(d); });
     let tbodyH=document.getElementById('tbodyHistPresence'); if(tbodyH){
       if(!hist.length) tbodyH.innerHTML=`<tr><td colspan="5" style="text-align:center">Aucune présence.</td></tr>`;
-      else{ let h=""; hist.slice().reverse().forEach(p=>{ h+=`<tr><td>${p.date||""}</td><td>${p.presents??""}</td><td>${p.absents??""}</td><td>${(p.absentsNoms||[]).join(", ")}</td><td><button class="btnPetit" style="background:#FFEBEE;color:#C62828" onclick="supprimerPresenceSD('${p.id}')">🗑️</button></td></tr>`; }); tbodyH.innerHTML=h; }
+      else{
+        let groupesEns = {};
+        let presSD = [];
+        hist.forEach(p=>{
+          if(p.enseignant || p.eleve || p.presence || p.statutPresence){
+            let k = (p.date||"")+"||"+(p.enseignant||p.enseignantNom||"")+"||"+(p.ecole||p.ecoleNom||"")+"||"+(p.niveau||"");
+            if(!groupesEns[k]) groupesEns[k]={date:p.date||"", enseignant:p.enseignant||p.enseignantNom||"", ecole:p.ecole||p.ecoleNom||"", niveau:p.niveau||"", presents:0, absents:0, lignes:[], statut:"en_attente"};
+            let pr = String(p.presence||p.statutPresence||"").toLowerCase();
+            if(pr==="present") groupesEns[k].presents++;
+            else if(pr==="absent") groupesEns[k].absents++;
+            groupesEns[k].lignes.push(p);
+            if((p.statut||"")==="en_attente") groupesEns[k].statut="en_attente";
+            if((p.statut||"")==="valide") groupesEns[k].statut="valide";
+            if((p.statut||"")==="refuse") groupesEns[k].statut="refuse";
+          } else {
+            presSD.push(p);
+          }
+        });
+        let h="";
+        Object.values(groupesEns).reverse().forEach(g=>{
+          let badge = g.statut==="valide" ? `<span class="badge badgeVert">🟢 VALIDÉE</span>` : g.statut==="refuse" ? `<span class="badge badgeRouge">🔴 REFUSÉE</span>` : `<span class="badge badgeJaune">🟠 EN ATTENTE - Enseignant</span>`;
+          let detail = g.lignes.map(x=> `<b>${x.eleve||""}</b> : ${String(x.presence||"")==="present" ? "✅ P" : String(x.presence||"")==="absent" ? "❌ A" : "⏰ R"}`).join(" • ");
+          let btns = "";
+          if(g.statut==="en_attente"){
+            let ids = g.lignes.map(x=>x.id).join(",");
+            btns = `<br><button class="btnPetit" style="background:#0F3D2E;color:white" onclick="validerPresenceEnsSD('${ids}')">✅ Valider</button> <button class="btnPetit" style="background:#C62828;color:white" onclick="refuserPresenceEnsSD('${ids}')">❌ Refuser</button>`;
+          }
+          h+=`<tr><td><b>${g.date}</b><br><small>👨‍🏫 ${g.enseignant} - ${g.niveau} - ${g.ecole}</small><br><small style="white-space:normal">${detail}</small></td><td><b>${g.presents}</b></td><td><b style="color:red">${g.absents}</b></td><td>${badge}${btns}</td><td><button class="btnPetit" style="background:#FFEBEE;color:#C62828" onclick="supprimerPresenceSD('${g.lignes[0].id}')">🗑️</button></td></tr>`;
+        });
+        presSD.slice().reverse().forEach(p=>{ h+=`<tr><td>${p.date||""}<br><small>👤 Moi (Sous-Directeur)</small></td><td>${p.presents??""}</td><td>${p.absents??""}</td><td>${(p.absentsNoms||[]).join(", ")}</td><td><button class="btnPetit" style="background:#FFEBEE;color:#C62828" onclick="supprimerPresenceSD('${p.id}')">🗑️</button></td></tr>`; });
+        tbodyH.innerHTML=h;
+      }
     }
   }catch(e){}
 }
@@ -599,6 +641,26 @@ async function enregistrerPresence(){
   }catch(e){ alert("❌ "+e.message); }
 }
 async function supprimerPresenceSD(id){ if(!confirm("Supprimer ?")) return; try{ await db.collection("presences").doc(id).delete(); chargerPourPresence(); }catch(e){ alert("❌ "+e.message); } }
+async function validerPresenceEnsSD(idsStr){
+  if(!confirm("Valider cette présence de l'enseignant ?")) return;
+  try{
+    let ids = idsStr.split(",");
+    for(let id of ids){ await db.collection("presences").doc(id).update({statut:"valide", motifRefus:"", validePar:SD.email||SD.nom||"Sous-Directeur", dateValidation:new Date(), updatedAt:new Date()}); }
+    alert("✅ Présence de l'enseignant validée ! Elle compte maintenant.");
+    chargerPourPresence();
+  }catch(e){ alert("❌ "+e.message); }
+}
+async function refuserPresenceEnsSD(idsStr){
+  let motif = prompt("Motif du refus ? Ex : Appel incomplet, refais.");
+  if(motif===null) return;
+  if(!motif.trim()) motif="À refaire";
+  try{
+    let ids = idsStr.split(",");
+    for(let id of ids){ await db.collection("presences").doc(id).update({statut:"refuse", motifRefus:motif, validePar:SD.email||SD.nom||"Sous-Directeur", dateValidation:new Date(), updatedAt:new Date()}); }
+    alert("❌ Présence refusée. L'enseignant va la refaire.");
+    chargerPourPresence();
+  }catch(e){ alert("❌ "+e.message); }
+}
 async function chargerNotes(){
   try{
     TOUTES_NOTES=[];
@@ -609,7 +671,6 @@ async function chargerNotes(){
 }
 function setFiltreNotesSD(f){ FILTRE_NOTES_SD=f; afficherNotesSD(); }
 function statutNoteSD(n){ return n.statut||n.statutNote||"en_attente"; }
-
 function totalVraiNoteSD(n){
   let mode=String(TYPE_COMPOSITION_SD||"oral_ecrit").toLowerCase();
   let oral=Number(n.oral||n.noteOral||0);
@@ -713,8 +774,6 @@ function afficherNotesSD(){
   html+=`</tbody></table></div>`;
   box.innerHTML=html;
 }
-
-
 async function validerCelluleSD(id, source){
   try{
     let col = source==="notes" ? "notes" : "bulletins";
@@ -766,7 +825,6 @@ async function refuserToutEleveSD(eleve, trimestre){
     await chargerNotes();
   }catch(e){ alert("❌ "+e.message); }
 }
-
 function afficherMoyennesSD(){
   let tbody=document.getElementById('tbodyMoyennes'); if(!tbody) return;
   let filtre=document.getElementById('filtreTrimestreMoy')?.value||"";
@@ -895,4 +953,5 @@ window.addEventListener('load', ()=>{
 </script>
 </body>
 </html>
+
 
